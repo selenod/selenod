@@ -1,0 +1,24 @@
+.Header {
+  width: 100%;
+  height: 4rem;
+}
+
+.Header > div {
+  position: relative;
+  width: 100rem;
+  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.Header > div > img {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+/* White Theme */
+.header-white {
+  background-color: #fff;
+}

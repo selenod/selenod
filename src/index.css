@@ -1,5 +1,7 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
+/* Global CSS */
+
 body {
   margin: 0;
   font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
@@ -9,7 +11,34 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+}
+
 img {
   user-select: none;
   -webkit-user-drag: none;
+}
+
+li {
+  list-style: none;
+}
+
+/* Only div tag can get this class '.hl', '.vl' */
+.hl {
+  height: 1px;
+  border-radius: 1rem;
+}
+
+.vl {
+  height: 1px;
+  border-radius: 1rem;
+}
+
+.hl.white,
+.vl.white {
+  background-color: #d8e0e5;
 }

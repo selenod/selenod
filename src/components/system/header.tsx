@@ -3,9 +3,9 @@ import logo from '../../assets/svgs/logo.svg';
 
 export default function Header() {
   return (
-    <div className="Header header-white">
+    <div className="Header white">
       <div>
-        <img src={logo} alt="selenod"></img>
+        <img src={logo} alt="selenod" />
       </div>
     </div>
   );

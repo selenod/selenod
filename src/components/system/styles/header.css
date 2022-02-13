@@ -1,11 +1,11 @@
 .Header {
   width: 100%;
-  height: 4rem;
+  height: 64px;
 }
 
 .Header > div {
   position: relative;
-  width: 100rem;
+  width: 80vw;
   height: 100%;
   left: 50%;
   transform: translateX(-50%);
@@ -18,7 +18,6 @@
   cursor: pointer;
 }
 
-/* White Theme */
-.header-white {
+.Header.white {
   background-color: #fff;
 }

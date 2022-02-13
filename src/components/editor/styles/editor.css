@@ -1,0 +1,8 @@
+.Editor {
+  width: 100%;
+  height: calc(100vh - 64px);
+}
+
+.Editor.white {
+  background-color: #f3f5f7;
+}

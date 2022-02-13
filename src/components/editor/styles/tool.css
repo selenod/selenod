@@ -1,0 +1,24 @@
+.Tool {
+  height: 100%;
+  float: left;
+}
+
+.Tool > .shortcut {
+  width: 80px;
+  height: 100%;
+  float: left;
+}
+
+.Tool > .panel {
+  position: static !important;
+  height: 100% !important;
+  float: left !important;
+}
+
+.Tool.white > .shortcut {
+  background-color: #e6ecf0;
+}
+
+.Tool.white > .panel {
+  background-color: #ebeff2;
+}

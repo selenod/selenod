@@ -29,15 +29,15 @@ const LightTheme: ITheme = {
   editorColor: '#f3f5f7',
 };
 
-const DarkTheme: ITheme = {
-  headerColor: '',
-  lineColor: '',
-  shortcutColor: '',
-  shortcutIconColor: '',
-  shortcutHoverColor: '',
-  panelColor: '',
-  editorColor: '',
-};
+// const DarkTheme: ITheme = {
+//   headerColor: '',
+//   lineColor: '',
+//   shortcutColor: '',
+//   shortcutIconColor: '',
+//   shortcutHoverColor: '',
+//   panelColor: '',
+//   editorColor: '',
+// };
 
 export const CurrentTheme: ITheme = LightTheme;
 

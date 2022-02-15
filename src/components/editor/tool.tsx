@@ -4,7 +4,7 @@ import { CurrentTheme } from '../..';
 import { useState, useRef } from 'react';
 import { Resizable } from 're-resizable';
 
-import Progress from './progress';
+import Progress from './active';
 
 export interface IProgressData {
   panelWidth: number;

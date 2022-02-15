@@ -1,15 +1,31 @@
 import './styles/tool.css';
 import { CurrentTheme } from '../..';
 
-import { useState } from 'react';
-import ReactTooltip from 'react-tooltip';
+import { useState, useRef } from 'react';
 import { Resizable } from 're-resizable';
 
-export default function Tool() {
-  // Define States
-  const [pnlCase, setPnlCase] = useState<undefined | number>(undefined);
+import Progress from './progress';
 
-  // Define Shortcut Hover Color
+export interface IProgressData {
+  panelWidth: number;
+}
+
+export default function Tool() {
+  interface IPnlSize {
+    width: number;
+    height: string;
+  }
+
+  const [pnlCase, setPnlCase] = useState<undefined | number>(undefined);
+  const [pnlSize, setPnlSize] = useState<IPnlSize>({
+    width: 380,
+    height: '100%',
+  });
+
+  // For Progress component
+  const [prgWidth, setPrgWidth] = useState<number>(380);
+
+  // Define shortcut hover color
   const [shortcutColor, setShortcutColor] = useState<string[]>([
     '#ffffff00',
     '#ffffff00',
@@ -129,9 +145,18 @@ export default function Tool() {
       <Resizable
         className="panel"
         style={{ backgroundColor: CurrentTheme.panelColor }}
-        defaultSize={{
-          width: 380,
-          height: '100%',
+        size={{
+          width: pnlSize.width,
+          height: pnlSize.height,
+        }}
+        onResize={(e, direction, ref, d) => {
+          setPrgWidth(pnlSize.width + d.width);
+        }}
+        onResizeStop={(e, direction, ref, d) => {
+          setPnlSize({
+            width: pnlSize.width + d.width,
+            height: pnlSize.height,
+          });
         }}
         enable={{
           top: false,
@@ -146,7 +171,7 @@ export default function Tool() {
         minWidth={300}
         maxWidth={600}
       ></Resizable>
-      <ReactTooltip effect="solid" backgroundColor="#1a1b1c" />
+      <Progress {...{ panelWidth: prgWidth }} />
     </div>
   );
 }

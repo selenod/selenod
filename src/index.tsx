@@ -1,11 +1,13 @@
+import './index.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import ReactTooltip from 'react-tooltip';
 
 import Header from './components/system/header';
 import Editor from './components/editor/editor';
 
-// Define Theme Interface (for strict)
+// Define theme interface (for strict)
 interface ITheme {
   headerColor: string;
   lineColor: string;
@@ -16,7 +18,7 @@ interface ITheme {
   editorColor: string;
 }
 
-// Define Themes
+// Define themes
 const LightTheme: ITheme = {
   headerColor: '#fff',
   lineColor: '#d8e0e5',
@@ -43,6 +45,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Header />
     <Editor />
+    <ReactTooltip effect="solid" backgroundColor="#1a1b1c" />
   </React.StrictMode>,
   document.getElementById('root')
 );

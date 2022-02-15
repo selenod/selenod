@@ -1,11 +1,15 @@
 import './styles/editor.css';
+import { CurrentTheme } from '../..';
 
-import Shortcut from './tool';
+import Tool from './tool';
 
 export default function Editor() {
   return (
-    <div className="Editor white">
-      <Shortcut />
+    <div
+      className="Editor"
+      style={{ backgroundColor: CurrentTheme.editorColor }}
+    >
+      <Tool />
     </div>
   );
 }

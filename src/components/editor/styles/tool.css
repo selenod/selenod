@@ -4,13 +4,13 @@
 }
 
 .Tool > .shortcut {
-  width: 80px;
+  width: 70px;
   height: 100%;
   float: left;
 }
 
 .Tool > .panel {
-  width: 320px;
+  width: 380px;
   height: 100%;
   float: right;
 }
@@ -18,40 +18,32 @@
 .Tool > .shortcut > ul {
   position: relative;
   width: 50px;
-  top: 15px;
   left: 50%;
   transform: translateX(-75%);
 }
 
 .Tool > .shortcut > ul > li:not(.Tool > .shortcut > ul > li:last-child) {
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
 .Tool > .shortcut > ul > li > button {
-  width: 55px;
-  height: 55px;
-  background-color: #ffffff00;
+  width: 50px;
+  height: 50px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-}
-
-.Tool > .shortcut > ul > li > button:hover {
-  background-color: #dde5eb;
+  transition: ease-out background-color 100ms;
 }
 
 .Tool > .shortcut > ul > li > button > svg {
   padding-top: 3px;
 }
 
-.Tool.white > .shortcut {
-  background-color: #e6ecf0;
-}
-
-.Tool.white > .panel {
-  background-color: #ebeff2;
-}
-
-.Tool.Tool.white > .shortcut > ul > li > button > svg {
-  fill: #92a5b2;
+.Tool > .shortcut > ul > .hl {
+  position: relative;
+  width: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 7px;
+  margin-bottom: 7px;
 }

@@ -1,41 +1,91 @@
 import './styles/tool.css';
+import { CurrentTheme } from '../..';
 
-import node from '../../assets/svgs/node.svg';
-import script from '../../assets/svgs/script.svg';
-import design from '../../assets/svgs/design.svg';
-import box from '../../assets/svgs/box.svg';
+import { useState } from 'react';
+import ReactTooltip from 'react-tooltip';
+import { Resizable } from 're-resizable';
 
 export default function Tool() {
+  // Define States
+  const [pnlCase, setPnlCase] = useState<undefined | number>(undefined);
+
+  // Define Shortcut Hover Color
+  const [shortcutColor, setShortcutColor] = useState<string[]>([
+    '#ffffff00',
+    '#ffffff00',
+    '#ffffff00',
+  ]);
+
   return (
-    <div className="Tool white">
-      <div className="shortcut">
+    <div className="Tool">
+      <div
+        className="shortcut"
+        style={{ backgroundColor: CurrentTheme.shortcutColor }}
+      >
         <ul>
           <li>
-            <button>
+            <button
+              data-tip="Setting"
+              style={{ backgroundColor: shortcutColor[0] }}
+              onPointerOver={() =>
+                setShortcutColor([
+                  CurrentTheme.shortcutHoverColor,
+                  shortcutColor[1],
+                  shortcutColor[2],
+                ])
+              }
+              onPointerOut={() =>
+                setShortcutColor([
+                  '#ffffff00',
+                  shortcutColor[1],
+                  shortcutColor[2],
+                ])
+              }
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="34"
-                height="34"
+                width="24"
+                height="24"
                 fill="currentColor"
-                className="bi bi-diagram-2-fill"
+                className="bi bi-gear-fill"
                 viewBox="0 0 16 16"
+                style={{ fill: CurrentTheme.shortcutIconColor }}
               >
-                <path
-                  fill-rule="evenodd"
-                  d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H11a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 5 7h2.5V6A1.5 1.5 0 0 1 6 4.5v-1zm-3 8A1.5 1.5 0 0 1 4.5 10h1A1.5 1.5 0 0 1 7 11.5v1A1.5 1.5 0 0 1 5.5 14h-1A1.5 1.5 0 0 1 3 12.5v-1zm6 0a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1A1.5 1.5 0 0 1 9 12.5v-1z"
-                />
+                <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
               </svg>
             </button>
           </li>
+          <div
+            className="hl"
+            style={{ backgroundColor: CurrentTheme.lineColor }}
+          />
           <li>
-            <button>
+            <button
+              data-tip="Script"
+              style={{ backgroundColor: shortcutColor[1] }}
+              onPointerOver={() =>
+                setShortcutColor([
+                  shortcutColor[0],
+                  CurrentTheme.shortcutHoverColor,
+                  shortcutColor[2],
+                ])
+              }
+              onPointerOut={() =>
+                setShortcutColor([
+                  shortcutColor[0],
+                  '#ffffff00',
+                  shortcutColor[2],
+                ])
+              }
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="30"
-                height="30"
+                width="27"
+                height="27"
                 fill="currentColor"
                 className="bi bi-file-earmark-code"
                 viewBox="0 0 16 16"
+                style={{ fill: CurrentTheme.shortcutIconColor }}
               >
                 <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
                 <path d="M8.646 6.646a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L10.293 9 8.646 7.354a.5.5 0 0 1 0-.708zm-1.292 0a.5.5 0 0 0-.708 0l-2 2a.5.5 0 0 0 0 .708l2 2a.5.5 0 0 0 .708-.708L5.707 9l1.647-1.646a.5.5 0 0 0 0-.708z" />
@@ -43,36 +93,60 @@ export default function Tool() {
             </button>
           </li>
           <li>
-            <button>
+            <button
+              data-tip="Asset"
+              style={{ backgroundColor: shortcutColor[2] }}
+              onPointerOver={() =>
+                setShortcutColor([
+                  shortcutColor[0],
+                  shortcutColor[1],
+                  CurrentTheme.shortcutHoverColor,
+                ])
+              }
+              onPointerOut={() =>
+                setShortcutColor([
+                  shortcutColor[0],
+                  shortcutColor[1],
+                  '#ffffff00',
+                ])
+              }
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
                 fill="currentColor"
-                className="bi bi-pen-fill"
+                className="bi bi-archive-fill"
                 viewBox="0 0 16 16"
+                style={{ fill: CurrentTheme.shortcutIconColor }}
               >
-                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
-              </svg>
-            </button>
-          </li>
-          <li>
-            <button>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                className="bi bi-box2-fill"
-                viewBox="0 0 16 16"
-              >
-                <path d="M3.75 0a1 1 0 0 0-.8.4L.1 4.2a.5.5 0 0 0-.1.3V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4.5a.5.5 0 0 0-.1-.3L13.05.4a1 1 0 0 0-.8-.4h-8.5ZM15 4.667V5H1v-.333L1.5 4h6V1h1v3h6l.5.667Z" />
+                <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z" />
               </svg>
             </button>
           </li>
         </ul>
       </div>
-      <div className="panel"></div>
+      <Resizable
+        className="panel"
+        style={{ backgroundColor: CurrentTheme.panelColor }}
+        defaultSize={{
+          width: 380,
+          height: '100%',
+        }}
+        enable={{
+          top: false,
+          right: true,
+          bottom: false,
+          left: false,
+          topRight: false,
+          bottomRight: false,
+          bottomLeft: false,
+          topLeft: false,
+        }}
+        minWidth={300}
+        maxWidth={600}
+      ></Resizable>
+      <ReactTooltip effect="solid" backgroundColor="#1a1b1c" />
     </div>
   );
 }

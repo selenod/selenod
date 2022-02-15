@@ -29,16 +29,15 @@ li {
 
 /* Only div tag can get this class '.hl', '.vl' */
 .hl {
-  height: 1px;
+  height: 1.5px;
   border-radius: 1rem;
 }
 
 .vl {
-  height: 1px;
+  height: 1.5px;
   border-radius: 1rem;
 }
 
-.hl.white,
-.vl.white {
-  background-color: #d8e0e5;
+.__react_component_tooltip {
+  border-radius: 7px !important;
 }

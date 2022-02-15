@@ -1,14 +1,10 @@
 import './styles/tool.css';
 import { CurrentTheme } from '../..';
 
-import { useState, useRef } from 'react';
+import { useState, useEffect, ReactElement } from 'react';
 import { Resizable } from 're-resizable';
 
-import Progress from './active';
-
-export interface IProgressData {
-  panelWidth: number;
-}
+import Active from './active';
 
 export default function Tool() {
   interface IPnlSize {
@@ -16,7 +12,7 @@ export default function Tool() {
     height: string;
   }
 
-  const [pnlCase, setPnlCase] = useState<undefined | number>(undefined);
+  const [pnlCase, setPnlCase] = useState<number | null>(0);
   const [pnlSize, setPnlSize] = useState<IPnlSize>({
     width: 380,
     height: '100%',
@@ -24,13 +20,43 @@ export default function Tool() {
 
   // For Progress component
   const [prgWidth, setPrgWidth] = useState<number>(380);
-
-  // Define shortcut hover color
   const [shortcutColor, setShortcutColor] = useState<string[]>([
     '#ffffff00',
     '#ffffff00',
     '#ffffff00',
   ]);
+  const [pnlDisplay, setPnlDisplay] = useState<string>('block');
+  const [pnlComponent, setPnlComponent] = useState<ReactElement | null>(null);
+
+  // Detect panel index changing
+  useEffect(() => {
+    switch (pnlCase) {
+      case null:
+        setPnlDisplay('none');
+        setPrgWidth(0);
+        break;
+      case 0:
+        setPnlComponent(
+          <div>
+            <p>이것은 멋진 스크립트 창이랍니다..</p>
+          </div>
+        );
+        setPnlDisplay('block');
+        setPrgWidth(pnlSize.width);
+        break;
+      case 1:
+        setPnlComponent(
+          <div>
+            <p>이것은 멋진 에셋 창이랍니다..</p>
+          </div>
+        );
+        setPnlDisplay('block');
+        setPrgWidth(pnlSize.width);
+        break;
+      default:
+        break;
+    }
+  }, [pnlCase, pnlSize.width]);
 
   return (
     <div className="Tool">
@@ -78,6 +104,13 @@ export default function Tool() {
           <li>
             <button
               data-tip="Script"
+              onClick={() => {
+                if (pnlCase === 0) {
+                  setPnlCase(null);
+                } else {
+                  setPnlCase(0);
+                }
+              }}
               style={{ backgroundColor: shortcutColor[1] }}
               onPointerOver={() =>
                 setShortcutColor([
@@ -111,6 +144,13 @@ export default function Tool() {
           <li>
             <button
               data-tip="Asset"
+              onClick={() => {
+                if (pnlCase === 1) {
+                  setPnlCase(null);
+                } else {
+                  setPnlCase(1);
+                }
+              }}
               style={{ backgroundColor: shortcutColor[2] }}
               onPointerOver={() =>
                 setShortcutColor([
@@ -144,7 +184,10 @@ export default function Tool() {
       </div>
       <Resizable
         className="panel"
-        style={{ backgroundColor: CurrentTheme.panelColor }}
+        style={{
+          backgroundColor: CurrentTheme.panelColor,
+          display: pnlDisplay as any,
+        }}
         size={{
           width: pnlSize.width,
           height: pnlSize.height,
@@ -170,8 +213,10 @@ export default function Tool() {
         }}
         minWidth={300}
         maxWidth={600}
-      ></Resizable>
-      <Progress {...{ panelWidth: prgWidth }} />
+      >
+        {pnlComponent}
+      </Resizable>
+      <Active {...{ panelWidth: prgWidth }} />
     </div>
   );
 }

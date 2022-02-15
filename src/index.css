@@ -9,6 +9,8 @@ body {
     'Malgun Gothic', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 #root {
@@ -16,11 +18,6 @@ body {
   width: 100%;
   top: 0;
   bottom: 0;
-}
-
-img {
-  user-select: none;
-  -webkit-user-drag: none;
 }
 
 li {

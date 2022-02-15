@@ -1,8 +1,11 @@
 import './styles/active.css';
 import { CurrentTheme } from '../..';
-import { IProgressData } from './tool';
 
-export default function Progress(data: IProgressData) {
+interface IToolData {
+  panelWidth: number;
+}
+
+export default function Progress(data: IToolData) {
   return (
     <div
       className="Progress"
@@ -16,8 +19,8 @@ export default function Progress(data: IProgressData) {
         <div>
           <div data-tip="Build">
             <svg
-              width="20"
-              height="20"
+              width="18"
+              height="18"
               viewBox="0 0 20 23"
               fill={CurrentTheme.shortcutIconColor}
               xmlns="http://www.w3.org/2000/svg"
@@ -34,8 +37,8 @@ export default function Progress(data: IProgressData) {
           <div data-tip="More..">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
+              width="18"
+              height="18"
               fill={CurrentTheme.shortcutIconColor}
               className="bi bi-three-dots"
               viewBox="0 0 16 16"

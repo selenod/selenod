@@ -16,10 +16,31 @@
   float: left;
 }
 
+.Tool > .panel > nav {
+  height: 40px;
+  margin-left: 30px;
+}
+
+.Tool > .panel > nav > p {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.Tool > .panel > nav > .hl {
+  position: relative;
+  top: 100%;
+  margin-right: 30px;
+}
+
 .Tool > .shortcut > ul {
   position: relative;
   width: 50px;
   left: 50%;
+  margin-top: 15px;
   transform: translateX(-75%);
 }
 

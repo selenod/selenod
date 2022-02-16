@@ -17,7 +17,7 @@ export default function Progress(data: IToolData) {
       <div>
         <nav></nav>
         <div>
-          <div data-tip="Build">
+          <div title="Build Project">
             <svg
               width="18"
               height="18"
@@ -34,7 +34,7 @@ export default function Progress(data: IToolData) {
               />
             </svg>
           </div>
-          <div data-tip="More..">
+          <div title="More Actions..">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"

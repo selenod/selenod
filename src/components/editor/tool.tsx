@@ -3,8 +3,10 @@ import { CurrentTheme } from '../..';
 
 import { useState, useEffect, ReactElement } from 'react';
 import { Resizable } from 're-resizable';
+import { Popover } from 'react-tiny-popover';
 
 import Active from './active';
+import { Opacity } from '../system/opacity';
 
 export default function Tool() {
   interface IPnlSize {
@@ -27,6 +29,7 @@ export default function Tool() {
   ]);
   const [pnlDisplay, setPnlDisplay] = useState<string>('block');
   const [pnlComponent, setPnlComponent] = useState<ReactElement | null>(null);
+  const [showPopover, setShowPopover] = useState<boolean>(false);
 
   // Detect panel index changing
   useEffect(() => {
@@ -37,18 +40,26 @@ export default function Tool() {
         break;
       case 0:
         setPnlComponent(
-          <div>
-            <p>이것은 멋진 스크립트 창이랍니다..</p>
-          </div>
+          <nav>
+            <div
+              className="hl"
+              style={{ backgroundColor: CurrentTheme.lineColor }}
+            />
+            <p style={{ color: CurrentTheme.shortcutIconColor }}>Explore</p>
+          </nav>
         );
         setPnlDisplay('block');
         setPrgWidth(pnlSize.width);
         break;
       case 1:
         setPnlComponent(
-          <div>
-            <p>이것은 멋진 에셋 창이랍니다..</p>
-          </div>
+          <nav>
+            <div
+              className="hl"
+              style={{ backgroundColor: CurrentTheme.lineColor }}
+            />
+            <p style={{ color: CurrentTheme.shortcutIconColor }}>Asset</p>
+          </nav>
         );
         setPnlDisplay('block');
         setPrgWidth(pnlSize.width);
@@ -58,6 +69,19 @@ export default function Tool() {
     }
   }, [pnlCase, pnlSize.width]);
 
+  useEffect(() => {
+    if (showPopover === true) {
+      setShortcutColor([
+        CurrentTheme.shortcutHoverColor,
+        shortcutColor[1],
+        shortcutColor[2],
+      ]);
+    } else {
+      setShortcutColor(['#ffffff00', shortcutColor[1], shortcutColor[2]]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showPopover]);
+
   return (
     <div className="Tool">
       <div
@@ -66,36 +90,108 @@ export default function Tool() {
       >
         <ul>
           <li>
-            <button
-              data-tip="Setting"
-              style={{ backgroundColor: shortcutColor[0] }}
-              onPointerOver={() =>
-                setShortcutColor([
-                  CurrentTheme.shortcutHoverColor,
-                  shortcutColor[1],
-                  shortcutColor[2],
-                ])
-              }
-              onPointerOut={() =>
-                setShortcutColor([
-                  '#ffffff00',
-                  shortcutColor[1],
-                  shortcutColor[2],
-                ])
-              }
+            <Popover
+              isOpen={showPopover}
+              positions={['right']}
+              padding={10}
+              align="start"
+              reposition={false}
+              onClickOutside={() => setShowPopover(false)}
+              content={() => (
+                <div
+                  className="popover"
+                  style={{ backgroundColor: CurrentTheme.panelColor }}
+                >
+                  <p style={{ color: CurrentTheme.textBlackColor }}>Setting</p>
+                  <div
+                    className="hl"
+                    style={{ backgroundColor: CurrentTheme.lineColor }}
+                  />
+                  <div
+                    style={{
+                      backgroundColor: CurrentTheme.panelColor,
+                      color: CurrentTheme.shortcutIconColor,
+                    }}
+                  >
+                    <p>Save Project</p>
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: CurrentTheme.panelColor,
+                      color: CurrentTheme.shortcutIconColor,
+                    }}
+                  >
+                    <p>Save Project on Local</p>
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: CurrentTheme.panelColor,
+                      color: CurrentTheme.shortcutIconColor,
+                    }}
+                  >
+                    <p>Open Project</p>
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: CurrentTheme.panelColor,
+                      color: CurrentTheme.shortcutIconColor,
+                    }}
+                  >
+                    <p>Open Project on Local</p>
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: CurrentTheme.panelColor,
+                      color: CurrentTheme.shortcutIconColor,
+                    }}
+                  >
+                    <p>Rename Project</p>
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: CurrentTheme.panelColor,
+                      color: CurrentTheme.textDangerColor,
+                    }}
+                  >
+                    <p>Delete Project</p>
+                  </div>
+                </div>
+              )}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                className="bi bi-gear-fill"
-                viewBox="0 0 16 16"
-                style={{ fill: CurrentTheme.shortcutIconColor }}
+              <button
+                title="Setting"
+                style={{ backgroundColor: shortcutColor[0] }}
+                onClick={() => {
+                  setShowPopover(!showPopover);
+                }}
+                onPointerOver={() =>
+                  setShortcutColor([
+                    CurrentTheme.shortcutHoverColor,
+                    shortcutColor[1],
+                    shortcutColor[2],
+                  ])
+                }
+                onPointerOut={() =>
+                  setShortcutColor([
+                    '#ffffff00',
+                    shortcutColor[1],
+                    shortcutColor[2],
+                  ])
+                }
               >
-                <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
-              </svg>
-            </button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  className="bi bi-gear-fill"
+                  viewBox="0 0 16 16"
+                  style={{ fill: CurrentTheme.shortcutIconColor }}
+                >
+                  <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+                </svg>
+              </button>
+            </Popover>
           </li>
           <div
             className="hl"
@@ -103,7 +199,7 @@ export default function Tool() {
           />
           <li>
             <button
-              data-tip="Script"
+              title="Explore"
               onClick={() => {
                 if (pnlCase === 0) {
                   setPnlCase(null);
@@ -143,7 +239,7 @@ export default function Tool() {
           </li>
           <li>
             <button
-              data-tip="Asset"
+              title="Asset"
               onClick={() => {
                 if (pnlCase === 1) {
                   setPnlCase(null);
@@ -217,6 +313,11 @@ export default function Tool() {
         {pnlComponent}
       </Resizable>
       <Active {...{ panelWidth: prgWidth }} />
+      <Opacity
+        {...{
+          display: showPopover === true ? ('block' as any) : ('none' as any),
+        }}
+      />
     </div>
   );
 }

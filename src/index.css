@@ -13,6 +13,10 @@ body {
   -webkit-user-drag: none;
 }
 
+*:focus {
+  outline: 0;
+}
+
 #root {
   position: absolute;
   width: 100%;
@@ -26,15 +30,55 @@ li {
 
 /* Only div tag can get this class '.hl', '.vl' */
 .hl {
-  height: 1.5px;
+  height: 1px;
   border-radius: 1rem;
 }
 
 .vl {
-  height: 1.5px;
+  height: 1px;
   border-radius: 1rem;
 }
 
-.__react_component_tooltip {
-  border-radius: 7px !important;
+.react-tiny-popover-container {
+  z-index: 999;
+}
+
+.popover {
+  border-radius: 7px;
+  box-shadow: 0 5px 30px #00000020;
+  padding: 8px 15px;
+}
+
+.popover > p {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.popover > .hl {
+  min-width: 200px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.popover > div:not(.hl) {
+  position: relative;
+  width: calc(100% + 30px);
+  height: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  filter: none;
+}
+
+.popover > div:not(.hl):hover {
+  filter: brightness(95%);
+}
+
+.popover > div:not(.hl) > p {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0 0 0 15px;
+  font-weight: 400;
 }

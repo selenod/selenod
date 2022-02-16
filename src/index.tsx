@@ -2,7 +2,6 @@ import './index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactTooltip from 'react-tooltip';
 
 import Header from './components/system/header';
 import Editor from './components/editor/editor';
@@ -16,6 +15,8 @@ interface ITheme {
   shortcutHoverColor: string;
   panelColor: string;
   editorColor: string;
+  textBlackColor: string;
+  textDangerColor: string;
 }
 
 // Define themes
@@ -24,19 +25,14 @@ const LightTheme: ITheme = {
   lineColor: '#d8e0e5',
   shortcutColor: '#e6ecf0',
   shortcutIconColor: '#92a5b2',
-  shortcutHoverColor: '#dfe7ed',
+  shortcutHoverColor: '#dae0e4',
   panelColor: '#ebeff2',
   editorColor: '#f3f5f7',
+  textBlackColor: '#1a1b1c',
+  textDangerColor: '#e55c5c',
 };
 
 // const DarkTheme: ITheme = {
-//   headerColor: '',
-//   lineColor: '',
-//   shortcutColor: '',
-//   shortcutIconColor: '',
-//   shortcutHoverColor: '',
-//   panelColor: '',
-//   editorColor: '',
 // };
 
 export const CurrentTheme: ITheme = LightTheme;
@@ -45,7 +41,6 @@ ReactDOM.render(
   <React.StrictMode>
     <Header />
     <Editor />
-    <ReactTooltip effect="solid" backgroundColor="#1a1b1c" />
   </React.StrictMode>,
   document.getElementById('root')
 );

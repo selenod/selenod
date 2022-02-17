@@ -43,6 +43,9 @@ export default function Tool() {
       case null:
         setPnlDisplay('none');
         setPrgWidth(0);
+        setShowPopover({
+          windowMgr: false,
+        });
         break;
       case 0:
         // Explore panel

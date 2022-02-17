@@ -12,14 +12,14 @@ export function PopContent(data: IContentData) {
   return (
     <div
       className="popover"
-      style={{ backgroundColor: CurrentTheme.panelColor }}
+      style={{ backgroundColor: CurrentTheme.popContentColor }}
     >
       <p style={{ color: CurrentTheme.textBlackColor }}>{data.name}</p>
       <div className="hl" style={{ backgroundColor: CurrentTheme.lineColor }} />
       {data.contents.map((content) => (
         <div
           style={{
-            backgroundColor: CurrentTheme.panelColor,
+            backgroundColor: CurrentTheme.popContentColor,
             color:
               content.type === 0 || content.type === 'default'
                 ? CurrentTheme.textSubBlackColor

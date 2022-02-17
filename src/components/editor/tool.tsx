@@ -115,7 +115,7 @@ export default function Tool() {
               )}
             >
               <button
-                title="Setting"
+                title="Project Setting"
                 style={{ backgroundColor: shortcutColor[0] }}
                 onClick={() => {
                   setShowPopover(!showPopover);

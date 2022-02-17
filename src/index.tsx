@@ -14,6 +14,7 @@ interface ITheme {
   shortcutIconColor: string;
   shortcutHoverColor: string;
   panelColor: string;
+  popContentColor: string;
   editorColor: string;
   textBlackColor: string;
   textSubBlackColor: string;
@@ -28,6 +29,7 @@ const LightTheme: ITheme = {
   shortcutIconColor: '#92a5b2',
   shortcutHoverColor: '#dae0e4',
   panelColor: '#ebeff2',
+  popContentColor: '#f7f9fa',
   editorColor: '#f3f5f7',
   textBlackColor: '#1a1b1c',
   textSubBlackColor: '#474a4d',

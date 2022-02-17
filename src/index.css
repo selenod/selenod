@@ -46,7 +46,7 @@ li {
 .popover {
   border-radius: 7px;
   box-shadow: 0 5px 30px #00000020;
-  padding: 8px 15px;
+  padding: 12px 15px;
 }
 
 .popover > p {

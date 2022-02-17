@@ -1,11 +1,19 @@
 import './styles/active.css';
 import { CurrentTheme } from '../..';
 
+import { useState } from 'react';
+
+import { Opacity } from '../system/opacity';
+import { PopContent } from '../system/popcontent';
+import { Popover } from 'react-tiny-popover';
+
 interface IToolData {
   panelWidth: number;
 }
 
 export default function Progress(data: IToolData) {
+  const [showPopover, setShowPopover] = useState<boolean>(false);
+
   return (
     <div
       className="Progress"
@@ -34,20 +42,50 @@ export default function Progress(data: IToolData) {
               />
             </svg>
           </div>
-          <div title="More Actions..">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              fill={CurrentTheme.shortcutIconColor}
-              className="bi bi-three-dots"
-              viewBox="0 0 16 16"
+          <Popover
+            isOpen={showPopover}
+            positions={['bottom']}
+            padding={10}
+            align="end"
+            reposition={false}
+            onClickOutside={() => setShowPopover(false)}
+            content={() => (
+              <PopContent
+                {...{
+                  name: 'More Actions..',
+                  contents: [
+                    { text: 'Close All', type: 0 },
+                    { text: 'Close Saved', type: 0 },
+                  ],
+                }}
+              />
+            )}
+          >
+            <div
+              title="More Actions.."
+              onClick={() => {
+                setShowPopover(!showPopover);
+              }}
             >
-              <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-            </svg>
-          </div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                fill={CurrentTheme.shortcutIconColor}
+                className="bi bi-three-dots"
+                viewBox="0 0 16 16"
+              >
+                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+              </svg>
+            </div>
+          </Popover>
         </div>
       </div>
+      <Opacity
+        {...{
+          display: showPopover === true ? ('block' as any) : ('none' as any),
+        }}
+      />
     </div>
   );
 }

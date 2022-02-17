@@ -2,6 +2,7 @@ import { CurrentTheme } from '../..';
 
 interface IContentData {
   name: string;
+  isSelection?: string;
   contents: Array<{
     text: string;
     type: string | number;

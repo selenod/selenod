@@ -3,7 +3,6 @@ import { CurrentTheme } from '../..';
 
 import { useState } from 'react';
 
-import { Opacity } from '../system/opacity';
 import { PopContent } from '../system/popcontent';
 import { Popover } from 'react-tiny-popover';
 
@@ -11,12 +10,12 @@ interface IToolData {
   panelWidth: number;
 }
 
-export default function Progress(data: IToolData) {
+export default function Active(data: IToolData) {
   const [showPopover, setShowPopover] = useState<boolean>(false);
 
   return (
     <div
-      className="Progress"
+      className="Active"
       style={{
         backgroundColor: CurrentTheme.panelColor,
         width: `calc(100% - ${data.panelWidth}px - 70px)`,
@@ -63,9 +62,7 @@ export default function Progress(data: IToolData) {
           >
             <div
               title="More Actions.."
-              onClick={() => {
-                setShowPopover(!showPopover);
-              }}
+              onClick={() => setShowPopover(!showPopover)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -81,11 +78,6 @@ export default function Progress(data: IToolData) {
           </Popover>
         </div>
       </div>
-      <Opacity
-        {...{
-          display: showPopover === true ? ('block' as any) : ('none' as any),
-        }}
-      />
     </div>
   );
 }

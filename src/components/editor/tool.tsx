@@ -6,7 +6,6 @@ import { Resizable } from 're-resizable';
 import { Popover } from 'react-tiny-popover';
 
 import Active from './active';
-import { Opacity } from '../system/opacity';
 import { PopContent } from '../system/popcontent';
 
 export default function Tool() {
@@ -30,7 +29,13 @@ export default function Tool() {
   ]);
   const [pnlDisplay, setPnlDisplay] = useState<string>('block');
   const [pnlComponent, setPnlComponent] = useState<ReactElement | null>(null);
-  const [showPopover, setShowPopover] = useState<boolean>(false);
+  const [showPopover, setShowPopover] = useState<{
+    option?: boolean;
+    windowMgr?: boolean;
+  }>({
+    option: false,
+    windowMgr: false,
+  });
 
   // Detect panel index changing
   useEffect(() => {
@@ -40,26 +45,85 @@ export default function Tool() {
         setPrgWidth(0);
         break;
       case 0:
+        // Explore panel
         setPnlComponent(
           <nav>
-            <div
-              className="hl"
-              style={{ backgroundColor: CurrentTheme.lineColor }}
-            />
-            <p style={{ color: CurrentTheme.shortcutIconColor }}>Explore</p>
+            <div>
+              <div
+                className="hl"
+                style={{ backgroundColor: CurrentTheme.lineColor }}
+              />
+              <p style={{ color: CurrentTheme.shortcutIconColor }}>Explore</p>
+            </div>
+            <nav className="pnl-explore">
+              <Popover
+                isOpen={showPopover.windowMgr as boolean}
+                positions={['bottom']}
+                padding={10}
+                align="start"
+                reposition={false}
+                onClickOutside={() =>
+                  setShowPopover({
+                    windowMgr: false,
+                  })
+                }
+                content={() => (
+                  <PopContent
+                    {...{
+                      name: 'Manage Windows',
+                      contents: [
+                        { text: 'MainWindow', type: 0 },
+                        { text: '대충윈도우22', type: 0 },
+                        { text: '대충윈도우333', type: 0 },
+                        { text: '그거뇌절임', type: 0 },
+                      ],
+                    }}
+                  />
+                )}
+              >
+                <div
+                  style={{
+                    backgroundColor: CurrentTheme.panelPathColor,
+                  }}
+                  title="Manage Windows"
+                  onClick={() =>
+                    setShowPopover({
+                      windowMgr: !showPopover.windowMgr,
+                    })
+                  }
+                >
+                  <p style={{ color: CurrentTheme.textGrayColor }}>
+                    MyPorject/MainWindow
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-caret-down-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                    </svg>
+                  </p>
+                </div>
+              </Popover>
+            </nav>
           </nav>
         );
         setPnlDisplay('block');
         setPrgWidth(pnlSize.width);
         break;
       case 1:
+        // Asset panel
         setPnlComponent(
           <nav>
-            <div
-              className="hl"
-              style={{ backgroundColor: CurrentTheme.lineColor }}
-            />
-            <p style={{ color: CurrentTheme.shortcutIconColor }}>Asset</p>
+            <div>
+              <div
+                className="hl"
+                style={{ backgroundColor: CurrentTheme.lineColor }}
+              />
+              <p style={{ color: CurrentTheme.shortcutIconColor }}>Asset</p>
+            </div>
           </nav>
         );
         setPnlDisplay('block');
@@ -68,10 +132,10 @@ export default function Tool() {
       default:
         break;
     }
-  }, [pnlCase, pnlSize.width]);
+  }, [pnlCase, pnlSize.width, showPopover.windowMgr]);
 
   useEffect(() => {
-    if (showPopover === true) {
+    if (showPopover.option === true) {
       setShortcutColor([
         CurrentTheme.shortcutHoverColor,
         shortcutColor[1],
@@ -81,7 +145,7 @@ export default function Tool() {
       setShortcutColor(['#ffffff00', shortcutColor[1], shortcutColor[2]]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showPopover]);
+  }, [showPopover.option]);
 
   return (
     <div className="Tool">
@@ -92,12 +156,16 @@ export default function Tool() {
         <ul>
           <li>
             <Popover
-              isOpen={showPopover}
+              isOpen={showPopover.option as boolean}
               positions={['right']}
               padding={10}
               align="start"
               reposition={false}
-              onClickOutside={() => setShowPopover(false)}
+              onClickOutside={() =>
+                setShowPopover({
+                  option: false,
+                })
+              }
               content={() => (
                 <PopContent
                   {...{
@@ -117,9 +185,11 @@ export default function Tool() {
               <button
                 title="Project Setting"
                 style={{ backgroundColor: shortcutColor[0] }}
-                onClick={() => {
-                  setShowPopover(!showPopover);
-                }}
+                onClick={() =>
+                  setShowPopover({
+                    option: !showPopover.option,
+                  })
+                }
                 onPointerOver={() =>
                   setShortcutColor([
                     CurrentTheme.shortcutHoverColor,
@@ -269,11 +339,6 @@ export default function Tool() {
         {pnlComponent}
       </Resizable>
       <Active {...{ panelWidth: prgWidth }} />
-      <Opacity
-        {...{
-          display: showPopover === true ? ('block' as any) : ('none' as any),
-        }}
-      />
     </div>
   );
 }

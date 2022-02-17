@@ -64,7 +64,7 @@ li {
 .popover > div:not(.hl) {
   position: relative;
   width: calc(100% + 30px);
-  height: 40px;
+  height: 35px;
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
@@ -80,5 +80,5 @@ li {
   top: 50%;
   transform: translateY(-50%);
   margin: 0 0 0 15px;
-  font-weight: 400;
+  font-weight: 500;
 }

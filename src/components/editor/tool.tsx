@@ -7,6 +7,7 @@ import { Popover } from 'react-tiny-popover';
 
 import Active from './active';
 import { Opacity } from '../system/opacity';
+import { PopContent } from '../system/popcontent';
 
 export default function Tool() {
   interface IPnlSize {
@@ -98,64 +99,19 @@ export default function Tool() {
               reposition={false}
               onClickOutside={() => setShowPopover(false)}
               content={() => (
-                <div
-                  className="popover"
-                  style={{ backgroundColor: CurrentTheme.panelColor }}
-                >
-                  <p style={{ color: CurrentTheme.textBlackColor }}>Setting</p>
-                  <div
-                    className="hl"
-                    style={{ backgroundColor: CurrentTheme.lineColor }}
-                  />
-                  <div
-                    style={{
-                      backgroundColor: CurrentTheme.panelColor,
-                      color: CurrentTheme.shortcutIconColor,
-                    }}
-                  >
-                    <p>Save Project</p>
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: CurrentTheme.panelColor,
-                      color: CurrentTheme.shortcutIconColor,
-                    }}
-                  >
-                    <p>Save Project on Local</p>
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: CurrentTheme.panelColor,
-                      color: CurrentTheme.shortcutIconColor,
-                    }}
-                  >
-                    <p>Open Project</p>
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: CurrentTheme.panelColor,
-                      color: CurrentTheme.shortcutIconColor,
-                    }}
-                  >
-                    <p>Open Project on Local</p>
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: CurrentTheme.panelColor,
-                      color: CurrentTheme.shortcutIconColor,
-                    }}
-                  >
-                    <p>Rename Project</p>
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: CurrentTheme.panelColor,
-                      color: CurrentTheme.textDangerColor,
-                    }}
-                  >
-                    <p>Delete Project</p>
-                  </div>
-                </div>
+                <PopContent
+                  {...{
+                    name: 'Project Setting',
+                    contents: [
+                      { text: 'Save Project', type: 0 },
+                      { text: 'Save Project on Local', type: 0 },
+                      { text: 'Open Project', type: 0 },
+                      { text: 'Open Project on Local', type: 0 },
+                      { text: 'Rename Project', type: 1 },
+                      { text: 'Delete Project', type: 1 },
+                    ],
+                  }}
+                />
               )}
             >
               <button

@@ -16,6 +16,7 @@ interface ITheme {
   panelColor: string;
   editorColor: string;
   textBlackColor: string;
+  textSubBlackColor: string;
   textDangerColor: string;
 }
 
@@ -29,6 +30,7 @@ const LightTheme: ITheme = {
   panelColor: '#ebeff2',
   editorColor: '#f3f5f7',
   textBlackColor: '#1a1b1c',
+  textSubBlackColor: '#474a4d',
   textDangerColor: '#e55c5c',
 };
 

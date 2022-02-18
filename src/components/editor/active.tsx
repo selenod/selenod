@@ -5,6 +5,8 @@ import { useState } from 'react';
 
 import { PopContent } from '../system/popcontent';
 import { Popover } from 'react-tiny-popover';
+import { useDispatch } from 'react-redux';
+import { setTrue, setFalse } from '../system/cover/coverSlice';
 
 interface IToolData {
   panelWidth: number;
@@ -12,6 +14,7 @@ interface IToolData {
 
 export default function Active(data: IToolData) {
   const [showPopover, setShowPopover] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   return (
     <div
@@ -47,7 +50,10 @@ export default function Active(data: IToolData) {
             padding={10}
             align="end"
             reposition={false}
-            onClickOutside={() => setShowPopover(false)}
+            onClickOutside={() => {
+              dispatch(setFalse());
+              setShowPopover(false);
+            }}
             content={() => (
               <PopContent
                 {...{
@@ -62,7 +68,10 @@ export default function Active(data: IToolData) {
           >
             <div
               title="More Actions.."
-              onClick={() => setShowPopover(!showPopover)}
+              onClick={() => {
+                dispatch(showPopover === true ? setFalse() : setTrue());
+                setShowPopover(!showPopover);
+              }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

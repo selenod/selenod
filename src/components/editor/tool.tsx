@@ -4,6 +4,8 @@ import { CurrentTheme } from '../..';
 import { useState, useEffect, ReactElement } from 'react';
 import { Resizable } from 're-resizable';
 import { Popover } from 'react-tiny-popover';
+import { useDispatch } from 'react-redux';
+import { setTrue, setFalse } from '../system/cover/coverSlice';
 
 import Active from './active';
 import { PopContent } from '../system/popcontent';
@@ -37,6 +39,8 @@ export default function Tool() {
     windowMgr: false,
   });
 
+  const dispatch = useDispatch();
+
   // Detect panel index changing
   useEffect(() => {
     switch (pnlCase) {
@@ -62,11 +66,12 @@ export default function Tool() {
                 padding={10}
                 align="start"
                 reposition={false}
-                onClickOutside={() =>
+                onClickOutside={() => {
+                  dispatch(setFalse());
                   setShowPopover({
                     windowMgr: false,
-                  })
-                }
+                  });
+                }}
                 content={() => (
                   <PopContent
                     {...{
@@ -86,11 +91,16 @@ export default function Tool() {
                     backgroundColor: CurrentTheme.panelPathColor,
                   }}
                   title="Manage Windows"
-                  onClick={() =>
+                  onClick={() => {
+                    dispatch(
+                      showPopover.windowMgr === true
+                        ? dispatch(setFalse())
+                        : dispatch(setTrue())
+                    );
                     setShowPopover({
                       windowMgr: !showPopover.windowMgr,
-                    })
-                  }
+                    });
+                  }}
                 >
                   <p style={{ color: CurrentTheme.textGrayColor }}>
                     MyPorject/MainWindow
@@ -161,11 +171,12 @@ export default function Tool() {
               padding={10}
               align="start"
               reposition={false}
-              onClickOutside={() =>
+              onClickOutside={() => {
+                dispatch(setFalse());
                 setShowPopover({
                   option: false,
-                })
-              }
+                });
+              }}
               content={() => (
                 <PopContent
                   {...{
@@ -185,11 +196,16 @@ export default function Tool() {
               <button
                 title="Project Setting"
                 style={{ backgroundColor: shortcutColor[0] }}
-                onClick={() =>
+                onClick={() => {
+                  dispatch(
+                    showPopover.option === true
+                      ? dispatch(setFalse())
+                      : dispatch(setTrue())
+                  );
                   setShowPopover({
                     option: !showPopover.option,
-                  })
-                }
+                  });
+                }}
                 onPointerOver={() =>
                   setShortcutColor([
                     CurrentTheme.shortcutHoverColor,

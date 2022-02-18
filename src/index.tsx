@@ -2,9 +2,12 @@ import './index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { store } from './store';
+import { Provider } from 'react-redux';
 
 import Header from './components/system/header';
 import Editor from './components/editor/editor';
+import Cover from './components/system/cover/cover';
 
 // Define theme interface (for strict)
 interface ITheme {
@@ -47,8 +50,11 @@ export const CurrentTheme: ITheme = LightTheme;
 
 ReactDOM.render(
   <React.StrictMode>
-    <Header />
-    <Editor />
+    <Provider store={store}>
+      <Cover />
+      <Header />
+      <Editor />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -242,13 +242,7 @@ export default function Tool() {
           <li>
             <button
               title="Explore"
-              onClick={() => {
-                if (pnlCase === 0) {
-                  setPnlCase(null);
-                } else {
-                  setPnlCase(0);
-                }
-              }}
+              onClick={() => (pnlCase === 0 ? setPnlCase(null) : setPnlCase(0))}
               style={{ backgroundColor: shortcutColor[1] }}
               onPointerOver={() =>
                 setShortcutColor([
@@ -282,13 +276,7 @@ export default function Tool() {
           <li>
             <button
               title="Asset"
-              onClick={() => {
-                if (pnlCase === 1) {
-                  setPnlCase(null);
-                } else {
-                  setPnlCase(1);
-                }
-              }}
+              onClick={() => (pnlCase === 1 ? setPnlCase(null) : setPnlCase(1))}
               style={{ backgroundColor: shortcutColor[2] }}
               onPointerOver={() =>
                 setShortcutColor([

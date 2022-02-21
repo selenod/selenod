@@ -96,7 +96,6 @@ export default function Tool() {
                       selected: windows.indexOf(window) === 0 ? true : false,
                       onClick: () => {
                         setCurrentWindow(window);
-                        console.log(window);
                         dispatch(setFalse());
                         setShowPopover({
                           windowMgr: false,

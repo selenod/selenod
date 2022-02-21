@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 
 import Header from './components/system/header';
 import Editor from './components/editor/editor';
-import Cover from './components/system/cover/cover';
+import Cover from './cover';
 
 // Define theme interface (for strict)
 interface ITheme {

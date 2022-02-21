@@ -5,7 +5,7 @@ import { useState, useEffect, ReactElement } from 'react';
 import { Resizable } from 're-resizable';
 import { Popover } from 'react-tiny-popover';
 import { useDispatch } from 'react-redux';
-import { setTrue, setFalse } from '../system/cover/coverSlice';
+import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
 
 import Active from './active';
 import { PopContent } from '../system/popcontent';
@@ -23,6 +23,8 @@ export default function Tool() {
     '그거아님',
     'ㅋㅋㅋㅋ',
   ]);
+
+  const [currentWindow, setCurrentWindow] = useState<string>('어쩔윈도우');
 
   const [pnlCase, setPnlCase] = useState<number | null>(0);
   const [pnlSize, setPnlSize] = useState<IPnlSize>({
@@ -88,7 +90,14 @@ export default function Tool() {
                     contents={windows.map((window) => ({
                       text: window,
                       selected: windows.indexOf(window) === 0 ? true : false,
-                      onClick: () => {},
+                      onClick: () => {
+                        setCurrentWindow(window);
+                        console.log(window);
+                        dispatch(setFalse());
+                        setShowPopover({
+                          windowMgr: false,
+                        });
+                      },
                     }))}
                   />
                 )}
@@ -110,7 +119,7 @@ export default function Tool() {
                   }}
                 >
                   <p style={{ color: CurrentTheme.textGrayColor }}>
-                    MyPorject/MainWindow
+                    MyPorject/{currentWindow}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"

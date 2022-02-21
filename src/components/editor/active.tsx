@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { PopContent } from '../system/popcontent';
 import { Popover } from 'react-tiny-popover';
 import { useDispatch } from 'react-redux';
-import { setTrue, setFalse } from '../system/cover/coverSlice';
+import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
 
 interface IToolData {
   panelWidth: number;

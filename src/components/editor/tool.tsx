@@ -9,6 +9,7 @@ import { setTrue, setFalse } from '../system/cover/coverSlice';
 
 import Active from './active';
 import { PopContent } from '../system/popcontent';
+import { EContentType } from '../../enum';
 
 export default function Tool() {
   interface IPnlSize {
@@ -77,15 +78,21 @@ export default function Tool() {
                 }}
                 content={() => (
                   <PopContent
-                    {...{
-                      name: 'Manage Windows',
-                      contents: [
-                        { text: 'MainWindow', type: 0 },
-                        { text: '대충윈도우22', type: 0 },
-                        { text: '대충윈도우333', type: 0 },
-                        { text: '그거뇌절임', type: 0 },
-                      ],
-                    }}
+                    name="Manage Windows"
+                    isSelection={true}
+                    cacheKey="current_window"
+                    contents={[
+                      {
+                        text: 'MainWindow',
+                        selected: true,
+                        onClick: () => {
+                          console.log('ㅎㅇㅎㅇㅎㅇ');
+                        },
+                      },
+                      { text: '대충윈도우22' },
+                      { text: '대충윈도우333' },
+                      { text: '그거뇌절임' },
+                    ]}
                   />
                 )}
               >
@@ -145,7 +152,7 @@ export default function Tool() {
       default:
         break;
     }
-  }, [pnlCase, pnlSize.width, showPopover.windowMgr]);
+  }, [pnlCase, pnlSize.width, showPopover.windowMgr, dispatch]);
 
   useEffect(() => {
     if (showPopover.option === true) {
@@ -182,17 +189,15 @@ export default function Tool() {
               }}
               content={() => (
                 <PopContent
-                  {...{
-                    name: 'Project Setting',
-                    contents: [
-                      { text: 'Save Project', type: 0 },
-                      { text: 'Save Project on Local', type: 0 },
-                      { text: 'Open Project', type: 0 },
-                      { text: 'Open Project on Local', type: 0 },
-                      { text: 'Rename Project', type: 1 },
-                      { text: 'Delete Project', type: 1 },
-                    ],
-                  }}
+                  name="Project Setting"
+                  contents={[
+                    { text: 'Save Project' },
+                    { text: 'Save Project on Local' },
+                    { text: 'Open Project' },
+                    { text: 'Open Project on Local' },
+                    { text: 'Rename Project', type: EContentType.DANGER },
+                    { text: 'Delete Project', type: EContentType.DANGER },
+                  ]}
                 />
               )}
             >

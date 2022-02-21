@@ -24,7 +24,11 @@ export default function Tool() {
     'ㅋㅋㅋㅋ',
   ]);
 
-  const [currentWindow, setCurrentWindow] = useState<string>('어쩔윈도우');
+  const [currentWindow, setCurrentWindow] = useState<string>(
+    window.sessionStorage.getItem('current_window')! !== null
+      ? window.sessionStorage.getItem('current_window')!
+      : windows[0]
+  );
 
   const [pnlCase, setPnlCase] = useState<number | null>(0);
   const [pnlSize, setPnlSize] = useState<IPnlSize>({
@@ -158,7 +162,14 @@ export default function Tool() {
       default:
         break;
     }
-  }, [pnlCase, pnlSize.width, showPopover.windowMgr, dispatch, windows]);
+  }, [
+    pnlCase,
+    pnlSize.width,
+    showPopover.windowMgr,
+    dispatch,
+    windows,
+    currentWindow,
+  ]);
 
   useEffect(() => {
     if (showPopover.option === true) {

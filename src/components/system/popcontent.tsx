@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CurrentTheme } from '../..';
 import { EContentType } from '../../enum';
 
@@ -27,16 +27,32 @@ export function PopContent({
       onClick?: Function;
       selected?: boolean;
     }>
-  >(
-    cacheKey === undefined || window.sessionStorage.getItem(cacheKey!) === null
-      ? contents
-      : (JSON.parse(window.sessionStorage.getItem(cacheKey!)!) as Array<{
-          text: string;
-          type?: EContentType;
-          onClick?: Function;
-          selected?: boolean;
-        }>)
-  );
+  >(contents);
+
+  useEffect(() => {
+    if (
+      cacheKey !== undefined &&
+      window.sessionStorage.getItem(cacheKey!) !== null
+    ) {
+      const tempArray = contentsState;
+      const newSelected = contentsState.find(
+        (arrContent) =>
+          arrContent.text === window.sessionStorage.getItem(cacheKey!)!
+      );
+      const oldSelected = contentsState.find(
+        (arrContent) => arrContent.selected
+      );
+      if (newSelected !== oldSelected) {
+        newSelected!.selected = true;
+        oldSelected!.selected = false;
+      }
+
+      tempArray[contentsState.indexOf(newSelected!)] = newSelected!;
+      tempArray[contentsState.indexOf(oldSelected!)] = oldSelected!;
+      setContentsState([...tempArray]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (isSelection === true)
     return (
@@ -63,16 +79,12 @@ export function PopContent({
               if (typeof content['onClick'] === 'function') {
                 content.onClick!();
               }
-              const newSelected = contentsState.find((arrContent) => {
-                if (arrContent.text === content.text) {
-                  return true;
-                }
-              });
-              const oldSelected = contentsState.find((arrContent) => {
-                if (arrContent.selected === true) {
-                  return true;
-                }
-              });
+              const newSelected = contentsState.find(
+                (arrContent) => arrContent.text === content.text
+              );
+              const oldSelected = contentsState.find(
+                (arrContent) => arrContent.selected
+              );
               if (newSelected !== oldSelected) {
                 newSelected!.selected = true;
                 oldSelected!.selected = false;
@@ -81,10 +93,7 @@ export function PopContent({
               newArray[contentsState.indexOf(newSelected!)] = newSelected!;
               newArray[contentsState.indexOf(oldSelected!)] = oldSelected!;
               if (typeof cacheKey !== undefined) {
-                window.sessionStorage.setItem(
-                  cacheKey!,
-                  JSON.stringify([...newArray])
-                );
+                window.sessionStorage.setItem(cacheKey!, newSelected?.text!);
               }
               setContentsState([...newArray]);
             }}

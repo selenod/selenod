@@ -17,6 +17,13 @@ export default function Tool() {
     height: string;
   }
 
+  const [windows, setWindows] = useState<Array<string>>([
+    '어쩔윈도우',
+    '저쩔윈도우',
+    '그거아님',
+    'ㅋㅋㅋㅋ',
+  ]);
+
   const [pnlCase, setPnlCase] = useState<number | null>(0);
   const [pnlSize, setPnlSize] = useState<IPnlSize>({
     width: 380,
@@ -81,18 +88,11 @@ export default function Tool() {
                     name="Manage Windows"
                     isSelection={true}
                     cacheKey="current_window"
-                    contents={[
-                      {
-                        text: 'MainWindow',
-                        selected: true,
-                        onClick: () => {
-                          console.log('ㅎㅇㅎㅇㅎㅇ');
-                        },
-                      },
-                      { text: '대충윈도우22' },
-                      { text: '대충윈도우333' },
-                      { text: '그거뇌절임' },
-                    ]}
+                    contents={windows.map((window) => ({
+                      text: window,
+                      selected: windows.indexOf(window) === 0 ? true : false,
+                      onClick: () => {},
+                    }))}
                   />
                 )}
               >
@@ -152,7 +152,7 @@ export default function Tool() {
       default:
         break;
     }
-  }, [pnlCase, pnlSize.width, showPopover.windowMgr, dispatch]);
+  }, [pnlCase, pnlSize.width, showPopover.windowMgr, dispatch, windows]);
 
   useEffect(() => {
     if (showPopover.option === true) {

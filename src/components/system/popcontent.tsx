@@ -126,6 +126,17 @@ export function PopContent({
                 <Modal
                   isOpen={editModal === content.text}
                   contentLabel="Rename Modal"
+                  style={{
+                    content: {
+                      position: 'relative',
+                      width: '500px',
+                      height: '200px',
+                      top: '5vh',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      backgroundColor: CurrentTheme.popContentColor,
+                    },
+                  }}
                 >
                   {content.text}
                 </Modal>

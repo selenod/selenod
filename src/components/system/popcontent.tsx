@@ -68,6 +68,7 @@ export function PopContent({
         {contentsState.map((content) => (
           <div
             key={content.text}
+            title={content.text}
             style={{
               backgroundColor: CurrentTheme.popContentColor,
               color:
@@ -133,6 +134,7 @@ export function PopContent({
         {contentsState.map((content) => (
           <div
             key={content.text}
+            title={content.text}
             style={{
               backgroundColor: CurrentTheme.popContentColor,
               color:

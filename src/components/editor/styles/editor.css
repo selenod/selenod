@@ -1,8 +1,7 @@
 .Editor {
   position: absolute;
   top: 64px;
-  width: 100%;
-  min-width: 1200px;
-  height: calc(100% - 64px);
-  min-height: calc(1000px);
+  width: 100vw;
+  min-width: 600px;
+  height: calc(100vh - 64px);
 }

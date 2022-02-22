@@ -1,8 +1,10 @@
 import { RootState } from './store';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setClicked } from './components/system/reduxSlice/coverSlice';
 
 export default function Cover() {
   const isActived = useSelector((state: RootState) => state.cover.actived);
+  const dispatch = useDispatch();
 
   return (
     <div
@@ -13,6 +15,9 @@ export default function Cover() {
         height: '100%',
         opacity: 0,
         zIndex: 998,
+      }}
+      onMouseDown={() => {
+        dispatch(setClicked());
       }}
     />
   );

@@ -4,8 +4,9 @@ import { CurrentTheme } from '../..';
 import { useState } from 'react';
 
 import { PopContent } from '../system/popcontent';
+import { RootState } from '../../store';
 import { Popover } from 'react-tiny-popover';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
 
 interface IToolData {
@@ -15,6 +16,7 @@ interface IToolData {
 export default function Active(data: IToolData) {
   const [showPopover, setShowPopover] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const isClicked = useSelector((state: RootState) => state.cover.clicked);
 
   return (
     <div
@@ -51,8 +53,10 @@ export default function Active(data: IToolData) {
             align="end"
             reposition={false}
             onClickOutside={() => {
-              dispatch(setFalse());
-              setShowPopover(false);
+              if (isClicked) {
+                dispatch(setFalse());
+                setShowPopover(false);
+              }
             }}
             content={() => (
               <PopContent

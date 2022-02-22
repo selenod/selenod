@@ -2,9 +2,10 @@ import './styles/tool.css';
 import { CurrentTheme } from '../..';
 
 import { useState, useEffect, ReactElement } from 'react';
+import { RootState } from '../../store';
 import { Resizable } from 're-resizable';
 import { Popover } from 'react-tiny-popover';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
 
 import Active from './active';
@@ -54,6 +55,7 @@ export default function Tool() {
   });
 
   const dispatch = useDispatch();
+  const isClicked = useSelector((state: RootState) => state.cover.clicked);
 
   // Detect panel index changing
   useEffect(() => {
@@ -81,10 +83,12 @@ export default function Tool() {
                 align="start"
                 reposition={false}
                 onClickOutside={() => {
-                  dispatch(setFalse());
-                  setShowPopover({
-                    windowMgr: false,
-                  });
+                  if (isClicked) {
+                    dispatch(setFalse());
+                    setShowPopover({
+                      windowMgr: false,
+                    });
+                  }
                 }}
                 content={() => (
                   <PopContent
@@ -168,6 +172,7 @@ export default function Tool() {
     dispatch,
     windows,
     currentWindow,
+    isClicked,
   ]);
 
   useEffect(() => {
@@ -198,10 +203,12 @@ export default function Tool() {
               align="start"
               reposition={false}
               onClickOutside={() => {
-                dispatch(setFalse());
-                setShowPopover({
-                  option: false,
-                });
+                if (isClicked) {
+                  dispatch(setFalse());
+                  setShowPopover({
+                    option: false,
+                  });
+                }
               }}
               content={() => (
                 <PopContent

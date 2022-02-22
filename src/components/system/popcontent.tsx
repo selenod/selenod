@@ -3,6 +3,9 @@ import { EContentType } from '../../enum';
 
 import { useState, useEffect } from 'react';
 import { Popover } from 'react-tiny-popover';
+import Modal from 'react-modal';
+import { RootState } from '../../store';
+import { useSelector } from 'react-redux';
 
 interface IContentData {
   name: string;
@@ -15,6 +18,8 @@ interface IContentData {
     selected?: boolean;
   }>;
 }
+
+Modal.setAppElement('#root');
 
 export function PopContent({
   name,
@@ -31,6 +36,8 @@ export function PopContent({
     }>
   >(contents);
   const [editedWindow, setEditedWindow] = useState<string | null>(null);
+  const isClicked = useSelector((state: RootState) => state.cover.clicked);
+  const [editModal, setEditModal] = useState<string | null>(null);
 
   useEffect(() => {
     if (
@@ -57,7 +64,7 @@ export function PopContent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (isSelection === true)
+  if (isSelection && cacheKey === 'current_window')
     return (
       <div
         className="popover"
@@ -70,6 +77,7 @@ export function PopContent({
         />
         {contentsState.map((content) => (
           <Popover
+            key={content.text}
             isOpen={
               typeof editedWindow === 'string' && editedWindow === content.text
             }
@@ -78,23 +86,53 @@ export function PopContent({
             align="start"
             reposition={false}
             onClickOutside={() => {
-              setEditedWindow(null);
+              if (isClicked) {
+                setEditedWindow(null);
+              }
             }}
             content={() => (
-              <PopContent
-                name={content.text}
-                contents={[
-                  {
-                    text: 'Rename Window',
-                    type: EContentType.DEFAULT,
-                  },
-                  { text: 'Delete Window', type: EContentType.DANGER },
-                ]}
-              />
+              <div
+                className="popover"
+                style={{ backgroundColor: CurrentTheme.popContentColor }}
+              >
+                <p style={{ color: CurrentTheme.textBlackColor }}>
+                  {content.text}
+                </p>
+                <div
+                  className="hl"
+                  style={{ backgroundColor: CurrentTheme.lineColor }}
+                />
+                <div
+                  title={content.text}
+                  style={{
+                    backgroundColor: CurrentTheme.popContentColor,
+                    color: CurrentTheme.textSubBlackColor,
+                  }}
+                  onClick={() => {
+                    setEditModal(content.text);
+                  }}
+                >
+                  <p>Rename Window</p>
+                </div>
+                <div
+                  title={content.text}
+                  style={{
+                    backgroundColor: CurrentTheme.popContentColor,
+                    color: CurrentTheme.textDangerColor,
+                  }}
+                >
+                  <p>Delete Window</p>
+                </div>
+                <Modal
+                  isOpen={editModal === content.text}
+                  contentLabel="Rename Modal"
+                >
+                  {content.text}
+                </Modal>
+              </div>
             )}
           >
             <div
-              key={content.text}
               title={content.text}
               style={{
                 backgroundColor: CurrentTheme.popContentColor,
@@ -158,7 +196,74 @@ export function PopContent({
         ))}
       </div>
     );
-  else
+  else if (isSelection) {
+    return (
+      <div
+        className="popover"
+        style={{ backgroundColor: CurrentTheme.popContentColor }}
+      >
+        <p style={{ color: CurrentTheme.textBlackColor }}>{name}</p>
+        <div
+          className="hl"
+          style={{ backgroundColor: CurrentTheme.lineColor }}
+        />
+        {contentsState.map((content) => (
+          <div
+            key={content.text}
+            title={content.text}
+            style={{
+              backgroundColor: CurrentTheme.popContentColor,
+              color:
+                content.type === EContentType.DANGER
+                  ? CurrentTheme.textDangerColor
+                  : CurrentTheme.textSubBlackColor,
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              if (typeof content['onClick'] === 'function') {
+                content.onClick!();
+              }
+              const newSelected = contentsState.find(
+                (arrContent) => arrContent.text === content.text
+              );
+              const oldSelected = contentsState.find(
+                (arrContent) => arrContent.selected
+              );
+              if (newSelected !== oldSelected) {
+                newSelected!.selected = true;
+                oldSelected!.selected = false;
+              }
+              const newArray = contentsState;
+              newArray[contentsState.indexOf(newSelected!)] = newSelected!;
+              newArray[contentsState.indexOf(oldSelected!)] = oldSelected!;
+              if (typeof cacheKey !== undefined) {
+                window.sessionStorage.setItem(cacheKey!, newSelected?.text!);
+              }
+              setContentsState([...newArray]);
+            }}
+          >
+            <div>
+              {content.selected === true ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  fill={CurrentTheme.shortcutIconColor}
+                  className="bi bi-check-lg"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
+                </svg>
+              ) : (
+                <></>
+              )}
+              <p>{content.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  } else
     return (
       <div
         className="popover"

@@ -13,7 +13,8 @@ export default function Cover() {
         position: 'absolute',
         width: '100%',
         height: '100%',
-        opacity: 0,
+        opacity: 0.2,
+        background: 'red',
         zIndex: 998,
       }}
       onMouseDown={() => {

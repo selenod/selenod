@@ -19,6 +19,7 @@ interface ITheme {
   panelColor: string;
   panelPathColor: string;
   popContentColor: string;
+  popContentHoverColor: string;
   editorColor: string;
   textBlackColor: string;
   textSubBlackColor: string;
@@ -36,6 +37,7 @@ const LightTheme: ITheme = {
   panelColor: '#ebeff2',
   panelPathColor: '#e1e7eb',
   popContentColor: '#f7f9fa',
+  popContentHoverColor: '#ebeded',
   editorColor: '#f3f5f7',
   textBlackColor: '#1a1b1c',
   textSubBlackColor: '#474a4d',

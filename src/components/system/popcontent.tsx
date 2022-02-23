@@ -93,15 +93,12 @@ export function PopContent({
             content={() => (
               <div
                 className="popover"
-                style={{ backgroundColor: CurrentTheme.popContentColor }}
+                style={{
+                  backgroundColor: CurrentTheme.popContentColor,
+                  padding: '7px 15px',
+                  overflow: 'hidden',
+                }}
               >
-                <p style={{ color: CurrentTheme.textBlackColor }}>
-                  {content.text}
-                </p>
-                <div
-                  className="hl"
-                  style={{ backgroundColor: CurrentTheme.lineColor }}
-                />
                 <div
                   title="Rename Window"
                   style={{
@@ -181,7 +178,11 @@ export function PopContent({
             <div
               title={content.text}
               style={{
-                backgroundColor: CurrentTheme.popContentColor,
+                backgroundColor:
+                  typeof editedWindow === 'string' &&
+                  editedWindow === content.text
+                    ? CurrentTheme.popContentHoverColor
+                    : CurrentTheme.popContentColor,
                 color:
                   content.type === EContentType.DANGER
                     ? CurrentTheme.textDangerColor

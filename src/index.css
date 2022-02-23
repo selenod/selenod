@@ -108,6 +108,32 @@ li {
 
 .ReactModal__Content {
   border: none !important;
-  border-radius: 11px !important;
-  box-shadow: 0 5px 30px #00000020;
+  border-radius: 7px !important;
+  padding: 0 !important;
+}
+
+.ReactModal__Content > .header {
+  width: calc(100% - 30px);
+  height: 20px;
+  padding: 10px 15px;
+}
+
+.ReactModal__Content > .header > p {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.1rem;
+  max-width: calc(100% - 50px);
+}
+
+.ReactModal__Content > .header > div {
+  position: relative;
+  top: -23px;
+  float: right;
+  cursor: pointer;
+}
+
+.ReactModal__Content > .body {
+  width: calc(100% - 30px);
+  height: calc(100% - 70px);
+  padding: 15px 15px;
 }

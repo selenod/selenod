@@ -82,7 +82,7 @@ export function PopContent({
               typeof editedWindow === 'string' && editedWindow === content.text
             }
             positions={['right']}
-            padding={10}
+            padding={5}
             align="start"
             reposition={false}
             onClickOutside={() => {
@@ -103,7 +103,7 @@ export function PopContent({
                   style={{ backgroundColor: CurrentTheme.lineColor }}
                 />
                 <div
-                  title={content.text}
+                  title="Rename Window"
                   style={{
                     backgroundColor: CurrentTheme.popContentColor,
                     color: CurrentTheme.textSubBlackColor,
@@ -115,7 +115,7 @@ export function PopContent({
                   <p>Rename Window</p>
                 </div>
                 <div
-                  title={content.text}
+                  title="Delete Window"
                   style={{
                     backgroundColor: CurrentTheme.popContentColor,
                     color: CurrentTheme.textDangerColor,

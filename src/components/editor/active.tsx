@@ -1,5 +1,4 @@
 import './styles/active.css';
-import { CurrentTheme } from '../..';
 
 import { useState } from 'react';
 
@@ -22,7 +21,7 @@ export default function Active(data: IToolData) {
     <div
       className="Active"
       style={{
-        backgroundColor: CurrentTheme.panelColor,
+        backgroundColor: 'var(--panelColor)',
         width: `calc(100% - ${data.panelWidth}px - 70px)`,
       }}
     >
@@ -34,7 +33,7 @@ export default function Active(data: IToolData) {
               width="18"
               height="18"
               viewBox="0 0 20 23"
-              fill={CurrentTheme.shortcutIconColor}
+              fill="var(--shortcutIconColor)"
               xmlns="http://www.w3.org/2000/svg"
             >
               <mask id="path-1-inside-1_197_13" fill="white">
@@ -79,7 +78,7 @@ export default function Active(data: IToolData) {
                 xmlns="http://www.w3.org/2000/svg"
                 width="18"
                 height="18"
-                fill={CurrentTheme.shortcutIconColor}
+                fill="var(--shortcutIconColor)"
                 className="bi bi-three-dots"
                 viewBox="0 0 16 16"
               >

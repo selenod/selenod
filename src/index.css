@@ -13,6 +13,24 @@ body {
   -webkit-user-drag: none;
 }
 
+/* [data-theme='light'] */
+body {
+  --headerColor: #fff;
+  --lineColor: #d8e0e5;
+  --shortcutColor: #e6ecf0;
+  --shortcutIconColor: #92a5b2;
+  --shortcutHoverColor: #dae0e4;
+  --panelColor: #ebeff2;
+  --panelPathColor: #e1e7eb;
+  --popContentColor: #f7f9fa;
+  --popContentHoverColor: #ebeded;
+  --editorColor: #f3f5f7;
+  --textBlackColor: #1a1b1c;
+  --textSubBlackColor: #474a4d;
+  --textGrayColor: #8a9399;
+  --textDangerColor: #e55c5c;
+}
+
 *:focus {
   outline: 0;
 }
@@ -38,6 +56,26 @@ li {
 .vl {
   height: 1px;
   border-radius: 1rem;
+}
+
+input {
+  border: 1px solid;
+  border-radius: 5px;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 0 0.7rem;
+}
+
+.button {
+  height: 40px;
+  padding: 0 21px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+}
+
+.button:hover {
+  background-color: var(--popContentHoverColor);
 }
 
 .react-tiny-popover-container {
@@ -115,7 +153,7 @@ li {
 .ReactModal__Content > .header {
   width: calc(100% - 30px);
   height: 20px;
-  padding: 10px 15px;
+  padding: 15px 15px;
 }
 
 .ReactModal__Content > .header > p {
@@ -133,7 +171,7 @@ li {
 }
 
 .ReactModal__Content > .body {
-  width: calc(100% - 30px);
-  height: calc(100% - 70px);
-  padding: 15px 15px;
+  width: calc(100% - 60px);
+  height: calc(100% - 50px);
+  padding: 0 30px;
 }

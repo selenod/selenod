@@ -1,5 +1,4 @@
 import './styles/tool.css';
-import { CurrentTheme } from '../..';
 
 import { useState, useEffect, ReactElement } from 'react';
 import { RootState } from '../../store';
@@ -71,9 +70,9 @@ export default function Tool() {
             <div>
               <div
                 className="hl"
-                style={{ backgroundColor: CurrentTheme.lineColor }}
+                style={{ backgroundColor: 'var(--lineColor)' }}
               />
-              <p style={{ color: CurrentTheme.shortcutIconColor }}>Explore</p>
+              <p style={{ color: 'var(--shortcutIconColor)' }}>Explore</p>
             </div>
             <nav className="pnl-explore">
               <Popover
@@ -111,7 +110,7 @@ export default function Tool() {
               >
                 <div
                   style={{
-                    backgroundColor: CurrentTheme.panelPathColor,
+                    backgroundColor: 'var(--panelPathColor)',
                   }}
                   title="Manage Windows"
                   onClick={() => {
@@ -125,7 +124,7 @@ export default function Tool() {
                     });
                   }}
                 >
-                  <p style={{ color: CurrentTheme.textGrayColor }}>
+                  <p style={{ color: 'var(--textGrayColor)' }}>
                     MyPorject/{currentWindow}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -153,9 +152,9 @@ export default function Tool() {
             <div>
               <div
                 className="hl"
-                style={{ backgroundColor: CurrentTheme.lineColor }}
+                style={{ backgroundColor: 'var(--lineColor)' }}
               />
-              <p style={{ color: CurrentTheme.shortcutIconColor }}>Asset</p>
+              <p style={{ color: 'var(--shortcutIconColor)' }}>Asset</p>
             </div>
           </nav>
         );
@@ -178,7 +177,7 @@ export default function Tool() {
   useEffect(() => {
     if (showPopover.option === true) {
       setShortcutColor([
-        CurrentTheme.shortcutHoverColor,
+        'var(--shortcutHoverColor)',
         shortcutColor[1],
         shortcutColor[2],
       ]);
@@ -192,7 +191,7 @@ export default function Tool() {
     <div className="Tool">
       <div
         className="shortcut"
-        style={{ backgroundColor: CurrentTheme.shortcutColor }}
+        style={{ backgroundColor: 'var(--shortcutColor)' }}
       >
         <ul>
           <li>
@@ -239,7 +238,7 @@ export default function Tool() {
                 }}
                 onPointerOver={() =>
                   setShortcutColor([
-                    CurrentTheme.shortcutHoverColor,
+                    'var(--shortcutHoverColor)',
                     shortcutColor[1],
                     shortcutColor[2],
                   ])
@@ -259,17 +258,14 @@ export default function Tool() {
                   fill="currentColor"
                   className="bi bi-gear-fill"
                   viewBox="0 0 16 16"
-                  style={{ fill: CurrentTheme.shortcutIconColor }}
+                  style={{ fill: 'var(--shortcutIconColor)' }}
                 >
                   <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
                 </svg>
               </button>
             </Popover>
           </li>
-          <div
-            className="hl"
-            style={{ backgroundColor: CurrentTheme.lineColor }}
-          />
+          <div className="hl" style={{ backgroundColor: 'var(--lineColor)' }} />
           <li>
             <button
               title="Explore"
@@ -278,7 +274,7 @@ export default function Tool() {
               onPointerOver={() =>
                 setShortcutColor([
                   shortcutColor[0],
-                  CurrentTheme.shortcutHoverColor,
+                  'var(--shortcutHoverColor)',
                   shortcutColor[2],
                 ])
               }
@@ -297,7 +293,7 @@ export default function Tool() {
                 fill="currentColor"
                 className="bi bi-file-earmark-code"
                 viewBox="0 0 16 16"
-                style={{ fill: CurrentTheme.shortcutIconColor }}
+                style={{ fill: 'var(--shortcutIconColor)' }}
               >
                 <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
                 <path d="M8.646 6.646a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L10.293 9 8.646 7.354a.5.5 0 0 1 0-.708zm-1.292 0a.5.5 0 0 0-.708 0l-2 2a.5.5 0 0 0 0 .708l2 2a.5.5 0 0 0 .708-.708L5.707 9l1.647-1.646a.5.5 0 0 0 0-.708z" />
@@ -313,7 +309,7 @@ export default function Tool() {
                 setShortcutColor([
                   shortcutColor[0],
                   shortcutColor[1],
-                  CurrentTheme.shortcutHoverColor,
+                  'var(--shortcutHoverColor)',
                 ])
               }
               onPointerOut={() =>
@@ -331,7 +327,7 @@ export default function Tool() {
                 fill="currentColor"
                 className="bi bi-archive-fill"
                 viewBox="0 0 16 16"
-                style={{ fill: CurrentTheme.shortcutIconColor }}
+                style={{ fill: 'var(--shortcutIconColor)' }}
               >
                 <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z" />
               </svg>
@@ -342,7 +338,7 @@ export default function Tool() {
       <Resizable
         className="panel"
         style={{
-          backgroundColor: CurrentTheme.panelColor,
+          backgroundColor: 'var(--panelColor)',
           display: pnlDisplay as any,
         }}
         size={{

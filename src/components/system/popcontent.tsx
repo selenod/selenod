@@ -1,4 +1,3 @@
-import { CurrentTheme } from '../..';
 import { EContentType } from '../../enum';
 
 import { useState, useEffect } from 'react';
@@ -68,13 +67,10 @@ export function PopContent({
     return (
       <div
         className="popover"
-        style={{ backgroundColor: CurrentTheme.popContentColor }}
+        style={{ backgroundColor: 'var(--popContentColor)' }}
       >
-        <p style={{ color: CurrentTheme.textBlackColor }}>{name}</p>
-        <div
-          className="hl"
-          style={{ backgroundColor: CurrentTheme.lineColor }}
-        />
+        <p style={{ color: 'var(--textBlackColor)' }}>{name}</p>
+        <div className="hl" style={{ backgroundColor: 'var(--lineColor)' }} />
         {contentsState.map((content) => (
           <Popover
             key={content.text}
@@ -94,7 +90,7 @@ export function PopContent({
               <div
                 className="popover"
                 style={{
-                  backgroundColor: CurrentTheme.popContentColor,
+                  backgroundColor: 'var(--popContentColor)',
                   padding: '7px 15px',
                   overflow: 'hidden',
                 }}
@@ -102,8 +98,8 @@ export function PopContent({
                 <div
                   title="Rename Window"
                   style={{
-                    backgroundColor: CurrentTheme.popContentColor,
-                    color: CurrentTheme.textSubBlackColor,
+                    backgroundColor: 'var(--popContentColor)',
+                    color: 'var(--textSubBlackColor)',
                   }}
                   onClick={() => {
                     setEditModal(content.text);
@@ -114,8 +110,8 @@ export function PopContent({
                 <div
                   title="Delete Window"
                   style={{
-                    backgroundColor: CurrentTheme.popContentColor,
-                    color: CurrentTheme.textDangerColor,
+                    backgroundColor: 'var(--popContentColor)',
+                    color: 'var(--textDangerColor)',
                   }}
                 >
                   <p>Delete Window</p>
@@ -126,20 +122,20 @@ export function PopContent({
                   style={{
                     content: {
                       position: 'relative',
-                      width: '500px',
-                      height: '200px',
+                      width: '400px',
+                      height: '220px',
                       top: '5vh',
                       left: '50%',
                       transform: 'translateX(-50%)',
-                      backgroundColor: CurrentTheme.popContentColor,
+                      backgroundColor: 'var(--popContentColor)',
                     },
                   }}
                 >
                   <div
                     className="header"
-                    style={{ backgroundColor: CurrentTheme.panelColor }}
+                    style={{ backgroundColor: 'var(--panelColor)' }}
                   >
-                    <p style={{ color: CurrentTheme.textSubBlackColor }}>
+                    <p style={{ color: 'var(--textSubBlackColor)' }}>
                       Rename Window
                     </p>
                     <div
@@ -152,7 +148,7 @@ export function PopContent({
                         xmlns="http://www.w3.org/2000/svg"
                         width="27"
                         height="27"
-                        fill={CurrentTheme.shortcutIconColor}
+                        fill="var(--shortcutIconColor)"
                         className="bi bi-x"
                         viewBox="0 0 16 16"
                       >
@@ -161,15 +157,43 @@ export function PopContent({
                     </div>
                   </div>
                   <div className="body">
-                    <i style={{ fontSize: '14px' }}>
-                      네 모습 그대로 미움 받는 것이 너 아닌 다른 모습으로 사랑
-                      받는 것보다 낫다.
-                    </i>
-                    <br />
-                    -앙드레 지드-
-                    <br />
-                    <br />
-                    고로 저희는 변수의 이름 바꾸기를 지원하지 않고 있습니다.
+                    <div
+                      style={{
+                        position: 'relative',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                      }}
+                    >
+                      <p
+                        style={{
+                          margin: 0,
+                          color: 'var(--textSubBlackColor)',
+                          paddingBottom: '.7rem',
+                        }}
+                      >
+                        Rename the "{content.text}" window to..
+                      </p>
+                      <form>
+                        <input
+                          style={{
+                            width: '100%',
+                            margin: '0 0 1rem 0',
+                            borderColor: 'var(--lineColor)',
+                          }}
+                          name="new_name"
+                        />
+                        <button
+                          type="submit"
+                          className="button"
+                          style={{
+                            float: 'right',
+                          }}
+                        >
+                          OK
+                        </button>
+                      </form>
+                    </div>
                   </div>
                 </Modal>
               </div>
@@ -181,12 +205,12 @@ export function PopContent({
                 backgroundColor:
                   typeof editedWindow === 'string' &&
                   editedWindow === content.text
-                    ? CurrentTheme.popContentHoverColor
-                    : CurrentTheme.popContentColor,
+                    ? 'var(--popContentHoverColor)'
+                    : 'var(--popContentColor)',
                 color:
                   content.type === EContentType.DANGER
-                    ? CurrentTheme.textDangerColor
-                    : CurrentTheme.textSubBlackColor,
+                    ? 'var(--textDangerColor)'
+                    : 'var(--textSubBlackColor)',
               }}
               onClick={(e) => {
                 e.preventDefault();
@@ -227,7 +251,7 @@ export function PopContent({
                     xmlns="http://www.w3.org/2000/svg"
                     width="18"
                     height="18"
-                    fill={CurrentTheme.shortcutIconColor}
+                    fill="var(--shortcutIconColor)"
                     className="bi bi-check-lg"
                     viewBox="0 0 16 16"
                   >
@@ -247,23 +271,20 @@ export function PopContent({
     return (
       <div
         className="popover"
-        style={{ backgroundColor: CurrentTheme.popContentColor }}
+        style={{ backgroundColor: 'var(--popContentColor)' }}
       >
-        <p style={{ color: CurrentTheme.textBlackColor }}>{name}</p>
-        <div
-          className="hl"
-          style={{ backgroundColor: CurrentTheme.lineColor }}
-        />
+        <p style={{ color: 'var(--textBlackColor)' }}>{name}</p>
+        <div className="hl" style={{ backgroundColor: 'var(--lineColor)' }} />
         {contentsState.map((content) => (
           <div
             key={content.text}
             title={content.text}
             style={{
-              backgroundColor: CurrentTheme.popContentColor,
+              backgroundColor: 'var(--popContentColor)',
               color:
                 content.type === EContentType.DANGER
-                  ? CurrentTheme.textDangerColor
-                  : CurrentTheme.textSubBlackColor,
+                  ? 'var(--textDangerColor)'
+                  : 'var(--textSubBlackColor)',
             }}
             onClick={(e) => {
               e.preventDefault();
@@ -295,7 +316,7 @@ export function PopContent({
                   xmlns="http://www.w3.org/2000/svg"
                   width="18"
                   height="18"
-                  fill={CurrentTheme.shortcutIconColor}
+                  fill="var(--shortcutIconColor)"
                   className="bi bi-check-lg"
                   viewBox="0 0 16 16"
                 >
@@ -314,23 +335,20 @@ export function PopContent({
     return (
       <div
         className="popover"
-        style={{ backgroundColor: CurrentTheme.popContentColor }}
+        style={{ backgroundColor: 'var(--popContentColor)' }}
       >
-        <p style={{ color: CurrentTheme.textBlackColor }}>{name}</p>
-        <div
-          className="hl"
-          style={{ backgroundColor: CurrentTheme.lineColor }}
-        />
+        <p style={{ color: 'var(--textBlackColor)' }}>{name}</p>
+        <div className="hl" style={{ backgroundColor: 'var(--lineColor)' }} />
         {contentsState.map((content) => (
           <div
             key={content.text}
             title={content.text}
             style={{
-              backgroundColor: CurrentTheme.popContentColor,
+              backgroundColor: 'var(--popContentColor)',
               color:
                 content.type === EContentType.DANGER
-                  ? CurrentTheme.textDangerColor
-                  : CurrentTheme.textSubBlackColor,
+                  ? 'var(--textDangerColor)'
+                  : 'var(--textSubBlackColor)',
             }}
           >
             <p>{content.text}</p>

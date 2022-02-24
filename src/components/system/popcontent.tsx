@@ -67,8 +67,9 @@ export function PopContent({
   if (isSelection && cacheKey === 'current_window')
     return (
       <div className="popover">
-        <p>{name}</p>
-        <div className="hl" />
+        <div className="header">
+          <p>{name}</p>
+        </div>
         {contentsState.map((content) => (
           <Popover
             key={content.text}
@@ -275,8 +276,9 @@ export function PopContent({
   else if (isSelection) {
     return (
       <div className="popover">
-        <p style={{ color: 'var(--textBlackColor)' }}>{name}</p>
-        <div className="hl" />
+        <div className="header">
+          <p>{name}</p>
+        </div>
         {contentsState.map((content) => (
           <div
             key={content.text}
@@ -336,8 +338,9 @@ export function PopContent({
   } else
     return (
       <div className="popover">
-        <p>{name}</p>
-        <div className="hl" />
+        <div className="header">
+          <p>{name}</p>
+        </div>
         {contentsState.map((content) => (
           <div
             key={content.text}

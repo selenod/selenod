@@ -4,7 +4,7 @@ import Tool from './tool';
 
 export default function Editor() {
   return (
-    <div className="Editor" style={{ backgroundColor: 'var(--editorColor)' }}>
+    <div className="Editor">
       <Tool />
     </div>
   );

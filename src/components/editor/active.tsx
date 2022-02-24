@@ -21,7 +21,6 @@ export default function Active(data: IToolData) {
     <div
       className="Active"
       style={{
-        backgroundColor: 'var(--panelColor)',
         width: `calc(100% - ${data.panelWidth}px - 70px)`,
       }}
     >

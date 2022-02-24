@@ -51,15 +51,17 @@ li {
 .hl {
   height: 1px;
   border-radius: 1rem;
+  background-color: var(--lineColor);
 }
 
 .vl {
   height: 1px;
   border-radius: 1rem;
+  background-color: var(--lineColor);
 }
 
 input {
-  border: 1px solid;
+  border: 1px solid var(--lineColor);
   border-radius: 5px;
   height: 40px;
   box-sizing: border-box;
@@ -67,15 +69,28 @@ input {
 }
 
 .button {
+  min-width: 70px;
   height: 40px;
-  padding: 0 21px;
+  padding: 0 15px;
   outline: none;
   border: none;
   border-radius: 5px;
+  transition: ease-out background-color 100ms;
+  font-size: 0.9rem;
+  cursor: pointer;
 }
 
-.button:hover {
-  background-color: var(--popContentHoverColor);
+.button.primary {
+  color: #fff;
+  background-color: #7f52ff;
+}
+
+.button.primary:hover {
+  background-color: #7048e0;
+}
+
+.button.primary:active {
+  background-color: #6642cc;
 }
 
 .react-tiny-popover-container {
@@ -86,16 +101,19 @@ input {
   border-radius: 7px;
   box-shadow: 0 5px 30px #00000020;
   padding: 12px 15px;
+  background-color: var(--popContentColor);
 }
 
 .popover > p {
   margin: 0;
   font-weight: 600;
   font-size: 1.1rem;
+  color: var(--textBlackColor);
 }
 
 .popover > .hl {
   min-width: 200px;
+  padding-right: 20px;
   margin-top: 8px;
   margin-bottom: 8px;
 }
@@ -103,15 +121,16 @@ input {
 .popover > div:not(.hl) {
   position: relative;
   width: calc(100% + 30px);
-  height: 35px;
+  height: 40px;
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
   filter: none;
+  background-color: var(--popContentColor);
 }
 
 .popover > div:not(.hl):hover {
-  filter: brightness(95%);
+  background-color: var(--popContentHoverColor);
 }
 
 .popover > div:not(.hl) > p {
@@ -154,6 +173,7 @@ input {
   width: calc(100% - 30px);
   height: 20px;
   padding: 15px 15px;
+  background-color: var(--shortcutColor);
 }
 
 .ReactModal__Content > .header > p {
@@ -161,6 +181,7 @@ input {
   font-weight: 600;
   font-size: 1.1rem;
   max-width: calc(100% - 50px);
+  color: var(--textSubBlackColor);
 }
 
 .ReactModal__Content > .header > div {

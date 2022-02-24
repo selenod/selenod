@@ -37,6 +37,7 @@ export function PopContent({
   const [editedWindow, setEditedWindow] = useState<string | null>(null);
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const [editModal, setEditModal] = useState<string | null>(null);
+  const [formDisable, setFormDisable] = useState<boolean>(false);
 
   useEffect(() => {
     if (
@@ -65,12 +66,9 @@ export function PopContent({
 
   if (isSelection && cacheKey === 'current_window')
     return (
-      <div
-        className="popover"
-        style={{ backgroundColor: 'var(--popContentColor)' }}
-      >
-        <p style={{ color: 'var(--textBlackColor)' }}>{name}</p>
-        <div className="hl" style={{ backgroundColor: 'var(--lineColor)' }} />
+      <div className="popover">
+        <p>{name}</p>
+        <div className="hl" />
         {contentsState.map((content) => (
           <Popover
             key={content.text}
@@ -90,7 +88,6 @@ export function PopContent({
               <div
                 className="popover"
                 style={{
-                  backgroundColor: 'var(--popContentColor)',
                   padding: '7px 15px',
                   overflow: 'hidden',
                 }}
@@ -98,7 +95,6 @@ export function PopContent({
                 <div
                   title="Rename Window"
                   style={{
-                    backgroundColor: 'var(--popContentColor)',
                     color: 'var(--textSubBlackColor)',
                   }}
                   onClick={() => {
@@ -110,7 +106,6 @@ export function PopContent({
                 <div
                   title="Delete Window"
                   style={{
-                    backgroundColor: 'var(--popContentColor)',
                     color: 'var(--textDangerColor)',
                   }}
                 >
@@ -127,17 +122,11 @@ export function PopContent({
                       top: '5vh',
                       left: '50%',
                       transform: 'translateX(-50%)',
-                      backgroundColor: 'var(--popContentColor)',
                     },
                   }}
                 >
-                  <div
-                    className="header"
-                    style={{ backgroundColor: 'var(--panelColor)' }}
-                  >
-                    <p style={{ color: 'var(--textSubBlackColor)' }}>
-                      Rename Window
-                    </p>
+                  <div className="header">
+                    <p>Rename Window</p>
                     <div
                       title="Cancel"
                       onClick={() => {
@@ -174,23 +163,39 @@ export function PopContent({
                       >
                         Rename the "{content.text}" window to..
                       </p>
-                      <form>
+                      <form
+                        onSubmit={(e) => {
+                          // two-factor (who knows?)
+                          setFormDisable(true);
+
+                          e.preventDefault();
+                          const value = (e as any).target.new_name.value;
+
+                          if (value.replaceAll(' ', '') !== '') {
+                            //대충 서버랑 연결
+                          }
+
+                          setEditModal(null);
+                          setFormDisable(false);
+                        }}
+                      >
                         <input
                           style={{
                             width: '100%',
                             margin: '0 0 1rem 0',
-                            borderColor: 'var(--lineColor)',
                           }}
                           name="new_name"
                         />
                         <button
                           type="submit"
-                          className="button"
+                          className="button primary"
                           style={{
-                            float: 'right',
+                            display: 'inherit',
+                            marginLeft: 'auto',
                           }}
+                          disabled={formDisable}
                         >
-                          OK
+                          Rename
                         </button>
                       </form>
                     </div>
@@ -206,7 +211,7 @@ export function PopContent({
                   typeof editedWindow === 'string' &&
                   editedWindow === content.text
                     ? 'var(--popContentHoverColor)'
-                    : 'var(--popContentColor)',
+                    : '',
                 color:
                   content.type === EContentType.DANGER
                     ? 'var(--textDangerColor)'
@@ -246,7 +251,7 @@ export function PopContent({
               }}
             >
               <div>
-                {content.selected === true ? (
+                {content.selected ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="18"
@@ -269,12 +274,9 @@ export function PopContent({
     );
   else if (isSelection) {
     return (
-      <div
-        className="popover"
-        style={{ backgroundColor: 'var(--popContentColor)' }}
-      >
+      <div className="popover">
         <p style={{ color: 'var(--textBlackColor)' }}>{name}</p>
-        <div className="hl" style={{ backgroundColor: 'var(--lineColor)' }} />
+        <div className="hl" />
         {contentsState.map((content) => (
           <div
             key={content.text}
@@ -333,18 +335,14 @@ export function PopContent({
     );
   } else
     return (
-      <div
-        className="popover"
-        style={{ backgroundColor: 'var(--popContentColor)' }}
-      >
-        <p style={{ color: 'var(--textBlackColor)' }}>{name}</p>
-        <div className="hl" style={{ backgroundColor: 'var(--lineColor)' }} />
+      <div className="popover">
+        <p>{name}</p>
+        <div className="hl" />
         {contentsState.map((content) => (
           <div
             key={content.text}
             title={content.text}
             style={{
-              backgroundColor: 'var(--popContentColor)',
               color:
                 content.type === EContentType.DANGER
                   ? 'var(--textDangerColor)'

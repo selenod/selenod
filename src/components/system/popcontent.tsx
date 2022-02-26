@@ -37,6 +37,7 @@ export function PopContent({
   const [editedWindow, setEditedWindow] = useState<string | null>(null);
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const [editModal, setEditModal] = useState<string | null>(null);
+  const [delModal, setDelModal] = useState<string | null>(null);
   const [formDisable, setFormDisable] = useState<boolean>(false);
 
   useEffect(() => {
@@ -91,6 +92,7 @@ export function PopContent({
                 style={{
                   padding: '7px 15px',
                   overflow: 'hidden',
+                  minWidth: '150px',
                 }}
               >
                 <div
@@ -108,6 +110,9 @@ export function PopContent({
                   title="Delete Window"
                   style={{
                     color: 'var(--textDangerColor)',
+                  }}
+                  onClick={() => {
+                    setDelModal(content.text);
                   }}
                 >
                   <p>Delete Window</p>
@@ -162,7 +167,7 @@ export function PopContent({
                           paddingBottom: '.7rem',
                         }}
                       >
-                        Rename the "{content.text}" window to..
+                        Rename the <b>{content.text}</b> window to..
                       </p>
                       <form
                         onSubmit={(e) => {
@@ -199,6 +204,84 @@ export function PopContent({
                           Rename
                         </button>
                       </form>
+                    </div>
+                  </div>
+                </Modal>
+                <Modal
+                  isOpen={delModal === content.text}
+                  contentLabel="Delete Modal"
+                  style={{
+                    content: {
+                      position: 'relative',
+                      width: '450px',
+                      height: '230px',
+                      top: '5vh',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                    },
+                  }}
+                >
+                  <div className="header">
+                    <p>Delete Window</p>
+                    <div
+                      title="Cancel"
+                      onClick={() => {
+                        setDelModal(null);
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="27"
+                        height="27"
+                        fill="var(--shortcutIconColor)"
+                        className="bi bi-x"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="body">
+                    <div
+                      style={{
+                        position: 'relative',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                      }}
+                    >
+                      <p
+                        style={{
+                          margin: 0,
+                          color: 'var(--textSubBlackColor)',
+                          paddingBottom: '1.5rem',
+                        }}
+                      >
+                        You cannot undone this action.
+                        <br />
+                        This will permanently delete the <b>
+                          {content.text}
+                        </b>{' '}
+                        window, objects, and all nodes in the{' '}
+                        <b>{content.text}</b> window.
+                      </p>
+                      <button
+                        className="button primary"
+                        style={{
+                          display: 'inherit',
+                          marginLeft: 'auto',
+                        }}
+                        onClick={() => {
+                          // two-factor (who knows?)
+                          setFormDisable(true);
+
+                          setDelModal(null);
+                          setFormDisable(false);
+                        }}
+                        disabled={formDisable}
+                      >
+                        I understand
+                      </button>
                     </div>
                   </div>
                 </Modal>

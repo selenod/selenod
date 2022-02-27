@@ -5,7 +5,7 @@ import { Popover } from 'react-tiny-popover';
 import Modal from 'react-modal';
 import { RootState } from '../../store';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCurrentWindow } from '../system/reduxSlice/windowSlice';
+import { renameWindow, deleteWindow } from '../system/reduxSlice/windowSlice';
 
 interface IContentData {
   name: string;
@@ -185,7 +185,7 @@ export function PopContent({
                           const value = (e as any).target.new_name.value;
 
                           if (value.replaceAll(' ', '') !== '') {
-                            //대충 서버랑 연결
+                            // renameWindow()
                           }
 
                           setEditModal(null);
@@ -281,7 +281,7 @@ export function PopContent({
                         onClick={() => {
                           // two-factor (who knows?)
                           setFormDisable(true);
-
+                          // deleteWindow()
                           setDelModal(null);
                           setFormDisable(false);
                         }}

@@ -44,7 +44,7 @@ export const windowSlice = createSlice({
   initialState,
   reducers: {
     loadWindow: (state, action) => {
-      //action.payload에 담겨있는 씬 아이디로 대충 잘 해보셈
+      //action.payload에 담겨있는 윈도우 아이디로 대충 잘 해보셈
     },
     createWindow: (state, action) => {
       state.windowList.push({
@@ -60,20 +60,10 @@ export const windowSlice = createSlice({
     deleteWindow: (state, action) => {
       //네네
     },
-    setCurrentWindow: (state, action) => {
-      console.log(
-        state.windowList.filter((window) => window.id === action.payload)
-      );
-    },
   },
 });
 
-export const {
-  loadWindow,
-  createWindow,
-  renameWindow,
-  deleteWindow,
-  setCurrentWindow,
-} = windowSlice.actions;
+export const { loadWindow, createWindow, renameWindow, deleteWindow } =
+  windowSlice.actions;
 
 export default windowSlice.reducer;

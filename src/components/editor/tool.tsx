@@ -20,10 +20,10 @@ export default function Tool() {
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const windowList = useSelector((state: RootState) => state.window.windowList);
 
-  const [currentWindow, setCurrentWindow] = useState<string>(
+  const [currentWindow, setCurrentWindow] = useState<number>(
     window.sessionStorage.getItem('current_window')! !== null
-      ? window.sessionStorage.getItem('current_window')!
-      : windowList[0].id.toString()
+      ? parseInt(window.sessionStorage.getItem('current_window')!)
+      : windowList[0].id
   );
 
   const [pnlCase, setPnlCase] = useState<number | null>(0);
@@ -90,7 +90,7 @@ export default function Tool() {
                       text: window.name,
                       selected: windowList.indexOf(window) === 0 ? true : false,
                       onClick: () => {
-                        setCurrentWindow(window.name);
+                        setCurrentWindow(window.id);
                         dispatch(setFalse());
                         setShowPopover({
                           windowMgr: false,
@@ -117,7 +117,12 @@ export default function Tool() {
                   }}
                 >
                   <p style={{ color: 'var(--textGrayColor)' }}>
-                    MyPorject/{currentWindow}
+                    MyPorject/
+                    {
+                      windowList.filter(
+                        (window) => currentWindow === window.id
+                      )[0].name
+                    }
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
@@ -160,6 +165,7 @@ export default function Tool() {
     dispatch,
     currentWindow,
     isClicked,
+    windowList,
   ]);
 
   useEffect(() => {

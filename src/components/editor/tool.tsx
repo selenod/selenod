@@ -88,6 +88,7 @@ export default function Tool() {
                     cacheKey="current_window"
                     contents={windowList.map((window) => ({
                       text: window.name,
+                      id: window.id,
                       selected: windowList.indexOf(window) === 0 ? true : false,
                       onClick: () => {
                         setCurrentWindow(window.id);

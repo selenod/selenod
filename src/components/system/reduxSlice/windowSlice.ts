@@ -55,7 +55,18 @@ export const windowSlice = createSlice({
       //서버에도 푸시
     },
     renameWindow: (state, action) => {
-      //네네
+      console.log('네?');
+
+      const targetWindow = state.windowList.filter(
+        (window) => action.payload.id === window.id
+      )[0];
+      const targetNodes = targetWindow.node;
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      state.windowList[state.windowList.indexOf(targetWindow!)] = {
+        name: action.payload.value,
+        id: action.payload.id,
+        node: targetNodes,
+      };
     },
     deleteWindow: (state, action) => {
       //네네

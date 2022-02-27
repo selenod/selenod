@@ -13,6 +13,7 @@ interface IContentData {
   isSelection?: boolean;
   contents: Array<{
     text: string;
+    id?: number;
     type?: EContentType;
     onClick?: Function;
     selected?: boolean;
@@ -30,6 +31,7 @@ export function PopContent({
   const [contentsState, setContentsState] = useState<
     Array<{
       text: string;
+      id?: number;
       type?: EContentType;
       onClick?: Function;
       selected?: boolean;
@@ -42,6 +44,7 @@ export function PopContent({
 
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const windowList = useSelector((state: RootState) => state.window.windowList);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (
@@ -185,7 +188,26 @@ export function PopContent({
                           const value = (e as any).target.new_name.value;
 
                           if (value.replaceAll(' ', '') !== '') {
-                            // renameWindow()
+                            dispatch(
+                              renameWindow({
+                                id: content.id,
+                                value: value,
+                              })
+                            );
+
+                            const tempContents = contentsState;
+                            const tempTarget = contentsState.filter(
+                              (ct) => ct.id === content.id
+                            )[0];
+                            tempContents[tempContents.indexOf(tempTarget)] = {
+                              text: value,
+                              id: tempTarget.id,
+                              type: tempTarget.type,
+                              onClick: tempTarget.onClick,
+                              selected: tempTarget.selected,
+                            };
+
+                            setContentsState([...tempContents]);
                           }
 
                           setEditModal(null);

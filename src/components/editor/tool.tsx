@@ -17,17 +17,13 @@ export default function Tool() {
     height: string;
   }
 
-  const [windows, setWindows] = useState<Array<string>>([
-    '어쩔윈도우',
-    '저쩔윈도우',
-    '그거아님',
-    'ㅋㅋㅋㅋ',
-  ]);
+  const isClicked = useSelector((state: RootState) => state.cover.clicked);
+  const windowList = useSelector((state: RootState) => state.window.windowList);
 
   const [currentWindow, setCurrentWindow] = useState<string>(
     window.sessionStorage.getItem('current_window')! !== null
       ? window.sessionStorage.getItem('current_window')!
-      : windows[0]
+      : windowList[0].id.toString()
   );
 
   const [pnlCase, setPnlCase] = useState<number | null>(0);
@@ -54,7 +50,6 @@ export default function Tool() {
   });
 
   const dispatch = useDispatch();
-  const isClicked = useSelector((state: RootState) => state.cover.clicked);
 
   // Detect panel index changing
   useEffect(() => {
@@ -91,11 +86,11 @@ export default function Tool() {
                     name="Manage Windows"
                     isSelection={true}
                     cacheKey="current_window"
-                    contents={windows.map((window) => ({
-                      text: window,
-                      selected: windows.indexOf(window) === 0 ? true : false,
+                    contents={windowList.map((window) => ({
+                      text: window.name,
+                      selected: windowList.indexOf(window) === 0 ? true : false,
                       onClick: () => {
-                        setCurrentWindow(window);
+                        setCurrentWindow(window.name);
                         dispatch(setFalse());
                         setShowPopover({
                           windowMgr: false,
@@ -163,7 +158,6 @@ export default function Tool() {
     pnlSize.width,
     showPopover.windowMgr,
     dispatch,
-    windows,
     currentWindow,
     isClicked,
   ]);

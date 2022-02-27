@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { Popover } from 'react-tiny-popover';
 import Modal from 'react-modal';
 import { RootState } from '../../store';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCurrentWindow } from '../system/reduxSlice/windowSlice';
 
 interface IContentData {
   name: string;
@@ -35,10 +36,12 @@ export function PopContent({
     }>
   >(contents);
   const [editedWindow, setEditedWindow] = useState<string | null>(null);
-  const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const [editModal, setEditModal] = useState<string | null>(null);
   const [delModal, setDelModal] = useState<string | null>(null);
   const [formDisable, setFormDisable] = useState<boolean>(false);
+
+  const isClicked = useSelector((state: RootState) => state.cover.clicked);
+  const windowList = useSelector((state: RootState) => state.window.windowList);
 
   useEffect(() => {
     if (
@@ -46,9 +49,13 @@ export function PopContent({
       window.sessionStorage.getItem(cacheKey!) !== null
     ) {
       const tempArray = contentsState;
+      const currentWindowId = window.sessionStorage.getItem(cacheKey!);
       const newSelected = contentsState.find(
         (arrContent) =>
-          arrContent.text === window.sessionStorage.getItem(cacheKey!)!
+          arrContent.text ===
+          windowList.filter(
+            (window) => window.id.toString() === currentWindowId
+          )[0].name
       );
       const oldSelected = contentsState.find(
         (arrContent) => arrContent.selected
@@ -320,7 +327,12 @@ export function PopContent({
                 newArray[contentsState.indexOf(newSelected!)] = newSelected!;
                 newArray[contentsState.indexOf(oldSelected!)] = oldSelected!;
                 if (typeof cacheKey !== undefined) {
-                  window.sessionStorage.setItem(cacheKey!, newSelected?.text!);
+                  window.sessionStorage.setItem(
+                    cacheKey!,
+                    windowList
+                      .filter((window) => newSelected?.text! === window.name)[0]
+                      .id.toString()
+                  );
                 }
                 setContentsState([...newArray]);
               }}

@@ -24,7 +24,7 @@ body {
   --panelPathColor: #e1e7eb;
   --popContentHoverColor: #f5f7f7;
   --popContentHeaderColor: #f0f3f5;
-  --editorColor: #f3f5f7;
+  --editorColor: #f0f3f5;
   --textBlackColor: #1a1b1c;
   --textSubBlackColor: #474a4d;
   --textGrayColor: #8a9399;
@@ -102,7 +102,7 @@ input {
   box-shadow: 0 5px 30px #00000020;
   padding: 12px 15px;
   background-color: var(--headerColor);
-  min-width: 200px;
+  min-width: 210px;
 }
 
 .popover > .header {

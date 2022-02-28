@@ -103,7 +103,7 @@ export function PopContent({
                 style={{
                   padding: '7px 15px',
                   overflow: 'hidden',
-                  minWidth: '150px',
+                  width: '150px',
                 }}
               >
                 <div

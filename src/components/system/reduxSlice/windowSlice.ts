@@ -49,27 +49,50 @@ export const windowSlice = createSlice({
     createWindow: (state, action) => {
       state.windowList.push({
         name: action.payload,
-        id: state.windowList.length - 1,
+        id: state.windowList[state.windowList.length - 1].id + 1,
         node: [],
       });
       //서버에도 푸시
     },
     renameWindow: (state, action) => {
-      console.log('네?');
-
-      const targetWindow = state.windowList.filter(
+      const targetWindow = state.windowList.find(
         (window) => action.payload.id === window.id
-      )[0];
+      )!;
       const targetNodes = targetWindow.node;
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      state.windowList[state.windowList.indexOf(targetWindow!)] = {
+      state.windowList.splice(state.windowList.indexOf(targetWindow!), 1, {
         name: action.payload.value,
         id: action.payload.id,
         node: targetNodes,
-      };
+      });
+      //서버에도 푸시
     },
     deleteWindow: (state, action) => {
-      //네네
+      if (
+        window.sessionStorage.getItem('current_window') ===
+          action.payload.toString() &&
+        state.windowList.indexOf(
+          state.windowList.find((window) => action.payload === window.id)!
+        ) !== 0
+      ) {
+        window.sessionStorage.setItem(
+          'current_window',
+          state.windowList[0].id.toString()
+        );
+      } else if (
+        window.sessionStorage.getItem('current_window') ===
+        action.payload.toString()
+      ) {
+        window.sessionStorage.setItem(
+          'current_window',
+          state.windowList[1].id.toString()
+        );
+      }
+      state.windowList.splice(
+        state.windowList.indexOf(
+          state.windowList.find((window) => action.payload === window.id)!
+        ),
+        1
+      );
     },
   },
 });

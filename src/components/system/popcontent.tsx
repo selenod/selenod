@@ -6,6 +6,7 @@ import Modal from 'react-modal';
 import { RootState } from '../../store';
 import { useSelector, useDispatch } from 'react-redux';
 import { renameWindow, deleteWindow } from '../system/reduxSlice/windowSlice';
+import toast from 'react-hot-toast';
 
 interface IContentData {
   name: string;
@@ -195,21 +196,24 @@ export function PopContent({
                               })
                             );
 
-                            const tempContents = contentsState;
-                            const tempTarget = contentsState.filter(
+                            const contentTarget = contentsState.filter(
                               (ct) => ct.id === content.id
                             )[0];
-                            tempContents[tempContents.indexOf(tempTarget)] = {
-                              text: value,
-                              id: tempTarget.id,
-                              type: tempTarget.type,
-                              onClick: tempTarget.onClick,
-                              selected: tempTarget.selected,
-                            };
-
-                            setContentsState([...tempContents]);
+                            contentsState.splice(
+                              contentsState.indexOf(contentTarget),
+                              1,
+                              {
+                                text: value,
+                                id: contentTarget.id,
+                                type: contentTarget.type,
+                                onClick: contentTarget.onClick,
+                                selected: contentTarget.selected,
+                              }
+                            );
+                            toast.success(`The window has been renamed.`);
+                          } else {
+                            toast.error(`The window's name cannot be blank.`);
                           }
-
                           setEditModal(null);
                           setFormDisable(false);
                         }}
@@ -303,7 +307,25 @@ export function PopContent({
                         onClick={() => {
                           // two-factor (who knows?)
                           setFormDisable(true);
-                          // deleteWindow()
+                          if (
+                            window.sessionStorage.getItem('current_window') ===
+                            content.id!.toString()
+                          ) {
+                            setDelModal(null);
+                            setFormDisable(false);
+                            toast.error('The window opened cannot be deleted.');
+                            return false;
+                          }
+                          dispatch(deleteWindow(content.id));
+                          contentsState.splice(
+                            contentsState.indexOf(
+                              contentsState.filter(
+                                (ct) => content.id === ct.id
+                              )[0]
+                            ),
+                            1
+                          );
+                          toast.success(`The window has been deleted.`);
                           setDelModal(null);
                           setFormDisable(false);
                         }}

@@ -99,8 +99,8 @@ input {
 
 .popover {
   border-radius: 7px;
-  box-shadow: 0 5px 30px #00000020;
-  padding: 12px 15px;
+  box-shadow: 0 5px 20px #00000015;
+  padding: 7px 15px;
   background-color: var(--headerColor);
   min-width: 210px;
 }
@@ -200,4 +200,12 @@ input {
   height: calc(100% - 50px);
   padding: 0 30px;
   background-color: var(--headerColor);
+}
+
+.go2072408551 {
+  height: 40px !important;
+  border-radius: 7px !important;
+  padding: 7px 15px !important;
+  background: var(--headerColor) !important;
+  box-shadow: 0 5px 20px #00000015 !important;
 }

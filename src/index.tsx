@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { store } from './store';
 import { Provider } from 'react-redux';
+import { Toaster } from 'react-hot-toast';
 
 import Header from './components/system/header';
 import Editor from './components/editor/editor';
@@ -15,6 +16,7 @@ ReactDOM.render(
       <Cover />
       <Header />
       <Editor />
+      <Toaster position="top-center" />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

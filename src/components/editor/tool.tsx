@@ -150,6 +150,7 @@ export default function Tool() {
             <div>
               <div className="hl" />
               <p style={{ color: 'var(--shortcutIconColor)' }}>Asset</p>
+              <nav className="pnl-asset"></nav>
             </div>
           </nav>
         );

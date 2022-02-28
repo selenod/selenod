@@ -188,7 +188,11 @@ export function PopContent({
                           e.preventDefault();
                           const value = (e as any).target.new_name.value;
 
-                          if (value.replaceAll(' ', '') !== '') {
+                          if (
+                            value.replaceAll(' ', '') !== '' &&
+                            contentsState.find((ct) => ct.text === value) ===
+                              undefined
+                          ) {
                             dispatch(
                               renameWindow({
                                 id: content.id,
@@ -211,8 +215,13 @@ export function PopContent({
                               }
                             );
                             toast.success(`The window has been renamed.`);
-                          } else {
+                          } else if (value.replaceAll(' ', '') === '') {
                             toast.error(`The window's name cannot be blank.`);
+                          } else if (
+                            contentsState.find((ct) => ct.text === value) !==
+                            undefined
+                          ) {
+                            toast.error(`The window's name cannot be overlap.`);
                           }
                           setEditModal(null);
                           setFormDisable(false);

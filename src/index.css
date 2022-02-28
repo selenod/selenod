@@ -102,7 +102,7 @@ input {
   box-shadow: 0 5px 20px #00000015;
   padding: 7px 15px;
   background-color: var(--headerColor);
-  min-width: 210px;
+  width: 210px;
 }
 
 .popover > .header {

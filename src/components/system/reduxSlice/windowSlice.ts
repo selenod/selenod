@@ -12,27 +12,27 @@ const initialState: WindowState = {
   //임시기본값
   windowList: [
     {
-      name: '노을샌즈',
+      name: '윈도우1',
       id: 0,
       node: [],
     },
     {
-      name: '작은상자',
+      name: '윈도우2',
       id: 1,
       node: [],
     },
     {
-      name: '미친고양이',
+      name: '윈도우3',
       id: 2,
       node: [],
     },
     {
-      name: '씽씽태풍',
+      name: '윈도우4',
       id: 3,
       node: [],
     },
     {
-      name: '펫',
+      name: '윈도우5',
       id: 4,
       node: [],
     },

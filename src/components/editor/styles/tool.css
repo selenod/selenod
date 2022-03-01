@@ -58,14 +58,6 @@
   font-weight: 500;
 }
 
-.pnl-explore > div > p > svg {
-  position: relative;
-  height: 0.8rem;
-  width: 0.8rem;
-  top: 0.1rem;
-  margin-left: 7px;
-}
-
 .Tool > .shortcut > ul {
   position: relative;
   width: 50px;

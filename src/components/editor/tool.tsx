@@ -70,7 +70,7 @@ export default function Tool() {
               <Popover
                 isOpen={showPopover.windowMgr as boolean}
                 positions={['bottom']}
-                padding={10}
+                padding={15}
                 align="start"
                 reposition={false}
                 onClickOutside={() => {

@@ -101,7 +101,7 @@ export function PopContent({
               <div
                 className="popover"
                 style={{
-                  padding: '7px 15px',
+                  padding: '8px 15px',
                   overflow: 'hidden',
                   width: '150px',
                 }}
@@ -354,7 +354,7 @@ export function PopContent({
                 backgroundColor:
                   typeof editedWindow === 'string' &&
                   editedWindow === content.text
-                    ? 'var(--popContentHoverColor)'
+                    ? 'var(--popContentHeaderColor)'
                     : '',
                 color:
                   content.type === EContentType.DANGER

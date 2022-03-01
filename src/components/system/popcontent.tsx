@@ -354,7 +354,7 @@ export function PopContent({
                 backgroundColor:
                   typeof editedWindow === 'string' &&
                   editedWindow === content.text
-                    ? 'var(--popContentHeaderColor)'
+                    ? 'var(--popContentHoverColor)'
                     : '',
                 color:
                   content.type === EContentType.DANGER

@@ -23,6 +23,7 @@ body {
   --panelColor: #ebeff2;
   --panelPathColor: #e1e7eb;
   --popContentHeaderColor: #f5f8fa;
+  --popContentHoverColor: #f7f9fa;
   --editorColor: #f0f3f5;
   --textBlackColor: #1a1b1c;
   --textSubBlackColor: #474a4d;
@@ -134,7 +135,7 @@ input {
   transform: translateX(-50%);
   cursor: pointer;
   filter: none;
-  background-color: var(--popContentColor);
+  background-color: var(--headerColor);
   border-radius: 7px;
 }
 
@@ -143,7 +144,7 @@ input {
 }
 
 .popover > div:not(.header):hover {
-  background-color: var(--popContentHeaderColor);
+  background-color: var(--popContentHoverColor);
 }
 
 .popover > div:not(.header) > p {

@@ -184,7 +184,7 @@ input {
 
 .ReactModal__Content {
   border: none !important;
-  border-radius: 7px !important;
+  border-radius: 12px !important;
   padding: 0 !important;
 }
 

@@ -31,7 +31,7 @@
   position: relative;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 500;
   margin: 0;
 }
@@ -67,7 +67,7 @@
 }
 
 .Tool > .shortcut > ul > li:not(.Tool > .shortcut > ul > li:last-child) {
-  margin-bottom: 5px;
+  margin-bottom: 7px;
 }
 
 .Tool > .shortcut > ul > li > button {
@@ -88,6 +88,6 @@
   width: 30px;
   left: 50%;
   transform: translateX(-50%);
-  margin-top: 7px;
-  margin-bottom: 7px;
+  margin-top: 9px;
+  margin-bottom: 9px;
 }

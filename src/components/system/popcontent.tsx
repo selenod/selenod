@@ -222,6 +222,8 @@ export function PopContent({
                             undefined
                           ) {
                             toast.error(`The window's name cannot be overlap.`);
+                          } else {
+                            toast.error(`An error occured.`);
                           }
                           setEditModal(null);
                           setFormDisable(false);

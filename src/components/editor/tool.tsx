@@ -6,10 +6,14 @@ import { Resizable } from 're-resizable';
 import { Popover } from 'react-tiny-popover';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
+import toast from 'react-hot-toast';
+import Modal from 'react-modal';
 
 import Active from './active';
 import { PopContent } from '../system/popcontent';
 import { EContentType } from '../../enum';
+
+Modal.setAppElement('#root');
 
 export default function Tool() {
   interface IPnlSize {
@@ -40,7 +44,9 @@ export default function Tool() {
     '#ffffff00',
   ]);
   const [pnlDisplay, setPnlDisplay] = useState<string>('block');
+  const [formDisable, setFormDisable] = useState<boolean>(false);
   const [pnlComponent, setPnlComponent] = useState<ReactElement | null>(null);
+  const [isNewWinOpen, setNewWinOpen] = useState<boolean>(false);
   const [showPopover, setShowPopover] = useState<{
     option?: boolean;
     windowMgr?: boolean;
@@ -104,8 +110,9 @@ export default function Tool() {
                 <div
                   style={{
                     backgroundColor: 'var(--panelPathColor)',
-                    maxWidth: '296px',
+                    maxWidth: '256px',
                   }}
+                  className="mgr-window tool-btn"
                   title="Manage Windows"
                   onClick={() => {
                     dispatch(
@@ -138,20 +145,136 @@ export default function Tool() {
                   <svg
                     style={{
                       float: 'right',
-                      color: 'var(--textGrayColor)',
                       marginTop: '-7.5px',
                     }}
                     xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    fill="currentColor"
-                    className="bi bi-caret-down-fill"
+                    width="13"
+                    height="13"
+                    fill="var(--textGrayColor)"
                     viewBox="0 0 16 16"
                   >
                     <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
                   </svg>
                 </div>
               </Popover>
+              <div
+                className="tool-btn"
+                title="Create Window"
+                style={{
+                  float: 'right',
+                  backgroundColor: 'var(--panelPathColor)',
+                  width: 30,
+                  height: 30,
+                }}
+                onClick={() => {
+                  console.log('?');
+                  setNewWinOpen(true);
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    position: 'relative',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                  }}
+                  width="17"
+                  height="17"
+                  viewBox="0 0 20 20"
+                  fill="var(--textGrayColor)"
+                >
+                  <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
+                </svg>
+              </div>
+              <Modal
+                isOpen={isNewWinOpen}
+                contentLabel="Create New Window"
+                style={{
+                  content: {
+                    position: 'relative',
+                    width: '400px',
+                    height: '220px',
+                    top: '5vh',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                  },
+                }}
+              >
+                <div className="header">
+                  <p>Create Window</p>
+                  <div title="Cancel" onClick={() => setNewWinOpen(false)}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="27"
+                      height="27"
+                      fill="var(--shortcutIconColor)"
+                      className="bi bi-x"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="body">
+                  <div
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                    }}
+                  >
+                    <p
+                      style={{
+                        margin: 0,
+                        color: 'var(--textSubBlackColor)',
+                        paddingBottom: '.7rem',
+                      }}
+                    >
+                      Create new window which name..
+                    </p>
+                    <form
+                      onSubmit={(e) => {
+                        // two-factor (who knows?)
+                        setFormDisable(true);
+
+                        e.preventDefault();
+                        const value = (e as any).target.window_name.value;
+
+                        if (value.replaceAll(' ', '') !== '') {
+                          toast.success(`The window has been created.`);
+                        } else if (value.replaceAll(' ', '') === '') {
+                          toast.error(`The window's name cannot be blank.`);
+                        } else {
+                          toast.error(`An error occured.`);
+                        }
+                        setNewWinOpen(false);
+                        setFormDisable(false);
+                      }}
+                    >
+                      <input
+                        style={{
+                          width: '100%',
+                          margin: '0 0 1rem 0',
+                        }}
+                        name="window_name"
+                      />
+                      <button
+                        type="submit"
+                        className="button primary"
+                        style={{
+                          display: 'inherit',
+                          marginLeft: 'auto',
+                        }}
+                        disabled={formDisable}
+                      >
+                        Create Window
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </Modal>
             </nav>
           </nav>
         );
@@ -183,6 +306,8 @@ export default function Tool() {
     currentWindow,
     isClicked,
     windowList,
+    formDisable,
+    isNewWinOpen,
   ]);
 
   useEffect(() => {
@@ -271,9 +396,9 @@ export default function Tool() {
                   fill="var(--shortcutIconColor)"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                   />
                 </svg>
               </button>
@@ -309,9 +434,9 @@ export default function Tool() {
                 fill="var(--shortcutIconColor)"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 />
               </svg>
             </button>
@@ -345,9 +470,9 @@ export default function Tool() {
                 fill="var(--shortcutIconColor)"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M2 5a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm14 1a1 1 0 11-2 0 1 1 0 012 0zM2 13a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2zm14 1a1 1 0 11-2 0 1 1 0 012 0z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 />
               </svg>
             </button>

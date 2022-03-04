@@ -138,6 +138,7 @@ input {
   filter: none;
   background-color: var(--headerColor);
   border-radius: 7px;
+  transition: ease-out background-color 100ms;
 }
 
 .popover > div:not(.header):not(.popover > div:not(.header):last-child) {
@@ -184,7 +185,7 @@ input {
 
 .ReactModal__Content {
   border: none !important;
-  border-radius: 12px !important;
+  border-radius: 11px !important;
   padding: 0 !important;
 }
 

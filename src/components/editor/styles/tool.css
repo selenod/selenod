@@ -41,15 +41,19 @@
   top: 100%;
 }
 
-.pnl-explore > div {
+.tool-btn {
   display: inline-block;
-  height: 30px;
-  padding: 0 12px;
   border-radius: 7px;
   cursor: pointer;
+  margin-top: 5px;
 }
 
-.pnl-explore > div > p {
+.mgr-window {
+  height: 30px;
+  padding: 0 12px;
+}
+
+.mgr-window > p {
   position: relative;
   top: 50%;
   margin: 0;

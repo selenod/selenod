@@ -12,6 +12,7 @@ import Modal from 'react-modal';
 import Active from './active';
 import { PopContent } from '../system/popcontent';
 import { EContentType } from '../../enum';
+import { createWindow } from '../system/reduxSlice/windowSlice';
 
 Modal.setAppElement('#root');
 
@@ -166,10 +167,7 @@ export default function Tool() {
                   width: 30,
                   height: 30,
                 }}
-                onClick={() => {
-                  console.log('?');
-                  setNewWinOpen(true);
-                }}
+                onClick={() => setNewWinOpen(true)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -243,6 +241,18 @@ export default function Tool() {
                         const value = (e as any).target.window_name.value;
 
                         if (value.replaceAll(' ', '') !== '') {
+                          if (
+                            windowList.find((window) => window.name === value)
+                          ) {
+                            toast.error(
+                              `There's already a window with the same name.`
+                            );
+                            setNewWinOpen(false);
+                            setFormDisable(false);
+                            return false;
+                          }
+
+                          dispatch(createWindow(value));
                           toast.success(`The window has been created.`);
                         } else if (value.replaceAll(' ', '') === '') {
                           toast.error(`The window's name cannot be blank.`);

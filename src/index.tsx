@@ -16,7 +16,14 @@ ReactDOM.render(
       <Cover />
       <Header />
       <Editor />
-      <Toaster position="top-center" />
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            maxWidth: '70vw',
+          },
+        }}
+      />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

@@ -186,16 +186,13 @@ export default function Tool() {
                 </svg>
               </div>
               <Modal
+                closeTimeoutMS={150}
                 isOpen={isNewWinOpen}
                 contentLabel="Create New Window"
                 style={{
                   content: {
-                    position: 'relative',
                     width: '400px',
                     height: '220px',
-                    top: '5vh',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
                   },
                 }}
               >
@@ -236,8 +233,6 @@ export default function Tool() {
                       onSubmit={(e) => {
                         // two-factor (who knows?)
                         setFormDisable(true);
-
-                        e.preventDefault();
                         const value = (e as any).target.window_name.value;
 
                         if (value.replaceAll(' ', '') !== '') {

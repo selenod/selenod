@@ -129,27 +129,19 @@ export function PopContent({
                   <p>Delete Window</p>
                 </div>
                 <Modal
+                  closeTimeoutMS={150}
                   isOpen={editModal === content.text}
                   contentLabel="Rename Modal"
                   style={{
                     content: {
-                      position: 'relative',
                       width: '400px',
                       height: '220px',
-                      top: '5vh',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
                     },
                   }}
                 >
                   <div className="header">
                     <p>Rename Window</p>
-                    <div
-                      title="Cancel"
-                      onClick={() => {
-                        setEditModal(null);
-                      }}
-                    >
+                    <div title="Cancel" onClick={() => setEditModal(null)}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="27"
@@ -252,27 +244,19 @@ export function PopContent({
                   </div>
                 </Modal>
                 <Modal
+                  closeTimeoutMS={150}
                   isOpen={delModal === content.text}
                   contentLabel="Delete Modal"
                   style={{
                     content: {
-                      position: 'relative',
                       width: '450px',
                       height: '230px',
-                      top: '5vh',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
                     },
                   }}
                 >
                   <div className="header">
                     <p>Delete Window</p>
-                    <div
-                      title="Cancel"
-                      onClick={() => {
-                        setDelModal(null);
-                      }}
-                    >
+                    <div title="Cancel" onClick={() => setDelModal(null)}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="27"

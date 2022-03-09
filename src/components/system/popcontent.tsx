@@ -96,6 +96,7 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                   padding: '5px 15px',
                   overflow: 'hidden',
                   width: '150px',
+                  fontSize: '.95rem',
                 }}
               >
                 <div
@@ -381,8 +382,8 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                 {content.selected ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
+                    width="17"
+                    height="17"
                     fill="var(--shortcutIconColor)"
                     className="bi bi-check-lg"
                     viewBox="0 0 16 16"

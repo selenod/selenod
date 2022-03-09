@@ -55,6 +55,7 @@ export default function Tool() {
     option: false,
     windowMgr: false,
   });
+  const [formInput, setFormInput] = useState<string>('');
 
   const dispatch = useDispatch();
 
@@ -90,7 +91,6 @@ export default function Tool() {
                 }}
                 content={() => (
                   <PopContent
-                    name="Manage Windows"
                     isSelection={true}
                     cacheKey="current_window"
                     contents={windowList.map((window) => ({
@@ -146,11 +146,11 @@ export default function Tool() {
                   <svg
                     style={{
                       float: 'right',
-                      marginTop: '-7.5px',
+                      marginTop: '-7px',
                     }}
                     xmlns="http://www.w3.org/2000/svg"
-                    width="13"
-                    height="13"
+                    width="12.5"
+                    height="12.5"
                     fill="var(--textGrayColor)"
                     viewBox="0 0 16 16"
                   >
@@ -229,54 +229,55 @@ export default function Tool() {
                     >
                       Create new window which name..
                     </p>
-                    <form
-                      onSubmit={(e) => {
+                    <input
+                      style={{
+                        width: '100%',
+                        margin: '0 0 1rem 0',
+                      }}
+                      onChange={(e) => {
+                        setFormInput(e.target.value);
+                      }}
+                    />
+                    <button
+                      className="button primary"
+                      style={{
+                        display: 'inherit',
+                        marginLeft: 'auto',
+                      }}
+                      disabled={formDisable}
+                      onClick={() => {
                         // two-factor (who knows?)
                         setFormDisable(true);
-                        const value = (e as any).target.window_name.value;
 
-                        if (value.replaceAll(' ', '') !== '') {
+                        if (formInput.replaceAll(' ', '') !== '') {
                           if (
-                            windowList.find((window) => window.name === value)
+                            windowList.find(
+                              (window) => window.name === formInput
+                            )
                           ) {
                             toast.error(
                               `There's already a window with the same name.`
                             );
                             setNewWinOpen(false);
                             setFormDisable(false);
+                            setFormInput('');
                             return false;
                           }
 
-                          dispatch(createWindow(value));
+                          dispatch(createWindow(formInput));
                           toast.success(`The window has been created.`);
-                        } else if (value.replaceAll(' ', '') === '') {
+                        } else if (formInput.replaceAll(' ', '') === '') {
                           toast.error(`The window's name cannot be blank.`);
                         } else {
                           toast.error(`An error occured.`);
                         }
                         setNewWinOpen(false);
                         setFormDisable(false);
+                        setFormInput('');
                       }}
                     >
-                      <input
-                        style={{
-                          width: '100%',
-                          margin: '0 0 1rem 0',
-                        }}
-                        name="window_name"
-                      />
-                      <button
-                        type="submit"
-                        className="button primary"
-                        style={{
-                          display: 'inherit',
-                          marginLeft: 'auto',
-                        }}
-                        disabled={formDisable}
-                      >
-                        Create Window
-                      </button>
-                    </form>
+                      Create Window
+                    </button>
                   </div>
                 </div>
               </Modal>
@@ -313,6 +314,7 @@ export default function Tool() {
     windowList,
     formDisable,
     isNewWinOpen,
+    formInput,
   ]);
 
   useEffect(() => {
@@ -352,7 +354,6 @@ export default function Tool() {
               }}
               content={() => (
                 <PopContent
-                  name="Project Setting"
                   contents={[
                     { text: 'Save Project' },
                     { text: 'Save Project on Local' },

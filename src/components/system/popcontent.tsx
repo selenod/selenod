@@ -9,7 +9,6 @@ import { renameWindow, deleteWindow } from '../system/reduxSlice/windowSlice';
 import toast from 'react-hot-toast';
 
 interface IContentData {
-  name: string;
   cacheKey?: string;
   isSelection?: boolean;
   contents: Array<{
@@ -23,12 +22,7 @@ interface IContentData {
 
 Modal.setAppElement('#root');
 
-export function PopContent({
-  name,
-  cacheKey,
-  isSelection,
-  contents,
-}: IContentData) {
+export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
   const [contentsState, setContentsState] = useState<
     Array<{
       text: string;
@@ -42,6 +36,7 @@ export function PopContent({
   const [editModal, setEditModal] = useState<string | null>(null);
   const [delModal, setDelModal] = useState<string | null>(null);
   const [formDisable, setFormDisable] = useState<boolean>(false);
+  const [formInput, setFormInput] = useState<string>('');
 
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const windowList = useSelector((state: RootState) => state.window.windowList);
@@ -79,9 +74,6 @@ export function PopContent({
   if (isSelection && cacheKey === 'current_window')
     return (
       <div className="popover">
-        <div className="header">
-          <p>{name}</p>
-        </div>
         {contentsState.map((content) => (
           <Popover
             key={content.text}
@@ -120,7 +112,7 @@ export function PopContent({
                 <div
                   title="Delete Window"
                   style={{
-                    color: 'var(--textDangerColor)',
+                    color: 'var(--red)',
                   }}
                   onClick={() => {
                     setDelModal(content.text);
@@ -172,23 +164,36 @@ export function PopContent({
                       >
                         Rename the <b>{content.text}</b> window to..
                       </p>
-                      <form
-                        onSubmit={(e) => {
+                      <input
+                        style={{
+                          width: '100%',
+                          margin: '0 0 1rem 0',
+                        }}
+                        onChange={(e) => {
+                          setFormInput(e.target.value);
+                        }}
+                      />
+                      <button
+                        className="button primary"
+                        style={{
+                          display: 'inherit',
+                          marginLeft: 'auto',
+                        }}
+                        disabled={formDisable}
+                        onClick={() => {
                           // two-factor (who knows?)
                           setFormDisable(true);
 
-                          e.preventDefault();
-                          const value = (e as any).target.new_name.value;
-
                           if (
-                            value.replaceAll(' ', '') !== '' &&
-                            contentsState.find((ct) => ct.text === value) ===
-                              undefined
+                            formInput.replaceAll(' ', '') !== '' &&
+                            contentsState.find(
+                              (ct) => ct.text === formInput
+                            ) === undefined
                           ) {
                             dispatch(
                               renameWindow({
                                 id: content.id,
-                                value: value,
+                                value: formInput,
                               })
                             );
 
@@ -199,7 +204,7 @@ export function PopContent({
                               contentsState.indexOf(contentTarget),
                               1,
                               {
-                                text: value,
+                                text: formInput,
                                 id: contentTarget.id,
                                 type: contentTarget.type,
                                 onClick: contentTarget.onClick,
@@ -207,39 +212,26 @@ export function PopContent({
                               }
                             );
                             toast.success(`The window has been renamed.`);
-                          } else if (value.replaceAll(' ', '') === '') {
+                          } else if (formInput.replaceAll(' ', '') === '') {
                             toast.error(`The window's name cannot be blank.`);
                           } else if (
-                            contentsState.find((ct) => ct.text === value) !==
-                            undefined
+                            contentsState.find(
+                              (ct) => ct.text === formInput
+                            ) !== undefined
                           ) {
-                            toast.error(`The window's name cannot be overlap.`);
+                            toast.error(
+                              `There's already a window with the same name.`
+                            );
                           } else {
                             toast.error(`An error occured.`);
                           }
                           setEditModal(null);
                           setFormDisable(false);
+                          setFormInput('');
                         }}
                       >
-                        <input
-                          style={{
-                            width: '100%',
-                            margin: '0 0 1rem 0',
-                          }}
-                          name="new_name"
-                        />
-                        <button
-                          type="submit"
-                          className="button primary"
-                          style={{
-                            display: 'inherit',
-                            marginLeft: 'auto',
-                          }}
-                          disabled={formDisable}
-                        >
-                          Rename
-                        </button>
-                      </form>
+                        Rename
+                      </button>
                     </div>
                   </div>
                 </Modal>
@@ -344,7 +336,7 @@ export function PopContent({
                     : '',
                 color:
                   content.type === EContentType.DANGER
-                    ? 'var(--textDangerColor)'
+                    ? 'var(--red)'
                     : 'var(--textSubBlackColor)',
               }}
               onClick={(e) => {
@@ -410,9 +402,6 @@ export function PopContent({
   else if (isSelection) {
     return (
       <div className="popover">
-        <div className="header">
-          <p>{name}</p>
-        </div>
         {contentsState.map((content) => (
           <div
             key={content.text}
@@ -421,7 +410,7 @@ export function PopContent({
               backgroundColor: 'var(--popContentColor)',
               color:
                 content.type === EContentType.DANGER
-                  ? 'var(--textDangerColor)'
+                  ? 'var(--red)'
                   : 'var(--textSubBlackColor)',
             }}
             onClick={(e) => {
@@ -472,9 +461,6 @@ export function PopContent({
   } else
     return (
       <div className="popover">
-        <div className="header">
-          <p>{name}</p>
-        </div>
         {contentsState.map((content) => (
           <div
             key={content.text}
@@ -482,7 +468,7 @@ export function PopContent({
             style={{
               color:
                 content.type === EContentType.DANGER
-                  ? 'var(--textDangerColor)'
+                  ? 'var(--red)'
                   : 'var(--textSubBlackColor)',
             }}
           >

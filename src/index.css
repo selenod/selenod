@@ -24,12 +24,12 @@ body {
   --panelColor: #ebeff2;
   --panelPathColor: #e1e7eb;
   --popContentHeaderColor: #f5f8fa;
-  --popContentHoverColor: #f7f9fa;
+  --popContentHoverColor: #f5f6f7;
   --editorColor: #f0f3f5;
   --textBlackColor: #1a1b1c;
   --textSubBlackColor: #474a4d;
   --textGrayColor: #8a9399;
-  --textDangerColor: #e55c5c;
+  --red: #e44857;
 }
 
 *:focus {
@@ -99,39 +99,17 @@ input {
 }
 
 .popover {
-  border-radius: 12px;
+  border-radius: 10px;
   box-shadow: 0 5px 20px #00000015;
-  padding: 8px 15px;
+  padding: 5px 15px;
   background-color: var(--baseColor);
-  width: 220px;
+  width: 190px;
   overflow: hidden;
 }
 
-.popover > .header {
-  width: calc(100%);
-  height: 25px;
-  padding: 15px 15px;
-  margin-left: -15px;
-  margin-top: -12.5px;
-  background-color: var(--popContentHeaderColor);
-  border-radius: 12px 12px 0 0;
-  margin-bottom: 8px;
-}
-
-.popover > .header > p {
+.popover > div {
   position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-  margin: 0;
-  font-weight: 600;
-  font-size: 1.15rem;
-  margin-top: 2px;
-  color: var(--textSubBlackColor);
-}
-
-.popover > div:not(.header) {
-  position: relative;
-  width: calc(100% + 14px);
+  width: calc(100% + 20px);
   height: 42px;
   left: 50%;
   transform: translateX(-50%);
@@ -142,15 +120,15 @@ input {
   transition: ease-out background-color 100ms;
 }
 
-.popover > div:not(.header):not(.popover > div:not(.header):last-child) {
+.popover > div:not(.popover > div:last-child) {
   margin-bottom: 3px;
 }
 
-.popover > div:not(.header):hover {
+.popover > div:hover {
   background-color: var(--popContentHoverColor);
 }
 
-.popover > div:not(.header) > p {
+.popover > div > p {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
@@ -158,19 +136,19 @@ input {
   font-weight: 500;
 }
 
-.popover > div:not(.header) > div {
+.popover > div > div {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
   margin: 0 15px;
 }
 
-.popover > div:not(.header) > div > svg {
+.popover > div > div > svg {
   margin-top: 0.5px;
   float: left;
 }
 
-.popover > div:not(.header) > div > p {
+.popover > div > div > p {
   display: block;
   margin: 0 0 0 25px;
   font-size: 1.05rem;
@@ -224,16 +202,16 @@ input {
 }
 
 .ReactModal__Content > .header > p {
-  margin: 0;
+  margin: -2px 0 0 0;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   max-width: calc(100% - 50px);
   color: var(--textSubBlackColor);
 }
 
 .ReactModal__Content > .header > div {
   position: relative;
-  top: -23px;
+  top: -24px;
   float: right;
   cursor: pointer;
 }

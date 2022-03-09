@@ -63,7 +63,6 @@ export default function Active(data: IToolData) {
             }}
             content={() => (
               <PopContent
-                name="More Actions.."
                 contents={[
                   { text: 'Close All Tabs' },
                   { text: 'Close Saved Tabs' },

@@ -81,7 +81,7 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
               typeof editedWindow === 'string' && editedWindow === content.text
             }
             positions={['right']}
-            padding={5}
+            padding={10}
             align="start"
             reposition={false}
             onClickOutside={() => {
@@ -93,7 +93,7 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
               <div
                 className="popover"
                 style={{
-                  padding: '8px 15px',
+                  padding: '5px 15px',
                   overflow: 'hidden',
                   width: '150px',
                 }}

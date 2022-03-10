@@ -111,7 +111,7 @@ export default function Tool() {
                 <div
                   style={{
                     backgroundColor: 'var(--panelPathColor)',
-                    maxWidth: '256px',
+                    maxWidth: 'calc(100% - 70px)',
                   }}
                   className="mgr-window tool-btn"
                   title="Manage Windows"

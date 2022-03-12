@@ -95,3 +95,8 @@
   margin-top: 9px;
   margin-bottom: 9px;
 }
+
+.pnl-asset,
+.pnl-explore {
+  height: calc(100% - 50px);
+}

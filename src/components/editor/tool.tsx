@@ -111,7 +111,7 @@ export default function Tool() {
                 <div
                   style={{
                     backgroundColor: 'var(--panelPathColor)',
-                    maxWidth: 'calc(100% - 70px)',
+                    maxWidth: 'calc(100% - 98px)',
                   }}
                   className="mgr-window tool-btn"
                   title="Manage Windows"
@@ -160,14 +160,14 @@ export default function Tool() {
               </Popover>
               <div
                 className="tool-btn"
-                title="Create Window"
+                title="Add Node"
                 style={{
                   float: 'right',
                   backgroundColor: 'var(--panelPathColor)',
                   width: 30,
                   height: 30,
                 }}
-                onClick={() => setNewWinOpen(true)}
+                onClick={() => {}}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -185,10 +185,41 @@ export default function Tool() {
                   <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
                 </svg>
               </div>
+              <div
+                className="tool-btn"
+                title="Add Window"
+                style={{
+                  float: 'right',
+                  backgroundColor: 'var(--panelPathColor)',
+                  width: 30,
+                  height: 30,
+                  marginRight: 7,
+                }}
+                onClick={() => setNewWinOpen(true)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    position: 'relative',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                  }}
+                  width="17"
+                  height="17"
+                  viewBox="0 0 20 20"
+                  fill="var(--textGrayColor)"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-5L9 4H4zm7 5a1 1 0 10-2 0v1H8a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V9z"
+                  />
+                </svg>
+              </div>
               <Modal
                 closeTimeoutMS={150}
                 isOpen={isNewWinOpen}
-                contentLabel="Create New Window"
+                contentLabel="Add Window"
                 style={{
                   content: {
                     width: '400px',
@@ -197,7 +228,7 @@ export default function Tool() {
                 }}
               >
                 <div className="header">
-                  <p>Create Window</p>
+                  <p>Add Window</p>
                   <div title="Cancel" onClick={() => setNewWinOpen(false)}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -227,7 +258,7 @@ export default function Tool() {
                         paddingBottom: '.7rem',
                       }}
                     >
-                      Create new window which name..
+                      Add window which name..
                     </p>
                     <input
                       style={{
@@ -265,7 +296,7 @@ export default function Tool() {
                           }
 
                           dispatch(createWindow(formInput));
-                          toast.success(`The window has been created.`);
+                          toast.success(`The window has been added.`);
                         } else if (formInput.replaceAll(' ', '') === '') {
                           toast.error(`The window's name cannot be blank.`);
                         } else {
@@ -276,7 +307,7 @@ export default function Tool() {
                         setFormInput('');
                       }}
                     >
-                      Create Window
+                      Add Window
                     </button>
                   </div>
                 </div>
@@ -294,8 +325,45 @@ export default function Tool() {
             <div>
               <div className="hl" />
               <p style={{ color: 'var(--shortcutIconColor)' }}>Asset</p>
-              <nav className="pnl-asset"></nav>
             </div>
+            <nav className="pnl-asset">
+              <div
+                className="tool-btn"
+                title="Add Asset"
+                style={{
+                  float: 'right',
+                  backgroundColor: 'var(--panelPathColor)',
+                  width: 30,
+                  height: 30,
+                }}
+                onClick={() => {}}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    position: 'relative',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                  }}
+                  width="17"
+                  height="17"
+                  viewBox="0 0 20 20"
+                  fill="var(--textGrayColor)"
+                >
+                  <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
+                </svg>
+              </div>
+              <div
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  height: 'calc(100% - 72px)', //bottom: 25px
+                  backgroundColor: 'red',
+                  top: 47,
+                }}
+              ></div>
+            </nav>
           </nav>
         );
         setPnlDisplay('block');

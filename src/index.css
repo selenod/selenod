@@ -48,6 +48,10 @@ li {
   list-style: none;
 }
 
+p {
+  margin: 0;
+}
+
 /* Only div tag can get this class '.hl', '.vl' */
 .hl {
   height: 1px;
@@ -116,7 +120,7 @@ input {
   cursor: pointer;
   filter: none;
   background-color: var(--baseColor);
-  border-radius: 7px;
+  border-radius: 6px;
   transition: ease-out background-color 100ms;
   font-size: 0.95rem;
 }
@@ -135,6 +139,7 @@ input {
   transform: translateY(-50%);
   margin: 0 0 0 15px;
   font-weight: 500;
+  font-size: 0.9rem;
 }
 
 .popover > div > div {
@@ -155,6 +160,7 @@ input {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 0.9rem;
 }
 
 .ReactModal__Overlay {

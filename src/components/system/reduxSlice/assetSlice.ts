@@ -1,9 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { EAssetType } from '../../../enum';
 
 export interface IAsset {
   name: string;
   id: number;
-  extension: string;
+  type: EAssetType;
+  extension?: string;
+  contents: any;
 }
 
 export interface AssetState {
@@ -11,20 +14,16 @@ export interface AssetState {
 }
 
 const initialState: AssetState = {
-  assetList: [
-    {
-      name: 'asset',
-      id: 0,
-      extension: 'txt',
-    },
-  ],
+  assetList: [],
 };
 
 export const assetSlice = createSlice({
   name: 'asset',
   initialState,
   reducers: {
-    addAsset: (state, action) => {},
+    addAsset: (state, action) => {
+      state.assetList.push(action.payload);
+    },
   },
 });
 

@@ -6,12 +6,14 @@ import { Resizable } from 're-resizable';
 import { Popover } from 'react-tiny-popover';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
+import { addAsset } from '../system/reduxSlice/assetSlice';
+import { FileDrop } from 'react-file-drop';
 import toast from 'react-hot-toast';
 import Modal from 'react-modal';
 
 import Active from './active';
 import { PopContent } from '../system/popcontent';
-import { EContentType } from '../../enum';
+import { EContentType, EAssetType } from '../../enum';
 import { createWindow } from '../system/reduxSlice/windowSlice';
 
 Modal.setAppElement('#root');
@@ -24,6 +26,7 @@ export default function Tool() {
 
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const windowList = useSelector((state: RootState) => state.window.windowList);
+  const assetList = useSelector((state: RootState) => state.asset.assetList);
 
   const [currentWindow, setCurrentWindow] = useState<number>(
     window.sessionStorage.getItem('current_window')! !== null
@@ -211,7 +214,7 @@ export default function Tool() {
                   fill="var(--textGrayColor)"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-5L9 4H4zm7 5a1 1 0 10-2 0v1H8a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V9z"
                   />
                 </svg>
@@ -359,10 +362,103 @@ export default function Tool() {
                   position: 'relative',
                   width: '100%',
                   height: 'calc(100% - 72px)', //bottom: 25px
-                  backgroundColor: 'red',
                   top: 47,
                 }}
-              ></div>
+              >
+                <FileDrop
+                  onDragOver={(event) => console.log('범위로 들어옴')}
+                  onDragLeave={(event) => console.log('범위에서 나감')}
+                  onDrop={(files, event) => {
+                    for (let i = 0; i < files!.length; i++) {
+                      let type =
+                        !files![i].type && files![i].size % 4096 === 0
+                          ? EAssetType.FOLDER
+                          : EAssetType.FILE;
+
+                      if (type === EAssetType.FILE) {
+                        dispatch(
+                          addAsset({
+                            name: (files as any)[i].name.substr(
+                              0,
+                              (files as any)[i].name.lastIndexOf('.')
+                            ),
+                            id: assetList.length + i,
+                            type: EAssetType.FILE,
+                            extension: (files as any)[i].name.substr(
+                              (files as any)[i].name.lastIndexOf('.')
+                            ),
+                            contents: '그거아님',
+                          })
+                        );
+                      } else {
+                        dispatch(
+                          addAsset({
+                            name: (files as any)[i].name,
+                            id: assetList.length + i,
+                            type: EAssetType.FOLDER,
+                            contents: '그거아님',
+                          })
+                        );
+                      }
+                    }
+                  }}
+                >
+                  {assetList.map((asset) => (
+                    <div className="asset" key={asset.id}>
+                      <div>
+                        {asset.type === EAssetType.FOLDER ? (
+                          <div>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="0.95rem"
+                              height="0.95rem"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M19 9l-7 7-7-7"
+                              />
+                            </svg>
+                          </div>
+                        ) : null}
+                        {asset.type === EAssetType.FOLDER ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="1rem"
+                            height="1rem"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
+                          </svg>
+                        ) : (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="1rem"
+                            height="1rem"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        )}
+                        <p>
+                          {asset.name}
+                          {asset.extension}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </FileDrop>
+              </div>
             </nav>
           </nav>
         );
@@ -383,6 +479,7 @@ export default function Tool() {
     formDisable,
     isNewWinOpen,
     formInput,
+    assetList,
   ]);
 
   useEffect(() => {

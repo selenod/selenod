@@ -11,20 +11,18 @@ import Editor from './components/editor/editor';
 import Cover from './cover';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <Cover />
-      <Header />
-      <Editor />
-      <Toaster
-        position="top-center"
-        toastOptions={{
-          style: {
-            maxWidth: '70vw',
-          },
-        }}
-      />
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <Cover />
+    <Header />
+    <Editor />
+    <Toaster
+      position="top-center"
+      toastOptions={{
+        style: {
+          maxWidth: '70vw',
+        },
+      }}
+    />
+  </Provider>,
   document.getElementById('root')
 );

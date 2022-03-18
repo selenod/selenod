@@ -333,7 +333,7 @@ export default function Tool() {
             <nav className="pnl-asset">
               <div
                 className="tool-btn"
-                title="Add Asset"
+                title="Add Folder"
                 style={{
                   float: 'right',
                   backgroundColor: 'var(--panelPathColor)',
@@ -341,34 +341,6 @@ export default function Tool() {
                   height: 30,
                 }}
                 onClick={() => {}}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  style={{
-                    position: 'relative',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                  }}
-                  width="17"
-                  height="17"
-                  viewBox="0 0 20 20"
-                  fill="var(--textGrayColor)"
-                >
-                  <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
-                </svg>
-              </div>
-              <div
-                className="tool-btn"
-                title="Add Folder"
-                style={{
-                  float: 'right',
-                  backgroundColor: 'var(--panelPathColor)',
-                  width: 30,
-                  height: 30,
-                  marginRight: 7,
-                }}
-                onClick={() => setNewWinOpen(true)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -391,7 +363,7 @@ export default function Tool() {
               </div>
               <div
                 className="tool-btn"
-                title="Add File"
+                title="Add Asset"
                 style={{
                   float: 'right',
                   backgroundColor: 'var(--panelPathColor)',
@@ -399,7 +371,7 @@ export default function Tool() {
                   height: 30,
                   marginRight: 7,
                 }}
-                onClick={() => setNewWinOpen(true)}
+                onClick={() => {}}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

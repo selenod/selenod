@@ -215,7 +215,8 @@ export default function Tool() {
                 >
                   <path
                     fillRule="evenodd"
-                    d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-5L9 4H4zm7 5a1 1 0 10-2 0v1H8a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V9z"
+                    d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V8z"
+                    clipRule="evenodd"
                   />
                 </svg>
               </div>
@@ -358,6 +359,69 @@ export default function Tool() {
                 </svg>
               </div>
               <div
+                className="tool-btn"
+                title="Add Folder"
+                style={{
+                  float: 'right',
+                  backgroundColor: 'var(--panelPathColor)',
+                  width: 30,
+                  height: 30,
+                  marginRight: 7,
+                }}
+                onClick={() => setNewWinOpen(true)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    position: 'relative',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                  }}
+                  width="17"
+                  height="17"
+                  viewBox="0 0 20 20"
+                  fill="var(--textGrayColor)"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-5L9 4H4zm7 5a1 1 0 10-2 0v1H8a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V9z"
+                  />
+                </svg>
+              </div>
+              <div
+                className="tool-btn"
+                title="Add File"
+                style={{
+                  float: 'right',
+                  backgroundColor: 'var(--panelPathColor)',
+                  width: 30,
+                  height: 30,
+                  marginRight: 7,
+                }}
+                onClick={() => setNewWinOpen(true)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    position: 'relative',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                  }}
+                  width="17"
+                  height="17"
+                  viewBox="0 0 20 20"
+                  fill="var(--textGrayColor)"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V8z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div
                 style={{
                   position: 'relative',
                   width: '100%',
@@ -382,7 +446,10 @@ export default function Tool() {
                               0,
                               (files as any)[i].name.lastIndexOf('.')
                             ),
-                            id: assetList.length + i,
+                            id:
+                              assetList.length === 0
+                                ? i
+                                : assetList[assetList.length - 1].id + i + 1,
                             type: EAssetType.FILE,
                             extension: (files as any)[i].name.substr(
                               (files as any)[i].name.lastIndexOf('.')
@@ -394,7 +461,10 @@ export default function Tool() {
                         dispatch(
                           addAsset({
                             name: (files as any)[i].name,
-                            id: assetList.length + i,
+                            id:
+                              assetList.length === 0
+                                ? i
+                                : assetList[assetList.length - 1].id + i + 1,
                             type: EAssetType.FOLDER,
                             contents: '그거아님',
                           })
@@ -403,10 +473,11 @@ export default function Tool() {
                     }
                   }}
                 >
-                  {assetList.map((asset) => (
-                    <div className="asset" key={asset.id}>
-                      <div>
-                        {asset.type === EAssetType.FOLDER ? (
+                  {assetList
+                    .filter((asset) => asset.type === EAssetType.FOLDER)
+                    .map((asset) => (
+                      <div className="asset" key={asset.id}>
+                        <div>
                           <div>
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -424,8 +495,6 @@ export default function Tool() {
                               />
                             </svg>
                           </div>
-                        ) : null}
-                        {asset.type === EAssetType.FOLDER ? (
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="1rem"
@@ -435,7 +504,18 @@ export default function Tool() {
                           >
                             <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
                           </svg>
-                        ) : (
+                          <p>
+                            {asset.name}
+                            {asset.extension}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  {assetList
+                    .filter((asset) => asset.type === EAssetType.FILE)
+                    .map((asset) => (
+                      <div className="asset" key={asset.id}>
+                        <div>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="1rem"
@@ -449,14 +529,13 @@ export default function Tool() {
                               clipRule="evenodd"
                             />
                           </svg>
-                        )}
-                        <p>
-                          {asset.name}
-                          {asset.extension}
-                        </p>
+                          <p>
+                            {asset.name}
+                            {asset.extension}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </FileDrop>
               </div>
             </nav>

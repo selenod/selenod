@@ -6,7 +6,7 @@ export interface IAsset {
   id: number;
   type: EAssetType;
   extension?: string;
-  contents: any;
+  contents: any; // if it's folder, there are the files in it, or if file, there are file data.
 }
 
 export interface AssetState {

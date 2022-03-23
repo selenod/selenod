@@ -6,7 +6,12 @@ import { Resizable } from 're-resizable';
 import { Popover } from 'react-tiny-popover';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
-import { addAsset } from '../system/reduxSlice/assetSlice';
+import {
+  addAsset,
+  addAssetLength,
+  IAsset,
+  setOpened,
+} from '../system/reduxSlice/assetSlice';
 import { FileDrop } from 'react-file-drop';
 import toast from 'react-hot-toast';
 import Modal from 'react-modal';
@@ -18,6 +23,54 @@ import { createWindow } from '../system/reduxSlice/windowSlice';
 
 Modal.setAppElement('#root');
 
+interface IFileContents {
+  index: number;
+  fileTree: Array<IAsset>;
+}
+
+interface IParent {
+  id: number;
+  childs: Array<IParent>;
+}
+
+function GetFileContents(fileAsEntry: any, i: number): Promise<IFileContents> {
+  return new Promise((resolve, reject) => {
+    fileAsEntry
+      .createReader()
+      .readEntries((entries: Array<FileSystemEntry>) => {
+        let folderIdx = 0;
+        const folderTree: Array<IAsset> = entries
+          .filter((entry: FileSystemEntry): boolean => !entry.isFile)
+          .map((entry: FileSystemEntry, idx: number): IAsset => {
+            folderIdx++;
+
+            return {
+              name: entry.name,
+              id: i + idx + 1,
+              type: EAssetType.FOLDER,
+              contents: [],
+            };
+          });
+        const fileTree: Array<IAsset> = entries
+          .filter((entry: FileSystemEntry): boolean => entry.isFile)
+          .map((entry: FileSystemEntry, idx: number): IAsset => {
+            return {
+              name: entry.name.substr(0, entry.name.lastIndexOf('.')),
+              id: i + idx + folderIdx + 1,
+              type: EAssetType.FILE,
+              extension: entry.name.substr(entry.name.lastIndexOf('.')),
+              contents: '그거아님',
+            };
+          });
+
+        resolve({
+          index: fileTree.length + folderTree.length - 1,
+          fileTree: [...folderTree, ...fileTree],
+        });
+      });
+  });
+}
+
 export default function Tool() {
   interface IPnlSize {
     width: number;
@@ -27,6 +80,9 @@ export default function Tool() {
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const windowList = useSelector((state: RootState) => state.window.windowList);
   const assetList = useSelector((state: RootState) => state.asset.assetList);
+  const assetLength = useSelector(
+    (state: RootState) => state.asset.assetLength
+  );
 
   const [currentWindow, setCurrentWindow] = useState<number>(
     window.sessionStorage.getItem('current_window')! !== null
@@ -404,68 +460,101 @@ export default function Tool() {
                 <FileDrop
                   onDragOver={(event) => console.log('범위로 들어옴')}
                   onDragLeave={(event) => console.log('범위에서 나감')}
-                  onDrop={(files, event) => {
-                    for (let i = 0; i < files!.length; i++) {
-                      let type =
-                        !files![i].type && files![i].size % 4096 === 0
-                          ? EAssetType.FOLDER
-                          : EAssetType.FILE;
+                  onDrop={async (files, event) => {
+                    const entryArr: Array<FileSystemEntry | null> = [];
+                    for (let i = 0; i < event.dataTransfer.items.length; i++) {
+                      entryArr.push(
+                        event.dataTransfer.items[i].webkitGetAsEntry()
+                      );
+                    }
+                    for (
+                      let i = 0, index = assetLength;
+                      i < files!.length;
+                      i++
+                    ) {
+                      const fileAsEntry = entryArr[i];
+                      if (fileAsEntry) {
+                        if (fileAsEntry.isFile) {
+                          dispatch(
+                            addAsset({
+                              name: (files as FileList)[i].name.substr(
+                                0,
+                                (files as FileList)[i].name.lastIndexOf('.')
+                              ),
+                              id: index === 0 ? 0 : index,
+                              type: EAssetType.FILE,
+                              extension: (files as FileList)[i].name.substr(
+                                (files as FileList)[i].name.lastIndexOf('.')
+                              ),
+                              contents: '그거아님',
+                            })
+                          );
+                        } else {
+                          const tree = await GetFileContents(
+                            fileAsEntry,
+                            index === 0 ? 0 : index
+                          );
 
-                      if (type === EAssetType.FILE) {
-                        dispatch(
-                          addAsset({
-                            name: (files as any)[i].name.substr(
-                              0,
-                              (files as any)[i].name.lastIndexOf('.')
-                            ),
-                            id:
-                              assetList.length === 0
-                                ? i
-                                : assetList[assetList.length - 1].id + i + 1,
-                            type: EAssetType.FILE,
-                            extension: (files as any)[i].name.substr(
-                              (files as any)[i].name.lastIndexOf('.')
-                            ),
-                            contents: '그거아님',
-                          })
-                        );
-                      } else {
-                        dispatch(
-                          addAsset({
-                            name: (files as any)[i].name,
-                            id:
-                              assetList.length === 0
-                                ? i
-                                : assetList[assetList.length - 1].id + i + 1,
-                            type: EAssetType.FOLDER,
-                            contents: '그거아님',
-                          })
-                        );
+                          dispatch(
+                            addAsset({
+                              name: (files as FileList)[i].name,
+                              id: index === 0 ? 0 : index,
+                              type: EAssetType.FOLDER,
+                              contents: tree.fileTree,
+                            })
+                          );
+
+                          dispatch(addAssetLength(tree.index + 1));
+                          index += tree.index + 2;
+                        }
                       }
                     }
                   }}
                 >
-                  {assetList
+                  {/* 여기서 파일트리 실행 */}
+                  {/* {assetList
                     .filter((asset) => asset.type === EAssetType.FOLDER)
                     .map((asset) => (
-                      <div className="asset" key={asset.id}>
+                      <div
+                        className="asset"
+                        key={asset.id}
+                        onClick={() => dispatch(setOpened(asset.id))}
+                      >
                         <div>
                           <div>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="0.95rem"
-                              height="0.95rem"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M19 9l-7 7-7-7"
-                              />
-                            </svg>
+                            {asset.isOpened! ? (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="0.95rem"
+                                height="0.95rem"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M19 9l-7 7-7-7"
+                                />
+                              </svg>
+                            ) : (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="0.95rem"
+                                height="0.95rem"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M9 5l7 7-7 7"
+                                />
+                              </svg>
+                            )}
                           </div>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -476,13 +565,21 @@ export default function Tool() {
                           >
                             <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
                           </svg>
-                          <p>
+                          <p
+                            style={{
+                              width: 'calc(100% - 43px)',
+                              height: '100%',
+                              overflow: 'hidden',
+                              whiteSpace: 'nowrap',
+                              textOverflow: 'ellipsis',
+                            }}
+                          >
                             {asset.name}
                             {asset.extension}
                           </p>
                         </div>
                       </div>
-                    ))}
+                    ))} */}
                   {assetList
                     .filter((asset) => asset.type === EAssetType.FILE)
                     .map((asset) => (
@@ -501,7 +598,15 @@ export default function Tool() {
                               clipRule="evenodd"
                             />
                           </svg>
-                          <p>
+                          <p
+                            style={{
+                              width: 'calc(100% - 43px)',
+                              height: '100%',
+                              overflow: 'hidden',
+                              whiteSpace: 'nowrap',
+                              textOverflow: 'ellipsis',
+                            }}
+                          >
                             {asset.name}
                             {asset.extension}
                           </p>
@@ -519,6 +624,7 @@ export default function Tool() {
       default:
         break;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     pnlCase,
     pnlSize.width,
@@ -531,6 +637,7 @@ export default function Tool() {
     isNewWinOpen,
     formInput,
     assetList,
+    assetLength,
   ]);
 
   useEffect(() => {

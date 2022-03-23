@@ -107,7 +107,7 @@
 }
 
 .asset {
-  width: calc(100% - 14px);
+  /* width: calc(100% - 14px); */
   height: 32px;
   background-color: none;
   padding: 0 7px;

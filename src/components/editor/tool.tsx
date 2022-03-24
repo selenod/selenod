@@ -28,11 +28,6 @@ interface IFileContents {
   fileTree: Array<IAsset>;
 }
 
-interface IParent {
-  id: number;
-  childs: Array<IParent>;
-}
-
 function GetFileContents(fileAsEntry: any, i: number): Promise<IFileContents> {
   return new Promise((resolve, reject) => {
     fileAsEntry
@@ -117,6 +112,221 @@ export default function Tool() {
   const [formInput, setFormInput] = useState<string>('');
 
   const dispatch = useDispatch();
+
+  const RenderToComponent: Function = (
+    contents: Array<IAsset>,
+    isFirst: boolean = true,
+    nth: number = 0
+  ) => {
+    if (isFirst) {
+      return (
+        <div>
+          {contents.map((content) => {
+            return (
+              <div key={content.id}>
+                <div
+                  className="asset"
+                  key={content.id}
+                  onClick={() => dispatch(setOpened(content.id))}
+                >
+                  <div>
+                    <div>
+                      {content.isOpened! ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="0.95rem"
+                          height="0.95rem"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="0.95rem"
+                          height="0.95rem"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1rem"
+                      height="1rem"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
+                    </svg>
+                    <p
+                      style={{
+                        width: 'calc(100% - 43px)',
+                        height: '100%',
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {content.name}
+                      {content.extension}
+                    </p>
+                  </div>
+                </div>
+                {RenderToComponent(content.contents, false, nth + 1).map(
+                  (content: any) => {
+                    if (content.asset.type === EAssetType.FILE) {
+                      return (
+                        <div
+                          className="asset"
+                          key={content.asset.id}
+                          style={{
+                            paddingLeft: 17 * content.nth,
+                          }}
+                        >
+                          <div>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="1rem"
+                              height="1rem"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            <p
+                              style={{
+                                width: 'calc(100% - 43px)',
+                                height: '100%',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                              }}
+                            >
+                              {content.asset.name}
+                              {content.asset.extension}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div
+                          className="asset"
+                          key={content.asset.id}
+                          style={{
+                            paddingLeft: 17 * content.nth,
+                          }}
+                          onClick={() => dispatch(setOpened(content.asset.id))}
+                        >
+                          <div>
+                            <div>
+                              {content.asset.isOpened! ? (
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="0.95rem"
+                                  height="0.95rem"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M19 9l-7 7-7-7"
+                                  />
+                                </svg>
+                              ) : (
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="0.95rem"
+                                  height="0.95rem"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M9 5l7 7-7 7"
+                                  />
+                                </svg>
+                              )}
+                            </div>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="1rem"
+                              height="1rem"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
+                            </svg>
+                            <p
+                              style={{
+                                width: 'calc(100% - 43px)',
+                                height: '100%',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                              }}
+                            >
+                              {content.asset.name}
+                              {content.asset.extension}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    }
+                  }
+                )}
+              </div>
+            );
+          })}
+        </div>
+      );
+    } else {
+      const contentsList: Array<{ asset: IAsset; nth: number }> = [];
+
+      contents.map((content) => {
+        contentsList.push({
+          asset: content,
+          nth: nth,
+        });
+
+        if (content.type === EAssetType.FOLDER) {
+          contentsList.push(
+            ...RenderToComponent(content.contents, false, nth + 1)
+          );
+        }
+
+        return false;
+      });
+
+      return contentsList;
+    }
+  };
 
   // Detect panel index changing
   useEffect(() => {
@@ -511,7 +721,11 @@ export default function Tool() {
                     }
                   }}
                 >
-                  {/* 여기서 파일트리 실행 */}
+                  {RenderToComponent(
+                    assetList.filter(
+                      (asset) => asset.type === EAssetType.FOLDER
+                    )
+                  )}
                   {/* {assetList
                     .filter((asset) => asset.type === EAssetType.FOLDER)
                     .map((asset) => (

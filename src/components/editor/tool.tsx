@@ -8,8 +8,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
 import {
   addAsset,
+  addData,
   addAssetLength,
-  IAsset,
+  IAssetList,
   setOpened,
 } from '../system/reduxSlice/assetSlice';
 import { FileDrop } from 'react-file-drop';
@@ -25,45 +26,8 @@ Modal.setAppElement('#root');
 
 interface IFileContents {
   index: number;
-  fileTree: Array<IAsset>;
-}
-
-function GetFileContents(fileAsEntry: any, i: number): Promise<IFileContents> {
-  return new Promise((resolve, reject) => {
-    fileAsEntry
-      .createReader()
-      .readEntries((entries: Array<FileSystemEntry>) => {
-        let folderIdx = 0;
-        const folderTree: Array<IAsset> = entries
-          .filter((entry: FileSystemEntry): boolean => !entry.isFile)
-          .map((entry: FileSystemEntry, idx: number): IAsset => {
-            folderIdx++;
-
-            return {
-              name: entry.name,
-              id: i + idx + 1,
-              type: EAssetType.FOLDER,
-              contents: [],
-            };
-          });
-        const fileTree: Array<IAsset> = entries
-          .filter((entry: FileSystemEntry): boolean => entry.isFile)
-          .map((entry: FileSystemEntry, idx: number): IAsset => {
-            return {
-              name: entry.name.substr(0, entry.name.lastIndexOf('.')),
-              id: i + idx + folderIdx + 1,
-              type: EAssetType.FILE,
-              extension: entry.name.substr(entry.name.lastIndexOf('.')),
-              contents: '그거아님',
-            };
-          });
-
-        resolve({
-          index: fileTree.length + folderTree.length - 1,
-          fileTree: [...folderTree, ...fileTree],
-        });
-      });
-  });
+  fileTree: Array<IAssetList>;
+  currAssetLen: number;
 }
 
 export default function Tool() {
@@ -75,6 +39,7 @@ export default function Tool() {
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const windowList = useSelector((state: RootState) => state.window.windowList);
   const assetList = useSelector((state: RootState) => state.asset.assetList);
+  const assetData = useSelector((state: RootState) => state.asset.assetData);
   const assetLength = useSelector(
     (state: RootState) => state.asset.assetLength
   );
@@ -113,219 +78,172 @@ export default function Tool() {
 
   const dispatch = useDispatch();
 
-  const RenderToComponent: Function = (
-    contents: Array<IAsset>,
-    isFirst: boolean = true,
-    nth: number = 0
-  ) => {
-    if (isFirst) {
-      return (
-        <div>
-          {contents.map((content) => {
-            return (
-              <div key={content.id}>
-                <div
-                  className="asset"
-                  key={content.id}
-                  onClick={() => dispatch(setOpened(content.id))}
-                >
-                  <div>
-                    <div>
-                      {content.isOpened! ? (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="0.95rem"
-                          height="0.95rem"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
-                      ) : (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="0.95rem"
-                          height="0.95rem"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      )}
-                    </div>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="1rem"
-                      height="1rem"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
-                    </svg>
-                    <p
-                      style={{
-                        width: 'calc(100% - 43px)',
-                        height: '100%',
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        textOverflow: 'ellipsis',
-                      }}
-                    >
-                      {content.name}
-                      {content.extension}
-                    </p>
-                  </div>
-                </div>
-                {RenderToComponent(content.contents, false, nth + 1).map(
-                  (content: any) => {
-                    if (content.asset.type === EAssetType.FILE) {
-                      return (
-                        <div
-                          className="asset"
-                          key={content.asset.id}
-                          style={{
-                            paddingLeft: 17 * content.nth,
-                          }}
-                        >
-                          <div>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="1rem"
-                              height="1rem"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            <p
-                              style={{
-                                width: 'calc(100% - 43px)',
-                                height: '100%',
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
-                              }}
-                            >
-                              {content.asset.name}
-                              {content.asset.extension}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    } else {
-                      return (
-                        <div
-                          className="asset"
-                          key={content.asset.id}
-                          style={{
-                            paddingLeft: 17 * content.nth,
-                          }}
-                          onClick={() => dispatch(setOpened(content.asset.id))}
-                        >
-                          <div>
-                            <div>
-                              {content.asset.isOpened! ? (
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="0.95rem"
-                                  height="0.95rem"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                  strokeWidth="2"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M19 9l-7 7-7-7"
-                                  />
-                                </svg>
-                              ) : (
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="0.95rem"
-                                  height="0.95rem"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                  strokeWidth="2"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M9 5l7 7-7 7"
-                                  />
-                                </svg>
-                              )}
-                            </div>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="1rem"
-                              height="1rem"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
-                            </svg>
-                            <p
-                              style={{
-                                width: 'calc(100% - 43px)',
-                                height: '100%',
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
-                              }}
-                            >
-                              {content.asset.name}
-                              {content.asset.extension}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    }
-                  }
-                )}
-              </div>
-            );
-          })}
-        </div>
-      );
-    } else {
-      const contentsList: Array<{ asset: IAsset; nth: number }> = [];
+  const GetFileContents = (
+    fileAsEntry: any,
+    i: number,
+    nth: number = 0,
+    currAssetLen: number = 0
+  ): Promise<IFileContents> => {
+    return new Promise((resolve, reject) => {
+      fileAsEntry
+        .createReader()
+        .readEntries(async (entries: Array<FileSystemEntry>) => {
+          let isEnd: boolean = true;
+          let plusToFile: number = 0;
 
-      contents.map((content) => {
-        contentsList.push({
-          asset: content,
-          nth: nth,
+          const folderTree: Array<Promise<IAssetList>> = entries
+            .filter((entry: FileSystemEntry): boolean => !entry.isFile)
+            .reduce(
+              (
+                prev: Array<Promise<IAssetList>>,
+                entry: FileSystemEntry,
+                idx: number
+              ) => {
+                let isDone: boolean = false;
+
+                return [
+                  ...prev,
+                  new Promise((resolve, reject) => {
+                    const waitUntilEnd = setInterval(() => {
+                      if (isEnd) {
+                        (async () => {
+                          clearTimeout(waitUntilEnd);
+                          isEnd = false;
+
+                          dispatch(
+                            addData({
+                              name: entry.name,
+                              id: i + idx + 1,
+                              type: EAssetType.FOLDER,
+                              nth: nth,
+                            })
+                          );
+
+                          (entry as any)
+                            .createReader()
+                            .readEntries((entries: Array<FileSystemEntry>) => {
+                              isDone = true;
+                            });
+
+                          const tree = await GetFileContents(
+                            entry,
+                            i + idx + 1,
+                            nth + 1
+                          );
+
+                          const dispatchTimeOut = setInterval(() => {
+                            if (isDone) {
+                              clearTimeout(dispatchTimeOut);
+
+                              currAssetLen += tree.currAssetLen + 2;
+                              i += tree.currAssetLen + 1;
+
+                              console.log(
+                                `name: ${entry.name} | idx: ${idx} | i: ${i} | c: ${currAssetLen} | childC: ${tree.currAssetLen}`
+                              );
+
+                              resolve({
+                                id: i + idx + 1,
+                                contents: tree.fileTree,
+                              });
+
+                              isEnd = true;
+                              plusToFile++;
+                            }
+                          }, 10);
+                        })();
+                      }
+                    }, 10);
+                  }) as Promise<IAssetList>,
+                ];
+              },
+              []
+            );
+
+          const treeArr: Array<IAssetList> = [];
+          let isDone: boolean = false;
+
+          if (folderTree.length === 0) {
+            entries
+              .filter((entry: FileSystemEntry): boolean => entry.isFile)
+              .forEach((entry: FileSystemEntry, idx: number) => {
+                currAssetLen++;
+                i++;
+                dispatch(
+                  addData({
+                    name: `${entry.name.substr(
+                      0,
+                      entry.name.lastIndexOf('.')
+                    )}`,
+                    id: i + plusToFile,
+                    type: EAssetType.FILE,
+                    extension: entry.name.substr(entry.name.lastIndexOf('.')),
+                    contents: '그거아님',
+                    nth: nth,
+                  })
+                );
+                console.log(
+                  `name: ${entry.name} | plusToFile: ${plusToFile} | i: ${i}`
+                );
+
+                treeArr.push({ id: i + plusToFile });
+              });
+
+            isDone = true;
+          } else {
+            folderTree.forEach((tree) => {
+              Promise.resolve(tree).then((asset) => {
+                treeArr.push(asset);
+                if (folderTree.length === treeArr.length) {
+                  entries
+                    .filter((entry: FileSystemEntry): boolean => entry.isFile)
+                    .forEach((entry: FileSystemEntry, idx: number) => {
+                      currAssetLen++;
+                      i++;
+                      dispatch(
+                        addData({
+                          name: entry.name.substr(
+                            0,
+                            entry.name.lastIndexOf('.')
+                          ),
+                          id: i + plusToFile,
+                          type: EAssetType.FILE,
+                          extension: entry.name.substr(
+                            entry.name.lastIndexOf('.')
+                          ),
+                          contents: '그거아님',
+                          nth: nth,
+                        })
+                      );
+
+                      console.log(
+                        `name: ${entry.name} | plusToFile: ${plusToFile} | i: ${i}`
+                      );
+
+                      treeArr.push({ id: i + plusToFile });
+                    });
+
+                  isDone = true;
+                }
+              });
+            });
+          }
+
+          const dispatchTimeOut = setInterval(() => {
+            if (isDone) {
+              clearTimeout(dispatchTimeOut);
+
+              resolve({
+                index: treeArr.length - 1,
+                fileTree: treeArr,
+                currAssetLen: currAssetLen - 1,
+              });
+            }
+          }, 10);
         });
 
-        if (content.type === EAssetType.FOLDER) {
-          contentsList.push(
-            ...RenderToComponent(content.contents, false, nth + 1)
-          );
-        }
-
-        return false;
-      });
-
-      return contentsList;
-    }
+      //파일이 폴더보다 앞에있는거 막기
+    });
   };
 
   // Detect panel index changing
@@ -386,7 +304,7 @@ export default function Tool() {
                   title="Manage Windows"
                   onClick={() => {
                     dispatch(
-                      showPopover.windowMgr === true
+                      showPopover.windowMgr
                         ? dispatch(setFalse())
                         : dispatch(setTrue())
                     );
@@ -664,7 +582,8 @@ export default function Tool() {
                   position: 'relative',
                   width: '100%',
                   height: 'calc(100% - 72px)', //bottom: 25px
-                  top: 47,
+                  top: 11,
+                  overflow: 'auto',
                 }}
               >
                 <FileDrop
@@ -687,11 +606,17 @@ export default function Tool() {
                         if (fileAsEntry.isFile) {
                           dispatch(
                             addAsset({
+                              id: index,
+                            })
+                          );
+
+                          dispatch(
+                            addData({
                               name: (files as FileList)[i].name.substr(
                                 0,
                                 (files as FileList)[i].name.lastIndexOf('.')
                               ),
-                              id: index === 0 ? 0 : index,
+                              id: index,
                               type: EAssetType.FILE,
                               extension: (files as FileList)[i].name.substr(
                                 (files as FileList)[i].name.lastIndexOf('.')
@@ -699,36 +624,89 @@ export default function Tool() {
                               contents: '그거아님',
                             })
                           );
-                        } else {
-                          const tree = await GetFileContents(
-                            fileAsEntry,
-                            index === 0 ? 0 : index
-                          );
 
+                          index++;
+                        } else {
                           dispatch(
-                            addAsset({
+                            addData({
                               name: (files as FileList)[i].name,
-                              id: index === 0 ? 0 : index,
+                              id: index,
                               type: EAssetType.FOLDER,
-                              contents: tree.fileTree,
                             })
                           );
 
-                          dispatch(addAssetLength(tree.index + 1));
-                          index += tree.index + 2;
+                          const tree = await GetFileContents(
+                            fileAsEntry,
+                            index
+                          );
+
+                          console.log(tree.currAssetLen + 2);
+
+                          const fileArr: Array<IAssetList> = [];
+                          const currentIndex: number = tree.index + 1;
+                          let isDone: boolean = false;
+
+                          if (tree.fileTree.length === 0) {
+                            isDone = true;
+                          } else {
+                            tree.fileTree.forEach((file) =>
+                              Promise.resolve(file).then((f) => {
+                                fileArr.push(f);
+                                isDone = fileArr.length === currentIndex;
+                              })
+                            );
+                          }
+
+                          const dispatchTimeOut = setInterval(() => {
+                            if (isDone) {
+                              clearTimeout(dispatchTimeOut);
+                              dispatch(
+                                addAsset({
+                                  id: index,
+                                  contents: fileArr,
+                                })
+                              );
+                              dispatch(addAssetLength(tree.currAssetLen + 1));
+                              index += tree.index + 1;
+                            }
+                          }, 10);
                         }
                       }
                     }
                   }}
                 >
-                  {RenderToComponent(
-                    assetList.filter(
-                      (asset) => asset.type === EAssetType.FOLDER
-                    )
-                  )}
-                  {/* {assetList
-                    .filter((asset) => asset.type === EAssetType.FOLDER)
-                    .map((asset) => (
+                  {assetData.map((asset) =>
+                    asset.type === EAssetType.FILE ? (
+                      <div className="asset" key={asset.id}>
+                        <div>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="1rem"
+                            height="1rem"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <p
+                            style={{
+                              width: 'calc(100% - 43px)',
+                              height: '100%',
+                              overflow: 'hidden',
+                              whiteSpace: 'nowrap',
+                              textOverflow: 'ellipsis',
+                            }}
+                          >
+                            {asset.name}
+                            {asset.extension}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
                       <div
                         className="asset"
                         key={asset.id}
@@ -788,45 +766,14 @@ export default function Tool() {
                               textOverflow: 'ellipsis',
                             }}
                           >
+                            {asset.id}
                             {asset.name}
                             {asset.extension}
                           </p>
                         </div>
                       </div>
-                    ))} */}
-                  {assetList
-                    .filter((asset) => asset.type === EAssetType.FILE)
-                    .map((asset) => (
-                      <div className="asset" key={asset.id}>
-                        <div>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="1rem"
-                            height="1rem"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          <p
-                            style={{
-                              width: 'calc(100% - 43px)',
-                              height: '100%',
-                              overflow: 'hidden',
-                              whiteSpace: 'nowrap',
-                              textOverflow: 'ellipsis',
-                            }}
-                          >
-                            {asset.name}
-                            {asset.extension}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                    )
+                  )}
                 </FileDrop>
               </div>
             </nav>
@@ -855,7 +802,7 @@ export default function Tool() {
   ]);
 
   useEffect(() => {
-    if (showPopover.option === true) {
+    if (showPopover.option) {
       setShortcutColor([
         'var(--shortcutHoverColor)',
         shortcutColor[1],
@@ -907,7 +854,7 @@ export default function Tool() {
                 style={{ backgroundColor: shortcutColor[0] }}
                 onClick={() => {
                   dispatch(
-                    showPopover.option === true
+                    showPopover.option
                       ? dispatch(setFalse())
                       : dispatch(setTrue())
                   );

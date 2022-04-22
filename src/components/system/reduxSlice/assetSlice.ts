@@ -9,6 +9,7 @@ export interface IAsset {
   extension?: string;
   isOpened?: boolean;
   nth: number;
+  isDisabled?: boolean;
 }
 
 export interface IAssetList {
@@ -32,6 +33,9 @@ export const assetSlice = createSlice({
   name: 'asset',
   initialState,
   reducers: {
+    addAssetWithoutAddLength: (state, action) => {
+      state.assetList.push(action.payload);
+    },
     addAsset: (state, action) => {
       state.assetLength += 1;
       state.assetList.push(action.payload);
@@ -42,6 +46,38 @@ export const assetSlice = createSlice({
     setOpened: (state, action) => {
       state.assetData.find((asset) => asset.id === action.payload)!.isOpened =
         !state.assetData.find((asset) => asset.id === action.payload)!.isOpened;
+
+      const recursive = (assetId: number, bool: boolean) => {
+        if (
+          state.assetList.find((asset) => asset.id === assetId)?.contents !==
+          undefined
+        ) {
+          state.assetList
+            .find((asset) => asset.id === assetId)!
+            .contents?.forEach((content) => {
+              if (bool) {
+                state.assetData.find(
+                  (asset) => asset.id === content.id
+                )!.isDisabled = bool;
+              } else {
+                if (
+                  state.assetData.find((asset) => asset.id === assetId)
+                    ?.isOpened
+                ) {
+                  state.assetData.find(
+                    (asset) => asset.id === content.id
+                  )!.isDisabled = false;
+                }
+              }
+              recursive(content.id, bool);
+            });
+        }
+      };
+
+      recursive(
+        state.assetList.find((asset) => asset.id === action.payload)!.id,
+        !state.assetData.find((asset) => asset.id === action.payload)!.isOpened
+      );
     },
     addAssetLength: (state, action) => {
       state.assetLength += action.payload;
@@ -49,7 +85,12 @@ export const assetSlice = createSlice({
   },
 });
 
-export const { addAsset, addData, addAssetLength, setOpened } =
-  assetSlice.actions;
+export const {
+  addAsset,
+  addAssetWithoutAddLength,
+  addData,
+  addAssetLength,
+  setOpened,
+} = assetSlice.actions;
 
 export default assetSlice.reducer;

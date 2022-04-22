@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
 import {
   addAsset,
+  addAssetWithoutAddLength,
   addData,
   addAssetLength,
   IAssetList,
@@ -116,6 +117,7 @@ export default function Tool() {
                               id: i + idx + 1,
                               type: EAssetType.FOLDER,
                               nth: nth,
+                              isOpened: true,
                             })
                           );
 
@@ -131,6 +133,15 @@ export default function Tool() {
                             nth + 1
                           );
 
+                          dispatch(
+                            addAssetWithoutAddLength({
+                              id: i + idx + 1,
+                              contents: tree.fileTree,
+                            })
+                          );
+
+                          console.log(tree.fileTree);
+
                           const dispatchTimeOut = setInterval(() => {
                             if (isDone) {
                               clearTimeout(dispatchTimeOut);
@@ -138,12 +149,12 @@ export default function Tool() {
                               currAssetLen += tree.currAssetLen + 2;
                               i += tree.currAssetLen + 1;
 
-                              console.log(
-                                `name: ${entry.name} | idx: ${idx} | i: ${i} | c: ${currAssetLen} | childC: ${tree.currAssetLen}`
-                              );
+                              // console.log(
+                              //   `name: ${entry.name} | idx: ${idx} | i: ${i} | c: ${currAssetLen} | childC: ${tree.currAssetLen}`
+                              // );
 
                               resolve({
-                                id: i + idx + 1,
+                                id: i + idx - tree.currAssetLen,
                                 contents: tree.fileTree,
                               });
 
@@ -182,9 +193,15 @@ export default function Tool() {
                     nth: nth,
                   })
                 );
-                console.log(
-                  `name: ${entry.name} | plusToFile: ${plusToFile} | i: ${i}`
+
+                dispatch(
+                  addAssetWithoutAddLength({
+                    id: i + plusToFile,
+                  })
                 );
+                // console.log(
+                //   `name: ${entry.name} | plusToFile: ${plusToFile} | i: ${i}`
+                // );
 
                 treeArr.push({ id: i + plusToFile });
               });
@@ -216,9 +233,15 @@ export default function Tool() {
                         })
                       );
 
-                      console.log(
-                        `name: ${entry.name} | plusToFile: ${plusToFile} | i: ${i}`
+                      dispatch(
+                        addAssetWithoutAddLength({
+                          id: i + plusToFile,
+                        })
                       );
+
+                      // console.log(
+                      //   `name: ${entry.name} | plusToFile: ${plusToFile} | i: ${i}`
+                      // );
 
                       treeArr.push({ id: i + plusToFile });
                     });
@@ -241,8 +264,6 @@ export default function Tool() {
             }
           }, 10);
         });
-
-      //파일이 폴더보다 앞에있는거 막기
     });
   };
 
@@ -632,6 +653,7 @@ export default function Tool() {
                               name: (files as FileList)[i].name,
                               id: index,
                               type: EAssetType.FOLDER,
+                              isOpened: true,
                             })
                           );
 
@@ -639,8 +661,6 @@ export default function Tool() {
                             fileAsEntry,
                             index
                           );
-
-                          console.log(tree.currAssetLen + 2);
 
                           const fileArr: Array<IAssetList> = [];
                           const currentIndex: number = tree.index + 1;
@@ -673,106 +693,122 @@ export default function Tool() {
                         }
                       }
                     }
+
+                    console.log(assetList);
+                    console.log(assetData);
                   }}
                 >
                   {assetData.map((asset) =>
-                    asset.type === EAssetType.FILE ? (
-                      <div className="asset" key={asset.id}>
-                        <div>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="1rem"
-                            height="1rem"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          <p
-                            style={{
-                              width: 'calc(100% - 43px)',
-                              height: '100%',
-                              overflow: 'hidden',
-                              whiteSpace: 'nowrap',
-                              textOverflow: 'ellipsis',
-                            }}
-                          >
-                            {asset.name}
-                            {asset.extension}
-                          </p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div
-                        className="asset"
-                        key={asset.id}
-                        onClick={() => dispatch(setOpened(asset.id))}
-                      >
-                        <div>
+                    asset.isDisabled !== true ? (
+                      asset.type === EAssetType.FILE ? (
+                        <div
+                          className="asset"
+                          key={asset.id}
+                          style={{
+                            paddingLeft: asset.nth * 10 + 7,
+                          }}
+                        >
                           <div>
-                            {asset.isOpened! ? (
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="0.95rem"
-                                height="0.95rem"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M19 9l-7 7-7-7"
-                                />
-                              </svg>
-                            ) : (
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="0.95rem"
-                                height="0.95rem"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M9 5l7 7-7 7"
-                                />
-                              </svg>
-                            )}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="1rem"
+                              height="1rem"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            <p
+                              style={{
+                                width: 'calc(100% - 43px)',
+                                height: '100%',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                              }}
+                            >
+                              {asset.id}
+                              {asset.name}
+                              {asset.extension}
+                            </p>
                           </div>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="1rem"
-                            height="1rem"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
-                          </svg>
-                          <p
-                            style={{
-                              width: 'calc(100% - 43px)',
-                              height: '100%',
-                              overflow: 'hidden',
-                              whiteSpace: 'nowrap',
-                              textOverflow: 'ellipsis',
-                            }}
-                          >
-                            {asset.id}
-                            {asset.name}
-                            {asset.extension}
-                          </p>
                         </div>
-                      </div>
-                    )
+                      ) : (
+                        <div
+                          className="asset"
+                          key={asset.id}
+                          onClick={() => dispatch(setOpened(asset.id))}
+                          style={{
+                            paddingLeft:
+                              asset.nth === undefined ? 7 : asset.nth * 10 + 7,
+                          }}
+                        >
+                          <div>
+                            <div>
+                              {asset.isOpened! ? (
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="0.95rem"
+                                  height="0.95rem"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M19 9l-7 7-7-7"
+                                  />
+                                </svg>
+                              ) : (
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="0.95rem"
+                                  height="0.95rem"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M9 5l7 7-7 7"
+                                  />
+                                </svg>
+                              )}
+                            </div>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="1rem"
+                              height="1rem"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
+                            </svg>
+                            <p
+                              style={{
+                                width: 'calc(100% - 43px)',
+                                height: '100%',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                              }}
+                            >
+                              {asset.id}
+                              {asset.name}
+                              {asset.extension}
+                            </p>
+                          </div>
+                        </div>
+                      )
+                    ) : null
                   )}
                 </FileDrop>
               </div>
@@ -799,6 +835,7 @@ export default function Tool() {
     formInput,
     assetList,
     assetLength,
+    assetData,
   ]);
 
   useEffect(() => {

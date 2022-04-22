@@ -82,7 +82,7 @@ export default function Tool() {
   const GetFileContents = (
     fileAsEntry: any,
     i: number,
-    nth: number = 0,
+    nth: number = 1,
     currAssetLen: number = 0
   ): Promise<IFileContents> => {
     return new Promise((resolve, reject) => {

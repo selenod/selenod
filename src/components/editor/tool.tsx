@@ -140,8 +140,6 @@ export default function Tool() {
                             })
                           );
 
-                          console.log(tree.fileTree);
-
                           const dispatchTimeOut = setInterval(() => {
                             if (isDone) {
                               clearTimeout(dispatchTimeOut);
@@ -693,9 +691,6 @@ export default function Tool() {
                         }
                       }
                     }
-
-                    console.log(assetList);
-                    console.log(assetData);
                   }}
                 >
                   {assetData.map((asset) =>
@@ -731,7 +726,6 @@ export default function Tool() {
                                 textOverflow: 'ellipsis',
                               }}
                             >
-                              {asset.id}
                               {asset.name}
                               {asset.extension}
                             </p>
@@ -801,7 +795,6 @@ export default function Tool() {
                                 textOverflow: 'ellipsis',
                               }}
                             >
-                              {asset.id}
                               {asset.name}
                               {asset.extension}
                             </p>

@@ -58,11 +58,13 @@ export const assetSlice = createSlice({
               if (bool) {
                 state.assetData.find(
                   (asset) => asset.id === content.id
-                )!.isDisabled = bool;
+                )!.isDisabled = true;
               } else {
                 if (
                   state.assetData.find((asset) => asset.id === assetId)
-                    ?.isOpened
+                    ?.isOpened &&
+                  !state.assetData.find((asset) => asset.id === assetId)
+                    ?.isDisabled
                 ) {
                   state.assetData.find(
                     (asset) => asset.id === content.id

@@ -178,6 +178,7 @@ export default function Tool() {
               .forEach((entry: FileSystemEntry, idx: number) => {
                 currAssetLen++;
                 i++;
+
                 dispatch(
                   addData({
                     name: `${entry.name.substr(
@@ -215,6 +216,7 @@ export default function Tool() {
                     .forEach((entry: FileSystemEntry, idx: number) => {
                       currAssetLen++;
                       i++;
+
                       dispatch(
                         addData({
                           name: entry.name.substr(
@@ -700,7 +702,8 @@ export default function Tool() {
                           className="asset"
                           key={asset.id}
                           style={{
-                            paddingLeft: asset.nth * 10 + 7,
+                            paddingLeft:
+                              asset.nth === undefined ? 7 : asset.nth * 10 + 7,
                           }}
                         >
                           <div>

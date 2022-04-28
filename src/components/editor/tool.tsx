@@ -45,8 +45,16 @@ export default function Tool() {
     (state: RootState) => state.asset.assetLength
   );
 
+  if (
+    windowList.find(
+      (w) => w.id === parseInt(window.sessionStorage.getItem('current_window')!)
+    ) === undefined
+  ) {
+    window.sessionStorage.setItem('current_window', '0');
+  }
+
   const [currentWindow, setCurrentWindow] = useState<number>(
-    window.sessionStorage.getItem('current_window')! !== null
+    window.sessionStorage.getItem('current_window') !== null
       ? parseInt(window.sessionStorage.getItem('current_window')!)
       : windowList[0].id
   );
@@ -653,51 +661,56 @@ export default function Tool() {
                           );
 
                           reader.readAsText(files![i]);
+                        } else {
+                          toast.error(
+                            `The folder '${
+                              files![i].name
+                            }' couldn't be uploaded because it is unable to upload folders as asset.`
+                          );
+
+                          // dispatch(
+                          //   addData({
+                          //     name: files![i].name,
+                          //     id: index,
+                          //     type: EAssetType.FOLDER,
+                          //     isOpened: true,
+                          //   })
+                          // );
+
+                          // const tree = await GetFileContents(
+                          //   fileAsEntry,
+                          //   index
+                          // );
+
+                          // const fileArr: Array<IAssetList> = [];
+                          // const currentIndex: number = tree.index + 1;
+                          // let isDone: boolean = false;
+
+                          // if (tree.fileTree.length === 0) {
+                          //   isDone = true;
+                          // } else {
+                          //   tree.fileTree.forEach((file) =>
+                          //     Promise.resolve(file).then((f) => {
+                          //       fileArr.push(f);
+                          //       isDone = fileArr.length === currentIndex;
+                          //     })
+                          //   );
+                          // }
+
+                          // const dispatchTimeOut = setInterval(() => {
+                          //   if (isDone) {
+                          //     clearTimeout(dispatchTimeOut);
+                          //     dispatch(
+                          //       addAsset({
+                          //         id: index,
+                          //         contents: fileArr,
+                          //       })
+                          //     );
+                          //     dispatch(addAssetLength(tree.currAssetLen + 1));
+                          //     index += tree.index + 1;
+                          //   }
+                          // }, 10);
                         }
-                        // else {
-                        //   dispatch(
-                        //     addData({
-                        //       name: files![i].name,
-                        //       id: index,
-                        //       type: EAssetType.FOLDER,
-                        //       isOpened: true,
-                        //     })
-                        //   );
-
-                        //   const tree = await GetFileContents(
-                        //     fileAsEntry,
-                        //     index
-                        //   );
-
-                        //   const fileArr: Array<IAssetList> = [];
-                        //   const currentIndex: number = tree.index + 1;
-                        //   let isDone: boolean = false;
-
-                        //   if (tree.fileTree.length === 0) {
-                        //     isDone = true;
-                        //   } else {
-                        //     tree.fileTree.forEach((file) =>
-                        //       Promise.resolve(file).then((f) => {
-                        //         fileArr.push(f);
-                        //         isDone = fileArr.length === currentIndex;
-                        //       })
-                        //     );
-                        //   }
-
-                        //   const dispatchTimeOut = setInterval(() => {
-                        //     if (isDone) {
-                        //       clearTimeout(dispatchTimeOut);
-                        //       dispatch(
-                        //         addAsset({
-                        //           id: index,
-                        //           contents: fileArr,
-                        //         })
-                        //       );
-                        //       dispatch(addAssetLength(tree.currAssetLen + 1));
-                        //       index += tree.index + 1;
-                        //     }
-                        //   }, 10);
-                        // }
                       }
                     }
                   }}

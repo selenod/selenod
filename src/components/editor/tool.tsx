@@ -85,6 +85,16 @@ export default function Tool() {
     nth: number = 1,
     currAssetLen: number = 0
   ): Promise<IFileContents> => {
+    (fileAsEntry as FileSystemEntry).filesystem.root.getFile(
+      undefined,
+      undefined,
+      (fileEntry: any) => {
+        fileEntry.file((dictFile: any) => {
+          console.log(dictFile);
+        });
+      }
+    );
+
     return new Promise((resolve, reject) => {
       fileAsEntry
         .createReader()
@@ -121,11 +131,9 @@ export default function Tool() {
                             })
                           );
 
-                          (entry as any)
-                            .createReader()
-                            .readEntries((entries: Array<FileSystemEntry>) => {
-                              isDone = true;
-                            });
+                          (entry as any).createReader().readEntries(() => {
+                            isDone = true;
+                          });
 
                           const tree = await GetFileContents(
                             entry,
@@ -146,10 +154,6 @@ export default function Tool() {
 
                               currAssetLen += tree.currAssetLen + 2;
                               i += tree.currAssetLen + 1;
-
-                              // console.log(
-                              //   `name: ${entry.name} | idx: ${idx} | i: ${i} | c: ${currAssetLen} | childC: ${tree.currAssetLen}`
-                              // );
 
                               resolve({
                                 id: i + idx - tree.currAssetLen,
@@ -198,9 +202,6 @@ export default function Tool() {
                     id: i + plusToFile,
                   })
                 );
-                // console.log(
-                //   `name: ${entry.name} | plusToFile: ${plusToFile} | i: ${i}`
-                // );
 
                 treeArr.push({ id: i + plusToFile });
               });
@@ -238,10 +239,6 @@ export default function Tool() {
                           id: i + plusToFile,
                         })
                       );
-
-                      // console.log(
-                      //   `name: ${entry.name} | plusToFile: ${plusToFile} | i: ${i}`
-                      // );
 
                       treeArr.push({ id: i + plusToFile });
                     });
@@ -467,7 +464,7 @@ export default function Tool() {
                         paddingBottom: '.7rem',
                       }}
                     >
-                      Add window which name..
+                      Add window named..
                     </p>
                     <input
                       style={{
@@ -625,72 +622,82 @@ export default function Tool() {
                       const fileAsEntry = entryArr[i];
                       if (fileAsEntry) {
                         if (fileAsEntry.isFile) {
-                          dispatch(
-                            addAsset({
-                              id: index,
-                            })
-                          );
-
-                          dispatch(
-                            addData({
-                              name: (files as FileList)[i].name.substr(
-                                0,
-                                (files as FileList)[i].name.lastIndexOf('.')
-                              ),
-                              id: index,
-                              type: EAssetType.FILE,
-                              extension: (files as FileList)[i].name.substr(
-                                (files as FileList)[i].name.lastIndexOf('.')
-                              ),
-                              contents: '그거아님',
-                            })
-                          );
-
                           index++;
-                        } else {
-                          dispatch(
-                            addData({
-                              name: (files as FileList)[i].name,
-                              id: index,
-                              type: EAssetType.FOLDER,
-                              isOpened: true,
-                            })
-                          );
 
-                          const tree = await GetFileContents(
-                            fileAsEntry,
-                            index
-                          );
+                          const reader = new FileReader();
 
-                          const fileArr: Array<IAssetList> = [];
-                          const currentIndex: number = tree.index + 1;
-                          let isDone: boolean = false;
-
-                          if (tree.fileTree.length === 0) {
-                            isDone = true;
-                          } else {
-                            tree.fileTree.forEach((file) =>
-                              Promise.resolve(file).then((f) => {
-                                fileArr.push(f);
-                                isDone = fileArr.length === currentIndex;
-                              })
-                            );
-                          }
-
-                          const dispatchTimeOut = setInterval(() => {
-                            if (isDone) {
-                              clearTimeout(dispatchTimeOut);
+                          reader.addEventListener(
+                            'load',
+                            (e: ProgressEvent<FileReader>) => {
                               dispatch(
                                 addAsset({
-                                  id: index,
-                                  contents: fileArr,
+                                  id: index - 1,
                                 })
                               );
-                              dispatch(addAssetLength(tree.currAssetLen + 1));
-                              index += tree.index + 1;
+
+                              dispatch(
+                                addData({
+                                  name: files![i].name.substr(
+                                    0,
+                                    files![i].name.lastIndexOf('.')
+                                  ),
+                                  id: index - 1,
+                                  type: EAssetType.FILE,
+                                  extension: files![i].name.substr(
+                                    files![i].name.lastIndexOf('.')
+                                  ),
+                                  contents: e.target?.result,
+                                })
+                              );
                             }
-                          }, 10);
+                          );
+
+                          reader.readAsText(files![i]);
                         }
+                        // else {
+                        //   dispatch(
+                        //     addData({
+                        //       name: files![i].name,
+                        //       id: index,
+                        //       type: EAssetType.FOLDER,
+                        //       isOpened: true,
+                        //     })
+                        //   );
+
+                        //   const tree = await GetFileContents(
+                        //     fileAsEntry,
+                        //     index
+                        //   );
+
+                        //   const fileArr: Array<IAssetList> = [];
+                        //   const currentIndex: number = tree.index + 1;
+                        //   let isDone: boolean = false;
+
+                        //   if (tree.fileTree.length === 0) {
+                        //     isDone = true;
+                        //   } else {
+                        //     tree.fileTree.forEach((file) =>
+                        //       Promise.resolve(file).then((f) => {
+                        //         fileArr.push(f);
+                        //         isDone = fileArr.length === currentIndex;
+                        //       })
+                        //     );
+                        //   }
+
+                        //   const dispatchTimeOut = setInterval(() => {
+                        //     if (isDone) {
+                        //       clearTimeout(dispatchTimeOut);
+                        //       dispatch(
+                        //         addAsset({
+                        //           id: index,
+                        //           contents: fileArr,
+                        //         })
+                        //       );
+                        //       dispatch(addAssetLength(tree.currAssetLen + 1));
+                        //       index += tree.index + 1;
+                        //     }
+                        //   }, 10);
+                        // }
                       }
                     }
                   }}
@@ -704,6 +711,9 @@ export default function Tool() {
                           style={{
                             paddingLeft:
                               asset.nth === undefined ? 7 : asset.nth * 10 + 7,
+                          }}
+                          onClick={() => {
+                            console.log(asset.contents);
                           }}
                         >
                           <div>

@@ -938,10 +938,25 @@ export default function Tool() {
           </li>
           <div className="hl" />
           <li>
+            {pnlCase === 0 ? (
+              <div
+                style={{
+                  position: 'relative',
+                  width: 3,
+                  height: 50,
+                  left: -7.5,
+                  backgroundColor: '#7f52ff',
+                  borderRadius: '0 1rem 1rem 0',
+                }}
+              />
+            ) : null}
             <button
               title="Explore"
               onClick={() => (pnlCase === 0 ? setPnlCase(null) : setPnlCase(0))}
-              style={{ backgroundColor: shortcutColor[1] }}
+              style={{
+                backgroundColor: shortcutColor[1],
+                top: pnlCase === 0 ? -50 : 'auto',
+              }}
               onPointerOver={() =>
                 setShortcutColor([
                   shortcutColor[0],
@@ -974,10 +989,25 @@ export default function Tool() {
             </button>
           </li>
           <li>
+            {pnlCase === 1 ? (
+              <div
+                style={{
+                  position: 'relative',
+                  width: 3,
+                  height: 50,
+                  left: -7.5,
+                  backgroundColor: '#7f52ff',
+                  borderRadius: '0 1rem 1rem 0',
+                }}
+              />
+            ) : null}
             <button
               title="Asset"
               onClick={() => (pnlCase === 1 ? setPnlCase(null) : setPnlCase(1))}
-              style={{ backgroundColor: shortcutColor[2] }}
+              style={{
+                backgroundColor: shortcutColor[2],
+                top: pnlCase === 1 ? -50 : 0,
+              }}
               onPointerOver={() =>
                 setShortcutColor([
                   shortcutColor[0],

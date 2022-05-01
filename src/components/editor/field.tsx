@@ -31,6 +31,7 @@ export default function Field(data: IToolData) {
           color: 'var(--textSubBlackColor)',
           fontSize: '1.1rem',
           textAlign: 'left',
+          width: 'calc(100% - 30px)',
         }}
       >
         {currentOpenedPanel === null

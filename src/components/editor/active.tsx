@@ -43,7 +43,7 @@ export default function Active(data: IToolData) {
                     width: '100%',
                     height: 2,
                     top: 'calc(100% - 3px)',
-                    backgroundColor: 'var(--lineColor)',
+                    backgroundColor: '#956fff',
                     paddingRight: 24,
                     borderRadius: '1rem 1rem 0 0',
                   }}

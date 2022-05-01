@@ -10,15 +10,16 @@ import {
   addAsset,
   addAssetWithoutAddLength,
   addData,
-  addAssetLength,
   IAssetList,
   setOpened,
+  togglePanelOpened,
 } from '../system/reduxSlice/assetSlice';
 import { FileDrop } from 'react-file-drop';
 import toast from 'react-hot-toast';
 import Modal from 'react-modal';
 
 import Active from './active';
+import Field from './field';
 import { PopContent } from '../system/popcontent';
 import { EContentType, EAssetType } from '../../enum';
 import { createWindow } from '../system/reduxSlice/windowSlice';
@@ -93,16 +94,6 @@ export default function Tool() {
     nth: number = 1,
     currAssetLen: number = 0
   ): Promise<IFileContents> => {
-    (fileAsEntry as FileSystemEntry).filesystem.root.getFile(
-      undefined,
-      undefined,
-      (fileEntry: any) => {
-        fileEntry.file((dictFile: any) => {
-          console.log(dictFile);
-        });
-      }
-    );
-
     return new Promise((resolve, reject) => {
       fileAsEntry
         .createReader()
@@ -373,7 +364,7 @@ export default function Tool() {
               </Popover>
               <div
                 className="tool-btn"
-                title="Add Node"
+                title="Create Node"
                 style={{
                   float: 'right',
                   backgroundColor: 'var(--panelPathColor)',
@@ -400,7 +391,7 @@ export default function Tool() {
               </div>
               <div
                 className="tool-btn"
-                title="Add Window"
+                title="Create New Window"
                 style={{
                   float: 'right',
                   backgroundColor: 'var(--panelPathColor)',
@@ -423,17 +414,13 @@ export default function Tool() {
                   viewBox="0 0 20 20"
                   fill="var(--textGrayColor)"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V8z"
-                    clipRule="evenodd"
-                  />
+                  <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
                 </svg>
               </div>
               <Modal
                 closeTimeoutMS={150}
                 isOpen={isNewWinOpen}
-                contentLabel="Add Window"
+                contentLabel="Create New Window"
                 style={{
                   content: {
                     width: '400px',
@@ -442,7 +429,7 @@ export default function Tool() {
                 }}
               >
                 <div className="header">
-                  <p>Add Window</p>
+                  <p>Create New Window</p>
                   <div title="Cancel" onClick={() => setNewWinOpen(false)}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -472,7 +459,7 @@ export default function Tool() {
                         paddingBottom: '.7rem',
                       }}
                     >
-                      Add window named..
+                      Create new window named..
                     </p>
                     <input
                       style={{
@@ -521,7 +508,7 @@ export default function Tool() {
                         setFormInput('');
                       }}
                     >
-                      Add Window
+                      Create Window
                     </button>
                   </div>
                 </div>
@@ -543,7 +530,7 @@ export default function Tool() {
             <nav className="pnl-asset">
               <div
                 className="tool-btn"
-                title="Add Folder"
+                title="Upload File From Local"
                 style={{
                   float: 'right',
                   backgroundColor: 'var(--panelPathColor)',
@@ -565,15 +552,13 @@ export default function Tool() {
                   viewBox="0 0 20 20"
                   fill="var(--textGrayColor)"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-5L9 4H4zm7 5a1 1 0 10-2 0v1H8a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V9z"
-                  />
+                  <path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z" />
+                  <path d="M9 13h2v5a1 1 0 11-2 0v-5z" />
                 </svg>
               </div>
               <div
                 className="tool-btn"
-                title="Add Asset"
+                title="Create Asset"
                 style={{
                   float: 'right',
                   backgroundColor: 'var(--panelPathColor)',
@@ -716,118 +701,119 @@ export default function Tool() {
                   }}
                 >
                   {assetData.map((asset) =>
-                    asset.isDisabled !== true ? (
-                      asset.type === EAssetType.FILE ? (
-                        <div
-                          className="asset"
-                          key={asset.id}
-                          style={{
-                            paddingLeft:
-                              asset.nth === undefined ? 7 : asset.nth * 10 + 7,
-                          }}
-                          onClick={() => {
-                            console.log(asset.contents);
-                          }}
-                        >
-                          <div>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="1rem"
-                              height="1rem"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            <p
-                              style={{
-                                width: 'calc(100% - 43px)',
-                                height: '100%',
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
-                              }}
-                            >
-                              {asset.name}
-                              {asset.extension}
-                            </p>
-                          </div>
+                    !asset.isDisabled ? (
+                      // asset.type === EAssetType.FILE ? (
+                      <div
+                        className="asset"
+                        key={asset.id}
+                        onClick={() => {
+                          dispatch(
+                            togglePanelOpened({
+                              id: asset.id,
+                              toggle: true,
+                            })
+                          );
+                        }}
+                      >
+                        <div>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="1rem"
+                            height="1rem"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <p
+                            style={{
+                              width: 'calc(100% - 43px)',
+                              height: '100%',
+                              overflow: 'hidden',
+                              whiteSpace: 'nowrap',
+                              textOverflow: 'ellipsis',
+                            }}
+                          >
+                            {asset.name}
+                            {asset.extension}
+                          </p>
                         </div>
-                      ) : (
-                        <div
-                          className="asset"
-                          key={asset.id}
-                          onClick={() => dispatch(setOpened(asset.id))}
-                          style={{
-                            paddingLeft:
-                              asset.nth === undefined ? 7 : asset.nth * 10 + 7,
-                          }}
-                        >
-                          <div>
-                            <div>
-                              {asset.isOpened! ? (
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="0.95rem"
-                                  height="0.95rem"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                  strokeWidth="2"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M19 9l-7 7-7-7"
-                                  />
-                                </svg>
-                              ) : (
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="0.95rem"
-                                  height="0.95rem"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                  strokeWidth="2"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M9 5l7 7-7 7"
-                                  />
-                                </svg>
-                              )}
-                            </div>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="1rem"
-                              height="1rem"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
-                            </svg>
-                            <p
-                              style={{
-                                width: 'calc(100% - 43px)',
-                                height: '100%',
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
-                              }}
-                            >
-                              {asset.name}
-                              {asset.extension}
-                            </p>
-                          </div>
-                        </div>
-                      )
-                    ) : null
+                      </div>
+                    ) : // ) : (
+                    //   <div
+                    //     className="asset"
+                    //     key={asset.id}
+                    //     onClick={() => dispatch(setOpened(asset.id))}
+                    //     style={{
+                    //       paddingLeft:
+                    //         asset.nth === undefined ? 7 : asset.nth * 10,
+                    //     }}
+                    //   >
+                    //     <div>
+                    //       <div>
+                    //         {asset.isOpened! ? (
+                    //           <svg
+                    //             xmlns="http://www.w3.org/2000/svg"
+                    //             width="0.95rem"
+                    //             height="0.95rem"
+                    //             fill="none"
+                    //             viewBox="0 0 24 24"
+                    //             stroke="currentColor"
+                    //             strokeWidth="2"
+                    //           >
+                    //             <path
+                    //               strokeLinecap="round"
+                    //               strokeLinejoin="round"
+                    //               d="M19 9l-7 7-7-7"
+                    //             />
+                    //           </svg>
+                    //         ) : (
+                    //           <svg
+                    //             xmlns="http://www.w3.org/2000/svg"
+                    //             width="0.95rem"
+                    //             height="0.95rem"
+                    //             fill="none"
+                    //             viewBox="0 0 24 24"
+                    //             stroke="currentColor"
+                    //             strokeWidth="2"
+                    //           >
+                    //             <path
+                    //               strokeLinecap="round"
+                    //               strokeLinejoin="round"
+                    //               d="M9 5l7 7-7 7"
+                    //             />
+                    //           </svg>
+                    //         )}
+                    //       </div>
+                    //       <svg
+                    //         xmlns="http://www.w3.org/2000/svg"
+                    //         width="1rem"
+                    //         height="1rem"
+                    //         viewBox="0 0 20 20"
+                    //         fill="currentColor"
+                    //       >
+                    //         <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
+                    //       </svg>
+                    //       <p
+                    //         style={{
+                    //           width: 'calc(100% - 43px)',
+                    //           height: '100%',
+                    //           overflow: 'hidden',
+                    //           whiteSpace: 'nowrap',
+                    //           textOverflow: 'ellipsis',
+                    //         }}
+                    //       >
+                    //         {asset.name}
+                    //         {asset.extension}
+                    //       </p>
+                    //     </div>
+                    //   </div>
+                    // )
+                    null
                   )}
                 </FileDrop>
               </div>
@@ -1059,6 +1045,7 @@ export default function Tool() {
         {pnlComponent}
       </Resizable>
       <Active {...{ panelWidth: prgWidth }} />
+      <Field {...{ panelWidth: prgWidth }} />
     </div>
   );
 }

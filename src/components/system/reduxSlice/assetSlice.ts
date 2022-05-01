@@ -21,12 +21,16 @@ export interface AssetState {
   assetList: Array<IAssetList>;
   assetData: Array<IAsset>;
   assetLength: number;
+  openedPanelList: Array<number>;
+  currentOpenedPanel: number | null;
 }
 
 const initialState: AssetState = {
   assetList: [],
   assetData: [],
   assetLength: 0,
+  openedPanelList: [],
+  currentOpenedPanel: null,
 };
 
 export const assetSlice = createSlice({
@@ -84,6 +88,28 @@ export const assetSlice = createSlice({
     addAssetLength: (state, action) => {
       state.assetLength += action.payload;
     },
+    togglePanelOpened: (state, action) => {
+      if (!action.payload.toggle) {
+        if (state.openedPanelList.includes(action.payload.id)) {
+          state.openedPanelList = state.openedPanelList.filter(
+            (asset) => asset !== action.payload.id
+          );
+          state.currentOpenedPanel =
+            state.currentOpenedPanel === action.payload.id
+              ? state.openedPanelList[state.openedPanelList.length - 1]
+              : state.currentOpenedPanel;
+        }
+      } else {
+        if (!state.openedPanelList.includes(action.payload.id)) {
+          state.openedPanelList.push(action.payload.id);
+        }
+
+        state.currentOpenedPanel = action.payload.id;
+      }
+    },
+    setOpenedPanel: (state, action) => {
+      state.currentOpenedPanel = action.payload;
+    },
   },
 });
 
@@ -93,6 +119,8 @@ export const {
   addData,
   addAssetLength,
   setOpened,
+  togglePanelOpened,
+  setOpenedPanel,
 } = assetSlice.actions;
 
 export default assetSlice.reducer;

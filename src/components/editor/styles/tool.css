@@ -110,7 +110,7 @@
   /* width: calc(100% - 14px); */
   height: 32px;
   background-color: none;
-  padding: 0 7px;
+  padding: 0 10px;
   transition: ease-out background-color 100ms;
   border-radius: 6px;
   cursor: pointer;
@@ -141,13 +141,12 @@
 
 .asset > div > svg {
   position: absolute;
-  left: 20px;
   float: left;
 }
 
 .asset > div > p {
   position: absolute;
-  left: 43px;
+  left: 23px;
   float: left;
   font-size: 0.9rem;
 }

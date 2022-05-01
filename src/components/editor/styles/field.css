@@ -1,0 +1,6 @@
+.Field {
+  position: relative;
+  height: calc(100% - 40px);
+  margin-top: 40px;
+  background-color: var(--editorColor);
+}

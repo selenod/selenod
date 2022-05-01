@@ -7,6 +7,7 @@ import { RootState } from '../../store';
 import { Popover } from 'react-tiny-popover';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
+import { setOpenedPanel } from '../system/reduxSlice/assetSlice';
 
 interface IToolData {
   panelWidth: number;
@@ -16,6 +17,13 @@ export default function Active(data: IToolData) {
   const [showPopover, setShowPopover] = useState<boolean>(false);
   const dispatch = useDispatch();
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
+  const assetData = useSelector((state: RootState) => state.asset.assetData);
+  const openedPanelList = useSelector(
+    (state: RootState) => state.asset.openedPanelList
+  );
+  const currOpenedPnl = useSelector(
+    (state: RootState) => state.asset.currentOpenedPanel
+  );
 
   return (
     <div
@@ -25,28 +33,71 @@ export default function Active(data: IToolData) {
       }}
     >
       <div>
-        <nav></nav>
+        <nav>
+          {openedPanelList.map((panel) => (
+            <div key={panel} onClick={() => dispatch(setOpenedPanel(panel))}>
+              {panel === currOpenedPnl ? (
+                <div
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: 2,
+                    top: 'calc(100% - 3px)',
+                    backgroundColor: 'var(--lineColor)',
+                    paddingRight: 24,
+                    borderRadius: '1rem 1rem 0 0',
+                  }}
+                />
+              ) : null}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="1rem"
+                height="1rem"
+                viewBox="0 0 20 20"
+                fill="var(--shortcutIconColor)"
+                style={{
+                  position: 'relative',
+                  top: panel === currOpenedPnl ? 10.5 : 12.5,
+                  left: 12,
+                  float: 'left',
+                }}
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <p
+                style={{
+                  position: 'relative',
+                  top: panel === currOpenedPnl ? 'calc(50% - 2px)' : '50%',
+                  left: 19,
+                  maxWidth: 'calc(100% - 27px)',
+                  transform: 'translateY(-50%)',
+                  fontSize: '.9rem',
+                  color: 'var(--shortcutIconColor)',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {assetData.find((asset) => asset.id === panel)?.name}
+                {assetData.find((asset) => asset.id === panel)?.extension}
+              </p>
+            </div>
+          ))}
+        </nav>
         <div>
           <div title="Build Project">
             <svg
-              width="20"
-              height="20"
-              viewBox="0 0 16 16"
-              fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              fill="var(--shortcutIconColor)"
+              viewBox="0 0 16 16"
             >
-              <g clipPath="url(#clip0_413_18)">
-                <path
-                  d="M3.22595 2.5024L12.8747 8.07311C12.8981 8.08662 12.9073 8.09915 12.9126 8.10864C12.9193 8.1208 12.9247 8.13843 12.9247 8.15972C12.9247 8.18101 12.9193 8.19863 12.9126 8.2108C12.9073 8.22028 12.8981 8.23281 12.8747 8.24632L3.22595 13.817C3.20255 13.8305 3.1871 13.8323 3.17625 13.8321C3.16235 13.8318 3.14439 13.8277 3.12595 13.817C3.10751 13.8064 3.09494 13.7929 3.08778 13.781C3.08219 13.7717 3.07595 13.7575 3.07595 13.7304L3.07595 2.589C3.07595 2.56198 3.08219 2.54775 3.08778 2.53845C3.09494 2.52653 3.10751 2.51304 3.12595 2.5024C3.14439 2.49175 3.16235 2.48762 3.17625 2.48737C3.1871 2.48718 3.20255 2.48889 3.22595 2.5024Z"
-                  stroke="var(--shortcutIconColor)"
-                  strokeWidth="2"
-                />
-              </g>
-              <defs>
-                <clipPath id="clip0_413_18">
-                  <rect width="16" height="16" rx="1" fill="white" />
-                </clipPath>
-              </defs>
+              <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z" />
             </svg>
           </div>
           <Popover

@@ -4,5 +4,4 @@
   width: 100vw;
   min-width: 600px;
   height: calc(100vh - 64px);
-  background-color: var(--editorColor);
 }

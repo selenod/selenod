@@ -1,13 +1,16 @@
 import './styles/active.css';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { PopContent } from '../system/popcontent';
 import { RootState } from '../../store';
 import { Popover } from 'react-tiny-popover';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
-import { setOpenedPanel } from '../system/reduxSlice/assetSlice';
+import {
+  setOpenedPanel,
+  togglePanelOpened,
+} from '../system/reduxSlice/assetSlice';
 
 interface IToolData {
   panelWidth: number;
@@ -44,11 +47,53 @@ export default function Active(data: IToolData) {
                     height: 2,
                     top: 'calc(100% - 3px)',
                     backgroundColor: '#956fff',
-                    paddingRight: 24,
+                    paddingRight: 12,
                     borderRadius: '1rem 1rem 0 0',
                   }}
                 />
               ) : null}
+              <div
+                className="close-btn"
+                style={{
+                  position: 'relative',
+                  top: panel === currOpenedPnl ? 'calc(50% - 2px)' : '50%',
+                  transform: 'translateY(-50%)',
+                  width: 20,
+                  height: 20,
+                  float: 'right',
+                  borderRadius: 5,
+                  zIndex: 5,
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  dispatch(
+                    togglePanelOpened({
+                      id: panel,
+                      toggle: false,
+                    })
+                  );
+                }}
+              >
+                <svg
+                  style={{
+                    position: 'relative',
+                    top: 2,
+                    left: '50%',
+                    width: 14,
+                    height: 14,
+                    transform: 'translateX(-50%)',
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="#C9CED1"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="1rem"

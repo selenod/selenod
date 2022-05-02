@@ -19,10 +19,19 @@
 .Active > div > nav > div {
   height: 100%;
   float: left;
-  padding-right: 24px;
+  padding-right: 12px;
   min-width: 120px;
   max-width: 270px;
   cursor: pointer;
+}
+
+.Active > div > nav > div > .close-btn > svg {
+  opacity: 0;
+  transition: ease-out opacity 100ms;
+}
+
+.Active > div > nav > div:hover > .close-btn > svg {
+  opacity: 1;
 }
 
 .Active > div > div {

@@ -91,13 +91,20 @@ export const assetSlice = createSlice({
     togglePanelOpened: (state, action) => {
       if (!action.payload.toggle) {
         if (state.openedPanelList.includes(action.payload.id)) {
+          if (state.currentOpenedPanel === action.payload.id) {
+            if (state.openedPanelList.length <= 1) {
+              state.currentOpenedPanel = null;
+            } else {
+              state.currentOpenedPanel =
+                action.payload.id === 0
+                  ? state.openedPanelList[1]
+                  : state.openedPanelList[0];
+            }
+          }
+
           state.openedPanelList = state.openedPanelList.filter(
             (asset) => asset !== action.payload.id
           );
-          state.currentOpenedPanel =
-            state.currentOpenedPanel === action.payload.id
-              ? state.openedPanelList[state.openedPanelList.length - 1]
-              : state.currentOpenedPanel;
         }
       } else {
         if (!state.openedPanelList.includes(action.payload.id)) {

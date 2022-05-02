@@ -1,14 +1,13 @@
 import './styles/field.css';
 
 import { RootState } from '../../store';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 interface IToolData {
   panelWidth: number;
 }
 
 export default function Field(data: IToolData) {
-  const dispatch = useDispatch();
   const currentOpenedPanel = useSelector(
     (state: RootState) => state.asset.currentOpenedPanel
   );
@@ -29,7 +28,7 @@ export default function Field(data: IToolData) {
           top: 20,
           left: 30,
           color: 'var(--textSubBlackColor)',
-          fontSize: '1.1rem',
+          fontSize: '1.05rem',
           textAlign: 'left',
           width: 'calc(100% - 30px)',
         }}

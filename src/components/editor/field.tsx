@@ -27,7 +27,7 @@ export default function Field(data: IToolData) {
           position: 'relative',
           top: 20,
           left: 30,
-          color: 'var(--textSubBlackColor)',
+          color: 'var(--fieldTextColor)',
           fontSize: '1.05rem',
           textAlign: 'left',
           width: 'calc(100% - 30px)',

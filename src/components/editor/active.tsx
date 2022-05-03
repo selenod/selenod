@@ -118,7 +118,7 @@ export default function Active(data: IToolData) {
                   position: 'relative',
                   top: panel === currOpenedPnl ? 'calc(50% - 2px)' : '50%',
                   left: 19,
-                  maxWidth: 'calc(100% - 27px)',
+                  maxWidth: 'calc(100% - 60px)',
                   transform: 'translateY(-50%)',
                   fontSize: '.9rem',
                   color: 'var(--shortcutIconColor)',

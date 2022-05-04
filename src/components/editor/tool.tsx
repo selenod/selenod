@@ -11,7 +11,6 @@ import {
   addAssetWithoutAddLength,
   addData,
   IAssetList,
-  setOpened,
   togglePanelOpened,
 } from '../system/reduxSlice/assetSlice';
 import { FileDrop } from 'react-file-drop';
@@ -84,6 +83,7 @@ export default function Tool() {
     option: false,
     windowMgr: false,
   });
+  const [showAssetPopover, setShowAssetPopover] = useState<number>();
   const [formInput, setFormInput] = useState<string>('');
 
   const dispatch = useDispatch();
@@ -340,7 +340,7 @@ export default function Tool() {
                       paddingRight: '21px',
                     }}
                   >
-                    MyPorject/
+                    MyProject/
                     {
                       windowList.filter(
                         (window) => currentWindow === window.id
@@ -703,46 +703,81 @@ export default function Tool() {
                   {assetData.map((asset) =>
                     !asset.isDisabled ? (
                       // asset.type === EAssetType.FILE ? (
-                      <div
-                        className="asset"
+                      <Popover
+                        isOpen={showAssetPopover === asset.id}
+                        positions={['bottom']}
+                        padding={5}
+                        align="start"
                         key={asset.id}
-                        onClick={() => {
-                          dispatch(
-                            togglePanelOpened({
-                              id: asset.id,
-                              toggle: true,
-                            })
-                          );
+                        reposition={false}
+                        onClickOutside={() => {
+                          setShowAssetPopover(undefined);
+                          dispatch(setFalse());
                         }}
+                        content={() => (
+                          <PopContent
+                            contents={[
+                              { text: 'Rename Asset' },
+                              {
+                                text: 'Delete Asset',
+                                type: EContentType.DANGER,
+                              },
+                            ]}
+                          />
+                        )}
                       >
-                        <div>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="1rem"
-                            height="1rem"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          <p
-                            style={{
-                              width: 'calc(100% - 43px)',
-                              height: '100%',
-                              overflow: 'hidden',
-                              whiteSpace: 'nowrap',
-                              textOverflow: 'ellipsis',
-                            }}
-                          >
-                            {asset.name}
-                            {asset.extension}
-                          </p>
+                        <div
+                          className="asset"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            dispatch(
+                              togglePanelOpened({
+                                id: asset.id,
+                                toggle: true,
+                              })
+                            );
+                          }}
+                          style={{
+                            backgroundColor:
+                              showAssetPopover === asset.id
+                                ? 'var(--panelPathColor)'
+                                : undefined,
+                          }}
+                          onContextMenu={(e) => {
+                            e.preventDefault();
+                            dispatch(setTrue());
+                            setShowAssetPopover(asset.id);
+                          }}
+                        >
+                          <div>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="1rem"
+                              height="1rem"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            <p
+                              style={{
+                                width: 'calc(100% - 43px)',
+                                height: '100%',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                              }}
+                            >
+                              {asset.name}
+                              {asset.extension}
+                            </p>
+                          </div>
                         </div>
-                      </div>
+                      </Popover>
                     ) : // ) : (
                     //   <div
                     //     className="asset"
@@ -841,6 +876,7 @@ export default function Tool() {
     assetList,
     assetLength,
     assetData,
+    showAssetPopover,
   ]);
 
   useEffect(() => {

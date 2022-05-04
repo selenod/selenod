@@ -440,7 +440,7 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
             }}
           >
             <div>
-              {content.selected === true ? (
+              {content.selected ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="17"

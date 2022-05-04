@@ -114,7 +114,7 @@
 .asset {
   /* width: calc(100% - 14px); */
   height: 32px;
-  background-color: none;
+  background-color: #00000000;
   padding: 0 10px;
   transition: ease-out background-color 100ms;
   border-radius: 6px;

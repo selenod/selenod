@@ -85,7 +85,7 @@ export default function Active(data: IToolData) {
                   }}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
-                  fill="#C9CED1"
+                  fill="var(--iconGrayColor)"
                 >
                   <path
                     fillRule="evenodd"

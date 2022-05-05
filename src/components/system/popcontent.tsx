@@ -228,7 +228,7 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                           setFormInput('');
                         }}
                       >
-                        Rename
+                        Rename Window
                       </button>
                     </div>
                   </div>

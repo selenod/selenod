@@ -117,6 +117,10 @@ export const assetSlice = createSlice({
     setOpenedPanel: (state, action) => {
       state.currentOpenedPanel = action.payload;
     },
+    renameAsset: (state, action) => {
+      state.assetData.find((asset) => asset.id === action.payload.id)!.name =
+        action.payload.name;
+    },
     deleteAssetById: (state, action) => {
       if (state.currentOpenedPanel === action.payload) {
         if (state.openedPanelList.length <= 1) {
@@ -161,6 +165,7 @@ export const {
   togglePanelOpened,
   setOpenedPanel,
   deleteAssetById,
+  renameAsset,
 } = assetSlice.actions;
 
 export default assetSlice.reducer;

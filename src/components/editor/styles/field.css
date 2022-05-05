@@ -3,4 +3,15 @@
   height: calc(100% - 40px);
   margin-top: 40px;
   background-color: var(--editorColor);
+  overflow: auto;
+}
+
+.Field::-webkit-scrollbar {
+  width: 10px;
+}
+.Field::-webkit-scrollbar-track {
+  background-color: none;
+}
+.Field::-webkit-scrollbar-thumb {
+  background-color: var(--scroll);
 }

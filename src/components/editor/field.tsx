@@ -17,7 +17,6 @@ export default function Field(data: IToolData) {
     <div
       className="Field"
       style={{
-        position: 'relative',
         width: `calc(100% - ${data.panelWidth}px - 70px)`,
         marginLeft: data.panelWidth + 70,
       }}
@@ -25,8 +24,7 @@ export default function Field(data: IToolData) {
       <pre
         style={{
           position: 'relative',
-          top: 20,
-          left: 30,
+          left: 20,
           color: 'var(--fieldTextColor)',
           fontSize: '1.05rem',
           textAlign: 'left',

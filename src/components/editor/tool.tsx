@@ -12,6 +12,7 @@ import {
   addData,
   IAssetList,
   togglePanelOpened,
+  deleteAssetById,
 } from '../system/reduxSlice/assetSlice';
 import { FileDrop } from 'react-file-drop';
 import toast from 'react-hot-toast';
@@ -717,10 +718,16 @@ export default function Tool() {
                         content={() => (
                           <PopContent
                             contents={[
-                              { text: 'Rename Asset' },
+                              {
+                                text: 'Rename Asset',
+                              },
                               {
                                 text: 'Delete Asset',
                                 type: EContentType.DANGER,
+                                onClick: () => {
+                                  dispatch(deleteAssetById(asset.id));
+                                  dispatch(setFalse());
+                                },
                               },
                             ]}
                           />

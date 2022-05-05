@@ -340,7 +340,9 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
               onClick={(e) => {
                 e.preventDefault();
                 if (typeof content['onClick'] === 'function') {
-                  content.onClick!();
+                  if (content.onClick !== undefined) {
+                    content.onClick!();
+                  }
                 }
                 const newSelected = contentsState.find(
                   (arrContent) => arrContent.text === content.text
@@ -418,7 +420,9 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
             onClick={(e) => {
               e.preventDefault();
               if (typeof content['onClick'] === 'function') {
-                content.onClick!();
+                if (content.onClick !== undefined) {
+                  content.onClick!();
+                }
               }
               const newSelected = contentsState.find(
                 (arrContent) => arrContent.text === content.text
@@ -474,6 +478,11 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                 content.type === EContentType.DANGER
                   ? 'var(--red)'
                   : 'var(--textSubBlackColor)',
+            }}
+            onClick={() => {
+              if (content.onClick !== undefined) {
+                content.onClick!();
+              }
             }}
           >
             <p>{content.text}</p>

@@ -117,6 +117,38 @@ export const assetSlice = createSlice({
     setOpenedPanel: (state, action) => {
       state.currentOpenedPanel = action.payload;
     },
+    deleteAssetById: (state, action) => {
+      if (state.currentOpenedPanel === action.payload) {
+        if (state.openedPanelList.length <= 1) {
+          state.currentOpenedPanel = null;
+        } else {
+          state.currentOpenedPanel =
+            action.payload === 0
+              ? state.openedPanelList[1]
+              : state.openedPanelList[0];
+        }
+      }
+
+      if (state.openedPanelList.includes(action.payload)) {
+        state.openedPanelList.splice(
+          state.openedPanelList.indexOf(action.payload),
+          1
+        );
+      }
+
+      state.assetList.splice(
+        state.assetList.indexOf(
+          state.assetList.find((asset) => asset.id === action.payload)!
+        ),
+        1
+      );
+      state.assetData.splice(
+        state.assetList.indexOf(
+          state.assetList.find((asset) => asset.id === action.payload)!
+        ),
+        1
+      );
+    },
   },
 });
 
@@ -128,6 +160,7 @@ export const {
   setOpened,
   togglePanelOpened,
   setOpenedPanel,
+  deleteAssetById,
 } = assetSlice.actions;
 
 export default assetSlice.reducer;

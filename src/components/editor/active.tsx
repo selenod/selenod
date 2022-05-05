@@ -1,6 +1,6 @@
 import './styles/active.css';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { PopContent } from '../system/popcontent';
 import { RootState } from '../../store';

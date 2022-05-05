@@ -38,7 +38,13 @@ export default function Active(data: IToolData) {
       <div>
         <nav>
           {openedPanelList.map((panel) => (
-            <div key={panel} onClick={() => dispatch(setOpenedPanel(panel))}>
+            <div
+              key={panel}
+              title={`${assetData.find((asset) => asset.id === panel)?.name}${
+                assetData.find((asset) => asset.id === panel)?.extension
+              }`}
+              onClick={() => dispatch(setOpenedPanel(panel))}
+            >
               {panel === currOpenedPnl ? (
                 <div
                   style={{

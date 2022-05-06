@@ -778,7 +778,7 @@ export default function Tool() {
                                   console.log(e.target.value);
                                   setAssetFormInput(e.target.value);
                                 }}
-                                placeholder={`${asset.name}${asset.extension}`}
+                                value={`${asset.name}${asset.extension}`}
                               />
                               <button
                                 className="button primary"

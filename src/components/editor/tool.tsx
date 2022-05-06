@@ -419,7 +419,10 @@ export default function Tool() {
                   viewBox="0 0 20 20"
                   fill="var(--textGrayColor)"
                 >
-                  <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
+                  <path
+                    fillRule="evenodd"
+                    d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-5L9 4H4zm7 5a1 1 0 10-2 0v1H8a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V9z"
+                  />
                 </svg>
               </div>
               <Modal
@@ -635,15 +638,19 @@ export default function Tool() {
 
                               dispatch(
                                 addData({
-                                  name: files![i].name.substr(
-                                    0,
-                                    files![i].name.lastIndexOf('.')
-                                  ),
+                                  name: files![i].name.includes('.')
+                                    ? files![i].name.substr(
+                                        0,
+                                        files![i].name.lastIndexOf('.')
+                                      )
+                                    : files![i].name,
                                   id: index - 1,
                                   type: EAssetType.FILE,
-                                  extension: files![i].name.substr(
-                                    files![i].name.lastIndexOf('.')
-                                  ),
+                                  extension: files![i].name.includes('.')
+                                    ? files![i].name.substr(
+                                        files![i].name.lastIndexOf('.')
+                                      )
+                                    : '',
                                   contents: e.target?.result,
                                 })
                               );
@@ -771,6 +778,7 @@ export default function Tool() {
                                   console.log(e.target.value);
                                   setAssetFormInput(e.target.value);
                                 }}
+                                placeholder={`${asset.name}${asset.extension}`}
                               />
                               <button
                                 className="button primary"
@@ -804,7 +812,19 @@ export default function Tool() {
                                       dispatch(
                                         renameAsset({
                                           id: asset.id,
-                                          name: assetFormInput,
+                                          name: assetFormInput.includes('.')
+                                            ? assetFormInput.substr(
+                                                0,
+                                                assetFormInput.lastIndexOf('.')
+                                              )
+                                            : assetFormInput,
+                                          extension: assetFormInput.includes(
+                                            '.'
+                                          )
+                                            ? assetFormInput.substr(
+                                                assetFormInput.lastIndexOf('.')
+                                              )
+                                            : '',
                                         })
                                       );
                                       toast.success(

@@ -120,6 +120,9 @@ export const assetSlice = createSlice({
     renameAsset: (state, action) => {
       state.assetData.find((asset) => asset.id === action.payload.id)!.name =
         action.payload.name;
+      state.assetData.find(
+        (asset) => asset.id === action.payload.id
+      )!.extension = action.payload.extension;
     },
     deleteAssetById: (state, action) => {
       if (state.currentOpenedPanel === action.payload) {

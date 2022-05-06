@@ -538,13 +538,17 @@ export default function Tool() {
             <nav className="pnl-asset">
               <p
                 style={{
+                  width: 'calc(100% - 90px)',
                   color: 'var(--textGrayColor)',
                   float: 'left',
                   marginTop: 11.6,
                   fontSize: '.9rem',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
                 }}
               >
-                Remaining Assets: {100 - assetLength}
+                Remaining Assets: {100 - assetLength} / {100}
               </p>
               <div
                 className="tool-btn"
@@ -625,98 +629,105 @@ export default function Tool() {
                         event.dataTransfer.items[i].webkitGetAsEntry()
                       );
                     }
-                    for (
-                      let i = 0, index = assetLength;
-                      i < files!.length;
-                      i++
-                    ) {
-                      const fileAsEntry = entryArr[i];
-                      if (fileAsEntry) {
-                        if (fileAsEntry.isFile) {
-                          index++;
 
-                          const reader = new FileReader();
+                    if (100 - assetLength - files!.length <= 0) {
+                      toast.error(
+                        'The upload has been canceled because the upload exceeds the number of assets remaining.'
+                      );
+                    } else {
+                      for (
+                        let i = 0, index = assetLength;
+                        i < files!.length;
+                        i++
+                      ) {
+                        const fileAsEntry = entryArr[i];
+                        if (fileAsEntry) {
+                          if (fileAsEntry.isFile) {
+                            index++;
 
-                          reader.addEventListener(
-                            'load',
-                            (e: ProgressEvent<FileReader>) => {
-                              dispatch(
-                                addAsset({
-                                  id: index - 1,
-                                })
-                              );
+                            const reader = new FileReader();
 
-                              dispatch(
-                                addData({
-                                  name: files![i].name.includes('.')
-                                    ? files![i].name.substr(
-                                        0,
-                                        files![i].name.lastIndexOf('.')
-                                      )
-                                    : files![i].name,
-                                  id: index - 1,
-                                  type: EAssetType.FILE,
-                                  extension: files![i].name.includes('.')
-                                    ? files![i].name.substr(
-                                        files![i].name.lastIndexOf('.')
-                                      )
-                                    : '',
-                                  contents: e.target?.result,
-                                })
-                              );
-                            }
-                          );
+                            reader.addEventListener(
+                              'load',
+                              (e: ProgressEvent<FileReader>) => {
+                                dispatch(
+                                  addAsset({
+                                    id: index - 1,
+                                  })
+                                );
 
-                          reader.readAsText(files![i]);
-                        } else {
-                          toast.error(
-                            `The folder '${
-                              files![i].name
-                            }' couldn't be uploaded because it is unable to upload folders as asset.`
-                          );
+                                dispatch(
+                                  addData({
+                                    name: files![i].name.includes('.')
+                                      ? files![i].name.substr(
+                                          0,
+                                          files![i].name.lastIndexOf('.')
+                                        )
+                                      : files![i].name,
+                                    id: index - 1,
+                                    type: EAssetType.FILE,
+                                    extension: files![i].name.includes('.')
+                                      ? files![i].name.substr(
+                                          files![i].name.lastIndexOf('.')
+                                        )
+                                      : '',
+                                    contents: e.target?.result,
+                                  })
+                                );
+                              }
+                            );
 
-                          // dispatch(
-                          //   addData({
-                          //     name: files![i].name,
-                          //     id: index,
-                          //     type: EAssetType.FOLDER,
-                          //     isOpened: true,
-                          //   })
-                          // );
+                            reader.readAsText(files![i]);
+                          } else {
+                            toast.error(
+                              `The folder '${
+                                files![i].name
+                              }' couldn't be uploaded because it is unable to upload folders as asset.`
+                            );
 
-                          // const tree = await GetFileContents(
-                          //   fileAsEntry,
-                          //   index
-                          // );
+                            // dispatch(
+                            //   addData({
+                            //     name: files![i].name,
+                            //     id: index,
+                            //     type: EAssetType.FOLDER,
+                            //     isOpened: true,
+                            //   })
+                            // );
 
-                          // const fileArr: Array<IAssetList> = [];
-                          // const currentIndex: number = tree.index + 1;
-                          // let isDone: boolean = false;
+                            // const tree = await GetFileContents(
+                            //   fileAsEntry,
+                            //   index
+                            // );
 
-                          // if (tree.fileTree.length === 0) {
-                          //   isDone = true;
-                          // } else {
-                          //   tree.fileTree.forEach((file) =>
-                          //     Promise.resolve(file).then((f) => {
-                          //       fileArr.push(f);
-                          //       isDone = fileArr.length === currentIndex;
-                          //     })
-                          //   );
-                          // }
+                            // const fileArr: Array<IAssetList> = [];
+                            // const currentIndex: number = tree.index + 1;
+                            // let isDone: boolean = false;
 
-                          // const dispatchTimeOut = setInterval(() => {
-                          //   if (isDone) {
-                          //     clearTimeout(dispatchTimeOut);
-                          //     dispatch(
-                          //       addAsset({
-                          //         id: index,
-                          //         contents: fileArr,
-                          //       })
-                          //     );
-                          //     dispatch(addAssetLength(tree.currAssetLen + 1));
-                          //     index += tree.index + 1;
-                          //   }
-                          // }, 10);
+                            // if (tree.fileTree.length === 0) {
+                            //   isDone = true;
+                            // } else {
+                            //   tree.fileTree.forEach((file) =>
+                            //     Promise.resolve(file).then((f) => {
+                            //       fileArr.push(f);
+                            //       isDone = fileArr.length === currentIndex;
+                            //     })
+                            //   );
+                            // }
+
+                            // const dispatchTimeOut = setInterval(() => {
+                            //   if (isDone) {
+                            //     clearTimeout(dispatchTimeOut);
+                            //     dispatch(
+                            //       addAsset({
+                            //         id: index,
+                            //         contents: fileArr,
+                            //       })
+                            //     );
+                            //     dispatch(addAssetLength(tree.currAssetLen + 1));
+                            //     index += tree.index + 1;
+                            //   }
+                            // }, 10);
+                          }
                         }
                       }
                     }

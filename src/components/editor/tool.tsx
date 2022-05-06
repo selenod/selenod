@@ -785,10 +785,9 @@ export default function Tool() {
                                   margin: '0 0 1rem 0',
                                 }}
                                 onChange={(e) => {
-                                  console.log(e.target.value);
                                   setAssetFormInput(e.target.value);
                                 }}
-                                value={`${asset.name}${asset.extension}`}
+                                placeholder={`${asset.name}${asset.extension}`}
                               />
                               <button
                                 className="button primary"

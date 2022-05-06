@@ -536,6 +536,16 @@ export default function Tool() {
               <p style={{ color: 'var(--shortcutIconColor)' }}>Asset</p>
             </div>
             <nav className="pnl-asset">
+              <p
+                style={{
+                  color: 'var(--textGrayColor)',
+                  float: 'left',
+                  marginTop: 11.6,
+                  fontSize: '.9rem',
+                }}
+              >
+                Remaining Assets: {100 - assetLength}
+              </p>
               <div
                 className="tool-btn"
                 title="Upload File From Local"

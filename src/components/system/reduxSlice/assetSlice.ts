@@ -155,6 +155,7 @@ export const assetSlice = createSlice({
         ),
         1
       );
+      state.assetLength--;
     },
   },
 });

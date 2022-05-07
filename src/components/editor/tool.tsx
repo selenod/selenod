@@ -546,6 +546,7 @@ export default function Tool() {
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
+                  fontWeight: 500,
                 }}
               >
                 Remaining Assets: {100 - assetLength} / {100}

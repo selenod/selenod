@@ -631,7 +631,7 @@ export default function Tool() {
                       );
                     }
 
-                    if (100 - assetLength - files!.length <= 0) {
+                    if (100 - assetLength - files!.length < 0) {
                       toast.error(
                         'The upload has been canceled because the upload exceeds the number of assets remaining.'
                       );
@@ -894,6 +894,10 @@ export default function Tool() {
                                   onClick: () => {
                                     dispatch(deleteAssetById(asset.id));
                                     dispatch(setFalse());
+                                    setShowAssetPopover(undefined);
+                                    toast.success(
+                                      'The asset has been deleted.'
+                                    );
                                   },
                                 },
                               ]}

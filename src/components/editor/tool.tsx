@@ -1,6 +1,6 @@
 import './styles/tool.css';
 
-import { useState, useEffect, ReactElement } from 'react';
+import { useState, useEffect, useRef, ReactElement } from 'react';
 import { RootState } from '../../store';
 import { Resizable } from 're-resizable';
 import { Popover } from 'react-tiny-popover';
@@ -90,6 +90,8 @@ export default function Tool() {
   const [showAssetPopover, setShowAssetPopover] = useState<number>();
   const [formInput, setFormInput] = useState<string>('');
   const [assetFormInput, setAssetFormInput] = useState<string>('');
+
+  const assetInput = useRef<any>(null);
 
   const dispatch = useDispatch();
 
@@ -551,6 +553,63 @@ export default function Tool() {
               >
                 Remaining Assets: {100 - assetLength} / {100}
               </p>
+              <input
+                type="file"
+                ref={assetInput}
+                style={{ display: 'none' }}
+                onChange={async (event) => {
+                  if (100 - assetLength - event.target.files!.length < 0) {
+                    toast.error(
+                      'The upload has been canceled because the upload exceeds the number of assets remaining.'
+                    );
+                  } else {
+                    for (
+                      let i = 0, index = assetLength;
+                      i < event.target.files!.length;
+                      i++
+                    ) {
+                      index++;
+
+                      const reader = new FileReader();
+
+                      reader.addEventListener(
+                        'load',
+                        (e: ProgressEvent<FileReader>) => {
+                          dispatch(
+                            addAsset({
+                              id: index - 1,
+                            })
+                          );
+
+                          dispatch(
+                            addData({
+                              name: event.target.files![i].name.includes('.')
+                                ? event.target.files![i].name.substr(
+                                    0,
+                                    event.target.files![i].name.lastIndexOf('.')
+                                  )
+                                : event.target.files![i].name,
+                              id: index - 1,
+                              type: EAssetType.FILE,
+                              extension: event.target.files![i].name.includes(
+                                '.'
+                              )
+                                ? event.target.files![i].name.substr(
+                                    event.target.files![i].name.lastIndexOf('.')
+                                  )
+                                : '',
+                              contents: e.target?.result,
+                            })
+                          );
+                        }
+                      );
+
+                      reader.readAsText(event.target.files![i]);
+                    }
+                  }
+                }}
+                multiple
+              />
               <div
                 className="tool-btn"
                 title="Upload File From Local"
@@ -560,7 +619,9 @@ export default function Tool() {
                   width: 30,
                   height: 30,
                 }}
-                onClick={() => {}}
+                onClick={() => {
+                  assetInput.current.click();
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -621,8 +682,8 @@ export default function Tool() {
                 }}
               >
                 <FileDrop
-                  onDragOver={(event) => console.log('범위로 들어옴')}
-                  onDragLeave={(event) => console.log('범위에서 나감')}
+                  onDragOver={(e) => console.log('범위로 들어옴')}
+                  onDragLeave={(e) => console.log('범위에서 나감')}
                   onDrop={async (files, event) => {
                     const entryArr: Array<FileSystemEntry | null> = [];
                     for (let i = 0; i < event.dataTransfer.items.length; i++) {

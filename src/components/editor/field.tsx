@@ -38,6 +38,14 @@ export default function Field(data: IToolData) {
             assetData.find((asset) => asset.id === currentOpenedPanel)
               ?.extension!
           }
+          style={{
+            position: 'relative',
+            maxWidth: 512,
+            maxHeight: 512,
+            marginTop: '1rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+          }}
         />
       ) : (
         <pre

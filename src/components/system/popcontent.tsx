@@ -1,4 +1,4 @@
-import { EContentType } from '../../enum';
+import { EContentType } from '../../data';
 
 import { useState, useEffect } from 'react';
 import { Popover } from 'react-tiny-popover';

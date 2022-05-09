@@ -2,6 +2,7 @@ import './styles/field.css';
 
 import { RootState } from '../../store';
 import { useSelector } from 'react-redux';
+import { imageExtensions } from '../../data';
 
 interface IToolData {
   panelWidth: number;
@@ -21,21 +22,40 @@ export default function Field(data: IToolData) {
         marginLeft: data.panelWidth + 70,
       }}
     >
-      <pre
-        style={{
-          position: 'relative',
-          left: 20,
-          color: 'var(--fieldTextColor)',
-          fontSize: '1.05rem',
-          textAlign: 'left',
-          width: 'calc(100% - 30px)',
-        }}
-      >
-        {currentOpenedPanel === null
-          ? null
-          : assetData.find((asset) => asset.id === currentOpenedPanel)
-              ?.contents}
-      </pre>
+      {assetData.find((asset) => asset.id === currentOpenedPanel)?.extension !==
+        undefined &&
+      imageExtensions.includes(
+        assetData
+          .find((asset) => asset.id === currentOpenedPanel)
+          ?.extension!.substr(1)!
+      ) ? (
+        <img
+          src={
+            assetData.find((asset) => asset.id === currentOpenedPanel)?.contents
+          }
+          alt={
+            assetData.find((asset) => asset.id === currentOpenedPanel)?.name! +
+            assetData.find((asset) => asset.id === currentOpenedPanel)
+              ?.extension!
+          }
+        />
+      ) : (
+        <pre
+          style={{
+            position: 'relative',
+            left: 20,
+            color: 'var(--fieldTextColor)',
+            fontSize: '1.05rem',
+            textAlign: 'left',
+            width: 'calc(100% - 30px)',
+          }}
+        >
+          {currentOpenedPanel === null
+            ? null
+            : assetData.find((asset) => asset.id === currentOpenedPanel)
+                ?.contents}
+        </pre>
+      )}
     </div>
   );
 }

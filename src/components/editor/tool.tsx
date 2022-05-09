@@ -22,7 +22,7 @@ import Modal from 'react-modal';
 import Active from './active';
 import Field from './field';
 import { PopContent } from '../system/popcontent';
-import { EContentType, EAssetType } from '../../enum';
+import { EContentType, EAssetType, imageExtensions } from '../../data';
 import { createWindow } from '../system/reduxSlice/windowSlice';
 
 Modal.setAppElement('#root');
@@ -572,39 +572,45 @@ export default function Tool() {
 
                       const reader = new FileReader();
 
-                      reader.addEventListener(
-                        'load',
-                        (e: ProgressEvent<FileReader>) => {
-                          dispatch(
-                            addAsset({
-                              id: index - 1,
-                            })
-                          );
+                      reader.addEventListener('load', () => {
+                        dispatch(
+                          addAsset({
+                            id: index - 1,
+                          })
+                        );
 
-                          dispatch(
-                            addData({
-                              name: event.target.files![i].name.includes('.')
-                                ? event.target.files![i].name.substr(
-                                    0,
-                                    event.target.files![i].name.lastIndexOf('.')
-                                  )
-                                : event.target.files![i].name,
-                              id: index - 1,
-                              type: EAssetType.FILE,
-                              extension: event.target.files![i].name.includes(
-                                '.'
-                              )
-                                ? event.target.files![i].name.substr(
-                                    event.target.files![i].name.lastIndexOf('.')
-                                  )
-                                : '',
-                              contents: e.target?.result,
-                            })
-                          );
-                        }
-                      );
+                        dispatch(
+                          addData({
+                            name: event.target.files![i].name.includes('.')
+                              ? event.target.files![i].name.substr(
+                                  0,
+                                  event.target.files![i].name.lastIndexOf('.')
+                                )
+                              : event.target.files![i].name,
+                            id: index - 1,
+                            type: EAssetType.FILE,
+                            extension: event.target.files![i].name.includes('.')
+                              ? event.target.files![i].name.substr(
+                                  event.target.files![i].name.lastIndexOf('.')
+                                )
+                              : '',
+                            contents: reader.result,
+                          })
+                        );
+                      });
 
-                      reader.readAsText(event.target.files![i]);
+                      if (
+                        event.target.files![i].name.includes('.') &&
+                        imageExtensions.includes(
+                          event.target.files![i].name.substr(
+                            event.target.files![i].name.lastIndexOf('.') + 1
+                          )
+                        )
+                      ) {
+                        reader.readAsDataURL(event.target.files![i]);
+                      } else {
+                        reader.readAsText(event.target.files![i]);
+                      }
                     }
                   }
                 }}
@@ -619,9 +625,7 @@ export default function Tool() {
                   width: 30,
                   height: 30,
                 }}
-                onClick={() => {
-                  assetInput.current.click();
-                }}
+                onClick={() => assetInput.current.click()}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -709,37 +713,45 @@ export default function Tool() {
 
                             const reader = new FileReader();
 
-                            reader.addEventListener(
-                              'load',
-                              (e: ProgressEvent<FileReader>) => {
-                                dispatch(
-                                  addAsset({
-                                    id: index - 1,
-                                  })
-                                );
+                            reader.addEventListener('load', () => {
+                              dispatch(
+                                addAsset({
+                                  id: index - 1,
+                                })
+                              );
 
-                                dispatch(
-                                  addData({
-                                    name: files![i].name.includes('.')
-                                      ? files![i].name.substr(
-                                          0,
-                                          files![i].name.lastIndexOf('.')
-                                        )
-                                      : files![i].name,
-                                    id: index - 1,
-                                    type: EAssetType.FILE,
-                                    extension: files![i].name.includes('.')
-                                      ? files![i].name.substr(
-                                          files![i].name.lastIndexOf('.')
-                                        )
-                                      : '',
-                                    contents: e.target?.result,
-                                  })
-                                );
-                              }
-                            );
+                              dispatch(
+                                addData({
+                                  name: files![i].name.includes('.')
+                                    ? files![i].name.substr(
+                                        0,
+                                        files![i].name.lastIndexOf('.')
+                                      )
+                                    : files![i].name,
+                                  id: index - 1,
+                                  type: EAssetType.FILE,
+                                  extension: files![i].name.includes('.')
+                                    ? files![i].name.substr(
+                                        files![i].name.lastIndexOf('.')
+                                      )
+                                    : '',
+                                  contents: reader.result,
+                                })
+                              );
+                            });
 
-                            reader.readAsText(files![i]);
+                            if (
+                              files![i].name.includes('.') &&
+                              imageExtensions.includes(
+                                files![i].name.substr(
+                                  files![i].name.lastIndexOf('.') + 1
+                                )
+                              )
+                            ) {
+                              reader.readAsDataURL(files![i]);
+                            } else {
+                              reader.readAsText(files![i]);
+                            }
                           } else {
                             toast.error(
                               `The folder '${
@@ -991,10 +1003,12 @@ export default function Tool() {
                             <div>
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                width="1rem"
-                                height="1rem"
                                 viewBox="0 0 20 20"
                                 fill="currentColor"
+                                style={{
+                                  width: '1rem',
+                                  height: '1rem',
+                                }}
                               >
                                 <path
                                   fillRule="evenodd"
@@ -1067,10 +1081,12 @@ export default function Tool() {
                     //       </div>
                     //       <svg
                     //         xmlns="http://www.w3.org/2000/svg"
-                    //         width="1rem"
-                    //         height="1rem"
                     //         viewBox="0 0 20 20"
                     //         fill="currentColor"
+                    //         style={{
+                    //         width: '1rem',
+                    //         height: '1rem'
+                    //         }}
                     //       >
                     //         <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
                     //       </svg>

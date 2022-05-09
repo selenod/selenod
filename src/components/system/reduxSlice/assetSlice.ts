@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { EAssetType } from '../../../enum';
+import { EAssetType } from '../../../data';
 
 export interface IAsset {
   name: string;

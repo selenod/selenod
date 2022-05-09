@@ -102,8 +102,6 @@ export default function Active(data: IToolData) {
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="1rem"
-                height="1rem"
                 viewBox="0 0 20 20"
                 fill="var(--shortcutIconColor)"
                 style={{
@@ -111,6 +109,8 @@ export default function Active(data: IToolData) {
                   top: panel === currOpenedPnl ? 10.5 : 12.5,
                   left: 12,
                   float: 'left',
+                  width: '1rem',
+                  height: '1rem',
                 }}
               >
                 <path

@@ -7,3 +7,13 @@ export enum EAssetType {
   FILE = 'file',
   FOLDER = 'folder',
 }
+
+export const imageExtensions: Array<string> = [
+  'png',
+  'jpg',
+  'jpeg',
+  'bmp',
+  'gif',
+  'tiff',
+  'raw',
+];

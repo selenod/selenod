@@ -323,6 +323,7 @@ export default function Tool() {
                   style={{
                     backgroundColor: 'var(--panelPathColor)',
                     maxWidth: 'calc(100% - 98px)',
+                    float: 'left',
                   }}
                   className="mgr-window tool-btn"
                   title="Manage Windows"
@@ -400,11 +401,11 @@ export default function Tool() {
                 className="tool-btn"
                 title="Create New Window"
                 style={{
-                  float: 'right',
+                  float: 'left',
                   backgroundColor: 'var(--panelPathColor)',
                   width: 30,
                   height: 30,
-                  marginRight: 7,
+                  marginLeft: 7,
                 }}
                 onClick={() => setNewWinOpen(true)}
               >

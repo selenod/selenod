@@ -148,9 +148,9 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                     <div
                       style={{
                         position: 'relative',
-                        top: '50%',
+                        top: 20,
                         left: '50%',
-                        transform: 'translate(-50%, -50%)',
+                        transform: 'translateX(-50%)',
                       }}
                     >
                       <p
@@ -166,6 +166,7 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                         style={{
                           width: '100%',
                           margin: '0 0 1rem 0',
+                          fontSize: '.9rem',
                         }}
                         onChange={(e) => {
                           setFormInput(e.target.value);
@@ -263,9 +264,9 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                     <div
                       style={{
                         position: 'relative',
-                        top: '50%',
+                        top: 20,
                         left: '50%',
-                        transform: 'translate(-50%, -50%)',
+                        transform: 'translateX(-50%)',
                       }}
                     >
                       <p
@@ -288,6 +289,7 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                         style={{
                           display: 'inherit',
                           marginLeft: 'auto',
+                          marginTop: 15,
                         }}
                         onClick={() => {
                           // two-factor (who knows?)

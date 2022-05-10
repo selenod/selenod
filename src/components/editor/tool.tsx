@@ -87,9 +87,12 @@ export default function Tool() {
     option: false,
     windowMgr: false,
   });
+  const [isAssetCreateWinOpen, setAssetCreateWinOpen] =
+    useState<boolean>(false);
   const [showAssetPopover, setShowAssetPopover] = useState<number>();
   const [formInput, setFormInput] = useState<string>('');
   const [assetFormInput, setAssetFormInput] = useState<string>('');
+  const [assetFormContents, setAssetFormContents] = useState<string>('');
 
   const assetInput = useRef<any>(null);
 
@@ -458,9 +461,9 @@ export default function Tool() {
                   <div
                     style={{
                       position: 'relative',
-                      top: '50%',
+                      top: 20,
                       left: '50%',
-                      transform: 'translate(-50%, -50%)',
+                      transform: 'translateX(-50%)',
                     }}
                   >
                     <p
@@ -476,6 +479,7 @@ export default function Tool() {
                       style={{
                         width: '100%',
                         margin: '0 0 1rem 0',
+                        fontSize: '.9rem',
                       }}
                       onChange={(e) => {
                         setFormInput(e.target.value);
@@ -508,9 +512,9 @@ export default function Tool() {
                           }
 
                           dispatch(createWindow(formInput));
-                          toast.success(`The window has been added.`);
+                          toast.success(`The window has been created.`);
                         } else if (formInput.replaceAll(' ', '') === '') {
-                          toast.error(`The window's name cannot be blank.`);
+                          toast.error(`Window's name cannot be blank.`);
                         } else {
                           toast.error(`An error occured.`);
                         }
@@ -647,7 +651,7 @@ export default function Tool() {
               </div>
               <div
                 className="tool-btn"
-                title="Create Asset File"
+                title="Create Asset"
                 style={{
                   float: 'right',
                   backgroundColor: 'var(--panelPathColor)',
@@ -655,7 +659,7 @@ export default function Tool() {
                   height: 30,
                   marginRight: 7,
                 }}
-                onClick={() => {}}
+                onClick={() => setAssetCreateWinOpen(true)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -677,6 +681,155 @@ export default function Tool() {
                   />
                 </svg>
               </div>
+              <Modal
+                closeTimeoutMS={150}
+                isOpen={isAssetCreateWinOpen}
+                contentLabel="Create New Asset"
+                style={{
+                  content: {
+                    width: '400px',
+                    height: '450px',
+                  },
+                }}
+              >
+                <div className="header">
+                  <p>Create New Asset</p>
+                  <div
+                    title="Cancel"
+                    onClick={() => setAssetCreateWinOpen(false)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="27"
+                      height="27"
+                      fill="var(--shortcutIconColor)"
+                      className="bi bi-x"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="body">
+                  <div
+                    style={{
+                      position: 'relative',
+                      top: 20,
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                    }}
+                  >
+                    <p
+                      style={{
+                        margin: 0,
+                        color: 'var(--textSubBlackColor)',
+                        paddingBottom: '.7rem',
+                      }}
+                    >
+                      Create new asset named..
+                    </p>
+                    <input
+                      style={{
+                        width: '100%',
+                        margin: '0 0 1rem 0',
+                        fontSize: '.9rem',
+                      }}
+                      onChange={(e) => {
+                        setAssetFormInput(e.target.value);
+                      }}
+                      placeholder="asset_name.txt"
+                    />
+                    <p
+                      style={{
+                        margin: 0,
+                        color: 'var(--textSubBlackColor)',
+                        paddingBottom: '.7rem',
+                        marginTop: 5,
+                      }}
+                    >
+                      and its contents..
+                    </p>
+                    <textarea
+                      style={{
+                        width: '100%',
+                        height: 173,
+                        margin: '0 0 1rem 0',
+                        fontSize: '.9rem',
+                      }}
+                      onChange={(e) => {
+                        setAssetFormContents(e.target.value);
+                      }}
+                      placeholder="Type something awesome here.."
+                    />
+                    <button
+                      className="button primary"
+                      style={{
+                        display: 'inherit',
+                        marginLeft: 'auto',
+                      }}
+                      disabled={formDisable}
+                      onClick={() => {
+                        // two-factor (who knows?)
+                        setFormDisable(true);
+
+                        if (assetFormInput.replaceAll(' ', '') !== '') {
+                          if (
+                            assetFormInput.includes('\\') ||
+                            assetFormInput.includes('/') ||
+                            assetFormInput.includes(':') ||
+                            assetFormInput.includes('*') ||
+                            assetFormInput.includes('?') ||
+                            assetFormInput.includes('"') ||
+                            assetFormInput.includes('<') ||
+                            assetFormInput.includes('>') ||
+                            assetFormInput.includes('|')
+                          ) {
+                            toast.error(
+                              `The asset's name cannot include \\, /, :, *, ?, ", <, >, |`
+                            );
+                          } else {
+                            dispatch(
+                              addAsset({
+                                id: assetLength,
+                              })
+                            );
+
+                            dispatch(
+                              addData({
+                                name: assetFormInput.includes('.')
+                                  ? assetFormInput.substr(
+                                      0,
+                                      assetFormInput.lastIndexOf('.')
+                                    )
+                                  : assetFormInput,
+                                id: assetLength,
+                                type: EAssetType.FILE,
+                                extension: assetFormInput.includes('.')
+                                  ? assetFormInput.substr(
+                                      assetFormInput.lastIndexOf('.')
+                                    )
+                                  : '',
+                                contents: assetFormContents,
+                              })
+                            );
+                            toast.success(`The asset has been created.`);
+                          }
+                        } else if (assetFormInput.replaceAll(' ', '') === '') {
+                          toast.error(`Asset's name cannot be blank.`);
+                        } else {
+                          toast.error(`An error occured.`);
+                        }
+                        setAssetCreateWinOpen(false);
+                        setFormDisable(false);
+                        setAssetFormInput('');
+                        setAssetFormContents('');
+                      }}
+                    >
+                      Create Asset
+                    </button>
+                  </div>
+                </div>
+              </Modal>
               <div
                 style={{
                   position: 'relative',
@@ -846,9 +999,9 @@ export default function Tool() {
                             <div
                               style={{
                                 position: 'relative',
-                                top: '50%',
+                                top: 20,
                                 left: '50%',
-                                transform: 'translate(-50%, -50%)',
+                                transform: 'translateX(-50%)',
                               }}
                             >
                               <p
@@ -869,6 +1022,7 @@ export default function Tool() {
                                 style={{
                                   width: '100%',
                                   margin: '0 0 1rem 0',
+                                  fontSize: '.9rem',
                                 }}
                                 onChange={(e) => {
                                   setAssetFormInput(e.target.value);
@@ -930,7 +1084,7 @@ export default function Tool() {
                                     assetFormInput.replaceAll(' ', '') === ''
                                   ) {
                                     toast.error(
-                                      `The asset's name cannot be blank.`
+                                      `Asset's name cannot be blank.`
                                     );
                                   } else {
                                     toast.error(`An error occured.`);
@@ -1136,7 +1290,9 @@ export default function Tool() {
     assetData,
     showAssetPopover,
     isAssetRenameWinOpen,
+    isAssetCreateWinOpen,
     assetFormInput,
+    assetFormContents,
   ]);
 
   useEffect(() => {

@@ -92,6 +92,14 @@ input {
   padding: 0 0.7rem;
 }
 
+textarea {
+  border: 1px solid var(--lineColor);
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding: 0.7rem 0.7rem;
+  resize: none;
+}
+
 .button {
   min-width: 70px;
   height: 40px;

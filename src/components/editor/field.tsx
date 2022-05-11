@@ -2,7 +2,7 @@ import './styles/field.css';
 
 import { RootState } from '../../store';
 import { useSelector } from 'react-redux';
-import { imageExtensions } from '../../data';
+import { imageExtensions, videoExtensions } from '../../data';
 
 interface IToolData {
   panelWidth: number;
@@ -45,8 +45,35 @@ export default function Field(data: IToolData) {
             marginTop: '1rem',
             left: '50%',
             transform: 'translateX(-50%)',
+            borderRadius: 7,
           }}
         />
+      ) : assetData.find((asset) => asset.id === currentOpenedPanel)
+          ?.extension !== undefined &&
+        videoExtensions.includes(
+          assetData
+            .find((asset) => asset.id === currentOpenedPanel)
+            ?.extension!.substr(1)!
+        ) ? (
+        <video
+          controls
+          style={{
+            position: 'relative',
+            maxWidth: 512,
+            maxHeight: 512,
+            marginTop: '1rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            borderRadius: 7,
+          }}
+        >
+          <source
+            src={
+              assetData.find((asset) => asset.id === currentOpenedPanel)
+                ?.contents
+            }
+          />
+        </video>
       ) : (
         <pre
           style={{

@@ -8,9 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
 import {
   addAsset,
-  addAssetWithoutAddLength,
   addData,
-  IAssetList,
   togglePanelOpened,
   deleteAssetById,
   renameAsset,
@@ -22,16 +20,15 @@ import Modal from 'react-modal';
 import Active from './active';
 import Field from './field';
 import { PopContent } from '../system/popcontent';
-import { EContentType, EAssetType, imageExtensions } from '../../data';
+import {
+  EContentType,
+  EAssetType,
+  imageExtensions,
+  videoExtensions,
+} from '../../data';
 import { createWindow } from '../system/reduxSlice/windowSlice';
 
 Modal.setAppElement('#root');
-
-interface IFileContents {
-  index: number;
-  fileTree: Array<IAssetList>;
-  currAssetLen: number;
-}
 
 export default function Tool() {
   interface IPnlSize {
@@ -85,6 +82,7 @@ export default function Tool() {
     option: false,
     windowMgr: false,
   });
+  const [showNodePopover, setShowNodePopover] = useState<boolean>(false);
   const [showAssetPopover, setShowAssetPopover] = useState<number>();
   const [formInput, setFormInput] = useState<string>('');
   const [assetFormInput, setAssetFormInput] = useState<string>('');
@@ -194,33 +192,60 @@ export default function Tool() {
                   </svg>
                 </div>
               </Popover>
-              <div
-                className="tool-btn"
-                title="Create Node"
-                style={{
-                  float: 'right',
-                  backgroundColor: 'var(--panelPathColor)',
-                  width: 30,
-                  height: 30,
+              <Popover
+                isOpen={showNodePopover}
+                positions={['bottom']}
+                padding={5}
+                align="start"
+                reposition={false}
+                onClickOutside={() => {
+                  setShowNodePopover(false);
+                  dispatch(setFalse());
                 }}
-                onClick={() => {}}
+                content={() => (
+                  <PopContent
+                    contents={[
+                      {
+                        text: 'Text',
+                      },
+                      {
+                        text: 'Image',
+                      },
+                      {
+                        text: 'Video',
+                      },
+                    ]}
+                  />
+                )}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
+                <div
+                  className="tool-btn"
+                  title="Create Element"
                   style={{
-                    position: 'relative',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
+                    float: 'right',
+                    backgroundColor: 'var(--panelPathColor)',
+                    width: 30,
+                    height: 30,
                   }}
-                  width="17"
-                  height="17"
-                  viewBox="0 0 20 20"
-                  fill="var(--textGrayColor)"
+                  onClick={() => setShowNodePopover(true)}
                 >
-                  <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
-                </svg>
-              </div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                    }}
+                    width="17"
+                    height="17"
+                    viewBox="0 0 20 20"
+                    fill="var(--textGrayColor)"
+                  >
+                    <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
+                  </svg>
+                </div>
+              </Popover>
               <div
                 className="tool-btn"
                 title="Create New Window"
@@ -259,7 +284,6 @@ export default function Tool() {
                 style={{
                   content: {
                     width: '400px',
-                    height: '220px',
                   },
                 }}
               >
@@ -311,6 +335,7 @@ export default function Tool() {
                       style={{
                         display: 'inherit',
                         marginLeft: 'auto',
+                        marginBottom: 40,
                       }}
                       disabled={formDisable}
                       onClick={() => {
@@ -427,11 +452,16 @@ export default function Tool() {
 
                       if (
                         event.target.files![i].name.includes('.') &&
-                        imageExtensions.includes(
+                        (imageExtensions.includes(
                           event.target.files![i].name.substr(
                             event.target.files![i].name.lastIndexOf('.') + 1
                           )
-                        )
+                        ) ||
+                          videoExtensions.includes(
+                            event.target.files![i].name.substr(
+                              event.target.files![i].name.lastIndexOf('.') + 1
+                            )
+                          ))
                       ) {
                         reader.readAsDataURL(event.target.files![i]);
                       } else {
@@ -509,7 +539,6 @@ export default function Tool() {
                 style={{
                   content: {
                     width: '400px',
-                    height: '450px',
                   },
                 }}
               >
@@ -584,6 +613,7 @@ export default function Tool() {
                       style={{
                         display: 'inherit',
                         marginLeft: 'auto',
+                        marginBottom: 40,
                       }}
                       disabled={formDisable}
                       onClick={() => {
@@ -714,11 +744,16 @@ export default function Tool() {
 
                             if (
                               files![i].name.includes('.') &&
-                              imageExtensions.includes(
+                              (imageExtensions.includes(
                                 files![i].name.substr(
                                   files![i].name.lastIndexOf('.') + 1
                                 )
-                              )
+                              ) ||
+                                videoExtensions.includes(
+                                  files![i].name.substr(
+                                    files![i].name.lastIndexOf('.') + 1
+                                  )
+                                ))
                             ) {
                               reader.readAsDataURL(files![i]);
                             } else {
@@ -730,356 +765,234 @@ export default function Tool() {
                                 files![i].name
                               }' couldn't be uploaded because it is unable to upload folders as asset.`
                             );
-
-                            // dispatch(
-                            //   addData({
-                            //     name: files![i].name,
-                            //     id: index,
-                            //     type: EAssetType.FOLDER,
-                            //     isOpened: true,
-                            //   })
-                            // );
-
-                            // const tree = await GetFileContents(
-                            //   fileAsEntry,
-                            //   index
-                            // );
-
-                            // const fileArr: Array<IAssetList> = [];
-                            // const currentIndex: number = tree.index + 1;
-                            // let isDone: boolean = false;
-
-                            // if (tree.fileTree.length === 0) {
-                            //   isDone = true;
-                            // } else {
-                            //   tree.fileTree.forEach((file) =>
-                            //     Promise.resolve(file).then((f) => {
-                            //       fileArr.push(f);
-                            //       isDone = fileArr.length === currentIndex;
-                            //     })
-                            //   );
-                            // }
-
-                            // const dispatchTimeOut = setInterval(() => {
-                            //   if (isDone) {
-                            //     clearTimeout(dispatchTimeOut);
-                            //     dispatch(
-                            //       addAsset({
-                            //         id: index,
-                            //         contents: fileArr,
-                            //       })
-                            //     );
-                            //     dispatch(addAssetLength(tree.currAssetLen + 1));
-                            //     index += tree.index + 1;
-                            //   }
-                            // }, 10);
                           }
                         }
                       }
                     }
                   }}
                 >
-                  {assetData.map(
-                    (asset) => (
-                      // !asset.isDisabled ? (
-                      // asset.type === EAssetType.FILE ? (
-                      <div key={asset.id}>
-                        <Modal
-                          closeTimeoutMS={150}
-                          isOpen={winOpenId === 2}
-                          contentLabel="Rename Asset"
-                          style={{
-                            content: {
-                              width: '400px',
-                              height: '220px',
-                            },
-                          }}
-                        >
-                          <div className="header">
-                            <p>Rename Asset</p>
-                            <div
-                              title="Cancel"
-                              onClick={() => setWinOpenId(undefined)}
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="27"
-                                height="27"
-                                fill="var(--shortcutIconColor)"
-                                className="bi bi-x"
-                                viewBox="0 0 16 16"
-                              >
-                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                              </svg>
-                            </div>
-                          </div>
-                          <div className="body">
-                            <div
-                              style={{
-                                position: 'relative',
-                                top: 20,
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                              }}
-                            >
-                              <p
-                                style={{
-                                  margin: 0,
-                                  color: 'var(--textSubBlackColor)',
-                                  paddingBottom: '.7rem',
-                                }}
-                              >
-                                Rename the{' '}
-                                <b>
-                                  {asset.name}
-                                  {asset.extension}
-                                </b>{' '}
-                                asset to..
-                              </p>
-                              <input
-                                style={{
-                                  width: '100%',
-                                  margin: '0 0 1rem 0',
-                                  fontSize: '.9rem',
-                                }}
-                                onChange={(e) => {
-                                  setAssetFormInput(e.target.value);
-                                }}
-                                placeholder={`${asset.name}${asset.extension}`}
-                              />
-                              <button
-                                className="button primary"
-                                style={{
-                                  display: 'inherit',
-                                  marginLeft: 'auto',
-                                }}
-                                disabled={formDisable}
-                                onClick={() => {
-                                  // two-factor (who knows?)
-                                  setFormDisable(true);
-
-                                  if (
-                                    assetFormInput.replaceAll(' ', '') !== ''
-                                  ) {
-                                    if (
-                                      assetFormInput.includes('\\') ||
-                                      assetFormInput.includes('/') ||
-                                      assetFormInput.includes(':') ||
-                                      assetFormInput.includes('*') ||
-                                      assetFormInput.includes('?') ||
-                                      assetFormInput.includes('"') ||
-                                      assetFormInput.includes('<') ||
-                                      assetFormInput.includes('>') ||
-                                      assetFormInput.includes('|')
-                                    ) {
-                                      toast.error(
-                                        `The asset's name cannot include \\, /, :, *, ?, ", <, >, |`
-                                      );
-                                    } else {
-                                      dispatch(
-                                        renameAsset({
-                                          id: asset.id,
-                                          name: assetFormInput.includes('.')
-                                            ? assetFormInput.substr(
-                                                0,
-                                                assetFormInput.lastIndexOf('.')
-                                              )
-                                            : assetFormInput,
-                                          extension: assetFormInput.includes(
-                                            '.'
-                                          )
-                                            ? assetFormInput.substr(
-                                                assetFormInput.lastIndexOf('.')
-                                              )
-                                            : '',
-                                        })
-                                      );
-                                      toast.success(
-                                        `The asset has been renamed.`
-                                      );
-                                    }
-                                  } else if (
-                                    assetFormInput.replaceAll(' ', '') === ''
-                                  ) {
-                                    toast.error(
-                                      `Asset's name cannot be blank.`
-                                    );
-                                  } else {
-                                    toast.error(`An error occured.`);
-                                  }
-                                  setWinOpenId(undefined);
-                                  setFormDisable(false);
-                                  setAssetFormInput('');
-                                }}
-                              >
-                                Rename Asset
-                              </button>
-                            </div>
-                          </div>
-                        </Modal>
-                        <Popover
-                          isOpen={showAssetPopover === asset.id}
-                          positions={['bottom']}
-                          padding={5}
-                          align="start"
-                          reposition={false}
-                          onClickOutside={() => {
-                            setShowAssetPopover(undefined);
-                            dispatch(setFalse());
-                          }}
-                          content={() => (
-                            <PopContent
-                              contents={[
-                                {
-                                  text: 'Rename Asset',
-                                  onClick: () => setWinOpenId(2),
-                                },
-                                {
-                                  text: 'Delete Asset',
-                                  type: EContentType.DANGER,
-                                  onClick: () => {
-                                    dispatch(deleteAssetById(asset.id));
-                                    dispatch(setFalse());
-                                    setShowAssetPopover(undefined);
-                                    toast.success(
-                                      'The asset has been deleted.'
-                                    );
-                                  },
-                                },
-                              ]}
-                            />
-                          )}
-                        >
+                  {assetData.map((asset) => (
+                    // !asset.isDisabled ? (
+                    // asset.type === EAssetType.FILE ? (
+                    <div key={asset.id}>
+                      <Modal
+                        closeTimeoutMS={150}
+                        isOpen={winOpenId === 2}
+                        contentLabel="Rename Asset"
+                        style={{
+                          content: {
+                            width: '400px',
+                          },
+                        }}
+                      >
+                        <div className="header">
+                          <p>Rename Asset</p>
                           <div
-                            className="asset"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              dispatch(
-                                togglePanelOpened({
-                                  id: asset.id,
-                                  toggle: true,
-                                })
-                              );
-                            }}
+                            title="Cancel"
+                            onClick={() => setWinOpenId(undefined)}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="27"
+                              height="27"
+                              fill="var(--shortcutIconColor)"
+                              className="bi bi-x"
+                              viewBox="0 0 16 16"
+                            >
+                              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                          </div>
+                        </div>
+                        <div className="body">
+                          <div
                             style={{
-                              backgroundColor:
-                                showAssetPopover === asset.id
-                                  ? 'var(--panelPathColor)'
-                                  : undefined,
-                            }}
-                            onContextMenu={(e) => {
-                              e.preventDefault();
-                              dispatch(setTrue());
-                              setShowAssetPopover(asset.id);
+                              position: 'relative',
+                              top: 20,
+                              left: '50%',
+                              transform: 'translateX(-50%)',
                             }}
                           >
-                            <div>
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                style={{
-                                  width: '1rem',
-                                  height: '1rem',
-                                }}
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                              <p
-                                style={{
-                                  width: 'calc(100% - 43px)',
-                                  height: '100%',
-                                  overflow: 'hidden',
-                                  whiteSpace: 'nowrap',
-                                  textOverflow: 'ellipsis',
-                                }}
-                              >
+                            <p
+                              style={{
+                                margin: 0,
+                                color: 'var(--textSubBlackColor)',
+                                paddingBottom: '.7rem',
+                                maxWidth: '100%',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                              }}
+                            >
+                              Rename the{' '}
+                              <b>
                                 {asset.name}
                                 {asset.extension}
-                              </p>
-                            </div>
+                              </b>{' '}
+                              asset to..
+                            </p>
+                            <input
+                              style={{
+                                width: '100%',
+                                margin: '0 0 1rem 0',
+                                fontSize: '.9rem',
+                              }}
+                              onChange={(e) => {
+                                setAssetFormInput(e.target.value);
+                              }}
+                              placeholder={`${asset.name}${asset.extension}`}
+                            />
+                            <button
+                              className="button primary"
+                              style={{
+                                display: 'inherit',
+                                marginLeft: 'auto',
+                                marginBottom: 40,
+                              }}
+                              disabled={formDisable}
+                              onClick={() => {
+                                // two-factor (who knows?)
+                                setFormDisable(true);
+
+                                if (assetFormInput.replaceAll(' ', '') !== '') {
+                                  if (
+                                    assetFormInput.includes('\\') ||
+                                    assetFormInput.includes('/') ||
+                                    assetFormInput.includes(':') ||
+                                    assetFormInput.includes('*') ||
+                                    assetFormInput.includes('?') ||
+                                    assetFormInput.includes('"') ||
+                                    assetFormInput.includes('<') ||
+                                    assetFormInput.includes('>') ||
+                                    assetFormInput.includes('|')
+                                  ) {
+                                    toast.error(
+                                      `The asset's name cannot include \\, /, :, *, ?, ", <, >, |`
+                                    );
+                                  } else {
+                                    dispatch(
+                                      renameAsset({
+                                        id: asset.id,
+                                        name: assetFormInput.includes('.')
+                                          ? assetFormInput.substr(
+                                              0,
+                                              assetFormInput.lastIndexOf('.')
+                                            )
+                                          : assetFormInput,
+                                        extension: assetFormInput.includes('.')
+                                          ? assetFormInput.substr(
+                                              assetFormInput.lastIndexOf('.')
+                                            )
+                                          : '',
+                                      })
+                                    );
+                                    toast.success(
+                                      `The asset has been renamed.`
+                                    );
+                                  }
+                                } else if (
+                                  assetFormInput.replaceAll(' ', '') === ''
+                                ) {
+                                  toast.error(`Asset's name cannot be blank.`);
+                                } else {
+                                  toast.error(`An error occured.`);
+                                }
+                                setWinOpenId(undefined);
+                                setFormDisable(false);
+                                setAssetFormInput('');
+                              }}
+                            >
+                              Rename Asset
+                            </button>
                           </div>
-                        </Popover>
-                      </div>
-                    )
-                    // ) : ) : (
-                    //   <div
-                    //     className="asset"
-                    //     key={asset.id}
-                    //     onClick={() => dispatch(setOpened(asset.id))}
-                    //     style={{
-                    //       paddingLeft:
-                    //         asset.nth === undefined ? 7 : asset.nth * 10,
-                    //     }}
-                    //   >
-                    //     <div>
-                    //       <div>
-                    //         {asset.isOpened! ? (
-                    //           <svg
-                    //             xmlns="http://www.w3.org/2000/svg"
-                    //             width="0.95rem"
-                    //             height="0.95rem"
-                    //             fill="none"
-                    //             viewBox="0 0 24 24"
-                    //             stroke="currentColor"
-                    //             strokeWidth="2"
-                    //           >
-                    //             <path
-                    //               strokeLinecap="round"
-                    //               strokeLinejoin="round"
-                    //               d="M19 9l-7 7-7-7"
-                    //             />
-                    //           </svg>
-                    //         ) : (
-                    //           <svg
-                    //             xmlns="http://www.w3.org/2000/svg"
-                    //             width="0.95rem"
-                    //             height="0.95rem"
-                    //             fill="none"
-                    //             viewBox="0 0 24 24"
-                    //             stroke="currentColor"
-                    //             strokeWidth="2"
-                    //           >
-                    //             <path
-                    //               strokeLinecap="round"
-                    //               strokeLinejoin="round"
-                    //               d="M9 5l7 7-7 7"
-                    //             />
-                    //           </svg>
-                    //         )}
-                    //       </div>
-                    //       <svg
-                    //         xmlns="http://www.w3.org/2000/svg"
-                    //         viewBox="0 0 20 20"
-                    //         fill="currentColor"
-                    //         style={{
-                    //         width: '1rem',
-                    //         height: '1rem'
-                    //         }}
-                    //       >
-                    //         <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
-                    //       </svg>
-                    //       <p
-                    //         style={{
-                    //           width: 'calc(100% - 43px)',
-                    //           height: '100%',
-                    //           overflow: 'hidden',
-                    //           whiteSpace: 'nowrap',
-                    //           textOverflow: 'ellipsis',
-                    //         }}
-                    //       >
-                    //         {asset.name}
-                    //         {asset.extension}
-                    //       </p>
-                    //     </div>
-                    //   </div>
-                    // )
-                    // null
-                  )}
+                        </div>
+                      </Modal>
+                      <Popover
+                        isOpen={showAssetPopover === asset.id}
+                        positions={['bottom']}
+                        padding={5}
+                        align="start"
+                        reposition={false}
+                        onClickOutside={() => {
+                          setShowAssetPopover(undefined);
+                          dispatch(setFalse());
+                        }}
+                        content={() => (
+                          <PopContent
+                            contents={[
+                              {
+                                text: 'Rename Asset',
+                                onClick: () => setWinOpenId(2),
+                              },
+                              {
+                                text: 'Delete Asset',
+                                type: EContentType.DANGER,
+                                onClick: () => {
+                                  dispatch(deleteAssetById(asset.id));
+                                  dispatch(setFalse());
+                                  setShowAssetPopover(undefined);
+                                  toast.success('The asset has been deleted.');
+                                },
+                              },
+                            ]}
+                          />
+                        )}
+                      >
+                        <div
+                          className="asset"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            dispatch(
+                              togglePanelOpened({
+                                id: asset.id,
+                                toggle: true,
+                              })
+                            );
+                          }}
+                          style={{
+                            backgroundColor:
+                              showAssetPopover === asset.id
+                                ? 'var(--panelPathColor)'
+                                : undefined,
+                          }}
+                          onContextMenu={(e) => {
+                            e.preventDefault();
+                            dispatch(setTrue());
+                            setShowAssetPopover(asset.id);
+                          }}
+                        >
+                          <div>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              style={{
+                                width: '1rem',
+                                height: '1rem',
+                              }}
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            <p
+                              style={{
+                                width: 'calc(100% - 43px)',
+                                height: '100%',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                              }}
+                            >
+                              {asset.name}
+                              {asset.extension}
+                            </p>
+                          </div>
+                        </div>
+                      </Popover>
+                    </div>
+                  ))}
                 </FileDrop>
               </div>
             </nav>
@@ -1107,6 +1020,7 @@ export default function Tool() {
     assetLength,
     assetData,
     showAssetPopover,
+    showNodePopover,
     assetFormInput,
     assetFormContents,
   ]);

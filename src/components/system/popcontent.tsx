@@ -125,7 +125,6 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                   style={{
                     content: {
                       width: '400px',
-                      height: '220px',
                     },
                   }}
                 >
@@ -158,6 +157,10 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                           margin: 0,
                           color: 'var(--textSubBlackColor)',
                           paddingBottom: '.7rem',
+                          maxWidth: '100%',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
                         }}
                       >
                         Rename the <b>{content.text}</b> window to..
@@ -177,6 +180,7 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                         style={{
                           display: 'inherit',
                           marginLeft: 'auto',
+                          marginBottom: 40,
                         }}
                         disabled={formDisable}
                         onClick={() => {
@@ -241,7 +245,6 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                   style={{
                     content: {
                       width: '450px',
-                      height: '230px',
                     },
                   }}
                 >
@@ -274,6 +277,10 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                           margin: 0,
                           color: 'var(--textSubBlackColor)',
                           paddingBottom: '1.5rem',
+                          maxWidth: '100%',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
                         }}
                       >
                         You cannot undone this action.
@@ -290,6 +297,7 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                           display: 'inherit',
                           marginLeft: 'auto',
                           marginTop: 15,
+                          marginBottom: 40,
                         }}
                         onClick={() => {
                           // two-factor (who knows?)

@@ -17,3 +17,5 @@ export const imageExtensions: Array<string> = [
   'tiff',
   'raw',
 ];
+
+export const videoExtensions: Array<string> = ['mp4'];

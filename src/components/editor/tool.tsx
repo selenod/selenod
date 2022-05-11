@@ -77,9 +77,12 @@ export default function Tool() {
   const [pnlDisplay, setPnlDisplay] = useState<string>('block');
   const [formDisable, setFormDisable] = useState<boolean>(false);
   const [pnlComponent, setPnlComponent] = useState<ReactElement | null>(null);
-  const [isNewWinOpen, setNewWinOpen] = useState<boolean>(false);
-  const [isAssetRenameWinOpen, setAssetRenameWindowOpen] =
-    useState<boolean>(false);
+  // const [isNewWinOpen, setNewWinOpen] = useState<boolean>(false);
+  // const [isAssetRenameWinOpen, setAssetRenameWindowOpen] =
+  //   useState<boolean>(false);
+  //   const [isAssetCreateWinOpen, setAssetCreateWinOpen] =
+  //   useState<boolean>(false);
+  const [winOpenId, setWinOpenId] = useState<number>();
   const [showPopover, setShowPopover] = useState<{
     option?: boolean;
     windowMgr?: boolean;
@@ -87,8 +90,6 @@ export default function Tool() {
     option: false,
     windowMgr: false,
   });
-  const [isAssetCreateWinOpen, setAssetCreateWinOpen] =
-    useState<boolean>(false);
   const [showAssetPopover, setShowAssetPopover] = useState<number>();
   const [formInput, setFormInput] = useState<string>('');
   const [assetFormInput, setAssetFormInput] = useState<string>('');
@@ -410,7 +411,7 @@ export default function Tool() {
                   height: 30,
                   marginLeft: 7,
                 }}
-                onClick={() => setNewWinOpen(true)}
+                onClick={() => setWinOpenId(0)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -433,7 +434,7 @@ export default function Tool() {
               </div>
               <Modal
                 closeTimeoutMS={150}
-                isOpen={isNewWinOpen}
+                isOpen={winOpenId === 0}
                 contentLabel="Create New Window"
                 style={{
                   content: {
@@ -444,7 +445,7 @@ export default function Tool() {
               >
                 <div className="header">
                   <p>Create New Window</p>
-                  <div title="Cancel" onClick={() => setNewWinOpen(false)}>
+                  <div title="Cancel" onClick={() => setWinOpenId(undefined)}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="27"
@@ -505,7 +506,7 @@ export default function Tool() {
                             toast.error(
                               `There's already a window with the same name.`
                             );
-                            setNewWinOpen(false);
+                            setWinOpenId(undefined);
                             setFormDisable(false);
                             setFormInput('');
                             return false;
@@ -518,7 +519,7 @@ export default function Tool() {
                         } else {
                           toast.error(`An error occured.`);
                         }
-                        setNewWinOpen(false);
+                        setWinOpenId(undefined);
                         setFormDisable(false);
                         setFormInput('');
                       }}
@@ -659,7 +660,7 @@ export default function Tool() {
                   height: 30,
                   marginRight: 7,
                 }}
-                onClick={() => setAssetCreateWinOpen(true)}
+                onClick={() => setWinOpenId(1)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -683,7 +684,7 @@ export default function Tool() {
               </div>
               <Modal
                 closeTimeoutMS={150}
-                isOpen={isAssetCreateWinOpen}
+                isOpen={winOpenId === 1}
                 contentLabel="Create New Asset"
                 style={{
                   content: {
@@ -694,10 +695,7 @@ export default function Tool() {
               >
                 <div className="header">
                   <p>Create New Asset</p>
-                  <div
-                    title="Cancel"
-                    onClick={() => setAssetCreateWinOpen(false)}
-                  >
+                  <div title="Cancel" onClick={() => setWinOpenId(undefined)}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="27"
@@ -819,7 +817,7 @@ export default function Tool() {
                         } else {
                           toast.error(`An error occured.`);
                         }
-                        setAssetCreateWinOpen(false);
+                        setWinOpenId(undefined);
                         setFormDisable(false);
                         setAssetFormInput('');
                         setAssetFormContents('');
@@ -968,7 +966,7 @@ export default function Tool() {
                       <div key={asset.id}>
                         <Modal
                           closeTimeoutMS={150}
-                          isOpen={isAssetRenameWinOpen}
+                          isOpen={winOpenId === 2}
                           contentLabel="Rename Asset"
                           style={{
                             content: {
@@ -981,7 +979,7 @@ export default function Tool() {
                             <p>Rename Asset</p>
                             <div
                               title="Cancel"
-                              onClick={() => setAssetRenameWindowOpen(false)}
+                              onClick={() => setWinOpenId(undefined)}
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -1089,7 +1087,7 @@ export default function Tool() {
                                   } else {
                                     toast.error(`An error occured.`);
                                   }
-                                  setAssetRenameWindowOpen(false);
+                                  setWinOpenId(undefined);
                                   setFormDisable(false);
                                   setAssetFormInput('');
                                 }}
@@ -1114,7 +1112,7 @@ export default function Tool() {
                               contents={[
                                 {
                                   text: 'Rename Asset',
-                                  onClick: () => setAssetRenameWindowOpen(true),
+                                  onClick: () => setWinOpenId(2),
                                 },
                                 {
                                   text: 'Delete Asset',
@@ -1283,14 +1281,12 @@ export default function Tool() {
     isClicked,
     windowList,
     formDisable,
-    isNewWinOpen,
+    winOpenId,
     formInput,
     assetList,
     assetLength,
     assetData,
     showAssetPopover,
-    isAssetRenameWinOpen,
-    isAssetCreateWinOpen,
     assetFormInput,
     assetFormContents,
   ]);

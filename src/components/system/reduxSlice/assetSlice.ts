@@ -8,7 +8,6 @@ export interface IAsset {
   contents?: string;
   extension?: string;
   isOpened?: boolean;
-  nth: number;
   isDisabled?: boolean;
 }
 
@@ -37,17 +36,29 @@ export const assetSlice = createSlice({
   name: 'asset',
   initialState,
   reducers: {
-    addAssetWithoutAddLength: (state, action) => {
+    addAssetWithoutAddLength: (
+      state: { assetList: Array<IAssetList> },
+      action: { payload: IAssetList }
+    ) => {
       state.assetList.push(action.payload);
     },
-    addAsset: (state, action) => {
+    addAsset: (
+      state: { assetLength: number; assetList: Array<IAssetList> },
+      action: { payload: IAssetList }
+    ) => {
       state.assetLength += 1;
       state.assetList.push(action.payload);
     },
-    addData: (state, action) => {
+    addData: (
+      state: { assetData: Array<IAsset> },
+      action: { payload: IAsset }
+    ) => {
       state.assetData.push(action.payload);
     },
-    setOpened: (state, action) => {
+    setOpened: (
+      state: { assetData: Array<IAsset>; assetList: Array<IAssetList> },
+      action: { payload: number }
+    ) => {
       state.assetData.find((asset) => asset.id === action.payload)!.isOpened =
         !state.assetData.find((asset) => asset.id === action.payload)!.isOpened;
 
@@ -85,10 +96,19 @@ export const assetSlice = createSlice({
         !state.assetData.find((asset) => asset.id === action.payload)!.isOpened
       );
     },
-    addAssetLength: (state, action) => {
+    addAssetLength: (
+      state: { assetLength: number },
+      action: { payload: number }
+    ) => {
       state.assetLength += action.payload;
     },
-    togglePanelOpened: (state, action) => {
+    togglePanelOpened: (
+      state: {
+        openedPanelList: Array<number>;
+        currentOpenedPanel: number | null;
+      },
+      action: { payload: { id: number; toggle: boolean } }
+    ) => {
       if (!action.payload.toggle) {
         if (state.openedPanelList.includes(action.payload.id)) {
           if (state.currentOpenedPanel === action.payload.id) {
@@ -114,17 +134,32 @@ export const assetSlice = createSlice({
         state.currentOpenedPanel = action.payload.id;
       }
     },
-    setOpenedPanel: (state, action) => {
+    setOpenedPanel: (
+      state: { currentOpenedPanel: number | null },
+      action: { payload: number }
+    ) => {
       state.currentOpenedPanel = action.payload;
     },
-    renameAsset: (state, action) => {
+    renameAsset: (
+      state: { assetData: Array<IAsset> },
+      action: { payload: { id: number; name: string; extension: string } }
+    ) => {
       state.assetData.find((asset) => asset.id === action.payload.id)!.name =
         action.payload.name;
       state.assetData.find(
         (asset) => asset.id === action.payload.id
       )!.extension = action.payload.extension;
     },
-    deleteAssetById: (state, action) => {
+    deleteAssetById: (
+      state: {
+        currentOpenedPanel: number | null;
+        openedPanelList: Array<number>;
+        assetList: Array<IAssetList>;
+        assetData: Array<IAsset>;
+        assetLength: number;
+      },
+      action: { payload: number }
+    ) => {
       if (state.currentOpenedPanel === action.payload) {
         if (state.openedPanelList.length <= 1) {
           state.currentOpenedPanel = null;

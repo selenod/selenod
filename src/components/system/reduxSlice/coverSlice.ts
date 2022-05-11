@@ -14,14 +14,14 @@ export const coverSlice = createSlice({
   name: 'cover',
   initialState,
   reducers: {
-    setTrue: (state) => {
+    setTrue: (state: { actived: boolean }) => {
       state.actived = true;
     },
-    setFalse: (state) => {
+    setFalse: (state: { actived: boolean; clicked: boolean }) => {
       state.actived = false;
       state.clicked = false;
     },
-    setClicked: (state) => {
+    setClicked: (state: { clicked: boolean }) => {
       state.clicked = true;
     },
   },

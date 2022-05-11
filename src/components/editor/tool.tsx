@@ -77,11 +77,6 @@ export default function Tool() {
   const [pnlDisplay, setPnlDisplay] = useState<string>('block');
   const [formDisable, setFormDisable] = useState<boolean>(false);
   const [pnlComponent, setPnlComponent] = useState<ReactElement | null>(null);
-  // const [isNewWinOpen, setNewWinOpen] = useState<boolean>(false);
-  // const [isAssetRenameWinOpen, setAssetRenameWindowOpen] =
-  //   useState<boolean>(false);
-  //   const [isAssetCreateWinOpen, setAssetCreateWinOpen] =
-  //   useState<boolean>(false);
   const [winOpenId, setWinOpenId] = useState<number>();
   const [showPopover, setShowPopover] = useState<{
     option?: boolean;
@@ -98,181 +93,6 @@ export default function Tool() {
   const assetInput = useRef<any>(null);
 
   const dispatch = useDispatch();
-
-  const GetFileContents = (
-    fileAsEntry: any,
-    i: number,
-    nth: number = 1,
-    currAssetLen: number = 0
-  ): Promise<IFileContents> => {
-    return new Promise((resolve, reject) => {
-      fileAsEntry
-        .createReader()
-        .readEntries(async (entries: Array<FileSystemEntry>) => {
-          let isEnd: boolean = true;
-          let plusToFile: number = 0;
-
-          const folderTree: Array<Promise<IAssetList>> = entries
-            .filter((entry: FileSystemEntry): boolean => !entry.isFile)
-            .reduce(
-              (
-                prev: Array<Promise<IAssetList>>,
-                entry: FileSystemEntry,
-                idx: number
-              ) => {
-                let isDone: boolean = false;
-
-                return [
-                  ...prev,
-                  new Promise((resolve, reject) => {
-                    const waitUntilEnd = setInterval(() => {
-                      if (isEnd) {
-                        (async () => {
-                          clearTimeout(waitUntilEnd);
-                          isEnd = false;
-
-                          dispatch(
-                            addData({
-                              name: entry.name,
-                              id: i + idx + 1,
-                              type: EAssetType.FOLDER,
-                              nth: nth,
-                              isOpened: true,
-                            })
-                          );
-
-                          (entry as any).createReader().readEntries(() => {
-                            isDone = true;
-                          });
-
-                          const tree = await GetFileContents(
-                            entry,
-                            i + idx + 1,
-                            nth + 1
-                          );
-
-                          dispatch(
-                            addAssetWithoutAddLength({
-                              id: i + idx + 1,
-                              contents: tree.fileTree,
-                            })
-                          );
-
-                          const dispatchTimeOut = setInterval(() => {
-                            if (isDone) {
-                              clearTimeout(dispatchTimeOut);
-
-                              currAssetLen += tree.currAssetLen + 2;
-                              i += tree.currAssetLen + 1;
-
-                              resolve({
-                                id: i + idx - tree.currAssetLen,
-                                contents: tree.fileTree,
-                              });
-
-                              isEnd = true;
-                              plusToFile++;
-                            }
-                          }, 10);
-                        })();
-                      }
-                    }, 10);
-                  }) as Promise<IAssetList>,
-                ];
-              },
-              []
-            );
-
-          const treeArr: Array<IAssetList> = [];
-          let isDone: boolean = false;
-
-          if (folderTree.length === 0) {
-            entries
-              .filter((entry: FileSystemEntry): boolean => entry.isFile)
-              .forEach((entry: FileSystemEntry, idx: number) => {
-                currAssetLen++;
-                i++;
-
-                dispatch(
-                  addData({
-                    name: `${entry.name.substr(
-                      0,
-                      entry.name.lastIndexOf('.')
-                    )}`,
-                    id: i + plusToFile,
-                    type: EAssetType.FILE,
-                    extension: entry.name.substr(entry.name.lastIndexOf('.')),
-                    contents: '그거아님',
-                    nth: nth,
-                  })
-                );
-
-                dispatch(
-                  addAssetWithoutAddLength({
-                    id: i + plusToFile,
-                  })
-                );
-
-                treeArr.push({ id: i + plusToFile });
-              });
-
-            isDone = true;
-          } else {
-            folderTree.forEach((tree) => {
-              Promise.resolve(tree).then((asset) => {
-                treeArr.push(asset);
-                if (folderTree.length === treeArr.length) {
-                  entries
-                    .filter((entry: FileSystemEntry): boolean => entry.isFile)
-                    .forEach((entry: FileSystemEntry, idx: number) => {
-                      currAssetLen++;
-                      i++;
-
-                      dispatch(
-                        addData({
-                          name: entry.name.substr(
-                            0,
-                            entry.name.lastIndexOf('.')
-                          ),
-                          id: i + plusToFile,
-                          type: EAssetType.FILE,
-                          extension: entry.name.substr(
-                            entry.name.lastIndexOf('.')
-                          ),
-                          contents: '그거아님',
-                          nth: nth,
-                        })
-                      );
-
-                      dispatch(
-                        addAssetWithoutAddLength({
-                          id: i + plusToFile,
-                        })
-                      );
-
-                      treeArr.push({ id: i + plusToFile });
-                    });
-
-                  isDone = true;
-                }
-              });
-            });
-          }
-
-          const dispatchTimeOut = setInterval(() => {
-            if (isDone) {
-              clearTimeout(dispatchTimeOut);
-
-              resolve({
-                index: treeArr.length - 1,
-                fileTree: treeArr,
-                currAssetLen: currAssetLen - 1,
-              });
-            }
-          }, 10);
-        });
-    });
-  };
 
   // Detect panel index changing
   useEffect(() => {
@@ -600,7 +420,7 @@ export default function Tool() {
                                   event.target.files![i].name.lastIndexOf('.')
                                 )
                               : '',
-                            contents: reader.result,
+                            contents: reader.result as string,
                           })
                         );
                       });
@@ -887,7 +707,7 @@ export default function Tool() {
                                         files![i].name.lastIndexOf('.')
                                       )
                                     : '',
-                                  contents: reader.result,
+                                  contents: reader.result as string,
                                 })
                               );
                             });

@@ -43,10 +43,7 @@ export const windowSlice = createSlice({
   name: 'window',
   initialState,
   reducers: {
-    loadWindow: (state, action) => {
-      //action.payload에 담겨있는 윈도우 아이디로 대충 잘 해보셈
-    },
-    createWindow: (state, action) => {
+    createWindow: (state: WindowState, action: { payload: string }) => {
       state.windowList.push({
         name: action.payload,
         id: state.windowList[state.windowList.length - 1].id + 1,
@@ -54,7 +51,10 @@ export const windowSlice = createSlice({
       });
       //서버에도 푸시
     },
-    renameWindow: (state, action) => {
+    renameWindow: (
+      state: WindowState,
+      action: { payload: { id: number; value: string } }
+    ) => {
       const targetWindow = state.windowList.find(
         (window) => action.payload.id === window.id
       )!;
@@ -66,7 +66,7 @@ export const windowSlice = createSlice({
       });
       //서버에도 푸시
     },
-    deleteWindow: (state, action) => {
+    deleteWindow: (state: WindowState, action: { payload: number }) => {
       if (
         window.sessionStorage.getItem('current_window') ===
           action.payload.toString() &&
@@ -97,7 +97,6 @@ export const windowSlice = createSlice({
   },
 });
 
-export const { loadWindow, createWindow, renameWindow, deleteWindow } =
-  windowSlice.actions;
+export const { createWindow, renameWindow, deleteWindow } = windowSlice.actions;
 
 export default windowSlice.reducer;

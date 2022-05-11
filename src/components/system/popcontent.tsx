@@ -191,7 +191,7 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                           ) {
                             dispatch(
                               renameWindow({
-                                id: content.id,
+                                id: content.id!,
                                 value: formInput,
                               })
                             );
@@ -303,7 +303,7 @@ export function PopContent({ cacheKey, isSelection, contents }: IContentData) {
                             toast.error('The window opened cannot be deleted.');
                             return false;
                           }
-                          dispatch(deleteWindow(content.id));
+                          dispatch(deleteWindow(content.id!));
                           contentsState.splice(
                             contentsState.indexOf(
                               contentsState.filter(

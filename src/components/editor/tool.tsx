@@ -204,9 +204,25 @@ export default function Tool() {
                 }}
                 content={() => (
                   <PopContent
+                    isScrollable={true}
                     contents={[
                       {
                         text: 'Text',
+                      },
+                      {
+                        text: 'TextField',
+                      },
+                      {
+                        type: EContentType.LINE,
+                      },
+                      {
+                        text: 'Button',
+                      },
+                      {
+                        text: 'Toggle',
+                      },
+                      {
+                        type: EContentType.LINE,
                       },
                       {
                         text: 'Image',
@@ -227,7 +243,14 @@ export default function Tool() {
                     width: 30,
                     height: 30,
                   }}
-                  onClick={() => setShowNodePopover(true)}
+                  onClick={() => {
+                    dispatch(
+                      showNodePopover
+                        ? dispatch(setFalse())
+                        : dispatch(setTrue())
+                    );
+                    setShowNodePopover(true);
+                  }}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

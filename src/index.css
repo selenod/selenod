@@ -31,6 +31,7 @@ body {
   --panelPathColor: #e1e7eb;
   --popContentHeaderColor: #f5f8fa;
   --popContentHoverColor: #f5f6f7;
+  --popContentlineColor: #ebeff2;
   --editorColor: #f0f3f5;
   --textBlackColor: #1a1b1c;
   --textSubBlackColor: #474a4d;
@@ -129,18 +130,30 @@ textarea {
   z-index: 999;
 }
 
-.popover {
-  border-radius: 10px;
-  box-shadow: 0 5px 20px #00000015;
-  padding: 5px 15px;
+.popover-parent {
   background-color: var(--baseColor);
   width: 190px;
-  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px #00000015;
+  padding: 5px 5px;
 }
 
-.popover > div {
+.popover {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.popover::-webkit-scrollbar {
+  display: none;
+}
+
+.popover > div:not(.popover > .hl) {
   position: relative;
-  width: calc(100% + 20px);
+  width: calc(100%);
   height: 40px;
   left: 50%;
   transform: translateX(-50%);
@@ -156,11 +169,11 @@ textarea {
   margin-bottom: 3px;
 }
 
-.popover > div:hover {
+.popover > div:not(.popover > .hl):hover {
   background-color: var(--popContentHoverColor);
 }
 
-.popover > div > p {
+.popover > div:not(.popover > .hl) > p {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
@@ -169,19 +182,19 @@ textarea {
   font-size: 0.9rem;
 }
 
-.popover > div > div {
+.popover > div:not(.popover > .hl) > div {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
   margin: 0 15px;
 }
 
-.popover > div > div > svg {
+.popover > div:not(.popover > .hl) > div > svg {
   margin-top: 0.5px;
   float: left;
 }
 
-.popover > div > div > p {
+.popover > div:not(.popover > .hl) > div > p {
   display: block;
   margin: 0 0 0 25px;
   overflow: hidden;

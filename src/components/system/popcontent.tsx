@@ -103,7 +103,14 @@ export function PopContent({
         >
           {contentsState.map((content) =>
             content.type === 'line' ? (
-              <div className="hl" />
+              <div
+                className="hl"
+                style={{
+                  backgroundColor: 'var(--popContentlineColor)',
+                  width: 'calc(100% - 20px)',
+                  marginLeft: 10,
+                }}
+              />
             ) : (
               <Popover
                 key={content.text}
@@ -496,7 +503,14 @@ export function PopContent({
         >
           {contentsState.map((content) =>
             content.type === 'line' ? (
-              <div className="hl" />
+              <div
+                className="hl"
+                style={{
+                  backgroundColor: 'var(--popContentlineColor)',
+                  width: 'calc(100% - 20px)',
+                  marginLeft: 10,
+                }}
+              />
             ) : (
               <div
                 key={content.text}
@@ -581,6 +595,8 @@ export function PopContent({
                 className="hl"
                 style={{
                   backgroundColor: 'var(--popContentlineColor)',
+                  width: 'calc(100% - 20px)',
+                  marginLeft: 10,
                 }}
               />
             ) : (

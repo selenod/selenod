@@ -105,7 +105,9 @@ export default function Tool() {
           <nav>
             <div>
               <div className="hl" />
-              <p style={{ color: 'var(--shortcutIconColor)' }}>Explore</p>
+              <p style={{ color: 'var(--shortcutIconColor)', fontWeight: 800 }}>
+                Explore
+              </p>
             </div>
             <nav className="pnl-explore">
               <Popover
@@ -430,7 +432,9 @@ export default function Tool() {
           <nav>
             <div>
               <div className="hl" />
-              <p style={{ color: 'var(--shortcutIconColor)' }}>Asset</p>
+              <p style={{ color: 'var(--shortcutIconColor)', fontWeight: 800 }}>
+                Asset
+              </p>
             </div>
             <nav className="pnl-asset">
               <p

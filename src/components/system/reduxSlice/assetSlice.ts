@@ -166,30 +166,25 @@ export const assetSlice = createSlice({
         } else {
           state.currentOpenedPanel =
             action.payload === 0
-              ? state.openedPanelList[1]
-              : state.openedPanelList[0];
+              ? state.openedPanelList.find((panel) => panel === 1)!
+              : state.openedPanelList.find((panel) => panel === 0)!;
         }
       }
 
       if (state.openedPanelList.includes(action.payload)) {
-        state.openedPanelList.splice(
-          state.openedPanelList.indexOf(action.payload),
-          1
+        state.openedPanelList = state.openedPanelList.filter(
+          (asset) => asset !== action.payload
         );
       }
 
-      state.assetList.splice(
-        state.assetList.indexOf(
-          state.assetList.find((asset) => asset.id === action.payload)!
-        ),
-        1
+      state.assetList = state.assetList.filter(
+        (asset) => asset.id !== action.payload
       );
-      state.assetData.splice(
-        state.assetList.indexOf(
-          state.assetList.find((asset) => asset.id === action.payload)!
-        ),
-        1
+
+      state.assetData = state.assetData.filter(
+        (asset) => asset.id !== action.payload
       );
+
       state.assetLength--;
     },
   },

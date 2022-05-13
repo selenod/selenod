@@ -75,6 +75,7 @@ export default function Tool() {
   const [formDisable, setFormDisable] = useState<boolean>(false);
   const [pnlComponent, setPnlComponent] = useState<ReactElement | null>(null);
   const [winOpenId, setWinOpenId] = useState<number>();
+  const [assetRenameWinOpenId, setAssetRenameWinOpenId] = useState<number>();
   const [showPopover, setShowPopover] = useState<{
     option?: boolean;
     windowMgr?: boolean;
@@ -827,7 +828,7 @@ export default function Tool() {
                     <div key={asset.id}>
                       <Modal
                         closeTimeoutMS={150}
-                        isOpen={winOpenId === 2}
+                        isOpen={assetRenameWinOpenId === asset.id}
                         contentLabel="Rename Asset"
                         style={{
                           content: {
@@ -839,7 +840,7 @@ export default function Tool() {
                           <p>Rename Asset</p>
                           <div
                             title="Cancel"
-                            onClick={() => setWinOpenId(undefined)}
+                            onClick={() => setAssetRenameWinOpenId(undefined)}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -946,7 +947,7 @@ export default function Tool() {
                                 } else {
                                   toast.error(`An error occured.`);
                                 }
-                                setWinOpenId(undefined);
+                                setAssetRenameWinOpenId(undefined);
                                 setFormDisable(false);
                                 setAssetFormInput('');
                               }}
@@ -971,7 +972,8 @@ export default function Tool() {
                             contents={[
                               {
                                 text: 'Rename Asset',
-                                onClick: () => setWinOpenId(2),
+                                onClick: () =>
+                                  setAssetRenameWinOpenId(asset.id),
                               },
                               {
                                 text: 'Delete Asset',
@@ -1065,6 +1067,7 @@ export default function Tool() {
     windowList,
     formDisable,
     winOpenId,
+    assetRenameWinOpenId,
     formInput,
     assetList,
     assetLength,

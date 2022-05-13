@@ -1,4 +1,4 @@
-import { EContentType } from '../../data';
+import { ContentType } from '../../data';
 
 import { useState, useEffect } from 'react';
 import { Popover } from 'react-tiny-popover';
@@ -17,7 +17,7 @@ interface IContentData {
   contents: Array<{
     text?: string;
     id?: number;
-    type?: EContentType;
+    type?: ContentType;
     onClick?: Function;
     selected?: boolean;
   }>;
@@ -37,7 +37,7 @@ export function PopContent({
     Array<{
       text?: string;
       id?: number;
-      type?: EContentType;
+      type?: ContentType;
       onClick?: Function;
       selected?: boolean;
     }>
@@ -422,7 +422,7 @@ export function PopContent({
                         ? 'var(--popContentHoverColor)'
                         : '',
                     color:
-                      content.type === EContentType.DANGER
+                      content.type === ContentType.DANGER
                         ? 'var(--red)'
                         : 'var(--textSubBlackColor)',
                   }}
@@ -554,7 +554,7 @@ export function PopContent({
                 style={{
                   backgroundColor: 'var(--popContentColor)',
                   color:
-                    content.type === EContentType.DANGER
+                    content.type === ContentType.DANGER
                       ? 'var(--red)'
                       : 'var(--textSubBlackColor)',
                 }}
@@ -658,7 +658,7 @@ export function PopContent({
                 title={content.text}
                 style={{
                   color:
-                    content.type === EContentType.DANGER
+                    content.type === ContentType.DANGER
                       ? 'var(--red)'
                       : 'var(--textSubBlackColor)',
                 }}

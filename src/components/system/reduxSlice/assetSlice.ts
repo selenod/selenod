@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { EAssetType } from '../../../data';
+import { AssetType } from '../../../data';
 
 export interface IAsset {
   name: string;
   id: number;
-  type: EAssetType;
+  type: AssetType;
   contents?: string;
   extension?: string;
   isOpened?: boolean;

@@ -21,8 +21,8 @@ import Active from './active';
 import Field from './field';
 import { PopContent } from '../system/popcontent';
 import {
-  EContentType,
-  EAssetType,
+  ContentType,
+  AssetType,
   imageExtensions,
   videoExtensions,
 } from '../../data';
@@ -212,7 +212,7 @@ export default function Tool() {
                     contents={[
                       {
                         text: 'BASIC',
-                        type: EContentType.CATEGORY,
+                        type: ContentType.CATEGORY,
                       },
                       {
                         text: 'Text',
@@ -224,11 +224,11 @@ export default function Tool() {
                         text: 'Sprite',
                       },
                       {
-                        type: EContentType.LINE,
+                        type: ContentType.LINE,
                       },
                       {
                         text: 'ASSET',
-                        type: EContentType.CATEGORY,
+                        type: ContentType.CATEGORY,
                       },
                       {
                         text: 'Image',
@@ -237,11 +237,11 @@ export default function Tool() {
                         text: 'Video',
                       },
                       {
-                        type: EContentType.LINE,
+                        type: ContentType.LINE,
                       },
                       {
                         text: 'INPUT',
-                        type: EContentType.CATEGORY,
+                        type: ContentType.CATEGORY,
                       },
                       {
                         text: 'Button',
@@ -489,7 +489,7 @@ export default function Tool() {
                                 )
                               : event.target.files![i].name,
                             id: index - 1,
-                            type: EAssetType.FILE,
+                            type: AssetType.FILE,
                             extension: event.target.files![i].name.includes('.')
                               ? event.target.files![i].name.substr(
                                   event.target.files![i].name.lastIndexOf('.')
@@ -701,7 +701,7 @@ export default function Tool() {
                                     )
                                   : assetFormInput,
                                 id: assetLength,
-                                type: EAssetType.FILE,
+                                type: AssetType.FILE,
                                 extension: assetFormInput.includes('.')
                                   ? assetFormInput.substr(
                                       assetFormInput.lastIndexOf('.')
@@ -781,7 +781,7 @@ export default function Tool() {
                                       )
                                     : files![i].name,
                                   id: index - 1,
-                                  type: EAssetType.FILE,
+                                  type: AssetType.FILE,
                                   extension: files![i].name.includes('.')
                                     ? files![i].name.substr(
                                         files![i].name.lastIndexOf('.')
@@ -823,7 +823,7 @@ export default function Tool() {
                 >
                   {assetData.map((asset) => (
                     // !asset.isDisabled ? (
-                    // asset.type === EAssetType.FILE ? (
+                    // asset.type === AssetType.FILE ? (
                     <div key={asset.id}>
                       <Modal
                         closeTimeoutMS={150}
@@ -975,7 +975,7 @@ export default function Tool() {
                               },
                               {
                                 text: 'Delete Asset',
-                                type: EContentType.DANGER,
+                                type: ContentType.DANGER,
                                 onClick: () => {
                                   dispatch(deleteAssetById(asset.id));
                                   dispatch(setFalse());
@@ -1117,8 +1117,8 @@ export default function Tool() {
                     { text: 'Save Project on Local' },
                     { text: 'Open Project' },
                     { text: 'Open Project on Local' },
-                    { text: 'Rename Project', type: EContentType.DANGER },
-                    { text: 'Delete Project', type: EContentType.DANGER },
+                    { text: 'Rename Project', type: ContentType.DANGER },
+                    { text: 'Delete Project', type: ContentType.DANGER },
                   ]}
                 />
               )}

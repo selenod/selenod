@@ -1,11 +1,23 @@
-export enum EContentType {
+export enum ElementType {
+  TEXT = 'text',
+  LINE = 'line',
+  SPRITE = 'sprite',
+  IMAGE = 'image',
+  VIDEO = 'video',
+  BUTTON = 'button',
+  TOGGLE = 'toggle',
+  SLINPUT = 'sl-input',
+  MLINPUT = 'ml-input',
+}
+
+export enum ContentType {
   DEFAULT = 'default',
   DANGER = 'danger',
   LINE = 'line',
   CATEGORY = 'category',
 }
 
-export enum EAssetType {
+export enum AssetType {
   FILE = 'file',
   FOLDER = 'folder',
 }

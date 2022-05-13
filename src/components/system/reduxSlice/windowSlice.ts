@@ -12,28 +12,8 @@ const initialState: WindowState = {
   //임시기본값
   windowList: [
     {
-      name: '윈도우1',
+      name: 'Default Window',
       id: 0,
-      node: [],
-    },
-    {
-      name: '윈도우2',
-      id: 1,
-      node: [],
-    },
-    {
-      name: '윈도우3',
-      id: 2,
-      node: [],
-    },
-    {
-      name: '윈도우4',
-      id: 3,
-      node: [],
-    },
-    {
-      name: '윈도우5',
-      id: 4,
       node: [],
     },
   ],

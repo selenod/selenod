@@ -207,6 +207,8 @@ export default function Tool() {
                 content={() => (
                   <PopContent
                     isScrollable={true}
+                    width={300}
+                    height={350}
                     contents={[
                       {
                         text: 'BASIC',
@@ -248,10 +250,10 @@ export default function Tool() {
                         text: 'Toggle',
                       },
                       {
-                        text: 'Single Input',
+                        text: 'Single-Line Input',
                       },
                       {
-                        text: 'Multiple Input',
+                        text: 'Multiple-Line Input',
                       },
                     ]}
                   />

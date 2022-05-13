@@ -132,7 +132,6 @@ textarea {
 
 .popover-parent {
   background-color: var(--baseColor);
-  width: 190px;
   border-radius: 10px;
   box-shadow: 0 5px 20px #00000015;
   padding: 5px 5px;

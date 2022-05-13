@@ -12,6 +12,7 @@ interface IContentData {
   cacheKey?: string;
   isSelection?: boolean;
   isScrollable?: boolean;
+  width?: number;
   height?: number;
   contents: Array<{
     text?: string;
@@ -29,6 +30,7 @@ export function PopContent({
   isSelection = false,
   isScrollable = false,
   height = 200,
+  width = 190,
   contents,
 }: IContentData) {
   const [contentsState, setContentsState] = useState<
@@ -87,8 +89,11 @@ export function PopContent({
           isScrollable
             ? {
                 height: height,
+                width: width,
               }
-            : undefined
+            : {
+                width: width,
+              }
         }
       >
         <div
@@ -148,10 +153,10 @@ export function PopContent({
                       isScrollable
                         ? {
                             height: height,
-                            width: '150px',
+                            width: 150,
                           }
                         : {
-                            width: '150px',
+                            width: 150,
                           }
                     }
                   >
@@ -501,8 +506,11 @@ export function PopContent({
           isScrollable
             ? {
                 height: height,
+                width: width,
               }
-            : undefined
+            : {
+                width: width,
+              }
         }
       >
         <div
@@ -612,8 +620,11 @@ export function PopContent({
           isScrollable
             ? {
                 height: height,
+                width: width,
               }
-            : undefined
+            : {
+                width: width,
+              }
         }
       >
         <div className="popover">

@@ -111,6 +111,20 @@ export function PopContent({
                   marginLeft: 10,
                 }}
               />
+            ) : content.type === 'category' ? (
+              <p
+                style={{
+                  margin:
+                    contentsState.indexOf(content) === 0
+                      ? '7px 0 3px 15px'
+                      : '10px 0 3px 15px',
+                  color: 'var(--shortcutIconColor)',
+                  fontSize: '.7rem',
+                  fontWeight: 800,
+                }}
+              >
+                {content.text}
+              </p>
             ) : (
               <Popover
                 key={content.text}
@@ -511,6 +525,20 @@ export function PopContent({
                   marginLeft: 10,
                 }}
               />
+            ) : content.type === 'category' ? (
+              <p
+                style={{
+                  margin:
+                    contentsState.indexOf(content) === 0
+                      ? '7px 0 3px 15px'
+                      : '10px 0 3px 15px',
+                  color: 'var(--shortcutIconColor)',
+                  fontSize: '.7rem',
+                  fontWeight: 800,
+                }}
+              >
+                {content.text}
+              </p>
             ) : (
               <div
                 key={content.text}
@@ -599,6 +627,20 @@ export function PopContent({
                   marginLeft: 10,
                 }}
               />
+            ) : content.type === 'category' ? (
+              <p
+                style={{
+                  margin:
+                    contentsState.indexOf(content) === 0
+                      ? '7px 0 3px 15px'
+                      : '10px 0 3px 15px',
+                  color: 'var(--shortcutIconColor)',
+                  fontSize: '.7rem',
+                  fontWeight: 800,
+                }}
+              >
+                {content.text}
+              </p>
             ) : (
               <div
                 key={content.text}

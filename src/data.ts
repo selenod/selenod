@@ -2,6 +2,7 @@ export enum EContentType {
   DEFAULT = 'default',
   DANGER = 'danger',
   LINE = 'line',
+  CATEGORY = 'category',
 }
 
 export enum EAssetType {

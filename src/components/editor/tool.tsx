@@ -207,13 +207,37 @@ export default function Tool() {
                     isScrollable={true}
                     contents={[
                       {
+                        text: 'BASIC',
+                        type: EContentType.CATEGORY,
+                      },
+                      {
                         text: 'Text',
                       },
                       {
-                        text: 'TextField',
+                        text: 'Line',
+                      },
+                      {
+                        text: 'Sprite',
                       },
                       {
                         type: EContentType.LINE,
+                      },
+                      {
+                        text: 'ASSET',
+                        type: EContentType.CATEGORY,
+                      },
+                      {
+                        text: 'Image',
+                      },
+                      {
+                        text: 'Video',
+                      },
+                      {
+                        type: EContentType.LINE,
+                      },
+                      {
+                        text: 'INPUT',
+                        type: EContentType.CATEGORY,
                       },
                       {
                         text: 'Button',
@@ -222,13 +246,10 @@ export default function Tool() {
                         text: 'Toggle',
                       },
                       {
-                        type: EContentType.LINE,
+                        text: 'Single Input',
                       },
                       {
-                        text: 'Image',
-                      },
-                      {
-                        text: 'Video',
+                        text: 'Multiple Input',
                       },
                     ]}
                   />

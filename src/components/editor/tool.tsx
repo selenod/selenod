@@ -477,7 +477,7 @@ export default function Tool() {
                       reader.addEventListener('load', () => {
                         dispatch(
                           addAsset({
-                            id: index - 1,
+                            id: index === 1 ? 0 : assetData[index - 2].id + 1,
                           })
                         );
 
@@ -489,7 +489,7 @@ export default function Tool() {
                                   event.target.files![i].name.lastIndexOf('.')
                                 )
                               : event.target.files![i].name,
-                            id: index - 1,
+                            id: index === 1 ? 0 : assetData[index - 2].id + 1,
                             type: AssetType.FILE,
                             extension: event.target.files![i].name.includes('.')
                               ? event.target.files![i].name.substr(
@@ -689,7 +689,10 @@ export default function Tool() {
                           } else {
                             dispatch(
                               addAsset({
-                                id: assetLength,
+                                id:
+                                  assetLength === 0
+                                    ? 0
+                                    : assetData[assetLength - 1].id + 1,
                               })
                             );
 
@@ -701,7 +704,10 @@ export default function Tool() {
                                       assetFormInput.lastIndexOf('.')
                                     )
                                   : assetFormInput,
-                                id: assetLength,
+                                id:
+                                  assetLength === 0
+                                    ? 0
+                                    : assetData[assetLength - 1].id + 1,
                                 type: AssetType.FILE,
                                 extension: assetFormInput.includes('.')
                                   ? assetFormInput.substr(
@@ -769,7 +775,10 @@ export default function Tool() {
                             reader.addEventListener('load', () => {
                               dispatch(
                                 addAsset({
-                                  id: index - 1,
+                                  id:
+                                    index === 1
+                                      ? 0
+                                      : assetData[index - 2].id + 1,
                                 })
                               );
 
@@ -781,7 +790,10 @@ export default function Tool() {
                                         files![i].name.lastIndexOf('.')
                                       )
                                     : files![i].name,
-                                  id: index - 1,
+                                  id:
+                                    index === 1
+                                      ? 0
+                                      : assetData[index - 2].id + 1,
                                   type: AssetType.FILE,
                                   extension: files![i].name.includes('.')
                                     ? files![i].name.substr(

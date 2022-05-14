@@ -11,6 +11,7 @@ import {
   setOpenedPanel,
   togglePanelOpened,
 } from '../system/reduxSlice/assetSlice';
+import { imageExtensions, videoExtensions } from '../../data';
 
 interface IToolData {
   panelWidth: number;
@@ -100,25 +101,75 @@ export default function Active(data: IToolData) {
                   />
                 </svg>
               </div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="var(--shortcutIconColor)"
-                style={{
-                  position: 'relative',
-                  top: panel === currOpenedPnl ? 10.5 : 12.5,
-                  left: 12,
-                  float: 'left',
-                  width: '1rem',
-                  height: '1rem',
-                }}
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              {assetData.find((data) => data.id === panel)?.extension !==
+                undefined &&
+              imageExtensions.includes(
+                assetData
+                  .find((data) => data.id === panel)
+                  ?.extension!.substr(1)!
+              ) ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="var(--shortcutIconColor)"
+                  style={{
+                    position: 'relative',
+                    top: panel === currOpenedPnl ? 10.5 : 12.5,
+                    left: 12,
+                    float: 'left',
+                    width: '1rem',
+                    height: '1rem',
+                  }}
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              ) : assetData.find((data) => data.id === panel)?.extension !==
+                  undefined &&
+                videoExtensions.includes(
+                  assetData
+                    .find((data) => data.id === panel)
+                    ?.extension!.substr(1)!
+                ) ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="var(--shortcutIconColor)"
+                  style={{
+                    position: 'relative',
+                    top: panel === currOpenedPnl ? 10.5 : 12.5,
+                    left: 12,
+                    float: 'left',
+                    width: '1rem',
+                    height: '1rem',
+                  }}
+                >
+                  <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="var(--shortcutIconColor)"
+                  style={{
+                    position: 'relative',
+                    top: panel === currOpenedPnl ? 10.5 : 12.5,
+                    left: 12,
+                    float: 'left',
+                    width: '1rem',
+                    height: '1rem',
+                  }}
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
               <p
                 style={{
                   position: 'relative',

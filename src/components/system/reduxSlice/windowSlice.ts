@@ -1,10 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { ElementType } from '../../../data';
 
-export interface WindowState {
+interface Window {
+  width: number;
+  height: number;
+  resizable: boolean;
+}
+
+interface Script {}
+
+interface Element {
+  name: string;
+  id: number;
+  type: ElementType;
+  x: number;
+  y: number;
+}
+
+interface WindowState {
   windowList: Array<{
     name: string;
     id: number;
-    node: Array<any>;
+    windowData: Window;
+    scriptData: Script;
+    elementData: Array<Element>;
   }>;
 }
 
@@ -14,7 +33,13 @@ const initialState: WindowState = {
     {
       name: 'Default Window',
       id: 0,
-      node: [],
+      windowData: {
+        width: 800,
+        height: 600,
+        resizable: false,
+      },
+      scriptData: {},
+      elementData: [],
     },
   ],
 };
@@ -27,7 +52,14 @@ export const windowSlice = createSlice({
       state.windowList.push({
         name: action.payload,
         id: state.windowList[state.windowList.length - 1].id + 1,
-        node: [],
+        //temp
+        windowData: {
+          width: 800,
+          height: 600,
+          resizable: false,
+        },
+        scriptData: {},
+        elementData: [],
       });
       //서버에도 푸시
     },
@@ -38,11 +70,9 @@ export const windowSlice = createSlice({
       const targetWindow = state.windowList.find(
         (window) => action.payload.id === window.id
       )!;
-      const targetNodes = targetWindow.node;
       state.windowList.splice(state.windowList.indexOf(targetWindow!), 1, {
+        ...targetWindow,
         name: action.payload.value,
-        id: action.payload.id,
-        node: targetNodes,
       });
       //서버에도 푸시
     },

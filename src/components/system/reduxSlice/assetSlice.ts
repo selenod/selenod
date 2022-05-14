@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AssetType } from '../../../data';
 
-export interface IAsset {
+export interface Asset {
   name: string;
   id: number;
   type: AssetType;
@@ -11,14 +11,14 @@ export interface IAsset {
   isDisabled?: boolean;
 }
 
-export interface IAssetList {
+export interface AssetList {
   id: number;
-  contents?: Array<IAssetList>;
+  contents?: Array<AssetList>;
 }
 
 export interface AssetState {
-  assetList: Array<IAssetList>;
-  assetData: Array<IAsset>;
+  assetList: Array<AssetList>;
+  assetData: Array<Asset>;
   assetLength: number;
   openedPanelList: Array<number>;
   currentOpenedPanel: number | null;
@@ -37,26 +37,26 @@ export const assetSlice = createSlice({
   initialState,
   reducers: {
     addAssetWithoutAddLength: (
-      state: { assetList: Array<IAssetList> },
-      action: { payload: IAssetList }
+      state: { assetList: Array<AssetList> },
+      action: { payload: AssetList }
     ) => {
       state.assetList.push(action.payload);
     },
     addAsset: (
-      state: { assetLength: number; assetList: Array<IAssetList> },
-      action: { payload: IAssetList }
+      state: { assetLength: number; assetList: Array<AssetList> },
+      action: { payload: AssetList }
     ) => {
       state.assetLength += 1;
       state.assetList.push(action.payload);
     },
     addData: (
-      state: { assetData: Array<IAsset> },
-      action: { payload: IAsset }
+      state: { assetData: Array<Asset> },
+      action: { payload: Asset }
     ) => {
       state.assetData.push(action.payload);
     },
     setOpened: (
-      state: { assetData: Array<IAsset>; assetList: Array<IAssetList> },
+      state: { assetData: Array<Asset>; assetList: Array<AssetList> },
       action: { payload: number }
     ) => {
       state.assetData.find((asset) => asset.id === action.payload)!.isOpened =
@@ -141,7 +141,7 @@ export const assetSlice = createSlice({
       state.currentOpenedPanel = action.payload;
     },
     renameAsset: (
-      state: { assetData: Array<IAsset> },
+      state: { assetData: Array<Asset> },
       action: { payload: { id: number; name: string; extension: string } }
     ) => {
       state.assetData.find((asset) => asset.id === action.payload.id)!.name =
@@ -154,8 +154,8 @@ export const assetSlice = createSlice({
       state: {
         currentOpenedPanel: number | null;
         openedPanelList: Array<number>;
-        assetList: Array<IAssetList>;
-        assetData: Array<IAsset>;
+        assetList: Array<AssetList>;
+        assetData: Array<Asset>;
         assetLength: number;
       },
       action: { payload: number }

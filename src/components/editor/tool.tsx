@@ -881,17 +881,9 @@ export default function Tool() {
                                 color: 'var(--textSubBlackColor)',
                                 paddingBottom: '.7rem',
                                 maxWidth: '100%',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
                               }}
                             >
-                              Rename the{' '}
-                              <b>
-                                {asset.name}
-                                {asset.extension}
-                              </b>{' '}
-                              asset to..
+                              Rename the asset to..
                             </p>
                             <input
                               style={{

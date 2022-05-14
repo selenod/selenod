@@ -231,12 +231,9 @@ export function PopContent({
                                 color: 'var(--textSubBlackColor)',
                                 paddingBottom: '.7rem',
                                 maxWidth: '100%',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
                               }}
                             >
-                              Rename the <b>{content.text}</b> window to..
+                              Rename the window to..
                             </p>
                             <input
                               style={{
@@ -355,16 +352,12 @@ export function PopContent({
                                 color: 'var(--textSubBlackColor)',
                                 paddingBottom: '1.5rem',
                                 maxWidth: '100%',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
                               }}
                             >
                               You cannot undone this action.
                               <br />
-                              This will permanently delete the{' '}
-                              <b>{content.text}</b> window, objects, and all
-                              nodes in the <b>{content.text}</b> window.
+                              This will permanently delete the window, objects,
+                              and all nodes.
                             </p>
                             <button
                               className="button primary"

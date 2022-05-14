@@ -136,7 +136,7 @@ export const assetSlice = createSlice({
     },
     setOpenedPanel: (
       state: { currentOpenedPanel: number | null },
-      action: { payload: number }
+      action: { payload: number | null }
     ) => {
       state.currentOpenedPanel = action.payload;
     },

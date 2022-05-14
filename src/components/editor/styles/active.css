@@ -16,7 +16,16 @@
   float: left;
 }
 
-.Active > div > nav > div {
+.Active > div > nav > div:not(.essential):not(.vl) {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.Active > div > nav > div:not(.essential):not(.vl)::-webkit-scrollbar {
+  display: none;
+}
+
+.Active > div > nav > div > div {
   height: 100%;
   float: left;
   padding-right: 12px;
@@ -25,13 +34,32 @@
   cursor: pointer;
 }
 
-.Active > div > nav > div > .close-btn > svg {
+.Active > div > nav > div > div > .close-btn > svg {
   opacity: 0;
   transition: ease-out opacity 100ms;
 }
 
-.Active > div > nav > div:hover > .close-btn > svg {
+.Active > div > nav > div > div > .close-btn > svg {
   opacity: 1;
+}
+
+.essential {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 30px;
+  float: left;
+  border-radius: 5px;
+  transition: ease-out background-color 100ms;
+  cursor: pointer;
+}
+
+.essential:not(.essential:first-child) {
+  margin-left: 2px;
+}
+
+.essential:hover {
+  background-color: var(--panelPathColor);
 }
 
 .Active > div > div {

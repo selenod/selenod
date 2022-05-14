@@ -1016,7 +1016,7 @@ export default function Tool() {
                             setShowAssetPopover(asset.id);
                           }}
                         >
-                          <div>
+                          <div title={`${asset.name}${asset.extension}`}>
                             {assetData.find((data) => data.id === asset.id)
                               ?.extension !== undefined &&
                             imageExtensions.includes(

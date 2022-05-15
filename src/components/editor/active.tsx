@@ -7,6 +7,7 @@ import { RootState } from '../../store';
 import { Popover } from 'react-tiny-popover';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
+import { togglePanel } from '../system/reduxSlice/windowSlice';
 import {
   setOpenedPanel,
   togglePanelOpened,
@@ -22,6 +23,7 @@ export default function Active(data: IToolData) {
   const dispatch = useDispatch();
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const assetData = useSelector((state: RootState) => state.asset.assetData);
+  const toggle = useSelector((state: RootState) => state.window.toggle);
   const openedPanelList = useSelector(
     (state: RootState) => state.asset.openedPanelList
   );
@@ -42,13 +44,14 @@ export default function Active(data: IToolData) {
             className="essential"
             style={{
               width: 70,
+              backgroundColor:
+                toggle === 0 ? 'var(--panelPathColor)' : undefined,
             }}
-            onClick={() => {}}
+            onClick={() => dispatch(togglePanel(0))}
           >
             <p
               style={{
                 position: 'relative',
-                // top: panel === currOpenedPnl ? 'calc(50% - 2px)' : '50%',
                 top: '50%',
                 textAlign: 'center',
                 transform: 'translateY(-50%)',
@@ -64,13 +67,14 @@ export default function Active(data: IToolData) {
             className="essential"
             style={{
               width: 60,
+              backgroundColor:
+                toggle === 1 ? 'var(--panelPathColor)' : undefined,
             }}
-            onClick={() => {}}
+            onClick={() => dispatch(togglePanel(1))}
           >
             <p
               style={{
                 position: 'relative',
-                // top: panel === currOpenedPnl ? 'calc(50% - 2px)' : '50%',
                 top: '50%',
                 textAlign: 'center',
                 transform: 'translateY(-50%)',

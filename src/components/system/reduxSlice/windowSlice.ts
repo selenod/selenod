@@ -25,6 +25,7 @@ interface WindowState {
     scriptData: Script;
     elementData: Array<Element>;
   }>;
+  toggle: number | undefined;
 }
 
 const initialState: WindowState = {
@@ -42,6 +43,7 @@ const initialState: WindowState = {
       elementData: [],
     },
   ],
+  toggle: undefined,
 };
 
 export const windowSlice = createSlice({
@@ -104,9 +106,14 @@ export const windowSlice = createSlice({
         1
       );
     },
+    togglePanel: (state: WindowState, action: { payload: number }) => {
+      state.toggle =
+        state.toggle === action.payload ? undefined : action.payload;
+    },
   },
 });
 
-export const { createWindow, renameWindow, deleteWindow } = windowSlice.actions;
+export const { createWindow, renameWindow, deleteWindow, togglePanel } =
+  windowSlice.actions;
 
 export default windowSlice.reducer;

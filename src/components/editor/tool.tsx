@@ -443,7 +443,7 @@ export default function Tool() {
               <p
                 style={{
                   width: 'calc(100% - 90px)',
-                  color: 'var(--textGrayColor)',
+                  color: 'var(--shortcutIconColor)',
                   float: 'left',
                   marginTop: 11.6,
                   fontSize: '.9rem',

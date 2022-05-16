@@ -26,7 +26,7 @@ import {
   imageExtensions,
   videoExtensions,
 } from '../../data';
-import { createWindow } from '../system/reduxSlice/windowSlice';
+import { createWindow, setCurrWin } from '../system/reduxSlice/windowSlice';
 
 Modal.setAppElement('#root');
 
@@ -40,6 +40,9 @@ export default function Tool() {
   const windowList = useSelector((state: RootState) => state.window.windowList);
   const assetList = useSelector((state: RootState) => state.asset.assetList);
   const assetData = useSelector((state: RootState) => state.asset.assetData);
+  const currentWindow = useSelector(
+    (state: RootState) => state.window.currentWindow
+  );
   const assetLength = useSelector(
     (state: RootState) => state.asset.assetLength
   );
@@ -51,12 +54,6 @@ export default function Tool() {
   ) {
     window.sessionStorage.setItem('current_window', '0');
   }
-
-  const [currentWindow, setCurrentWindow] = useState<number>(
-    window.sessionStorage.getItem('current_window') !== null
-      ? parseInt(window.sessionStorage.getItem('current_window')!)
-      : windowList[0].id
-  );
 
   const [pnlCase, setPnlCase] = useState<number | null>(0);
   const [pnlSize, setPnlSize] = useState<IPnlSize>({
@@ -92,6 +89,17 @@ export default function Tool() {
   const assetInput = useRef<any>(null);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      setCurrWin(
+        window.sessionStorage.getItem('current_window') !== null
+          ? parseInt(window.sessionStorage.getItem('current_window')!)
+          : windowList[0].id
+      )
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Detect panel index changing
   useEffect(() => {
@@ -134,7 +142,7 @@ export default function Tool() {
                       id: window.id,
                       selected: windowList.indexOf(window) === 0 ? true : false,
                       onClick: () => {
-                        setCurrentWindow(window.id);
+                        dispatch(setCurrWin(window.id));
                         dispatch(setFalse());
                         setShowPopover({
                           windowMgr: false,
@@ -175,9 +183,8 @@ export default function Tool() {
                   >
                     MyProject/
                     {
-                      windowList.filter(
-                        (window) => currentWindow === window.id
-                      )[0].name
+                      windowList.find((window) => currentWindow === window.id)!
+                        .name
                     }
                   </p>
                   <svg

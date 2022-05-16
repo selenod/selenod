@@ -25,6 +25,7 @@ interface WindowState {
     scriptData: Script;
     elementData: Array<Element>;
   }>;
+  currentWindow: number;
   toggle: number | undefined;
 }
 
@@ -35,14 +36,15 @@ const initialState: WindowState = {
       name: 'Default Window',
       id: 0,
       windowData: {
-        width: 800,
-        height: 600,
+        width: 1500,
+        height: 100,
         resizable: false,
       },
       scriptData: {},
       elementData: [],
     },
   ],
+  currentWindow: 0,
   toggle: undefined,
 };
 
@@ -57,13 +59,16 @@ export const windowSlice = createSlice({
         //temp
         windowData: {
           width: 800,
-          height: 600,
+          height: 300,
           resizable: false,
         },
         scriptData: {},
         elementData: [],
       });
       //서버에도 푸시
+    },
+    setCurrWin: (state: WindowState, action: { payload: number }) => {
+      state.currentWindow = action.payload;
     },
     renameWindow: (
       state: WindowState,
@@ -113,7 +118,12 @@ export const windowSlice = createSlice({
   },
 });
 
-export const { createWindow, renameWindow, deleteWindow, togglePanel } =
-  windowSlice.actions;
+export const {
+  createWindow,
+  renameWindow,
+  deleteWindow,
+  togglePanel,
+  setCurrWin,
+} = windowSlice.actions;
 
 export default windowSlice.reducer;

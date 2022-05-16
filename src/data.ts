@@ -32,4 +32,4 @@ export const imageExtensions: Array<string> = [
   'raw',
 ];
 
-export const videoExtensions: Array<string> = ['mp4'];
+export const videoExtensions: Array<string> = ['mp4', 'mov'];

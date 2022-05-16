@@ -13,6 +13,11 @@ export default function Field(data: IToolData) {
     (state: RootState) => state.asset.currentOpenedPanel
   );
   const assetData = useSelector((state: RootState) => state.asset.assetData);
+  const toggle = useSelector((state: RootState) => state.window.toggle);
+  const windowList = useSelector((state: RootState) => state.window.windowList);
+  const currentWindow = useSelector(
+    (state: RootState) => state.window.currentWindow
+  );
 
   return (
     <div
@@ -22,13 +27,65 @@ export default function Field(data: IToolData) {
         marginLeft: data.panelWidth + 70,
       }}
     >
-      {assetData.find((asset) => asset.id === currentOpenedPanel)?.extension !==
-        undefined &&
-      imageExtensions.includes(
-        assetData
-          .find((asset) => asset.id === currentOpenedPanel)
-          ?.extension!.substr(1)!
-      ) ? (
+      {toggle === 0 ? (
+        <div
+          style={{
+            position: 'relative',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width:
+              (windowList.find((window) => window.id === currentWindow)
+                ?.windowData.height! /
+                windowList.find((window) => window.id === currentWindow)
+                  ?.windowData.width!) *
+                100 <
+              100
+                ? '80%'
+                : ((windowList.find((window) => window.id === currentWindow)
+                    ?.windowData.width! /
+                    windowList.find((window) => window.id === currentWindow)
+                      ?.windowData.height!) *
+                    947 *
+                    4) /
+                  5,
+            height:
+              (windowList.find((window) => window.id === currentWindow)
+                ?.windowData.height! /
+                windowList.find((window) => window.id === currentWindow)
+                  ?.windowData.width!) *
+                100 <
+              100
+                ? ((windowList.find((window) => window.id === currentWindow)
+                    ?.windowData.height! /
+                    windowList.find((window) => window.id === currentWindow)
+                      ?.windowData.width!) *
+                    data.panelWidth *
+                    4) /
+                  5
+                : '80%',
+            backgroundColor: 'red',
+          }}
+        >
+          {
+            windowList.find((window) => window.id === currentWindow)?.windowData
+              .width!
+          }
+          x
+          {
+            windowList.find((window) => window.id === currentWindow)?.windowData
+              .height!
+          }
+        </div>
+      ) : toggle === 1 ? (
+        <div>Script Panel</div>
+      ) : assetData.find((asset) => asset.id === currentOpenedPanel)
+          ?.extension !== undefined &&
+        imageExtensions.includes(
+          assetData
+            .find((asset) => asset.id === currentOpenedPanel)
+            ?.extension!.substr(1)!
+        ) ? (
         <img
           src={
             assetData.find((asset) => asset.id === currentOpenedPanel)?.contents

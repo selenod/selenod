@@ -35,35 +35,11 @@ export default function Field(data: IToolData) {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             width:
-              (windowList.find((window) => window.id === currentWindow)
-                ?.windowData.height! /
-                windowList.find((window) => window.id === currentWindow)
-                  ?.windowData.width!) *
-                100 <
-              100
-                ? '80%'
-                : ((windowList.find((window) => window.id === currentWindow)
-                    ?.windowData.width! /
-                    windowList.find((window) => window.id === currentWindow)
-                      ?.windowData.height!) *
-                    947 *
-                    4) /
-                  5,
+              windowList.find((window) => window.id === currentWindow)
+                ?.windowData.width! / 1.5,
             height:
-              (windowList.find((window) => window.id === currentWindow)
-                ?.windowData.height! /
-                windowList.find((window) => window.id === currentWindow)
-                  ?.windowData.width!) *
-                100 <
-              100
-                ? ((windowList.find((window) => window.id === currentWindow)
-                    ?.windowData.height! /
-                    windowList.find((window) => window.id === currentWindow)
-                      ?.windowData.width!) *
-                    data.panelWidth *
-                    4) /
-                  5
-                : '80%',
+              windowList.find((window) => window.id === currentWindow)
+                ?.windowData.height! / 1.5,
             backgroundColor: 'red',
           }}
         >

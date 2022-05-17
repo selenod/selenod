@@ -32,8 +32,20 @@ export default function Field(data: IToolData) {
           style={{
             position: 'relative',
             top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
+            left:
+              data.panelWidth <=
+              windowList.find((window) => window.id === currentWindow)
+                ?.windowData.width! /
+                1.5
+                ? 0
+                : '50%',
+            transform:
+              data.panelWidth <=
+              windowList.find((window) => window.id === currentWindow)
+                ?.windowData.width! /
+                1.5
+                ? 'translateY(-50%)'
+                : 'translate(-50%, -50%)',
             width:
               windowList.find((window) => window.id === currentWindow)
                 ?.windowData.width! / 1.5,

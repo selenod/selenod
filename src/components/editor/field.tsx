@@ -33,14 +33,14 @@ export default function Field(data: IToolData) {
             position: 'relative',
             top: '50%',
             left:
-              data.panelWidth <=
+              document.body.offsetWidth - data.panelWidth - 70 <=
               windowList.find((window) => window.id === currentWindow)
                 ?.windowData.width! /
                 1.5
                 ? 0
                 : '50%',
             transform:
-              data.panelWidth <=
+              document.body.offsetWidth - data.panelWidth - 70 <=
               windowList.find((window) => window.id === currentWindow)
                 ?.windowData.width! /
                 1.5
@@ -152,6 +152,9 @@ export default function Field(data: IToolData) {
               <rect x="0" y="50%" width="10.2" height="1" />
             </svg>
           </div>
+          {document.body.offsetWidth - data.panelWidth - 70} /{' '}
+          {windowList.find((window) => window.id === currentWindow)?.windowData
+            .width! / 1.5}
         </div>
       ) : toggle === 1 ? (
         <div>Script Panel</div>

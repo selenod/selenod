@@ -36,7 +36,7 @@ const initialState: WindowState = {
       name: 'Default Window',
       id: 0,
       windowData: {
-        width: 1366,
+        width: 300,
         height: 768,
         resizable: false,
       },
@@ -58,8 +58,8 @@ export const windowSlice = createSlice({
         id: state.windowList[state.windowList.length - 1].id + 1,
         //temp
         windowData: {
-          width: 800,
-          height: 300,
+          width: 1366,
+          height: 768,
           resizable: false,
         },
         scriptData: {},

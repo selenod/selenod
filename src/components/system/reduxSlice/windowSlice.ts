@@ -36,7 +36,7 @@ const initialState: WindowState = {
       name: 'Default Window',
       id: 0,
       windowData: {
-        width: 300,
+        width: 1366,
         height: 768,
         resizable: false,
       },

@@ -1,5 +1,6 @@
 import './styles/field.css';
 
+import { useEffect, useState } from 'react';
 import { RootState } from '../../store';
 import { useSelector } from 'react-redux';
 import { imageExtensions, videoExtensions } from '../../data';
@@ -9,6 +10,8 @@ interface IToolData {
 }
 
 export default function Field(data: IToolData) {
+  const [winHeight, setWinHeight] = useState<number>(window.innerHeight);
+
   const currentOpenedPanel = useSelector(
     (state: RootState) => state.asset.currentOpenedPanel
   );
@@ -18,6 +21,10 @@ export default function Field(data: IToolData) {
   const currentWindow = useSelector(
     (state: RootState) => state.window.currentWindow
   );
+
+  useEffect(() => {
+    window.addEventListener('resize', () => setWinHeight(window.innerHeight));
+  }, []);
 
   return (
     <div
@@ -31,7 +38,14 @@ export default function Field(data: IToolData) {
         <div
           style={{
             position: 'relative',
-            top: '50%',
+            top:
+              winHeight - 104 <=
+              windowList.find((window) => window.id === currentWindow)
+                ?.windowData.height! /
+                1.5 +
+                35
+                ? 0
+                : '50%',
             left:
               document.body.offsetWidth - data.panelWidth - 70 <=
               windowList.find((window) => window.id === currentWindow)
@@ -44,7 +58,19 @@ export default function Field(data: IToolData) {
               windowList.find((window) => window.id === currentWindow)
                 ?.windowData.width! /
                 1.5
-                ? 'translateY(-50%)'
+                ? winHeight - 104 <=
+                  windowList.find((window) => window.id === currentWindow)
+                    ?.windowData.height! /
+                    1.5 +
+                    35
+                  ? undefined
+                  : 'translateY(-50%)'
+                : winHeight - 104 <=
+                  windowList.find((window) => window.id === currentWindow)
+                    ?.windowData.height! /
+                    1.5 +
+                    35
+                ? 'translateX(-50%)'
                 : 'translate(-50%, -50%)',
             width:
               windowList.find((window) => window.id === currentWindow)
@@ -81,7 +107,7 @@ export default function Field(data: IToolData) {
               }}
             >
               <path
-                fill-Rule="evenodd"
+                fillRule="evenodd"
                 d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z"
                 clipRule="evenodd"
               />
@@ -152,9 +178,11 @@ export default function Field(data: IToolData) {
               <rect x="0" y="50%" width="10.2" height="1" />
             </svg>
           </div>
-          {document.body.offsetWidth - data.panelWidth - 70} /{' '}
+          {winHeight}/
           {windowList.find((window) => window.id === currentWindow)?.windowData
-            .width! / 1.5}
+            .height! /
+            1.5 +
+            35}
         </div>
       ) : toggle === 1 ? (
         <div>Script Panel</div>

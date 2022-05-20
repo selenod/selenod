@@ -50,7 +50,7 @@ body {
   width: 7px;
 }
 ::-webkit-scrollbar-track {
-  background-color: none;
+  background-color: var(--panelColor);
 }
 ::-webkit-scrollbar-thumb {
   background-color: var(--scroll);

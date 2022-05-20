@@ -6,6 +6,7 @@ import { Resizable } from 're-resizable';
 import { Popover } from 'react-tiny-popover';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
+import { createElement } from '../system/reduxSlice/windowSlice';
 import {
   addAsset,
   addData,
@@ -25,6 +26,7 @@ import {
   AssetType,
   imageExtensions,
   videoExtensions,
+  ElementType,
 } from '../../data';
 import { createWindow, setCurrWin } from '../system/reduxSlice/windowSlice';
 
@@ -224,12 +226,63 @@ export default function Tool() {
                       },
                       {
                         text: 'Text',
+                        onClick: () => {
+                          dispatch(
+                            createElement({
+                              name: `Text ${
+                                windowList
+                                  .find((window) => window.id === currentWindow)
+                                  ?.elementData.filter(
+                                    (element) =>
+                                      element.type === ElementType.TEXT
+                                  ).length! + 1
+                              }`,
+                              type: ElementType.TEXT,
+                            })
+                          );
+                          setShowNodePopover(false);
+                          dispatch(setFalse());
+                        },
                       },
                       {
                         text: 'Line',
+                        onClick: () => {
+                          dispatch(
+                            createElement({
+                              name: `Line ${
+                                windowList
+                                  .find((window) => window.id === currentWindow)
+                                  ?.elementData.filter(
+                                    (element) =>
+                                      element.type === ElementType.LINE
+                                  ).length! + 1
+                              }`,
+                              type: ElementType.LINE,
+                            })
+                          );
+                          setShowNodePopover(false);
+                          dispatch(setFalse());
+                        },
                       },
                       {
                         text: 'Sprite',
+                        onClick: () => {
+                          dispatch(
+                            createElement({
+                              name: `Sprite ${
+                                windowList
+                                  .find((window) => window.id === currentWindow)
+                                  ?.elementData.filter(
+                                    (element) =>
+                                      element.type === ElementType.SPRITE
+                                  ).length! + 1
+                              }`,
+                              type: ElementType.SPRITE,
+                            })
+                          );
+                          setShowNodePopover(false);
+                          dispatch(setFalse());
+                        },
                       },
                       {
                         type: ContentType.LINE,
@@ -240,9 +293,43 @@ export default function Tool() {
                       },
                       {
                         text: 'Image',
+                        onClick: () => {
+                          dispatch(
+                            createElement({
+                              name: `Image ${
+                                windowList
+                                  .find((window) => window.id === currentWindow)
+                                  ?.elementData.filter(
+                                    (element) =>
+                                      element.type === ElementType.IMAGE
+                                  ).length! + 1
+                              }`,
+                              type: ElementType.IMAGE,
+                            })
+                          );
+                          setShowNodePopover(false);
+                          dispatch(setFalse());
+                        },
                       },
                       {
                         text: 'Video',
+                        onClick: () => {
+                          dispatch(
+                            createElement({
+                              name: `Video ${
+                                windowList
+                                  .find((window) => window.id === currentWindow)
+                                  ?.elementData.filter(
+                                    (element) =>
+                                      element.type === ElementType.VIDEO
+                                  ).length! + 1
+                              }`,
+                              type: ElementType.VIDEO,
+                            })
+                          );
+                          setShowNodePopover(false);
+                          dispatch(setFalse());
+                        },
                       },
                       {
                         type: ContentType.LINE,
@@ -253,15 +340,83 @@ export default function Tool() {
                       },
                       {
                         text: 'Button',
+                        onClick: () => {
+                          dispatch(
+                            createElement({
+                              name: `Button ${
+                                windowList
+                                  .find((window) => window.id === currentWindow)
+                                  ?.elementData.filter(
+                                    (element) =>
+                                      element.type === ElementType.BUTTON
+                                  ).length! + 1
+                              }`,
+                              type: ElementType.BUTTON,
+                            })
+                          );
+                          setShowNodePopover(false);
+                          dispatch(setFalse());
+                        },
                       },
                       {
                         text: 'Toggle',
+                        onClick: () => {
+                          dispatch(
+                            createElement({
+                              name: `Toggle ${
+                                windowList
+                                  .find((window) => window.id === currentWindow)
+                                  ?.elementData.filter(
+                                    (element) =>
+                                      element.type === ElementType.TOGGLE
+                                  ).length! + 1
+                              }`,
+                              type: ElementType.TOGGLE,
+                            })
+                          );
+                          setShowNodePopover(false);
+                          dispatch(setFalse());
+                        },
                       },
                       {
                         text: 'Single-Line Input',
+                        onClick: () => {
+                          dispatch(
+                            createElement({
+                              name: `Single-Line Input ${
+                                windowList
+                                  .find((window) => window.id === currentWindow)
+                                  ?.elementData.filter(
+                                    (element) =>
+                                      element.type === ElementType.SLINPUT
+                                  ).length! + 1
+                              }`,
+                              type: ElementType.SLINPUT,
+                            })
+                          );
+                          setShowNodePopover(false);
+                          dispatch(setFalse());
+                        },
                       },
                       {
                         text: 'Multiple-Line Input',
+                        onClick: () => {
+                          dispatch(
+                            createElement({
+                              name: `Multiple-Line Input ${
+                                windowList
+                                  .find((window) => window.id === currentWindow)
+                                  ?.elementData.filter(
+                                    (element) =>
+                                      element.type === ElementType.MLINPUT
+                                  ).length! + 1
+                              }`,
+                              type: ElementType.MLINPUT,
+                            })
+                          );
+                          setShowNodePopover(false);
+                          dispatch(setFalse());
+                        },
                       },
                     ]}
                   />
@@ -430,6 +585,63 @@ export default function Tool() {
                   </div>
                 </div>
               </Modal>
+              <div
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  height: 'calc(100% - 72px)', //bottom: 25px
+                  top: 11,
+                  overflow: 'auto',
+                }}
+              >
+                {windowList
+                  .find((window) => window.id === currentWindow)
+                  ?.elementData.map((element) => (
+                    <div key={element.id}>
+                      <div
+                        className="asset"
+                        onClick={(e) => {
+                          e.preventDefault();
+                        }}
+                        // style={{
+                        //   backgroundColor:
+                        //     showAssetPopover === asset.id
+                        //       ? 'var(--panelPathColor)'
+                        //       : undefined,
+                        // }}
+                      >
+                        <div title={`${element.name}`}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            style={{
+                              width: '1rem',
+                              height: '1rem',
+                            }}
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <p
+                            style={{
+                              width: 'calc(100% - 43px)',
+                              height: '100%',
+                              overflow: 'hidden',
+                              whiteSpace: 'nowrap',
+                              textOverflow: 'ellipsis',
+                            }}
+                          >
+                            {element.name}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
             </nav>
           </nav>
         );

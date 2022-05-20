@@ -115,6 +115,22 @@ export const windowSlice = createSlice({
       state.toggle =
         state.toggle === action.payload ? undefined : action.payload;
     },
+    createElement: (
+      state: WindowState,
+      action: { payload: { name: string; type: ElementType } }
+    ) => {
+      state.windowList
+        .find((window) => window.id === state.currentWindow)
+        ?.elementData.push({
+          name: action.payload.name,
+          id: state.windowList.find(
+            (window) => window.id === state.currentWindow
+          )!.elementData.length,
+          type: action.payload.type,
+          x: 0,
+          y: 0,
+        });
+    },
   },
 });
 
@@ -124,6 +140,7 @@ export const {
   deleteWindow,
   togglePanel,
   setCurrWin,
+  createElement,
 } = windowSlice.actions;
 
 export default windowSlice.reducer;

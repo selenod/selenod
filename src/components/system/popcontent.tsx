@@ -110,6 +110,7 @@ export function PopContent({
             content.type === 'line' ? (
               <div
                 className="hl"
+                key={contentsState.indexOf(content)}
                 style={{
                   backgroundColor: 'var(--popContentlineColor)',
                   width: 'calc(100% - 20px)',
@@ -118,6 +119,7 @@ export function PopContent({
               />
             ) : content.type === 'category' ? (
               <p
+                key={contentsState.indexOf(content)}
                 style={{
                   margin:
                     contentsState.indexOf(content) === 0
@@ -132,7 +134,7 @@ export function PopContent({
               </p>
             ) : (
               <Popover
-                key={content.text}
+                key={contentsState.indexOf(content)}
                 isOpen={
                   typeof editedWindow === 'string' &&
                   editedWindow === content.text
@@ -519,6 +521,7 @@ export function PopContent({
           {contentsState.map((content) =>
             content.type === 'line' ? (
               <div
+                key={contentsState.indexOf(content)}
                 className="hl"
                 style={{
                   backgroundColor: 'var(--popContentlineColor)',
@@ -528,6 +531,7 @@ export function PopContent({
               />
             ) : content.type === 'category' ? (
               <p
+                key={contentsState.indexOf(content)}
                 style={{
                   margin:
                     contentsState.indexOf(content) === 0
@@ -542,7 +546,7 @@ export function PopContent({
               </p>
             ) : (
               <div
-                key={content.text}
+                key={contentsState.indexOf(content)}
                 title={content.text}
                 style={{
                   backgroundColor: 'var(--popContentColor)',
@@ -624,6 +628,7 @@ export function PopContent({
           {contentsState.map((content) =>
             content.type === 'line' ? (
               <div
+                key={contentsState.indexOf(content)}
                 className="hl"
                 style={{
                   backgroundColor: 'var(--popContentlineColor)',
@@ -633,6 +638,7 @@ export function PopContent({
               />
             ) : content.type === 'category' ? (
               <p
+                key={contentsState.indexOf(content)}
                 style={{
                   margin:
                     contentsState.indexOf(content) === 0
@@ -647,7 +653,7 @@ export function PopContent({
               </p>
             ) : (
               <div
-                key={content.text}
+                key={contentsState.indexOf(content)}
                 title={content.text}
                 style={{
                   color:

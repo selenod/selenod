@@ -9,6 +9,7 @@ import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
 import {
   createElement,
   deleteElement,
+  renameElement,
   setCurrElement,
 } from '../system/reduxSlice/windowSlice';
 import {
@@ -79,6 +80,8 @@ export default function Tool() {
   const [pnlComponent, setPnlComponent] = useState<ReactElement | null>(null);
   const [winOpenId, setWinOpenId] = useState<number>();
   const [assetRenameWinOpenId, setAssetRenameWinOpenId] = useState<number>();
+  const [elementRenameWinOpenId, setElementRenameWinOpenId] =
+    useState<number>();
   const [showPopover, setShowPopover] = useState<{
     option?: boolean;
     windowMgr?: boolean;
@@ -602,257 +605,364 @@ export default function Tool() {
                 {windowList
                   .find((window) => window.id === currentWindow)
                   ?.elementData.map((element) => (
-                    <Popover
-                      isOpen={showElementPopover === element.id}
-                      positions={['bottom']}
-                      padding={5}
-                      align="start"
-                      reposition={false}
-                      key={element.id}
-                      onClickOutside={() => {
-                        setShowElementPopover(undefined);
-                        dispatch(setFalse());
-                      }}
-                      content={() => (
-                        <PopContent
-                          contents={[
-                            {
-                              text: 'Rename Element',
-                              onClick: () => {},
-                            },
-                            {
-                              text: 'Delete Element',
-                              type: ContentType.DANGER,
-                              onClick: () => {
-                                dispatch(deleteElement(element.id));
-                                dispatch(setFalse());
-                                setShowElementPopover(undefined);
-                                toast.success('The element has been deleted.');
-                              },
-                            },
-                          ]}
-                        />
-                      )}
-                    >
-                      <div>
-                        <div
-                          className="asset"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            dispatch(setCurrElement(element.id));
-                          }}
-                          onContextMenu={(e) => {
-                            e.preventDefault();
-                            dispatch(setTrue());
-                            setShowElementPopover(element.id);
-                          }}
-                          style={{
-                            backgroundColor:
-                              showElementPopover === element.id
-                                ? 'var(--panelPathColor)'
-                                : undefined,
-                          }}
-                        >
-                          <div title={`${element.name}`}>
-                            {
-                              {
-                                text: (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    style={{
-                                      width: '1.1rem',
-                                      height: '1.1rem',
-                                      marginTop: -1.5,
-                                    }}
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M4 6h16M4 12h16M4 18h7"
-                                    />
-                                  </svg>
-                                ),
-                                line: (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    style={{
-                                      width: '1.1rem',
-                                      height: '1.1rem',
-                                      marginTop: -1.5,
-                                    }}
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
-                                    />
-                                  </svg>
-                                ),
-                                sprite: (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    style={{
-                                      width: '1.1rem',
-                                      height: '1.1rem',
-                                      marginTop: -1.5,
-                                    }}
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                                    />
-                                  </svg>
-                                ),
-                                image: (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    style={{
-                                      width: '1.1rem',
-                                      height: '1.1rem',
-                                      marginTop: -1.5,
-                                    }}
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                    />
-                                  </svg>
-                                ),
-                                video: (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    style={{
-                                      width: '1.1rem',
-                                      height: '1.1rem',
-                                      marginTop: -1.5,
-                                    }}
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                    />
-                                  </svg>
-                                ),
-                                button: (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    style={{
-                                      width: '1.1rem',
-                                      height: '1.1rem',
-                                      marginTop: -1.5,
-                                    }}
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
-                                    />
-                                  </svg>
-                                ),
-                                toggle: (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    style={{
-                                      width: '1.1rem',
-                                      height: '1.1rem',
-                                      marginTop: -1.5,
-                                    }}
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-                                    />
-                                  </svg>
-                                ),
-                                'sl-input': (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    style={{
-                                      width: '1.1rem',
-                                      height: '1.1rem',
-                                      marginTop: -1.5,
-                                    }}
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                                    />
-                                  </svg>
-                                ),
-                                'ml-input': (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    style={{
-                                      width: '1.1rem',
-                                      height: '1.1rem',
-                                      marginTop: -1.5,
-                                    }}
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                                    />
-                                  </svg>
-                                ),
-                              }[element.type]
-                            }
-                            <p
-                              style={{
-                                width: 'calc(100% - 43px)',
-                                height: '100%',
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
-                              }}
+                    <div key={element.id}>
+                      <Modal
+                        closeTimeoutMS={150}
+                        isOpen={elementRenameWinOpenId === element.id}
+                        contentLabel="Rename Element"
+                        style={{
+                          content: {
+                            width: '400px',
+                          },
+                        }}
+                      >
+                        <div className="header">
+                          <p>Rename Element</p>
+                          <div
+                            title="Cancel"
+                            onClick={() => setElementRenameWinOpenId(undefined)}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="27"
+                              height="27"
+                              fill="var(--shortcutIconColor)"
+                              className="bi bi-x"
+                              viewBox="0 0 16 16"
                             >
-                              {element.name}
-                            </p>
+                              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                            </svg>
                           </div>
                         </div>
-                      </div>
-                    </Popover>
+                        <div className="body">
+                          <div
+                            style={{
+                              position: 'relative',
+                              top: 20,
+                              left: '50%',
+                              transform: 'translateX(-50%)',
+                            }}
+                          >
+                            <p
+                              style={{
+                                margin: 0,
+                                color: 'var(--textSubBlackColor)',
+                                paddingBottom: '.7rem',
+                                maxWidth: '100%',
+                              }}
+                            >
+                              Rename the element to..
+                            </p>
+                            <input
+                              style={{
+                                width: '100%',
+                                margin: '0 0 1rem 0',
+                                fontSize: '.9rem',
+                              }}
+                              onChange={(e) => {
+                                setAssetFormInput(e.target.value);
+                              }}
+                              placeholder={`${element.name}`}
+                            />
+                            <button
+                              className="button primary"
+                              style={{
+                                display: 'inherit',
+                                marginLeft: 'auto',
+                                marginBottom: 40,
+                              }}
+                              disabled={formDisable}
+                              onClick={() => {
+                                // two-factor (who knows?)
+                                setFormDisable(true);
+
+                                if (assetFormInput.replaceAll(' ', '') !== '') {
+                                  dispatch(
+                                    renameElement({
+                                      id: element.id,
+                                      name: assetFormInput,
+                                    })
+                                  );
+                                  toast.success(
+                                    `The element has been renamed.`
+                                  );
+                                } else if (
+                                  assetFormInput.replaceAll(' ', '') === ''
+                                ) {
+                                  toast.error(
+                                    `Element's name cannot be blank.`
+                                  );
+                                } else {
+                                  toast.error(`An error occured.`);
+                                }
+                                setElementRenameWinOpenId(undefined);
+                                setFormDisable(false);
+                                setAssetFormInput('');
+                              }}
+                            >
+                              Rename Element
+                            </button>
+                          </div>
+                        </div>
+                      </Modal>
+                      <Popover
+                        isOpen={showElementPopover === element.id}
+                        positions={['bottom']}
+                        padding={5}
+                        align="start"
+                        reposition={false}
+                        key={element.id}
+                        onClickOutside={() => {
+                          setShowElementPopover(undefined);
+                          dispatch(setFalse());
+                        }}
+                        content={() => (
+                          <PopContent
+                            contents={[
+                              {
+                                text: 'Rename Element',
+                                onClick: () => {
+                                  setElementRenameWinOpenId(element.id);
+                                  dispatch(setFalse());
+                                  setShowElementPopover(undefined);
+                                },
+                              },
+                              {
+                                text: 'Delete Element',
+                                type: ContentType.DANGER,
+                                onClick: () => {
+                                  dispatch(deleteElement(element.id));
+                                  dispatch(setFalse());
+                                  setShowElementPopover(undefined);
+                                  toast.success(
+                                    'The element has been deleted.'
+                                  );
+                                },
+                              },
+                            ]}
+                          />
+                        )}
+                      >
+                        <div>
+                          <div
+                            className="asset"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              dispatch(setCurrElement(element.id));
+                            }}
+                            onContextMenu={(e) => {
+                              e.preventDefault();
+                              dispatch(setTrue());
+                              setShowElementPopover(element.id);
+                            }}
+                            style={{
+                              backgroundColor:
+                                showElementPopover === element.id
+                                  ? 'var(--panelPathColor)'
+                                  : undefined,
+                            }}
+                          >
+                            <div title={`${element.name}`}>
+                              {
+                                {
+                                  text: (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      style={{
+                                        width: '1.1rem',
+                                        height: '1.1rem',
+                                        marginTop: -1.5,
+                                      }}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M4 6h16M4 12h16M4 18h7"
+                                      />
+                                    </svg>
+                                  ),
+                                  line: (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      style={{
+                                        width: '1.1rem',
+                                        height: '1.1rem',
+                                        marginTop: -1.5,
+                                      }}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+                                      />
+                                    </svg>
+                                  ),
+                                  sprite: (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      style={{
+                                        width: '1.1rem',
+                                        height: '1.1rem',
+                                        marginTop: -1.5,
+                                      }}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                                      />
+                                    </svg>
+                                  ),
+                                  image: (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      style={{
+                                        width: '1.1rem',
+                                        height: '1.1rem',
+                                        marginTop: -1.5,
+                                      }}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                      />
+                                    </svg>
+                                  ),
+                                  video: (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      style={{
+                                        width: '1.1rem',
+                                        height: '1.1rem',
+                                        marginTop: -1.5,
+                                      }}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                      />
+                                    </svg>
+                                  ),
+                                  button: (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      style={{
+                                        width: '1.1rem',
+                                        height: '1.1rem',
+                                        marginTop: -1.5,
+                                      }}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+                                      />
+                                    </svg>
+                                  ),
+                                  toggle: (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      style={{
+                                        width: '1.1rem',
+                                        height: '1.1rem',
+                                        marginTop: -1.5,
+                                      }}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                                      />
+                                    </svg>
+                                  ),
+                                  'sl-input': (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      style={{
+                                        width: '1.1rem',
+                                        height: '1.1rem',
+                                        marginTop: -1.5,
+                                      }}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                                      />
+                                    </svg>
+                                  ),
+                                  'ml-input': (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      style={{
+                                        width: '1.1rem',
+                                        height: '1.1rem',
+                                        marginTop: -1.5,
+                                      }}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                                      />
+                                    </svg>
+                                  ),
+                                }[element.type]
+                              }
+                              <p
+                                style={{
+                                  width: 'calc(100% - 43px)',
+                                  height: '100%',
+                                  overflow: 'hidden',
+                                  whiteSpace: 'nowrap',
+                                  textOverflow: 'ellipsis',
+                                }}
+                              >
+                                {element.name}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </Popover>
+                    </div>
                   ))}
               </div>
             </nav>
@@ -1546,6 +1656,7 @@ export default function Tool() {
     formDisable,
     winOpenId,
     assetRenameWinOpenId,
+    elementRenameWinOpenId,
     formInput,
     assetList,
     assetLength,

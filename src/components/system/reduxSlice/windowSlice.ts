@@ -174,6 +174,7 @@ export const {
   setCurrWin,
   createElement,
   deleteElement,
+  renameElement,
   setCurrElement,
 } = windowSlice.actions;
 

@@ -145,6 +145,20 @@ export const windowSlice = createSlice({
         .find((window) => window.id === state.currentWindow)!
         .elementData.filter((element) => element.id !== action.payload);
     },
+    renameElement: (
+      state: WindowState,
+      action: {
+        payload: {
+          id: number;
+          name: string;
+        };
+      }
+    ) => {
+      state.windowList
+        .find((window) => window.id === state.currentWindow)!
+        .elementData.find((element) => element.id === action.payload.id)!.name =
+        action.payload.name;
+    },
     setCurrElement: (state: WindowState, action: { payload: number }) => {
       state.currentElement =
         state.currentElement === action.payload ? undefined : action.payload;

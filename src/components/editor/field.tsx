@@ -275,12 +275,240 @@ export default function Field(data: IToolData) {
             width: 500,
           }}
         >
-          {
-            windowList
-              .find((window) => window.id === currentWindow)
-              ?.elementData.find((element) => element.id === currentElement)
-              ?.name
-          }
+          <div
+            style={{
+              width: 'calc(100% - 60px)',
+              height: 33,
+              margin: '12px 30px 0 30px',
+            }}
+          >
+            <div
+              className="hl"
+              style={{
+                position: 'relative',
+                top: '100%',
+              }}
+            />
+            {
+              {
+                text: (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="var(--shortcutIconColor)"
+                    strokeWidth="2"
+                    style={{
+                      width: '1.2rem',
+                      height: '1.2rem',
+                      marginTop: 3.5,
+                      float: 'left',
+                    }}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 6h16M4 12h16M4 18h7"
+                    />
+                  </svg>
+                ),
+                line: (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="var(--shortcutIconColor)"
+                    strokeWidth="2"
+                    style={{
+                      width: '1.2rem',
+                      height: '1.2rem',
+                      marginTop: 3.5,
+                      float: 'left',
+                    }}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+                    />
+                  </svg>
+                ),
+                sprite: (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="var(--shortcutIconColor)"
+                    strokeWidth="2"
+                    style={{
+                      width: '1.2rem',
+                      height: '1.2rem',
+                      marginTop: 3.5,
+                      float: 'left',
+                    }}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                    />
+                  </svg>
+                ),
+                image: (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="var(--shortcutIconColor)"
+                    strokeWidth="2"
+                    style={{
+                      width: '1.2rem',
+                      height: '1.2rem',
+                      marginTop: 3.5,
+                      float: 'left',
+                    }}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                ),
+                video: (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="var(--shortcutIconColor)"
+                    strokeWidth="2"
+                    style={{
+                      width: '1.2rem',
+                      height: '1.2rem',
+                      marginTop: 3.5,
+                      float: 'left',
+                    }}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    />
+                  </svg>
+                ),
+                button: (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="var(--shortcutIconColor)"
+                    strokeWidth="2"
+                    style={{
+                      width: '1.2rem',
+                      height: '1.2rem',
+                      marginTop: 3.5,
+                      float: 'left',
+                    }}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+                    />
+                  </svg>
+                ),
+                toggle: (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="var(--shortcutIconColor)"
+                    strokeWidth="2"
+                    style={{
+                      width: '1.2rem',
+                      height: '1.2rem',
+                      marginTop: 3.5,
+                      float: 'left',
+                    }}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                    />
+                  </svg>
+                ),
+                'sl-input': (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="var(--shortcutIconColor)"
+                    strokeWidth="2"
+                    style={{
+                      width: '1.2rem',
+                      height: '1.2rem',
+                      marginTop: 3.5,
+                      float: 'left',
+                    }}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                    />
+                  </svg>
+                ),
+                'ml-input': (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="var(--shortcutIconColor)"
+                    strokeWidth="2"
+                    style={{
+                      width: '1.2rem',
+                      height: '1.2rem',
+                      marginTop: 3.5,
+                      float: 'left',
+                    }}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                    />
+                  </svg>
+                ),
+              }[
+                windowList
+                  .find((window) => window.id === currentWindow)!
+                  .elementData.find((element) => element.id === currentElement)!
+                  .type
+              ]
+            }
+            <p
+              style={{
+                color: 'var(--shortcutIconColor)',
+                fontWeight: 600,
+                marginTop: 5,
+                marginLeft: 7,
+                float: 'left',
+                maxWidth: 'calc(100% - 1.2rem - 7px)',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                fontSize: '.95rem',
+              }}
+            >
+              {
+                windowList
+                  .find((window) => window.id === currentWindow)
+                  ?.elementData.find((element) => element.id === currentElement)
+                  ?.name
+              }
+            </p>
+          </div>
         </div>
       ) : undefined}
     </div>

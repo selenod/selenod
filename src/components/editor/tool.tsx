@@ -617,6 +617,10 @@ export default function Tool() {
                         <PopContent
                           contents={[
                             {
+                              text: 'Rename Element',
+                              onClick: () => {},
+                            },
+                            {
                               text: 'Delete Element',
                               type: ContentType.DANGER,
                               onClick: () => {

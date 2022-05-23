@@ -6,7 +6,11 @@ import { Resizable } from 're-resizable';
 import { Popover } from 'react-tiny-popover';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
-import { createElement, deleteElement } from '../system/reduxSlice/windowSlice';
+import {
+  createElement,
+  deleteElement,
+  setCurrElement,
+} from '../system/reduxSlice/windowSlice';
 import {
   addAsset,
   addData,
@@ -629,6 +633,10 @@ export default function Tool() {
                       <div>
                         <div
                           className="asset"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            dispatch(setCurrElement(element.id));
+                          }}
                           onContextMenu={(e) => {
                             e.preventDefault();
                             dispatch(setTrue());

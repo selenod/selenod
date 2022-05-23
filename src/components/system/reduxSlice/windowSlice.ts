@@ -25,7 +25,8 @@ interface WindowState {
     scriptData: Script;
     elementData: Array<Element>;
   }>;
-  currentWindow: number;
+  currentWindow: number | undefined;
+  currentElement: number | undefined;
   toggle: number | undefined;
 }
 
@@ -45,6 +46,7 @@ const initialState: WindowState = {
     },
   ],
   currentWindow: 0,
+  currentElement: undefined,
   toggle: undefined,
 };
 
@@ -69,6 +71,7 @@ export const windowSlice = createSlice({
     },
     setCurrWin: (state: WindowState, action: { payload: number }) => {
       state.currentWindow = action.payload;
+      state.currentElement = undefined;
     },
     renameWindow: (
       state: WindowState,
@@ -132,11 +135,19 @@ export const windowSlice = createSlice({
         });
     },
     deleteElement: (state: WindowState, action: { payload: number }) => {
+      if (action.payload === state.currentElement) {
+        state.currentElement = undefined;
+      }
+
       state.windowList.find(
         (window) => window.id === state.currentWindow
       )!.elementData = state.windowList
         .find((window) => window.id === state.currentWindow)!
         .elementData.filter((element) => element.id !== action.payload);
+    },
+    setCurrElement: (state: WindowState, action: { payload: number }) => {
+      state.currentElement =
+        state.currentElement === action.payload ? undefined : action.payload;
     },
   },
 });
@@ -149,6 +160,7 @@ export const {
   setCurrWin,
   createElement,
   deleteElement,
+  setCurrElement,
 } = windowSlice.actions;
 
 export default windowSlice.reducer;

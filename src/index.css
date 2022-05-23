@@ -48,8 +48,11 @@ body {
 
 ::-webkit-scrollbar {
   width: 7px;
+  height: 7px;
 }
-::-webkit-scrollbar-track {
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
   background-color: var(--panelColor);
 }
 ::-webkit-scrollbar-thumb {

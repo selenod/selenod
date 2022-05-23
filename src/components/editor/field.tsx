@@ -21,6 +21,9 @@ export default function Field(data: IToolData) {
   const currentWindow = useSelector(
     (state: RootState) => state.window.currentWindow
   );
+  const currentElement = useSelector(
+    (state: RootState) => state.window.currentElement
+  );
 
   useEffect(() => {
     window.addEventListener('resize', () => setWinHeight(window.innerHeight));
@@ -40,7 +43,10 @@ export default function Field(data: IToolData) {
       <div
         className="View"
         style={{
-          width: toggle === 0 ? 'calc(100% - 500px)' : '100%',
+          width:
+            toggle === 0 && currentElement !== undefined
+              ? 'calc(100% - 500px)'
+              : '100%',
         }}
       >
         {toggle === 0 ? (
@@ -262,14 +268,19 @@ export default function Field(data: IToolData) {
           </pre>
         )}
       </div>
-      {toggle === 0 ? (
+      {toggle === 0 && currentElement !== undefined ? (
         <div
           className="Inspector"
           style={{
             width: 500,
           }}
         >
-          응애 나 애기 인스팩터
+          {
+            windowList
+              .find((window) => window.id === currentWindow)
+              ?.elementData.find((element) => element.id === currentElement)
+              ?.name
+          }
         </div>
       ) : undefined}
     </div>

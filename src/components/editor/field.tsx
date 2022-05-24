@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { RootState } from '../../store';
 import { useSelector } from 'react-redux';
 import { imageExtensions, videoExtensions } from '../../data';
+import Property from './property';
 
 interface IToolData {
   panelWidth: number;
@@ -488,6 +489,7 @@ export default function Field(data: IToolData) {
               }
             </p>
           </div>
+          <Property />
         </div>
       ) : undefined}
     </div>

@@ -687,7 +687,7 @@ export default function Tool() {
                       </Modal>
                       <Popover
                         isOpen={showElementPopover === element.id}
-                        positions={['bottom']}
+                        positions={['right']}
                         padding={5}
                         align="start"
                         reposition={false}
@@ -1465,7 +1465,7 @@ export default function Tool() {
                       </Modal>
                       <Popover
                         isOpen={showAssetPopover === asset.id}
-                        positions={['bottom']}
+                        positions={['right']}
                         padding={5}
                         align="start"
                         reposition={false}

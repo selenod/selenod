@@ -1,7 +1,6 @@
 export enum ElementType {
   TEXT = 'text',
   LINE = 'line',
-  SPRITE = 'sprite',
   IMAGE = 'image',
   VIDEO = 'video',
   BUTTON = 'button',

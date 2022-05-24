@@ -273,26 +273,6 @@ export default function Tool() {
                         },
                       },
                       {
-                        text: 'Sprite',
-                        onClick: () => {
-                          dispatch(
-                            createElement({
-                              name: `Sprite ${
-                                windowList
-                                  .find((window) => window.id === currentWindow)
-                                  ?.elementData.filter(
-                                    (element) =>
-                                      element.type === ElementType.SPRITE
-                                  ).length! + 1
-                              }`,
-                              type: ElementType.SPRITE,
-                            })
-                          );
-                          setShowNodePopover(false);
-                          dispatch(setFalse());
-                        },
-                      },
-                      {
                         type: ContentType.LINE,
                       },
                       {
@@ -802,26 +782,6 @@ export default function Tool() {
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
-                                      />
-                                    </svg>
-                                  ),
-                                  sprite: (
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      strokeWidth="2"
-                                      style={{
-                                        width: '1.1rem',
-                                        height: '1.1rem',
-                                        marginTop: -1.5,
-                                      }}
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
                                       />
                                     </svg>
                                   ),

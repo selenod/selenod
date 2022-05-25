@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { RootState } from '../../store';
 import { useSelector } from 'react-redux';
 import { imageExtensions, videoExtensions } from '../../data';
-import Property from './property';
+import Property from '../system/property';
 
 interface IToolData {
   panelWidth: number;
@@ -46,7 +46,7 @@ export default function Field(data: IToolData) {
         style={{
           width:
             toggle === 0 && currentElement !== undefined
-              ? 'calc(100% - 500px)'
+              ? 'calc(100% - 375px)'
               : '100%',
         }}
       >
@@ -273,7 +273,7 @@ export default function Field(data: IToolData) {
         <div
           className="Inspector"
           style={{
-            width: 500,
+            width: 375,
           }}
         >
           <div
@@ -281,6 +281,7 @@ export default function Field(data: IToolData) {
               width: 'calc(100% - 60px)',
               height: 33,
               margin: '12px 30px 0 30px',
+              paddingBottom: 5,
             }}
           >
             <div
@@ -489,7 +490,14 @@ export default function Field(data: IToolData) {
               }
             </p>
           </div>
-          <Property />
+          <Property
+            type={
+              windowList
+                .find((window) => window.id === currentWindow)
+                ?.elementData.find((element) => element.id === currentElement)
+                ?.type!
+            }
+          />
         </div>
       ) : undefined}
     </div>

@@ -21,6 +21,11 @@ export enum AssetType {
   FOLDER = 'folder',
 }
 
+export enum ComponentType {
+  POSITION = 'Position',
+  SIZE = 'Size',
+}
+
 export const imageExtensions: Array<string> = [
   'png',
   'jpg',

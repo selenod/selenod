@@ -1,0 +1,31 @@
+.Property {
+  width: calc(100% - 60px);
+  height: calc(100% - 81px);
+  margin: 10px 30px 0 30px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.Property > div > .component {
+  width: 100%;
+  margin-bottom: 7px;
+}
+
+.Property > div > .component > .title {
+  font-weight: 600;
+  color: var(--shortcutIconColor);
+}
+
+.Property > div > .component > div {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.Property > div > .component > div > div {
+  transition: ease-out background-color 100ms;
+}
+
+.Property > div > .component > div > div:hover {
+  background-color: var(--panelPathColor);
+}

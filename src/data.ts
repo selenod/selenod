@@ -24,6 +24,7 @@ export enum AssetType {
 export enum ComponentType {
   POSITION = 'Position',
   SIZE = 'Size',
+  TEXT = 'Text',
 }
 
 export const imageExtensions: Array<string> = [

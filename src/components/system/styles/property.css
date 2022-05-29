@@ -9,7 +9,7 @@
 
 .Property > div > .component {
   width: 100%;
-  margin-bottom: 7px;
+  margin-bottom: 15px;
 }
 
 .Property > div > .component > .title {
@@ -19,7 +19,7 @@
 
 .Property > div > .component > div {
   width: 100%;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 .Property > div > .component > div > div {

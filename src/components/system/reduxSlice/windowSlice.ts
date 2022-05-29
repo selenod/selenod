@@ -13,8 +13,15 @@ interface Element {
   name: string;
   id: number;
   type: ElementType;
+  // Posiiton
   x: number;
   y: number;
+  // Size
+  width?: number;
+  height?: number;
+  // Text
+  text?: string;
+  fontSize?: number;
 }
 
 interface WindowState {
@@ -132,6 +139,27 @@ export const windowSlice = createSlice({
           type: action.payload.type,
           x: 0,
           y: 0,
+          width:
+            action.payload.type === ElementType.IMAGE ||
+            action.payload.type === ElementType.BUTTON ||
+            action.payload.type === ElementType.TOGGLE ||
+            action.payload.type === ElementType.SLINPUT ||
+            action.payload.type === ElementType.MLINPUT
+              ? 10
+              : undefined,
+          height:
+            action.payload.type === ElementType.IMAGE ||
+            action.payload.type === ElementType.BUTTON ||
+            action.payload.type === ElementType.TOGGLE ||
+            action.payload.type === ElementType.SLINPUT ||
+            action.payload.type === ElementType.MLINPUT
+              ? 10
+              : undefined,
+          text:
+            action.payload.type === ElementType.TEXT
+              ? 'Hello, world!'
+              : undefined,
+          fontSize: action.payload.type === ElementType.TEXT ? 16 : undefined,
         });
     },
     deleteElement: (state: WindowState, action: { payload: number }) => {
@@ -159,9 +187,84 @@ export const windowSlice = createSlice({
         .elementData.find((element) => element.id === action.payload.id)!.name =
         action.payload.name;
     },
-    setCurrElement: (state: WindowState, action: { payload: number }) => {
+    editElementProp: (
+      state: WindowState,
+      action: {
+        payload: {
+          id: number;
+          x?: number;
+          y?: number;
+          width?: number;
+          height?: number;
+          text?: string;
+          fontSize?: number;
+        };
+      }
+    ) => {
+      for (let name in action.payload) {
+        if (name !== 'id') {
+          //@ts-ignore
+          state.windowList
+            .find((window) => window.id === state.currentWindow)!
+            .elementData.find((element) => element.id === action.payload.id)![
+            name as keyof {
+              id: number;
+              x?: number;
+              y?: number;
+              width?: number;
+              height?: number;
+              text?: string;
+              fontSize?: number;
+            }
+          ] =
+            action.payload[
+              name as keyof {
+                id: number;
+                x?: number;
+                y?: number;
+                width?: number;
+                height?: number;
+                text?: string;
+                fontSize?: number;
+              }
+            ] !== undefined
+              ? action.payload[
+                  name as keyof {
+                    id: number;
+                    x?: number;
+                    y?: number;
+                    width?: number;
+                    height?: number;
+                    text?: string;
+                    fontSize?: number;
+                  }
+                ]!
+              : state.windowList
+                  .find((window) => window.id === state.currentWindow)!
+                  .elementData.find(
+                    (element) => element.id === action.payload.id
+                  )![
+                  name as keyof {
+                    id: number;
+                    x?: number;
+                    y?: number;
+                    width?: number;
+                    height?: number;
+                    text?: string;
+                    fontSize?: number;
+                  }
+                ]!;
+        }
+      }
+    },
+    setCurrElement: (
+      state: WindowState,
+      action: { payload: { id: number; value?: boolean } }
+    ) => {
       state.currentElement =
-        state.currentElement === action.payload ? undefined : action.payload;
+        state.currentElement === action.payload.id && !action.payload.value
+          ? undefined
+          : action.payload.id;
     },
   },
 });
@@ -175,6 +278,7 @@ export const {
   createElement,
   deleteElement,
   renameElement,
+  editElementProp,
   setCurrElement,
 } = windowSlice.actions;
 

@@ -2,136 +2,450 @@ import './styles/property.css';
 
 import { ElementType, ComponentType } from '../../data';
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../store';
+import { editElementProp } from './reduxSlice/windowSlice';
 
 function GetComponent({
+  current,
   type,
-  disable,
 }: {
+  current: number;
   type: ComponentType;
   disable?: Array<string>;
 }) {
+  const windowList = useSelector((state: RootState) => state.window.windowList);
+  const currentWindow = useSelector(
+    (state: RootState) => state.window.currentWindow
+  );
+  const currentElement = useSelector(
+    (state: RootState) => state.window.currentElement
+  );
+
   const [inputFocused, setInputFocused] = useState<number>();
+
+  const dispatch = useDispatch();
 
   return (
     <div
       className="component"
       style={{
-        height: type === ComponentType.POSITION ? 150 : 100,
+        height: 'auto',
       }}
     >
       <p className="title">{type}</p>
-      {type === ComponentType.POSITION ? (
-        <div>
-          <div
-            style={{
-              width: 130,
-              height: 30,
-              backgroundColor:
-                inputFocused === 0 ? 'var(--panelPathColor)' : undefined,
-              borderRadius: 6,
-              float: 'left',
-            }}
-          >
-            <p
+      {
+        {
+          Position: (
+            <div
               style={{
-                position: 'relative',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                marginLeft: 10,
-                color: 'var(--shortcutIconColor)',
-                fontSize: '.85rem',
-                float: 'left',
+                display: 'flex',
               }}
             >
-              X
-            </p>
-            <input
-              type="text"
+              <div
+                style={{
+                  width: 'calc(50% - 5px)',
+                  height: 30,
+                  backgroundColor:
+                    inputFocused === 0 ? 'var(--panelPathColor)' : undefined,
+                  borderRadius: 6,
+                  float: 'left',
+                }}
+              >
+                <p
+                  style={{
+                    position: 'relative',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    marginLeft: 10,
+                    color: 'var(--shortcutIconColor)',
+                    fontSize: '.85rem',
+                    float: 'left',
+                  }}
+                >
+                  X
+                </p>
+                <input
+                  type="text"
+                  style={{
+                    width: 'calc(100% - 36px)',
+                    height: '100%',
+                    padding: 0,
+                    marginRight: 10,
+                    borderRadius: 0,
+                    fontSize: '.9rem',
+                    border: 'none',
+                    backgroundColor: '#00000000',
+                    float: 'right',
+                    color: 'var(--fieldTextColor)',
+                  }}
+                  value={
+                    windowList
+                      .find((window) => window.id === currentWindow)!
+                      .elementData.find((element) => element.id === current)!.x
+                  }
+                  onFocus={() => {
+                    setInputFocused(0);
+                  }}
+                  onBlur={() => {
+                    setInputFocused(undefined);
+                  }}
+                  onChange={(e) => {
+                    if (!isNaN(parseFloat(e.target.value!))) {
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          x: parseFloat(e.target.value!),
+                        })
+                      );
+                    }
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  width: 'calc(50% - 5px)',
+                  height: 30,
+                  backgroundColor:
+                    inputFocused === 1 ? 'var(--panelPathColor)' : undefined,
+                  borderRadius: 6,
+                  float: 'left',
+                  marginLeft: 10,
+                }}
+              >
+                <p
+                  style={{
+                    position: 'relative',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    marginLeft: 10,
+                    color: 'var(--shortcutIconColor)',
+                    fontSize: '.85rem',
+                    float: 'left',
+                  }}
+                >
+                  Y
+                </p>
+                <input
+                  type="text"
+                  style={{
+                    width: 'calc(100% - 36px)',
+                    height: '100%',
+                    padding: 0,
+                    marginRight: 10,
+                    borderRadius: 0,
+                    fontSize: '.9rem',
+                    border: 'none',
+                    backgroundColor: '#00000000',
+                    float: 'right',
+                    color: 'var(--fieldTextColor)',
+                  }}
+                  value={
+                    windowList
+                      .find((window) => window.id === currentWindow)!
+                      .elementData.find((element) => element.id === current)!.y
+                  }
+                  onFocus={() => {
+                    setInputFocused(1);
+                  }}
+                  onBlur={() => {
+                    setInputFocused(undefined);
+                  }}
+                  onChange={(e) => {
+                    if (!isNaN(parseFloat(e.target.value!))) {
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          y: parseFloat(e.target.value!),
+                        })
+                      );
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          ),
+          Size: (
+            <div
               style={{
-                width: 'calc(100% - 40px)',
-                height: '100%',
-                padding: 0,
-                marginRight: 10,
-                borderRadius: 0,
-                fontSize: '.9rem',
-                border: 'none',
-                backgroundColor: '#00000000',
-                float: 'right',
-                color: 'var(--fieldTextColor)',
-              }}
-              defaultValue={0}
-              onFocus={() => {
-                setInputFocused(0);
-              }}
-              onBlur={() => {
-                setInputFocused(undefined);
-              }}
-              onChange={(e) => {}}
-            />
-          </div>
-          <div
-            style={{
-              width: 130,
-              height: 30,
-              backgroundColor:
-                inputFocused === 1 ? 'var(--panelPathColor)' : undefined,
-              borderRadius: 6,
-              float: 'left',
-              marginLeft: 10,
-            }}
-          >
-            <p
-              style={{
-                position: 'relative',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                marginLeft: 10,
-                color: 'var(--shortcutIconColor)',
-                fontSize: '.85rem',
-                float: 'left',
+                display: 'flex',
               }}
             >
-              Y
-            </p>
-            <input
-              type="text"
-              style={{
-                width: 'calc(100% - 40px)',
-                height: '100%',
-                padding: 0,
-                marginRight: 10,
-                borderRadius: 0,
-                fontSize: '.9rem',
-                border: 'none',
-                backgroundColor: '#00000000',
-                float: 'right',
-                color: 'var(--fieldTextColor)',
-              }}
-              defaultValue={0}
-              onFocus={() => {
-                setInputFocused(1);
-              }}
-              onBlur={() => {
-                setInputFocused(undefined);
-              }}
-              onChange={(e) => {}}
-            />
-          </div>
-        </div>
-      ) : undefined}
+              <div
+                style={{
+                  width: 'calc(50% - 5px)',
+                  height: 30,
+                  backgroundColor:
+                    inputFocused === 0 ? 'var(--panelPathColor)' : undefined,
+                  borderRadius: 6,
+                  float: 'left',
+                }}
+              >
+                <p
+                  style={{
+                    position: 'relative',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    marginLeft: 10,
+                    color: 'var(--shortcutIconColor)',
+                    fontSize: '.85rem',
+                    float: 'left',
+                  }}
+                >
+                  W
+                </p>
+                <input
+                  type="text"
+                  style={{
+                    width: 'calc(100% - 40px)',
+                    height: '100%',
+                    padding: 0,
+                    marginRight: 10,
+                    borderRadius: 0,
+                    fontSize: '.9rem',
+                    border: 'none',
+                    backgroundColor: '#00000000',
+                    float: 'right',
+                    color: 'var(--fieldTextColor)',
+                  }}
+                  value={
+                    windowList
+                      .find((window) => window.id === currentWindow)!
+                      .elementData.find((element) => element.id === current)!
+                      .width
+                  }
+                  onFocus={() => {
+                    setInputFocused(0);
+                  }}
+                  onBlur={() => {
+                    setInputFocused(undefined);
+                  }}
+                  onChange={(e) => {
+                    if (!isNaN(parseFloat(e.target.value!))) {
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          width: parseFloat(e.target.value!),
+                        })
+                      );
+                    }
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  width: 'calc(50% - 5px)',
+                  height: 30,
+                  backgroundColor:
+                    inputFocused === 1 ? 'var(--panelPathColor)' : undefined,
+                  borderRadius: 6,
+                  float: 'left',
+                  marginLeft: 10,
+                }}
+              >
+                <p
+                  style={{
+                    position: 'relative',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    marginLeft: 10,
+                    color: 'var(--shortcutIconColor)',
+                    fontSize: '.85rem',
+                    float: 'left',
+                  }}
+                >
+                  H
+                </p>
+                <input
+                  type="text"
+                  style={{
+                    width: 'calc(100% - 37px)',
+                    height: '100%',
+                    padding: 0,
+                    marginRight: 10,
+                    borderRadius: 0,
+                    fontSize: '.9rem',
+                    border: 'none',
+                    backgroundColor: '#00000000',
+                    float: 'right',
+                    color: 'var(--fieldTextColor)',
+                  }}
+                  value={
+                    windowList
+                      .find((window) => window.id === currentWindow)!
+                      .elementData.find((element) => element.id === current)!
+                      .height
+                  }
+                  onFocus={() => {
+                    setInputFocused(1);
+                  }}
+                  onBlur={() => {
+                    setInputFocused(undefined);
+                  }}
+                  onChange={(e) => {
+                    if (!isNaN(parseFloat(e.target.value!))) {
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          height: parseFloat(e.target.value!),
+                        })
+                      );
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          ),
+          Text: (
+            <div>
+              <div
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  height: 30,
+                  backgroundColor:
+                    inputFocused === 1 ? 'var(--panelPathColor)' : undefined,
+                  borderRadius: 6,
+                  float: 'left',
+                }}
+              >
+                <p
+                  style={{
+                    position: 'relative',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    marginLeft: 10,
+                    color: 'var(--shortcutIconColor)',
+                    fontSize: '.85rem',
+                    float: 'left',
+                  }}
+                >
+                  Text
+                </p>
+                <input
+                  type="text"
+                  style={{
+                    position: 'relative',
+                    width: 'calc(100% - 54px)',
+                    height: '100%',
+                    padding: 0,
+                    marginRight: 10,
+                    borderRadius: 0,
+                    fontSize: '.9rem',
+                    border: 'none',
+                    backgroundColor: '#00000000',
+                    float: 'right',
+                    color: 'var(--fieldTextColor)',
+                  }}
+                  value={
+                    windowList
+                      .find((window) => window.id === currentWindow)!
+                      .elementData.find((element) => element.id === current)!
+                      .text
+                  }
+                  onFocus={() => {
+                    setInputFocused(1);
+                  }}
+                  onBlur={() => {
+                    setInputFocused(undefined);
+                  }}
+                  onChange={(e) =>
+                    dispatch(
+                      editElementProp({
+                        id: currentElement!,
+                        text: e.target.value!,
+                      })
+                    )
+                  }
+                />
+              </div>
+              <div
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  height: 30,
+                  backgroundColor:
+                    inputFocused === 0 ? 'var(--panelPathColor)' : undefined,
+                  borderRadius: 6,
+                  float: 'left',
+                  marginTop: 5,
+                }}
+              >
+                <p
+                  style={{
+                    position: 'relative',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    marginLeft: 10,
+                    color: 'var(--shortcutIconColor)',
+                    fontSize: '.85rem',
+                    float: 'left',
+                  }}
+                >
+                  Font Size
+                </p>
+                <input
+                  type="text"
+                  style={{
+                    position: 'relative',
+                    width: 'calc(100% - 85px)',
+                    height: '100%',
+                    padding: 0,
+                    marginRight: 10,
+                    borderRadius: 0,
+                    fontSize: '.9rem',
+                    border: 'none',
+                    backgroundColor: '#00000000',
+                    float: 'right',
+                    color: 'var(--fieldTextColor)',
+                  }}
+                  value={
+                    windowList
+                      .find((window) => window.id === currentWindow)!
+                      .elementData.find((element) => element.id === current)!
+                      .fontSize
+                  }
+                  onFocus={() => {
+                    setInputFocused(0);
+                  }}
+                  onBlur={() => {
+                    setInputFocused(undefined);
+                  }}
+                  onChange={(e) => {
+                    if (!isNaN(parseFloat(e.target.value!))) {
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          fontSize: parseFloat(e.target.value!),
+                        })
+                      );
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          ),
+        }[type]
+      }
     </div>
   );
 }
 
-export default function Property({ type }: { type: ElementType }) {
+export default function Property({
+  curr,
+  type,
+}: {
+  curr: number;
+  type: ElementType;
+}) {
   return (
     <div className="Property">
       {
         {
           text: (
             <div>
-              <GetComponent type={ComponentType.POSITION} />
-              <GetComponent type={ComponentType.SIZE} />
+              <GetComponent current={curr} type={ComponentType.POSITION} />
+              <GetComponent current={curr} type={ComponentType.TEXT} />
             </div>
           ),
           line: undefined,

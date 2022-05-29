@@ -46,7 +46,7 @@ export default function Field(data: IToolData) {
         style={{
           width:
             toggle === 0 && currentElement !== undefined
-              ? 'calc(100% - 375px)'
+              ? 'calc(100% - 350px)'
               : '100%',
         }}
       >
@@ -273,7 +273,7 @@ export default function Field(data: IToolData) {
         <div
           className="Inspector"
           style={{
-            width: 375,
+            width: 350,
           }}
         >
           <div
@@ -491,6 +491,7 @@ export default function Field(data: IToolData) {
             </p>
           </div>
           <Property
+            curr={currentElement}
             type={
               windowList
                 .find((window) => window.id === currentWindow)

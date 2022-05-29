@@ -11,6 +11,7 @@ import {
   deleteElement,
   renameElement,
   setCurrElement,
+  togglePanel,
 } from '../system/reduxSlice/windowSlice';
 import {
   addAsset,
@@ -47,6 +48,7 @@ export default function Tool() {
   const windowList = useSelector((state: RootState) => state.window.windowList);
   const assetList = useSelector((state: RootState) => state.asset.assetList);
   const assetData = useSelector((state: RootState) => state.asset.assetData);
+  const windowToggle = useSelector((state: RootState) => state.window.toggle);
   const currentWindow = useSelector(
     (state: RootState) => state.window.currentWindow
   );
@@ -728,7 +730,21 @@ export default function Tool() {
                             className="asset"
                             onClick={(e) => {
                               e.preventDefault();
-                              dispatch(setCurrElement(element.id));
+                              if (windowToggle !== 0) {
+                                dispatch(togglePanel(0));
+                                dispatch(
+                                  setCurrElement({
+                                    id: element.id,
+                                    value: true,
+                                  })
+                                );
+                              } else {
+                                dispatch(
+                                  setCurrElement({
+                                    id: element.id,
+                                  })
+                                );
+                              }
                             }}
                             onContextMenu={(e) => {
                               e.preventDefault();
@@ -1626,6 +1642,7 @@ export default function Tool() {
     showElementPopover,
     assetFormInput,
     assetFormContents,
+    windowToggle,
   ]);
 
   useEffect(() => {

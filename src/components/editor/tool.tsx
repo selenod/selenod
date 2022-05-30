@@ -540,7 +540,7 @@ export default function Tool() {
                       }}
                       disabled={formDisable}
                       onClick={() => {
-                        // two-factor (who knows?)
+                        // two-factor
                         setFormDisable(true);
 
                         if (formInput.replaceAll(' ', '') !== '') {
@@ -655,7 +655,7 @@ export default function Tool() {
                               }}
                               disabled={formDisable}
                               onClick={() => {
-                                // two-factor (who knows?)
+                                // two-factor
                                 setFormDisable(true);
 
                                 if (assetFormInput.replaceAll(' ', '') !== '') {
@@ -1186,7 +1186,7 @@ export default function Tool() {
                       }}
                       disabled={formDisable}
                       onClick={() => {
-                        // two-factor (who knows?)
+                        // two-factor
                         setFormDisable(true);
 
                         if (assetFormInput.replaceAll(' ', '') !== '') {
@@ -1423,7 +1423,7 @@ export default function Tool() {
                               }}
                               disabled={formDisable}
                               onClick={() => {
-                                // two-factor (who knows?)
+                                // two-factor
                                 setFormDisable(true);
 
                                 if (assetFormInput.replaceAll(' ', '') !== '') {
@@ -1521,6 +1521,10 @@ export default function Tool() {
                                 toggle: true,
                               })
                             );
+
+                            if (togglePanel !== undefined) {
+                              dispatch(togglePanel(undefined));
+                            }
                           }}
                           style={{
                             backgroundColor:

@@ -121,7 +121,10 @@ export const windowSlice = createSlice({
         1
       );
     },
-    togglePanel: (state: WindowState, action: { payload: number }) => {
+    togglePanel: (
+      state: WindowState,
+      action: { payload: number | undefined }
+    ) => {
       state.toggle =
         state.toggle === action.payload ? undefined : action.payload;
     },

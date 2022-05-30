@@ -91,11 +91,19 @@ function GetComponent({
                     setInputFocused(undefined);
                   }}
                   onChange={(e) => {
-                    if (!isNaN(parseFloat(e.target.value!))) {
+                    if (
+                      !isNaN(parseFloat(e.target.value!)) ||
+                      e.target.value === ''
+                    ) {
                       dispatch(
                         editElementProp({
                           id: currentElement!,
-                          x: parseFloat(e.target.value!),
+                          x:
+                            e.target.value === ''
+                              ? 0
+                              : parseFloat(e.target.value!) < 10000
+                              ? parseFloat(e.target.value!)
+                              : 9999,
                         })
                       );
                     }
@@ -152,11 +160,19 @@ function GetComponent({
                     setInputFocused(undefined);
                   }}
                   onChange={(e) => {
-                    if (!isNaN(parseFloat(e.target.value!))) {
+                    if (
+                      !isNaN(parseFloat(e.target.value!)) ||
+                      e.target.value === ''
+                    ) {
                       dispatch(
                         editElementProp({
                           id: currentElement!,
-                          y: parseFloat(e.target.value!),
+                          y:
+                            e.target.value === ''
+                              ? 0
+                              : parseFloat(e.target.value!) < 10000
+                              ? parseFloat(e.target.value!)
+                              : 9999,
                         })
                       );
                     }
@@ -221,11 +237,19 @@ function GetComponent({
                     setInputFocused(undefined);
                   }}
                   onChange={(e) => {
-                    if (!isNaN(parseFloat(e.target.value!))) {
+                    if (
+                      !isNaN(parseFloat(e.target.value!)) ||
+                      e.target.value === ''
+                    ) {
                       dispatch(
                         editElementProp({
                           id: currentElement!,
-                          width: parseFloat(e.target.value!),
+                          width:
+                            e.target.value === ''
+                              ? 0
+                              : parseFloat(e.target.value!) < 10000
+                              ? parseFloat(e.target.value!)
+                              : 9999,
                         })
                       );
                     }
@@ -283,11 +307,19 @@ function GetComponent({
                     setInputFocused(undefined);
                   }}
                   onChange={(e) => {
-                    if (!isNaN(parseFloat(e.target.value!))) {
+                    if (
+                      !isNaN(parseFloat(e.target.value!)) ||
+                      e.target.value === ''
+                    ) {
                       dispatch(
                         editElementProp({
                           id: currentElement!,
-                          height: parseFloat(e.target.value!),
+                          height:
+                            e.target.value === ''
+                              ? 0
+                              : parseFloat(e.target.value!) < 10000
+                              ? parseFloat(e.target.value!)
+                              : 9999,
                         })
                       );
                     }
@@ -412,11 +444,19 @@ function GetComponent({
                     setInputFocused(undefined);
                   }}
                   onChange={(e) => {
-                    if (!isNaN(parseFloat(e.target.value!))) {
+                    if (
+                      !isNaN(parseFloat(e.target.value!)) ||
+                      e.target.value === ''
+                    ) {
                       dispatch(
                         editElementProp({
                           id: currentElement!,
-                          fontSize: parseFloat(e.target.value!),
+                          fontSize:
+                            e.target.value === ''
+                              ? 0
+                              : parseFloat(e.target.value!) < 10000
+                              ? parseFloat(e.target.value!)
+                              : 9999,
                         })
                       );
                     }

@@ -110,7 +110,13 @@ export default function Active(data: IToolData) {
                 title={`${assetData.find((asset) => asset.id === panel)?.name}${
                   assetData.find((asset) => asset.id === panel)?.extension
                 }`}
-                onClick={() => dispatch(setOpenedPanel(panel))}
+                onClick={() => {
+                  dispatch(setOpenedPanel(panel));
+
+                  if (togglePanel !== undefined) {
+                    dispatch(togglePanel(undefined));
+                  }
+                }}
               >
                 {panel === currOpenedPnl ? (
                   <div

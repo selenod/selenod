@@ -11,8 +11,6 @@ interface IToolData {
 }
 
 export default function Field(data: IToolData) {
-  const [winHeight, setWinHeight] = useState<number>(window.innerHeight);
-
   const currentOpenedPanel = useSelector(
     (state: RootState) => state.asset.currentOpenedPanel
   );
@@ -25,6 +23,8 @@ export default function Field(data: IToolData) {
   const currentElement = useSelector(
     (state: RootState) => state.window.currentElement
   );
+
+  const [winHeight, setWinHeight] = useState<number>(window.innerHeight);
 
   useEffect(() => {
     window.addEventListener('resize', () => setWinHeight(window.innerHeight));
@@ -99,6 +99,9 @@ export default function Field(data: IToolData) {
               backgroundColor: 'white',
               borderRadius: 10,
               boxShadow: '0px 1px 40px 0px #00000005',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
             }}
           >
             <div
@@ -194,6 +197,29 @@ export default function Field(data: IToolData) {
                 <rect x="0" y="50%" width="10.2" height="1" />
               </svg>
             </div>
+            {windowList
+              .find((window) => window.id === currentWindow)
+              ?.elementData.map((element) => {
+                switch (element.type) {
+                  case 'text':
+                    return (
+                      <pre
+                        key={element.id}
+                        style={{
+                          position: 'absolute',
+                          top: element.y + 35,
+                          left: element.x,
+                          fontSize: element.fontSize,
+                          margin: 0,
+                        }}
+                      >
+                        {element.text}
+                      </pre>
+                    );
+                  default:
+                    return undefined;
+                }
+              })}
           </div>
         ) : toggle === 1 ? (
           <div>Script Panel</div>

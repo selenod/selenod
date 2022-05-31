@@ -23,6 +23,12 @@ function GetComponent({
   );
 
   const [inputFocused, setInputFocused] = useState<number>();
+  const [textAreaHeight, setTextAreaHeight] = useState<number>(
+    windowList
+      .find((window) => window.id === currentWindow)!
+      .elementData.find((element) => element.id === current)!
+      .text!.split('\n').length - 1
+  );
 
   const dispatch = useDispatch();
 
@@ -334,7 +340,6 @@ function GetComponent({
                 style={{
                   position: 'relative',
                   width: '100%',
-                  height: 30,
                   backgroundColor:
                     inputFocused === 1 ? 'var(--panelPathColor)' : undefined,
                   borderRadius: 6,
@@ -344,8 +349,7 @@ function GetComponent({
                 <p
                   style={{
                     position: 'relative',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
+                    top: 7,
                     marginLeft: 10,
                     color: 'var(--shortcutIconColor)',
                     fontSize: '.85rem',
@@ -354,17 +358,18 @@ function GetComponent({
                 >
                   Text
                 </p>
-                <input
-                  type="text"
+                <textarea
+                  className="text"
                   style={{
                     position: 'relative',
                     width: 'calc(100% - 54px)',
-                    height: '100%',
-                    padding: 0,
+                    height: `calc(30px + ${textAreaHeight}rem)`,
+                    maxHeight: 300,
+                    padding: '6.75px 0 0 0',
                     marginRight: 10,
                     borderRadius: 0,
                     fontSize: '.9rem',
-                    border: 'none',
+                    border: 0,
                     backgroundColor: '#00000000',
                     float: 'right',
                     color: 'var(--fieldTextColor)',
@@ -381,14 +386,15 @@ function GetComponent({
                   onBlur={() => {
                     setInputFocused(undefined);
                   }}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    setTextAreaHeight(e.target.value!.split('\n').length - 1);
                     dispatch(
                       editElementProp({
                         id: currentElement!,
                         text: e.target.value!,
                       })
-                    )
-                  }
+                    );
+                  }}
                 />
               </div>
               <div

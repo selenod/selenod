@@ -22,6 +22,20 @@ interface Element {
   // Text
   text?: string;
   fontSize?: number;
+  color?: string;
+  backgroundColor?: string;
+}
+
+interface ElementPropMethod {
+  id: number;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  text?: string;
+  fontSize?: number;
+  color?: string;
+  backgroundColor?: string;
 }
 
 interface WindowState {
@@ -162,7 +176,10 @@ export const windowSlice = createSlice({
             action.payload.type === ElementType.TEXT
               ? 'Hello, world!'
               : undefined,
+          color: action.payload.type === ElementType.TEXT ? '#000' : undefined,
           fontSize: action.payload.type === ElementType.TEXT ? 16 : undefined,
+          backgroundColor:
+            action.payload.type === ElementType.TEXT ? 'none' : undefined,
         });
     },
     deleteElement: (state: WindowState, action: { payload: number }) => {
@@ -193,15 +210,7 @@ export const windowSlice = createSlice({
     editElementProp: (
       state: WindowState,
       action: {
-        payload: {
-          id: number;
-          x?: number;
-          y?: number;
-          width?: number;
-          height?: number;
-          text?: string;
-          fontSize?: number;
-        };
+        payload: ElementPropMethod;
       }
     ) => {
       for (let name in action.payload) {
@@ -210,53 +219,15 @@ export const windowSlice = createSlice({
           state.windowList
             .find((window) => window.id === state.currentWindow)!
             .elementData.find((element) => element.id === action.payload.id)![
-            name as keyof {
-              id: number;
-              x?: number;
-              y?: number;
-              width?: number;
-              height?: number;
-              text?: string;
-              fontSize?: number;
-            }
+            name as keyof ElementPropMethod
           ] =
-            action.payload[
-              name as keyof {
-                id: number;
-                x?: number;
-                y?: number;
-                width?: number;
-                height?: number;
-                text?: string;
-                fontSize?: number;
-              }
-            ] !== undefined
-              ? action.payload[
-                  name as keyof {
-                    id: number;
-                    x?: number;
-                    y?: number;
-                    width?: number;
-                    height?: number;
-                    text?: string;
-                    fontSize?: number;
-                  }
-                ]!
+            action.payload[name as keyof ElementPropMethod] !== undefined
+              ? action.payload[name as keyof ElementPropMethod]!
               : state.windowList
                   .find((window) => window.id === state.currentWindow)!
                   .elementData.find(
                     (element) => element.id === action.payload.id
-                  )![
-                  name as keyof {
-                    id: number;
-                    x?: number;
-                    y?: number;
-                    width?: number;
-                    height?: number;
-                    text?: string;
-                    fontSize?: number;
-                  }
-                ]!;
+                  )![name as keyof ElementPropMethod]!;
         }
       }
     },

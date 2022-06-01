@@ -211,6 +211,8 @@ export default function Field(data: IToolData) {
                           left: element.x,
                           fontSize: element.fontSize,
                           margin: 0,
+                          color: element.color,
+                          backgroundColor: element.backgroundColor,
                         }}
                       >
                         {element.text}

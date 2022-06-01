@@ -22,11 +22,11 @@
   margin-top: 10px;
 }
 
-.Property > div > .component > div > div {
+.Property > div > .component > div > div > div {
   transition: ease-out background-color 100ms;
 }
 
-.Property > div > .component > div > div:hover {
+.Property > div > .component > div > div > div:hover {
   background-color: var(--panelPathColor);
 }
 

@@ -197,31 +197,47 @@ export default function Field(data: IToolData) {
                 <rect x="0" y="50%" width="10.2" height="1" />
               </svg>
             </div>
-            {windowList
-              .find((window) => window.id === currentWindow)
-              ?.elementData.map((element) => {
-                switch (element.type) {
-                  case 'text':
-                    return (
-                      <pre
-                        key={element.id}
-                        style={{
-                          position: 'absolute',
-                          top: element.y + 35,
-                          left: element.x,
-                          fontSize: element.fontSize,
-                          margin: 0,
-                          color: element.color,
-                          backgroundColor: element.backgroundColor,
-                        }}
-                      >
-                        {element.text}
-                      </pre>
-                    );
-                  default:
-                    return undefined;
-                }
-              })}
+            <div
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: 'calc(100% - 35px)',
+                top: 35,
+              }}
+            >
+              {windowList
+                .find((window) => window.id === currentWindow)
+                ?.elementData.map((element) => {
+                  switch (element.type) {
+                    case 'text':
+                      return (
+                        <pre
+                          key={element.id}
+                          style={{
+                            position: 'absolute',
+                            top: `calc(${
+                              !isNaN(element.y as any)
+                                ? `${element.y}px`
+                                : element.y
+                            })`,
+                            left: !isNaN(element.x as any)
+                              ? `${element.x}px`
+                              : element.x,
+                            fontSize: element.fontSize,
+                            margin: 0,
+                            color: element.color,
+                            backgroundColor: element.backgroundColor,
+                            transform: `translate(-${element.xAlign}%, -${element.yAlign}%)`,
+                          }}
+                        >
+                          {element.text}
+                        </pre>
+                      );
+                    default:
+                      return undefined;
+                  }
+                })}
+            </div>
           </div>
         ) : toggle === 1 ? (
           <div>Script Panel</div>

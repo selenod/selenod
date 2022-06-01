@@ -14,11 +14,13 @@ interface Element {
   id: number;
   type: ElementType;
   // Posiiton
-  x: number;
-  y: number;
+  x: string;
+  y: string;
+  xAlign: number;
+  yAlign: number;
   // Size
-  width?: number;
-  height?: number;
+  width?: string;
+  height?: string;
   // Text
   text?: string;
   fontSize?: number;
@@ -28,10 +30,12 @@ interface Element {
 
 interface ElementPropMethod {
   id: number;
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
+  x?: string;
+  y?: string;
+  xAlign?: number;
+  yAlign?: number;
+  width?: string;
+  height?: string;
   text?: string;
   fontSize?: number;
   color?: string;
@@ -154,15 +158,17 @@ export const windowSlice = createSlice({
             (window) => window.id === state.currentWindow
           )!.elementData.length,
           type: action.payload.type,
-          x: 0,
-          y: 0,
+          x: '0',
+          y: '0',
+          xAlign: 0,
+          yAlign: 0,
           width:
             action.payload.type === ElementType.IMAGE ||
             action.payload.type === ElementType.BUTTON ||
             action.payload.type === ElementType.TOGGLE ||
             action.payload.type === ElementType.SLINPUT ||
             action.payload.type === ElementType.MLINPUT
-              ? 10
+              ? '10'
               : undefined,
           height:
             action.payload.type === ElementType.IMAGE ||
@@ -170,7 +176,7 @@ export const windowSlice = createSlice({
             action.payload.type === ElementType.TOGGLE ||
             action.payload.type === ElementType.SLINPUT ||
             action.payload.type === ElementType.MLINPUT
-              ? 10
+              ? '10'
               : undefined,
           text:
             action.payload.type === ElementType.TEXT

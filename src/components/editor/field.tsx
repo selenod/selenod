@@ -106,10 +106,12 @@ export default function Field(data: IToolData) {
           >
             <div
               style={{
+                position: 'relative',
                 width: '100%',
                 height: 35,
                 borderRadius: '10px 10px 0 0',
                 backgroundColor: '#8052ff',
+                zIndex: 1,
               }}
             >
               <svg
@@ -228,6 +230,7 @@ export default function Field(data: IToolData) {
                             color: element.color,
                             backgroundColor: element.backgroundColor,
                             transform: `translate(-${element.xAlign}%, -${element.yAlign}%)`,
+                            zIndex: -1,
                           }}
                         >
                           {element.text}

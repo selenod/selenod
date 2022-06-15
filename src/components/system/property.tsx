@@ -23,11 +23,13 @@ function GetComponent({
   );
 
   const [inputFocused, setInputFocused] = useState<number>();
-  const [textAreaHeight, setTextAreaHeight] = useState<number>(
-    windowList
-      .find((window) => window.id === currentWindow)!
-      .elementData.find((element) => element.id === current)!
-      .text!.split('\n').length - 1
+  const [textAreaHeight, setTextAreaHeight] = useState<number | undefined>(
+    type === ComponentType.TEXT
+      ? windowList
+          .find((window) => window.id === currentWindow)!
+          .elementData.find((element) => element.id === current)!
+          .text!.split('\n').length - 1
+      : undefined
   );
 
   const dispatch = useDispatch();
@@ -786,13 +788,41 @@ export default function Property({
               <GetComponent current={curr} type={ComponentType.TEXT} />
             </div>
           ),
-          line: undefined,
-          image: undefined,
-          video: undefined,
-          button: undefined,
-          toggle: undefined,
-          'sl-input': undefined,
-          'ml-input': undefined,
+          line: (
+            <div>
+              <GetComponent current={curr} type={ComponentType.POSITION} />
+            </div>
+          ),
+          image: (
+            <div>
+              <GetComponent current={curr} type={ComponentType.POSITION} />
+            </div>
+          ),
+          video: (
+            <div>
+              <GetComponent current={curr} type={ComponentType.POSITION} />
+            </div>
+          ),
+          button: (
+            <div>
+              <GetComponent current={curr} type={ComponentType.POSITION} />
+            </div>
+          ),
+          toggle: (
+            <div>
+              <GetComponent current={curr} type={ComponentType.POSITION} />
+            </div>
+          ),
+          'sl-input': (
+            <div>
+              <GetComponent current={curr} type={ComponentType.POSITION} />
+            </div>
+          ),
+          'ml-input': (
+            <div>
+              <GetComponent current={curr} type={ComponentType.POSITION} />
+            </div>
+          ),
         }[type]
       }
     </div>

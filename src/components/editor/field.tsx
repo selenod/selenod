@@ -147,6 +147,7 @@ export default function Field(data: IToolData) {
                   textOverflow: 'ellipsis',
                   overflow: 'hidden',
                   whiteSpace: 'nowrap',
+                  cursor: 'default',
                 }}
               >
                 {windowList.find((window) => window.id === currentWindow)?.name}

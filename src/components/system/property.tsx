@@ -770,7 +770,7 @@ function GetComponent({
               <div
                 style={{
                   position: 'relative',
-                  width: 'calc(50% - 5px)',
+                  width: '100%',
                   height: 30,
                   backgroundColor:
                     inputFocused === 0 ? 'var(--panelPathColor)' : undefined,
@@ -789,12 +789,12 @@ function GetComponent({
                     float: 'left',
                   }}
                 >
-                  W
+                  Width
                 </p>
                 <input
                   type="text"
                   style={{
-                    width: 'calc(100% - 40px)',
+                    width: 'calc(100% - 64px)',
                     height: '100%',
                     padding: 0,
                     marginRight: 10,

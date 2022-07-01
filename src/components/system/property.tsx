@@ -765,6 +765,145 @@ function GetComponent({
               </div>
             </div>
           ),
+          Line: (
+            <div>
+              <div
+                style={{
+                  position: 'relative',
+                  width: 'calc(50% - 5px)',
+                  height: 30,
+                  backgroundColor:
+                    inputFocused === 0 ? 'var(--panelPathColor)' : undefined,
+                  borderRadius: 6,
+                  float: 'left',
+                }}
+              >
+                <p
+                  style={{
+                    position: 'relative',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    marginLeft: 10,
+                    color: 'var(--shortcutIconColor)',
+                    fontSize: '.85rem',
+                    float: 'left',
+                  }}
+                >
+                  W
+                </p>
+                <input
+                  type="text"
+                  style={{
+                    width: 'calc(100% - 40px)',
+                    height: '100%',
+                    padding: 0,
+                    marginRight: 10,
+                    borderRadius: 0,
+                    fontSize: '.9rem',
+                    border: 'none',
+                    backgroundColor: '#00000000',
+                    float: 'right',
+                    color: 'var(--fieldTextColor)',
+                  }}
+                  value={
+                    windowList
+                      .find((window) => window.id === currentWindow)!
+                      .elementData.find((element) => element.id === current)!
+                      .width
+                  }
+                  onFocus={() => {
+                    setInputFocused(0);
+                  }}
+                  onBlur={() => {
+                    if (
+                      windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .width === ''
+                    ) {
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          width: '0',
+                        })
+                      );
+                    }
+                    setInputFocused(undefined);
+                  }}
+                  onChange={(e) => {
+                    dispatch(
+                      editElementProp({
+                        id: currentElement!,
+                        width: e.target.value === '' ? '' : e.target.value!,
+                      })
+                    );
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  height: 30,
+                  backgroundColor:
+                    inputFocused === 3 ? 'var(--panelPathColor)' : undefined,
+                  borderRadius: 6,
+                  float: 'left',
+                  marginTop: 5,
+                }}
+              >
+                <p
+                  style={{
+                    position: 'relative',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    marginLeft: 10,
+                    color: 'var(--shortcutIconColor)',
+                    fontSize: '.85rem',
+                    float: 'left',
+                  }}
+                >
+                  Color
+                </p>
+                <input
+                  type="text"
+                  style={{
+                    position: 'relative',
+                    width: 'calc(100% - 61px)',
+                    height: '100%',
+                    padding: 0,
+                    marginRight: 10,
+                    borderRadius: 0,
+                    fontSize: '.9rem',
+                    border: 'none',
+                    backgroundColor: '#00000000',
+                    float: 'right',
+                    color: 'var(--fieldTextColor)',
+                  }}
+                  value={
+                    windowList
+                      .find((window) => window.id === currentWindow)!
+                      .elementData.find((element) => element.id === current)!
+                      .backgroundColor
+                  }
+                  onFocus={() => {
+                    setInputFocused(3);
+                  }}
+                  onBlur={() => {
+                    setInputFocused(undefined);
+                  }}
+                  onChange={(e) =>
+                    dispatch(
+                      editElementProp({
+                        id: currentElement!,
+                        backgroundColor: e.target.value!,
+                      })
+                    )
+                  }
+                />
+              </div>
+            </div>
+          ),
         }[type]
       }
     </div>
@@ -791,6 +930,7 @@ export default function Property({
           line: (
             <div>
               <GetComponent current={curr} type={ComponentType.POSITION} />
+              <GetComponent current={curr} type={ComponentType.LINE} />
             </div>
           ),
           image: (

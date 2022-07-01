@@ -237,6 +237,33 @@ export default function Field(data: IToolData) {
                           {element.text}
                         </pre>
                       );
+                    case 'line':
+                      return (
+                        <div
+                          key={element.id}
+                          style={{
+                            position: 'absolute',
+                            top: `calc(${
+                              !isNaN(element.y as any)
+                                ? `${element.y}px`
+                                : element.y
+                            })`,
+                            left: !isNaN(element.x as any)
+                              ? `${element.x}px`
+                              : element.x,
+                            width: `calc(${
+                              !isNaN(element.width as any)
+                                ? `${element.width}px`
+                                : element.width
+                            })`,
+                            height: 1,
+                            borderRadius: '1rem',
+                            backgroundColor: element.backgroundColor,
+                            transform: `translate(-${element.xAlign}%, -${element.yAlign}%)`,
+                            zIndex: -1,
+                          }}
+                        />
+                      );
                     default:
                       return undefined;
                   }

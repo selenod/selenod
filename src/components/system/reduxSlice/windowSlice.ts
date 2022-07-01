@@ -169,6 +169,8 @@ export const windowSlice = createSlice({
             action.payload.type === ElementType.SLINPUT ||
             action.payload.type === ElementType.MLINPUT
               ? '10'
+              : action.payload.type === ElementType.LINE
+              ? '250'
               : undefined,
           height:
             action.payload.type === ElementType.IMAGE ||
@@ -185,7 +187,11 @@ export const windowSlice = createSlice({
           color: action.payload.type === ElementType.TEXT ? '#000' : undefined,
           fontSize: action.payload.type === ElementType.TEXT ? 16 : undefined,
           backgroundColor:
-            action.payload.type === ElementType.TEXT ? 'none' : undefined,
+            action.payload.type === ElementType.TEXT
+              ? 'none'
+              : action.payload.type === ElementType.LINE
+              ? '#d8e0e5'
+              : undefined,
         });
     },
     deleteElement: (state: WindowState, action: { payload: number }) => {

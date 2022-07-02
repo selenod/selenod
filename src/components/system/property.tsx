@@ -789,12 +789,12 @@ function GetComponent({
                     float: 'left',
                   }}
                 >
-                  Width
+                  Length
                 </p>
                 <input
                   type="text"
                   style={{
-                    width: 'calc(100% - 64px)',
+                    width: 'calc(100% - 71px)',
                     height: '100%',
                     padding: 0,
                     marginRight: 10,

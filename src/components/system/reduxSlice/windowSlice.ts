@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ElementType } from '../../../data';
+import { ElementType, Part } from '../../../data';
 
 interface Window {
   width: number;
@@ -26,6 +26,7 @@ interface Element {
   fontSize?: number;
   color?: string;
   backgroundColor?: string;
+  part?: Part;
 }
 
 interface ElementPropMethod {
@@ -40,6 +41,7 @@ interface ElementPropMethod {
   fontSize?: number;
   color?: string;
   backgroundColor?: string;
+  part?: Part;
 }
 
 interface WindowState {
@@ -179,6 +181,8 @@ export const windowSlice = createSlice({
             action.payload.type === ElementType.SLINPUT ||
             action.payload.type === ElementType.MLINPUT
               ? '10'
+              : action.payload.type === ElementType.LINE
+              ? '1'
               : undefined,
           text:
             action.payload.type === ElementType.TEXT
@@ -191,6 +195,10 @@ export const windowSlice = createSlice({
               ? 'none'
               : action.payload.type === ElementType.LINE
               ? '#d8e0e5'
+              : undefined,
+          part:
+            action.payload.type === ElementType.LINE
+              ? Part.HORIZONTAL
               : undefined,
         });
     },

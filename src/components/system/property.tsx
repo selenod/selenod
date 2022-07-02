@@ -1,10 +1,13 @@
 import './styles/property.css';
 
-import { ElementType, ComponentType } from '../../data';
+import { ElementType, ComponentType, Part } from '../../data';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
 import { editElementProp } from './reduxSlice/windowSlice';
+import { Popover } from 'react-tiny-popover';
+import { PopContent } from './popcontent';
+import { setFalse, setTrue } from './reduxSlice/coverSlice';
 
 function GetComponent({
   current,
@@ -15,6 +18,7 @@ function GetComponent({
   disable?: Array<string>;
 }) {
   const windowList = useSelector((state: RootState) => state.window.windowList);
+  const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const currentWindow = useSelector(
     (state: RootState) => state.window.currentWindow
   );
@@ -29,8 +33,9 @@ function GetComponent({
           .find((window) => window.id === currentWindow)!
           .elementData.find((element) => element.id === current)!
           .text!.split('\n').length - 1
-      : undefined
+      : 0
   );
+  const [showPopover, setShowPopover] = useState<boolean>(false);
 
   const dispatch = useDispatch();
 
@@ -53,6 +58,7 @@ function GetComponent({
                 }}
               >
                 <div
+                  className="property-input"
                   style={{
                     width: 'calc(50% - 5px)',
                     height: 30,
@@ -126,6 +132,7 @@ function GetComponent({
                   />
                 </div>
                 <div
+                  className="property-input"
                   style={{
                     width: 'calc(50% - 5px)',
                     height: 30,
@@ -208,6 +215,7 @@ function GetComponent({
                 }}
               >
                 <div
+                  className="property-input"
                   style={{
                     width: 'calc(50% - 5px)',
                     height: 30,
@@ -278,6 +286,7 @@ function GetComponent({
                   />
                 </div>
                 <div
+                  className="property-input"
                   style={{
                     width: 'calc(50% - 5px)',
                     height: 30,
@@ -358,6 +367,7 @@ function GetComponent({
               }}
             >
               <div
+                className="property-input"
                 style={{
                   width: 'calc(50% - 5px)',
                   height: 30,
@@ -430,6 +440,7 @@ function GetComponent({
                 />
               </div>
               <div
+                className="property-input"
                 style={{
                   width: 'calc(50% - 5px)',
                   height: 30,
@@ -507,6 +518,7 @@ function GetComponent({
           Text: (
             <div>
               <div
+                className="property-input"
                 style={{
                   position: 'relative',
                   width: '100%',
@@ -558,6 +570,7 @@ function GetComponent({
                   }}
                   onChange={(e) => {
                     setTextAreaHeight(e.target.value!.split('\n').length - 1);
+                    console.log(textAreaHeight);
                     dispatch(
                       editElementProp({
                         id: currentElement!,
@@ -568,6 +581,7 @@ function GetComponent({
                 />
               </div>
               <div
+                className="property-input"
                 style={{
                   position: 'relative',
                   width: '100%',
@@ -640,6 +654,7 @@ function GetComponent({
                 />
               </div>
               <div
+                className="property-input"
                 style={{
                   position: 'relative',
                   width: '100%',
@@ -702,6 +717,7 @@ function GetComponent({
                 />
               </div>
               <div
+                className="property-input"
                 style={{
                   position: 'relative',
                   width: '100%',
@@ -767,7 +783,181 @@ function GetComponent({
           ),
           Line: (
             <div>
+              <Popover
+                isOpen={showPopover}
+                positions={['bottom']}
+                padding={5}
+                align="start"
+                reposition={false}
+                onClickOutside={() => {
+                  if (isClicked) {
+                    dispatch(setFalse());
+                    setShowPopover(false);
+                  }
+                }}
+                content={() => (
+                  <PopContent
+                    isSelection={true}
+                    contents={[
+                      {
+                        text: 'Horizontal line',
+                        id: 0,
+                        selected:
+                          windowList
+                            .find((window) => window.id === currentWindow)!
+                            .elementData.find(
+                              (element) => element.id === current
+                            )!.part === Part.HORIZONTAL,
+                        onClick: () => {
+                          if (
+                            windowList
+                              .find((window) => window.id === currentWindow)!
+                              .elementData.find(
+                                (element) => element.id === current
+                              )!.part === Part.VERTICAL
+                          ) {
+                            dispatch(
+                              editElementProp({
+                                id: currentElement!,
+                                width: windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.height,
+                              })
+                            );
+                            dispatch(
+                              editElementProp({
+                                id: currentElement!,
+                                height: '1',
+                              })
+                            );
+                            dispatch(
+                              editElementProp({
+                                id: currentElement!,
+                                part: Part.HORIZONTAL,
+                              })
+                            );
+                          }
+                          dispatch(setFalse());
+                          setShowPopover(false);
+                        },
+                      },
+                      {
+                        text: 'Vertical line',
+                        id: 1,
+                        selected:
+                          windowList
+                            .find((window) => window.id === currentWindow)!
+                            .elementData.find(
+                              (element) => element.id === current
+                            )!.part === Part.VERTICAL,
+                        onClick: () => {
+                          if (
+                            windowList
+                              .find((window) => window.id === currentWindow)!
+                              .elementData.find(
+                                (element) => element.id === current
+                              )!.part === Part.HORIZONTAL
+                          ) {
+                            dispatch(
+                              editElementProp({
+                                id: currentElement!,
+                                height: windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.width,
+                              })
+                            );
+                            dispatch(
+                              editElementProp({
+                                id: currentElement!,
+                                width: '1',
+                              })
+                            );
+                            dispatch(
+                              editElementProp({
+                                id: currentElement!,
+                                part: Part.VERTICAL,
+                              })
+                            );
+                          }
+                          dispatch(setFalse());
+                          setShowPopover(false);
+                        },
+                      },
+                    ]}
+                  />
+                )}
+              >
+                <div
+                  className="property-input"
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: 30,
+                    backgroundColor:
+                      inputFocused === 1 ? 'var(--panelPathColor)' : undefined,
+                    borderRadius: 6,
+                    float: 'left',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    dispatch(
+                      showPopover ? dispatch(setFalse()) : dispatch(setTrue())
+                    );
+                    setShowPopover(!showPopover);
+                  }}
+                  onMouseEnter={() => setInputFocused(1)}
+                  onMouseLeave={() => {
+                    if (!showPopover) {
+                      setInputFocused(undefined);
+                    }
+                  }}
+                >
+                  <p
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      marginLeft: 10,
+                      color: 'var(--shortcutIconColor)',
+                      fontSize: '.85rem',
+                      float: 'left',
+                    }}
+                  >
+                    {windowList
+                      .find((window) => window.id === currentWindow)!
+                      .elementData.find((element) => element.id === current)!
+                      .part === Part.HORIZONTAL
+                      ? 'Horizontal line'
+                      : 'Vertical line'}
+                  </p>
+                  <svg
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      float: 'right',
+                      marginRight: 10,
+                    }}
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12.5"
+                    height="12.5"
+                    fill="var(--shortcutIconColor)"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                  </svg>
+                </div>
+              </Popover>
               <div
+                className="property-input"
                 style={{
                   position: 'relative',
                   width: '100%',
@@ -776,6 +966,7 @@ function GetComponent({
                     inputFocused === 0 ? 'var(--panelPathColor)' : undefined,
                   borderRadius: 6,
                   float: 'left',
+                  marginTop: 5,
                 }}
               >
                 <p
@@ -809,13 +1000,27 @@ function GetComponent({
                     windowList
                       .find((window) => window.id === currentWindow)!
                       .elementData.find((element) => element.id === current)!
-                      .width
+                      .part === Part.HORIZONTAL
+                      ? windowList
+                          .find((window) => window.id === currentWindow)!
+                          .elementData.find(
+                            (element) => element.id === current
+                          )!.width
+                      : windowList
+                          .find((window) => window.id === currentWindow)!
+                          .elementData.find(
+                            (element) => element.id === current
+                          )!.height
                   }
                   onFocus={() => {
                     setInputFocused(0);
                   }}
                   onBlur={() => {
                     if (
+                      windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .part === Part.HORIZONTAL &&
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -827,20 +1032,46 @@ function GetComponent({
                           width: '0',
                         })
                       );
+                    } else if (
+                      windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .part === Part.VERTICAL &&
+                      windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .height === ''
+                    ) {
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          height: '0',
+                        })
+                      );
                     }
                     setInputFocused(undefined);
                   }}
                   onChange={(e) => {
                     dispatch(
-                      editElementProp({
-                        id: currentElement!,
-                        width: e.target.value === '' ? '' : e.target.value!,
-                      })
+                      windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .part === Part.HORIZONTAL
+                        ? editElementProp({
+                            id: currentElement!,
+                            width: e.target.value === '' ? '' : e.target.value!,
+                          })
+                        : editElementProp({
+                            id: currentElement!,
+                            height:
+                              e.target.value === '' ? '' : e.target.value!,
+                          })
                     );
                   }}
                 />
               </div>
               <div
+                className="property-input"
                 style={{
                   position: 'relative',
                   width: '100%',

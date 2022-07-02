@@ -549,7 +549,6 @@ export function PopContent({
                 key={contentsState.indexOf(content)}
                 title={content.text}
                 style={{
-                  backgroundColor: 'var(--popContentColor)',
                   color:
                     content.type === ContentType.DANGER
                       ? 'var(--red)'

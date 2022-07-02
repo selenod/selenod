@@ -256,7 +256,11 @@ export default function Field(data: IToolData) {
                                 ? `${element.width}px`
                                 : element.width
                             })`,
-                            height: 1,
+                            height: `calc(${
+                              !isNaN(element.height as any)
+                                ? `${element.height}px`
+                                : element.height
+                            })`,
                             borderRadius: '1rem',
                             backgroundColor: element.backgroundColor,
                             transform: `translate(-${element.xAlign}%, -${element.yAlign}%)`,

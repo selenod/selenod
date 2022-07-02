@@ -22,11 +22,11 @@
   margin-top: 10px;
 }
 
-.Property > div > .component > div > div > div {
+.property-input {
   transition: ease-out background-color 100ms;
 }
 
-.Property > div > .component > div > div > div:hover {
+.property-input:hover {
   background-color: var(--panelPathColor);
 }
 

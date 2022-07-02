@@ -28,6 +28,11 @@ export enum ComponentType {
   LINE = 'Line',
 }
 
+export enum Part {
+  HORIZONTAL,
+  VERTICAL,
+}
+
 export const imageExtensions: Array<string> = [
   'png',
   'jpg',

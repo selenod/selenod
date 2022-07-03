@@ -230,7 +230,13 @@ export default function Field(data: IToolData) {
                             margin: 0,
                             color: element.color,
                             backgroundColor: element.backgroundColor,
-                            transform: `translate(-${element.xAlign}%, -${element.yAlign}%)`,
+                            transform: `translate(-${element.xAlign}%, -${
+                              element.yAlign
+                            }%) rotate(calc(${
+                              !isNaN(element.rotation as any)
+                                ? `${element.rotation}deg`
+                                : element.rotation
+                            }))`,
                             zIndex: -1,
                           }}
                         >
@@ -263,7 +269,13 @@ export default function Field(data: IToolData) {
                             })`,
                             borderRadius: '1rem',
                             backgroundColor: element.backgroundColor,
-                            transform: `translate(-${element.xAlign}%, -${element.yAlign}%)`,
+                            transform: `translate(-${element.xAlign}%, -${
+                              element.yAlign
+                            }%) rotate(calc(${
+                              !isNaN(element.rotation as any)
+                                ? `${element.rotation}deg`
+                                : element.rotation
+                            }))`,
                             zIndex: -1,
                           }}
                         />

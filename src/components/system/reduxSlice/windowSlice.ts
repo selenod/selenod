@@ -18,6 +18,7 @@ interface Element {
   y: string;
   xAlign: number;
   yAlign: number;
+  rotation: string;
   // Size
   width?: string;
   height?: string;
@@ -35,6 +36,7 @@ interface ElementPropMethod {
   y?: string;
   xAlign?: number;
   yAlign?: number;
+  rotation?: string;
   width?: string;
   height?: string;
   text?: string;
@@ -164,6 +166,7 @@ export const windowSlice = createSlice({
           y: '0',
           xAlign: 0,
           yAlign: 0,
+          rotation: '0',
           width:
             action.payload.type === ElementType.IMAGE ||
             action.payload.type === ElementType.BUTTON ||

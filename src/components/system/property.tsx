@@ -358,6 +358,88 @@ function GetComponent({
                   />
                 </div>
               </div>
+              <div
+                style={{
+                  width: '100%',
+                  height: 30,
+                  marginTop: 5,
+                }}
+              >
+                <div
+                  className="property-input"
+                  style={{
+                    width: '100%',
+                    height: 30,
+                    backgroundColor:
+                      inputFocused === 4 ? 'var(--panelPathColor)' : undefined,
+                    borderRadius: 6,
+                  }}
+                >
+                  <p
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      marginLeft: 10,
+                      color: 'var(--shortcutIconColor)',
+                      fontSize: '.85rem',
+                      float: 'left',
+                    }}
+                  >
+                    Rotation
+                  </p>
+                  <input
+                    type="text"
+                    style={{
+                      width: 'calc(100% - 79px)',
+                      height: '100%',
+                      padding: 0,
+                      marginRight: 10,
+                      borderRadius: 0,
+                      fontSize: '.9rem',
+                      border: 'none',
+                      backgroundColor: '#00000000',
+                      float: 'right',
+                      color: 'var(--fieldTextColor)',
+                    }}
+                    value={
+                      windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .rotation
+                    }
+                    onFocus={() => {
+                      setInputFocused(4);
+                    }}
+                    onBlur={() => {
+                      if (
+                        windowList
+                          .find((window) => window.id === currentWindow)!
+                          .elementData.find(
+                            (element) => element.id === current
+                          )!.rotation === ''
+                      ) {
+                        dispatch(
+                          editElementProp({
+                            id: currentElement!,
+                            rotation: '0',
+                          })
+                        );
+                      }
+                      setInputFocused(undefined);
+                    }}
+                    onChange={(e) => {
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          rotation:
+                            e.target.value === '' ? '' : e.target.value!,
+                        })
+                      );
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           ),
           Size: (

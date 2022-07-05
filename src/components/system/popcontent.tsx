@@ -567,7 +567,11 @@ export function PopContent({
                   const oldSelected = contentsState.find(
                     (arrContent) => arrContent.selected
                   );
-                  if (newSelected !== oldSelected) {
+                  if (
+                    newSelected !== oldSelected &&
+                    newSelected !== undefined &&
+                    oldSelected !== undefined
+                  ) {
                     newSelected!.selected = true;
                     oldSelected!.selected = false;
                   }

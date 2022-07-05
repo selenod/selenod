@@ -977,12 +977,18 @@ export default function Tool() {
                 type="file"
                 ref={assetInput}
                 style={{ display: 'none' }}
+                onClick={(event) => {
+                  (event as any).target.value = null;
+                }}
                 onChange={async (event) => {
                   if (100 - assetLength - event.target.files!.length < 0) {
                     toast.error(
                       'The upload has been canceled because the upload exceeds the number of assets remaining.'
                     );
                   } else {
+                    const lastIdx =
+                      assetLength === 0 ? 0 : assetData[assetLength - 1].id;
+
                     for (
                       let i = 0, index = assetLength;
                       i < event.target.files!.length;
@@ -995,7 +1001,7 @@ export default function Tool() {
                       reader.addEventListener('load', () => {
                         dispatch(
                           addAsset({
-                            id: index === 1 ? 0 : assetData[index - 2].id + 1,
+                            id: lastIdx + index - 1,
                           })
                         );
 
@@ -1007,7 +1013,7 @@ export default function Tool() {
                                   event.target.files![i].name.lastIndexOf('.')
                                 )
                               : event.target.files![i].name,
-                            id: index === 1 ? 0 : assetData[index - 2].id + 1,
+                            id: lastIdx + index - 1,
                             type: AssetType.FILE,
                             extension: event.target.files![i].name.includes('.')
                               ? event.target.files![i].name.substr(
@@ -1278,6 +1284,9 @@ export default function Tool() {
                         'The upload has been canceled because the upload exceeds the number of assets remaining.'
                       );
                     } else {
+                      const lastIdx =
+                        assetLength === 0 ? 0 : assetData[assetLength - 1].id;
+
                       for (
                         let i = 0, index = assetLength;
                         i < files!.length;
@@ -1293,10 +1302,7 @@ export default function Tool() {
                             reader.addEventListener('load', () => {
                               dispatch(
                                 addAsset({
-                                  id:
-                                    index === 1
-                                      ? 0
-                                      : assetData[index - 2].id + 1,
+                                  id: lastIdx + index - 1,
                                 })
                               );
 
@@ -1308,10 +1314,7 @@ export default function Tool() {
                                         files![i].name.lastIndexOf('.')
                                       )
                                     : files![i].name,
-                                  id:
-                                    index === 1
-                                      ? 0
-                                      : assetData[index - 2].id + 1,
+                                  id: lastIdx + index - 1,
                                   type: AssetType.FILE,
                                   extension: files![i].name.includes('.')
                                     ? files![i].name.substr(
@@ -1624,7 +1627,6 @@ export default function Tool() {
       default:
         break;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     pnlCase,
     pnlSize.width,

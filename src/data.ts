@@ -26,6 +26,7 @@ export enum ComponentType {
   SIZE = 'Size',
   TEXT = 'Text',
   LINE = 'Line',
+  IMAGE = 'Image',
 }
 
 export enum Part {

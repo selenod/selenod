@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ElementType, Part } from '../../../data';
+import { Asset } from './assetSlice';
 
 interface Window {
   width: number;
@@ -27,7 +28,9 @@ interface Element {
   fontSize?: number;
   color?: string;
   backgroundColor?: string;
+  borderRadius?: string;
   part?: Part;
+  src?: number;
 }
 
 interface ElementPropMethod {
@@ -43,7 +46,9 @@ interface ElementPropMethod {
   fontSize?: number;
   color?: string;
   backgroundColor?: string;
+  borderRadius?: string;
   part?: Part;
+  src?: number;
 }
 
 interface WindowState {
@@ -168,7 +173,6 @@ export const windowSlice = createSlice({
           yAlign: 0,
           rotation: '0',
           width:
-            action.payload.type === ElementType.IMAGE ||
             action.payload.type === ElementType.BUTTON ||
             action.payload.type === ElementType.TOGGLE ||
             action.payload.type === ElementType.SLINPUT ||
@@ -176,9 +180,11 @@ export const windowSlice = createSlice({
               ? '10'
               : action.payload.type === ElementType.LINE
               ? '250'
+              : action.payload.type === ElementType.IMAGE ||
+                action.payload.type === ElementType.VIDEO
+              ? '150'
               : undefined,
           height:
-            action.payload.type === ElementType.IMAGE ||
             action.payload.type === ElementType.BUTTON ||
             action.payload.type === ElementType.TOGGLE ||
             action.payload.type === ElementType.SLINPUT ||
@@ -186,6 +192,9 @@ export const windowSlice = createSlice({
               ? '10'
               : action.payload.type === ElementType.LINE
               ? '1'
+              : action.payload.type === ElementType.IMAGE ||
+                action.payload.type === ElementType.VIDEO
+              ? '150'
               : undefined,
           text:
             action.payload.type === ElementType.TEXT
@@ -198,6 +207,11 @@ export const windowSlice = createSlice({
               ? 'none'
               : action.payload.type === ElementType.LINE
               ? '#d8e0e5'
+              : undefined,
+          borderRadius:
+            action.payload.type === ElementType.IMAGE ||
+            action.payload.type === ElementType.VIDEO
+              ? '7'
               : undefined,
           part:
             action.payload.type === ElementType.LINE
@@ -244,7 +258,8 @@ export const windowSlice = createSlice({
             .elementData.find((element) => element.id === action.payload.id)![
             name as keyof ElementPropMethod
           ] =
-            action.payload[name as keyof ElementPropMethod] !== undefined
+            action.payload[name as keyof ElementPropMethod] !== undefined ||
+            name === 'src'
               ? action.payload[name as keyof ElementPropMethod]!
               : state.windowList
                   .find((window) => window.id === state.currentWindow)!

@@ -27,6 +27,7 @@ export enum ComponentType {
   TEXT = 'Text',
   LINE = 'Line',
   IMAGE = 'Image',
+  VIDEO = 'Video',
 }
 
 export enum Part {

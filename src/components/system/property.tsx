@@ -6,6 +6,7 @@ import {
   Part,
   imageExtensions,
   ContentType,
+  videoExtensions,
 } from '../../data';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -1273,7 +1274,12 @@ function GetComponent({
                     <PopContent
                       isSelection={true}
                       contents={
-                        assetData.length === 0
+                        assetData.filter(
+                          (asset) =>
+                            imageExtensions.includes(
+                              asset.extension?.substr(1)!
+                            ) && asset.type === 'file'
+                        ).length === 0
                           ? [
                               {
                                 text: 'NO ASSETS AVAILABLE',
@@ -1494,6 +1500,257 @@ function GetComponent({
               </div>
             </div>
           ),
+          Video: (
+            <div>
+              <div
+                style={{
+                  width: '100%',
+                  height: 30,
+                  marginTop: 5,
+                }}
+              >
+                <Popover
+                  isOpen={showPopover}
+                  positions={['bottom']}
+                  padding={5}
+                  align="start"
+                  reposition={false}
+                  onClickOutside={() => {
+                    if (isClicked) {
+                      dispatch(setFalse());
+                      setShowPopover(false);
+                    }
+                  }}
+                  content={() => (
+                    <PopContent
+                      isSelection={true}
+                      contents={
+                        assetData.filter(
+                          (asset) =>
+                            videoExtensions.includes(
+                              asset.extension?.substr(1)!
+                            ) && asset.type === 'file'
+                        ).length === 0
+                          ? [
+                              {
+                                text: 'NO ASSETS AVAILABLE',
+                                type: ContentType.CATEGORY,
+                              },
+                            ]
+                          : assetData
+                              .filter(
+                                (asset) =>
+                                  videoExtensions.includes(
+                                    asset.extension?.substr(1)!
+                                  ) && asset.type === 'file'
+                              )
+                              .map((asset) => ({
+                                text: `${asset.name}${asset.extension}`,
+                                id: asset.id,
+                                selected:
+                                  windowList
+                                    .find(
+                                      (window) => window.id === currentWindow
+                                    )!
+                                    .elementData.find(
+                                      (element) => element.id === current
+                                    )!.src === asset.id,
+                                onClick: () => {
+                                  dispatch(
+                                    editElementProp({
+                                      id: currentElement!,
+                                      src: asset.id,
+                                    })
+                                  );
+                                  dispatch(setFalse());
+                                  setShowPopover(false);
+                                },
+                              }))
+                      }
+                    />
+                  )}
+                >
+                  <div
+                    className="property-input"
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                      height: 30,
+                      backgroundColor:
+                        inputFocused === 0
+                          ? 'var(--panelPathColor)'
+                          : undefined,
+                      borderRadius: 6,
+                      float: 'left',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => {
+                      dispatch(
+                        showPopover ? dispatch(setFalse()) : dispatch(setTrue())
+                      );
+                      setShowPopover(!showPopover);
+                    }}
+                    onMouseEnter={() => setInputFocused(0)}
+                    onMouseLeave={() => {
+                      if (!showPopover) {
+                        setInputFocused(undefined);
+                      }
+                    }}
+                  >
+                    <p
+                      style={{
+                        position: 'relative',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        marginLeft: 10,
+                        color: 'var(--shortcutIconColor)',
+                        fontSize: '.85rem',
+                        float: 'left',
+                      }}
+                    >
+                      {windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .src === undefined ||
+                      assetData.find(
+                        (asset) =>
+                          asset.id ===
+                          windowList
+                            .find((window) => window.id === currentWindow)!
+                            .elementData.find(
+                              (element) => element.id === current
+                            )!.src
+                      ) === undefined
+                        ? 'No Video'
+                        : `${
+                            assetData.find(
+                              (asset) =>
+                                asset.id ===
+                                windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.src
+                            )?.name
+                          }${
+                            assetData.find(
+                              (asset) =>
+                                asset.id ===
+                                windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.src
+                            )?.extension
+                          }`}
+                    </p>
+                    <svg
+                      style={{
+                        position: 'relative',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        float: 'right',
+                        marginRight: 10,
+                      }}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12.5"
+                      height="12.5"
+                      fill="var(--shortcutIconColor)"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                    </svg>
+                  </div>
+                </Popover>
+              </div>
+              <div
+                style={{
+                  width: '100%',
+                  height: 30,
+                  marginTop: 5,
+                }}
+              >
+                <div
+                  className="property-input"
+                  style={{
+                    width: '100%',
+                    height: 30,
+                    backgroundColor:
+                      inputFocused === 1 ? 'var(--panelPathColor)' : undefined,
+                    borderRadius: 6,
+                  }}
+                >
+                  <p
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      marginLeft: 10,
+                      color: 'var(--shortcutIconColor)',
+                      fontSize: '.85rem',
+                      float: 'left',
+                    }}
+                  >
+                    Border Radius
+                  </p>
+                  <input
+                    type="text"
+                    style={{
+                      width: 'calc(100% - 115px)',
+                      height: '100%',
+                      padding: 0,
+                      marginRight: 10,
+                      borderRadius: 0,
+                      fontSize: '.9rem',
+                      border: 'none',
+                      backgroundColor: '#00000000',
+                      float: 'right',
+                      color: 'var(--fieldTextColor)',
+                    }}
+                    value={
+                      windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .borderRadius
+                    }
+                    onFocus={() => {
+                      setInputFocused(1);
+                    }}
+                    onBlur={() => {
+                      if (
+                        windowList
+                          .find((window) => window.id === currentWindow)!
+                          .elementData.find(
+                            (element) => element.id === current
+                          )!.borderRadius === ''
+                      ) {
+                        dispatch(
+                          editElementProp({
+                            id: currentElement!,
+                            borderRadius: '0',
+                          })
+                        );
+                      }
+                      setInputFocused(undefined);
+                    }}
+                    onChange={(e) => {
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          borderRadius:
+                            e.target.value === '' ? '' : e.target.value!,
+                        })
+                      );
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          ),
         }[type]
       }
     </div>
@@ -1534,6 +1791,7 @@ export default function Property({
             <div>
               <GetComponent current={curr} type={ComponentType.POSITION} />
               <GetComponent current={curr} type={ComponentType.SIZE} />
+              <GetComponent current={curr} type={ComponentType.VIDEO} />
             </div>
           ),
           button: (

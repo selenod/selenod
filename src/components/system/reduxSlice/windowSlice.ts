@@ -31,6 +31,7 @@ interface Element {
   borderRadius?: string;
   part?: Part;
   src?: number;
+  canControl?: boolean;
 }
 
 interface ElementPropMethod {
@@ -49,6 +50,7 @@ interface ElementPropMethod {
   borderRadius?: string;
   part?: Part;
   src?: number;
+  canControl?: boolean;
 }
 
 interface WindowState {
@@ -217,6 +219,8 @@ export const windowSlice = createSlice({
             action.payload.type === ElementType.LINE
               ? Part.HORIZONTAL
               : undefined,
+          canControl:
+            action.payload.type === ElementType.VIDEO ? false : undefined,
         });
     },
     deleteElement: (state: WindowState, action: { payload: number }) => {

@@ -324,6 +324,57 @@ export default function Field(data: IToolData) {
                           }}
                         />
                       );
+                    case 'video':
+                      return (
+                        <video
+                          key={element.id}
+                          poster={
+                            assetData.find((asset) => asset.id === element.src)
+                              ?.contents
+                          }
+                          style={{
+                            position: 'absolute',
+                            top: `calc(${
+                              !isNaN(element.y as any)
+                                ? `${element.y}px`
+                                : element.y
+                            })`,
+                            left: !isNaN(element.x as any)
+                              ? `${element.x}px`
+                              : element.x,
+                            width: `calc(${
+                              !isNaN(element.width as any)
+                                ? `${element.width}px`
+                                : element.width
+                            })`,
+                            height: `calc(${
+                              !isNaN(element.height as any)
+                                ? `${element.height}px`
+                                : element.height
+                            })`,
+                            transform: `translate(-${element.xAlign}%, -${
+                              element.yAlign
+                            }%) rotate(calc(${
+                              !isNaN(element.rotation as any)
+                                ? `${element.rotation}deg`
+                                : element.rotation
+                            }))`,
+                            borderRadius: `calc(${
+                              !isNaN(element.borderRadius as any)
+                                ? `${element.borderRadius}px`
+                                : element.borderRadius
+                            })`,
+                          }}
+                        >
+                          <source
+                            src={
+                              assetData.find(
+                                (asset) => asset.id === element.src
+                              )?.contents
+                            }
+                          />
+                        </video>
+                      );
                     default:
                       return undefined;
                   }

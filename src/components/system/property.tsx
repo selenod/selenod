@@ -1348,6 +1348,7 @@ function GetComponent({
                   >
                     <p
                       style={{
+                        width: 'calc(100% - 40px)',
                         position: 'relative',
                         top: '50%',
                         transform: 'translateY(-50%)',
@@ -1355,6 +1356,8 @@ function GetComponent({
                         color: 'var(--shortcutIconColor)',
                         fontSize: '.85rem',
                         float: 'left',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
                       }}
                     >
                       {windowList
@@ -1599,6 +1602,7 @@ function GetComponent({
                   >
                     <p
                       style={{
+                        width: 'calc(100% - 40px)',
                         position: 'relative',
                         top: '50%',
                         transform: 'translateY(-50%)',
@@ -1606,6 +1610,8 @@ function GetComponent({
                         color: 'var(--shortcutIconColor)',
                         fontSize: '.85rem',
                         float: 'left',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
                       }}
                     >
                       {windowList

@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ElementType, Part } from '../../../data';
-import { Asset } from './assetSlice';
 
 interface Window {
   width: number;
@@ -175,7 +174,6 @@ export const windowSlice = createSlice({
           yAlign: 0,
           rotation: '0',
           width:
-            action.payload.type === ElementType.BUTTON ||
             action.payload.type === ElementType.TOGGLE ||
             action.payload.type === ElementType.SLINPUT ||
             action.payload.type === ElementType.MLINPUT
@@ -185,9 +183,10 @@ export const windowSlice = createSlice({
               : action.payload.type === ElementType.IMAGE ||
                 action.payload.type === ElementType.VIDEO
               ? '150'
+              : action.payload.type === ElementType.BUTTON
+              ? '110'
               : undefined,
           height:
-            action.payload.type === ElementType.BUTTON ||
             action.payload.type === ElementType.TOGGLE ||
             action.payload.type === ElementType.SLINPUT ||
             action.payload.type === ElementType.MLINPUT
@@ -197,23 +196,37 @@ export const windowSlice = createSlice({
               : action.payload.type === ElementType.IMAGE ||
                 action.payload.type === ElementType.VIDEO
               ? '150'
+              : action.payload.type === ElementType.BUTTON
+              ? '45'
               : undefined,
           text:
-            action.payload.type === ElementType.TEXT
-              ? 'Hello, world!'
+            action.payload.type === ElementType.TEXT ||
+            action.payload.type === ElementType.BUTTON
+              ? 'New Text'
               : undefined,
-          color: action.payload.type === ElementType.TEXT ? '#000' : undefined,
-          fontSize: action.payload.type === ElementType.TEXT ? 16 : undefined,
-          backgroundColor:
+          color:
             action.payload.type === ElementType.TEXT
-              ? 'none'
-              : action.payload.type === ElementType.LINE
+              ? '#000'
+              : action.payload.type === ElementType.BUTTON
+              ? '#fff'
+              : undefined,
+          fontSize:
+            action.payload.type === ElementType.TEXT ||
+            action.payload.type === ElementType.BUTTON
+              ? 16
+              : undefined,
+          backgroundColor:
+            action.payload.type === ElementType.LINE
               ? '#d8e0e5'
+              : action.payload.type === ElementType.BUTTON
+              ? '#7f52ff'
               : undefined,
           borderRadius:
             action.payload.type === ElementType.IMAGE ||
             action.payload.type === ElementType.VIDEO
               ? '7'
+              : action.payload.type === ElementType.BUTTON
+              ? '5'
               : undefined,
           part:
             action.payload.type === ElementType.LINE

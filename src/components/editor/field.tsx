@@ -375,6 +375,68 @@ export default function Field(data: IToolData) {
                           />
                         </video>
                       );
+                    case 'button':
+                      return (
+                        <button
+                          key={element.id}
+                          style={{
+                            position: 'absolute',
+                            top: `calc(${
+                              !isNaN(element.y as any)
+                                ? `${element.y}px`
+                                : element.y
+                            })`,
+                            left: !isNaN(element.x as any)
+                              ? `${element.x}px`
+                              : element.x,
+                            width: `calc(${
+                              !isNaN(element.width as any)
+                                ? `${element.width}px`
+                                : element.width
+                            })`,
+                            height: `calc(${
+                              !isNaN(element.height as any)
+                                ? `${element.height}px`
+                                : element.height
+                            })`,
+                            transform: `translate(-${element.xAlign}%, -${
+                              element.yAlign
+                            }%) rotate(calc(${
+                              !isNaN(element.rotation as any)
+                                ? `${element.rotation}deg`
+                                : element.rotation
+                            }))`,
+                            borderRadius: `calc(${
+                              !isNaN(element.borderRadius as any)
+                                ? `${element.borderRadius}px`
+                                : element.borderRadius
+                            })`,
+                            backgroundColor: element.backgroundColor,
+                            transition: 'ease-out background-color 100ms',
+                            paddingLeft: 15,
+                            paddingRight: 15,
+                            minWidth: 70,
+                            border: 0,
+                            outline: 0,
+                            color: element.color,
+                            fontSize: element.fontSize,
+                          }}
+                        >
+                          <p
+                            style={{
+                              position: 'relative',
+                              textAlign: 'center',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              width: '100%',
+                              margin: 0,
+                            }}
+                          >
+                            {element.text}
+                          </p>
+                        </button>
+                      );
                     default:
                       return undefined;
                   }

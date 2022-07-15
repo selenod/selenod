@@ -147,11 +147,14 @@ function GetComponent({
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) => {
+                    onChange={(event) => {
                       dispatch(
                         editElementProp({
                           id: currentElement!,
-                          x: e.target.value === '' ? '' : e.target.value!,
+                          x:
+                            event.target.value === ''
+                              ? ''
+                              : event.target.value!,
                         })
                       );
                     }}
@@ -222,11 +225,14 @@ function GetComponent({
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) => {
+                    onChange={(event) => {
                       dispatch(
                         editElementProp({
                           id: currentElement!,
-                          y: e.target.value === '' ? '' : e.target.value!,
+                          y:
+                            event.target.value === ''
+                              ? ''
+                              : event.target.value!,
                         })
                       );
                     }}
@@ -290,20 +296,25 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) => {
+                    onChange={(event) => {
                       if (
-                        !isNaN(parseFloat(e.target.value.replace('%', '')!)) ||
-                        e.target.value.replace('%', '') === ''
+                        !isNaN(
+                          parseFloat(event.target.value.replace('%', '')!)
+                        ) ||
+                        event.target.value.replace('%', '') === ''
                       ) {
                         dispatch(
                           editElementProp({
                             id: currentElement!,
                             xAlign:
-                              e.target.value === '%'
+                              event.target.value === '%'
                                 ? 0
-                                : parseFloat(e.target.value.replace('%', '')!) <
-                                  100
-                                ? parseFloat(e.target.value.replace('%', '')!)
+                                : parseFloat(
+                                    event.target.value.replace('%', '')!
+                                  ) < 100
+                                ? parseFloat(
+                                    event.target.value.replace('%', '')!
+                                  )
                                 : 100,
                           })
                         );
@@ -362,20 +373,25 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) => {
+                    onChange={(event) => {
                       if (
-                        !isNaN(parseFloat(e.target.value.replace('%', '')!)) ||
-                        e.target.value.replace('%', '') === ''
+                        !isNaN(
+                          parseFloat(event.target.value.replace('%', '')!)
+                        ) ||
+                        event.target.value.replace('%', '') === ''
                       ) {
                         dispatch(
                           editElementProp({
                             id: currentElement!,
                             yAlign:
-                              e.target.value === '%'
+                              event.target.value === '%'
                                 ? 0
-                                : parseFloat(e.target.value.replace('%', '')!) <
-                                  100
-                                ? parseFloat(e.target.value.replace('%', '')!)
+                                : parseFloat(
+                                    event.target.value.replace('%', '')!
+                                  ) < 100
+                                ? parseFloat(
+                                    event.target.value.replace('%', '')!
+                                  )
                                 : 100,
                           })
                         );
@@ -454,14 +470,109 @@ function GetComponent({
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) => {
+                    onChange={(event) => {
                       dispatch(
                         editElementProp({
                           id: currentElement!,
                           rotation:
-                            e.target.value === '' ? '' : e.target.value!,
+                            event.target.value === ''
+                              ? ''
+                              : event.target.value!,
                         })
                       );
+                    }}
+                  />
+                </div>
+              </div>
+              <div
+                style={{
+                  width: '100%',
+                  height: 30,
+                  marginTop: 5,
+                }}
+              >
+                <div
+                  className="property-input"
+                  style={{
+                    width: '100%',
+                    height: 30,
+                    backgroundColor:
+                      inputFocused === 5 ? 'var(--panelPathColor)' : undefined,
+                    borderRadius: 6,
+                  }}
+                >
+                  <p
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      marginLeft: 10,
+                      color: 'var(--shortcutIconColor)',
+                      fontSize: '.85rem',
+                      float: 'left',
+                    }}
+                  >
+                    Index
+                  </p>
+                  <input
+                    type="text"
+                    style={{
+                      width: 'calc(100% - 61px)',
+                      height: '100%',
+                      padding: 0,
+                      marginRight: 10,
+                      borderRadius: 0,
+                      fontSize: '.9rem',
+                      border: 'none',
+                      backgroundColor: '#00000000',
+                      float: 'right',
+                      color: 'var(--fieldTextColor)',
+                    }}
+                    value={
+                      windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .index
+                    }
+                    onFocus={() => {
+                      setInputFocused(5);
+                    }}
+                    onBlur={() => {
+                      if (
+                        windowList
+                          .find((window) => window.id === currentWindow)!
+                          .elementData.find(
+                            (element) => element.id === current
+                          )!.rotation === ''
+                      ) {
+                        dispatch(
+                          editElementProp({
+                            id: currentElement!,
+                            index: 0,
+                          })
+                        );
+                      }
+                      setInputFocused(undefined);
+                    }}
+                    onChange={(event) => {
+                      if (
+                        !isNaN(parseFloat(event.target.value!)) ||
+                        event.target.value === ''
+                      ) {
+                        dispatch(
+                          editElementProp({
+                            id: currentElement!,
+                            index:
+                              event.target.value === ''
+                                ? 0
+                                : parseFloat(event.target.value!) < 10000
+                                ? parseFloat(event.target.value!) > 0
+                                  ? parseFloat(event.target.value!)
+                                  : 0
+                                : 9999,
+                          })
+                        );
+                      }
                     }}
                   />
                 </div>
@@ -541,11 +652,14 @@ function GetComponent({
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) => {
+                    onChange={(event) => {
                       dispatch(
                         editElementProp({
                           id: currentElement!,
-                          width: e.target.value === '' ? '' : e.target.value!,
+                          width:
+                            event.target.value === ''
+                              ? ''
+                              : event.target.value!,
                         })
                       );
                     }}
@@ -616,11 +730,14 @@ function GetComponent({
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) => {
+                    onChange={(event) => {
                       dispatch(
                         editElementProp({
                           id: currentElement!,
-                          height: e.target.value === '' ? '' : e.target.value!,
+                          height:
+                            event.target.value === ''
+                              ? ''
+                              : event.target.value!,
                         })
                       );
                     }}
@@ -689,13 +806,15 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) => {
-                      setTextAreaHeight(e.target.value!.split('\n').length - 1);
+                    onChange={(event) => {
+                      setTextAreaHeight(
+                        event.target.value!.split('\n').length - 1
+                      );
                       console.log(textAreaHeight);
                       dispatch(
                         editElementProp({
                           id: currentElement!,
-                          text: e.target.value!,
+                          text: event.target.value!,
                         })
                       );
                     }}
@@ -761,19 +880,19 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) => {
+                    onChange={(event) => {
                       if (
-                        !isNaN(parseFloat(e.target.value!)) ||
-                        e.target.value === ''
+                        !isNaN(parseFloat(event.target.value!)) ||
+                        event.target.value === ''
                       ) {
                         dispatch(
                           editElementProp({
                             id: currentElement!,
                             fontSize:
-                              e.target.value === ''
+                              event.target.value === ''
                                 ? 0
-                                : parseFloat(e.target.value!) < 10000
-                                ? parseFloat(e.target.value!)
+                                : parseFloat(event.target.value!) < 10000
+                                ? parseFloat(event.target.value!)
                                 : 9999,
                           })
                         );
@@ -841,11 +960,11 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) =>
+                    onChange={(event) =>
                       dispatch(
                         editElementProp({
                           id: currentElement!,
-                          color: e.target.value!,
+                          color: event.target.value!,
                         })
                       )
                     }
@@ -1143,7 +1262,7 @@ function GetComponent({
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) => {
+                    onChange={(event) => {
                       dispatch(
                         windowList
                           .find((window) => window.id === currentWindow)!
@@ -1153,12 +1272,16 @@ function GetComponent({
                           ? editElementProp({
                               id: currentElement!,
                               width:
-                                e.target.value === '' ? '' : e.target.value!,
+                                event.target.value === ''
+                                  ? ''
+                                  : event.target.value!,
                             })
                           : editElementProp({
                               id: currentElement!,
                               height:
-                                e.target.value === '' ? '' : e.target.value!,
+                                event.target.value === ''
+                                  ? ''
+                                  : event.target.value!,
                             })
                       );
                     }}
@@ -1224,11 +1347,11 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) =>
+                    onChange={(event) =>
                       dispatch(
                         editElementProp({
                           id: currentElement!,
-                          backgroundColor: e.target.value!,
+                          backgroundColor: event.target.value!,
                         })
                       )
                     }
@@ -1477,12 +1600,14 @@ function GetComponent({
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) => {
+                    onChange={(event) => {
                       dispatch(
                         editElementProp({
                           id: currentElement!,
                           borderRadius:
-                            e.target.value === '' ? '' : e.target.value!,
+                            event.target.value === ''
+                              ? ''
+                              : event.target.value!,
                         })
                       );
                     }}
@@ -1731,12 +1856,14 @@ function GetComponent({
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) => {
+                    onChange={(event) => {
                       dispatch(
                         editElementProp({
                           id: currentElement!,
                           borderRadius:
-                            e.target.value === '' ? '' : e.target.value!,
+                            event.target.value === ''
+                              ? ''
+                              : event.target.value!,
                         })
                       );
                     }}
@@ -1805,11 +1932,11 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) =>
+                    onChange={(event) =>
                       dispatch(
                         editElementProp({
                           id: currentElement!,
-                          backgroundColor: e.target.value!,
+                          backgroundColor: event.target.value!,
                         })
                       )
                     }
@@ -1886,15 +2013,359 @@ function GetComponent({
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(e) => {
+                    onChange={(event) => {
                       dispatch(
                         editElementProp({
                           id: currentElement!,
                           borderRadius:
-                            e.target.value === '' ? '' : e.target.value!,
+                            event.target.value === ''
+                              ? ''
+                              : event.target.value!,
                         })
                       );
                     }}
+                  />
+                </div>
+              </div>
+            </div>
+          ),
+          Checkbox: (
+            <div>
+              <div
+                style={{
+                  width: '100%',
+                  height: 30,
+                  marginTop: 5,
+                }}
+              >
+                <div
+                  className="property-input"
+                  style={{
+                    width: '100%',
+                    height: 30,
+                    borderRadius: 6,
+                    float: 'left',
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      marginLeft: 10,
+                      width: 12,
+                      height: 12,
+                      borderRadius: '20%',
+                      boxSizing: 'border-box',
+                      border: windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .isChecked
+                        ? undefined
+                        : '1px solid var(--shortcutIconColor)',
+                      float: 'left',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => {
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          isChecked: !windowList
+                            .find((window) => window.id === currentWindow)!
+                            .elementData.find(
+                              (element) => element.id === current
+                            )!.isChecked,
+                        })
+                      );
+                    }}
+                  >
+                    {windowList
+                      .find((window) => window.id === currentWindow)!
+                      .elementData.find((element) => element.id === current)!
+                      .isChecked ? (
+                      <div
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          backgroundColor: 'var(--shortcutIconColor)',
+                          borderRadius: '20%',
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="#fff"
+                          style={{
+                            position: 'relative',
+                            top: -1.75,
+                            textAlign: 'center',
+                          }}
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    ) : null}
+                  </div>
+                  <p
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      marginLeft: 6,
+                      color: 'var(--shortcutIconColor)',
+                      fontSize: '.85rem',
+                      float: 'left',
+                    }}
+                  >
+                    Selected
+                  </p>
+                </div>
+              </div>
+              <div
+                style={{
+                  width: '100%',
+                  height: 30,
+                  marginTop: 5,
+                }}
+              >
+                <div
+                  className="property-input"
+                  style={{
+                    width: '100%',
+                    height: 30,
+                    backgroundColor:
+                      inputFocused === 0 ? 'var(--panelPathColor)' : undefined,
+                    borderRadius: 6,
+                    float: 'left',
+                  }}
+                >
+                  <p
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      marginLeft: 10,
+                      color: 'var(--shortcutIconColor)',
+                      fontSize: '.85rem',
+                      float: 'left',
+                    }}
+                  >
+                    Size
+                  </p>
+                  <input
+                    type="text"
+                    style={{
+                      width: 'calc(100% - 53px)',
+                      height: '100%',
+                      padding: 0,
+                      marginRight: 10,
+                      borderRadius: 0,
+                      fontSize: '.9rem',
+                      border: 'none',
+                      backgroundColor: '#00000000',
+                      float: 'right',
+                      color: 'var(--fieldTextColor)',
+                    }}
+                    value={
+                      windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .width
+                    }
+                    onFocus={() => {
+                      setInputFocused(0);
+                    }}
+                    onBlur={() => {
+                      if (
+                        windowList
+                          .find((window) => window.id === currentWindow)!
+                          .elementData.find(
+                            (element) => element.id === current
+                          )!.width === '' ||
+                        windowList
+                          .find((window) => window.id === currentWindow)!
+                          .elementData.find(
+                            (element) => element.id === current
+                          )!.height === ''
+                      ) {
+                        dispatch(
+                          editElementProp({
+                            id: currentElement!,
+                            width: '0',
+                          })
+                        );
+                        dispatch(
+                          editElementProp({
+                            id: currentElement!,
+                            height: '0',
+                          })
+                        );
+                      }
+                      setInputFocused(undefined);
+                    }}
+                    onChange={(event) => {
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          width:
+                            event.target.value === ''
+                              ? ''
+                              : event.target.value!,
+                        })
+                      );
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          height:
+                            event.target.value === ''
+                              ? ''
+                              : event.target.value!,
+                        })
+                      );
+                    }}
+                  />
+                </div>
+              </div>
+              <div
+                style={{
+                  width: '100%',
+                  height: 30,
+                }}
+              >
+                <div
+                  className="property-input"
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: 30,
+                    backgroundColor:
+                      inputFocused === 1 ? 'var(--panelPathColor)' : undefined,
+                    borderRadius: 6,
+                    float: 'left',
+                    marginTop: 5,
+                  }}
+                >
+                  <p
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      marginLeft: 10,
+                      color: 'var(--shortcutIconColor)',
+                      fontSize: '.85rem',
+                      float: 'left',
+                    }}
+                  >
+                    Color
+                  </p>
+                  <input
+                    type="text"
+                    style={{
+                      position: 'relative',
+                      width: 'calc(100% - 61px)',
+                      height: '100%',
+                      padding: 0,
+                      marginRight: 10,
+                      borderRadius: 0,
+                      fontSize: '.9rem',
+                      border: 'none',
+                      backgroundColor: '#00000000',
+                      float: 'right',
+                      color: 'var(--fieldTextColor)',
+                    }}
+                    value={
+                      windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .color
+                    }
+                    onFocus={() => {
+                      setInputFocused(1);
+                    }}
+                    onBlur={() => {
+                      setInputFocused(undefined);
+                    }}
+                    onChange={(event) =>
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          color: event.target.value!,
+                        })
+                      )
+                    }
+                  />
+                </div>
+              </div>
+              <div
+                style={{
+                  width: '100%',
+                  height: 30,
+                }}
+              >
+                <div
+                  className="property-input"
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: 30,
+                    backgroundColor:
+                      inputFocused === 2 ? 'var(--panelPathColor)' : undefined,
+                    borderRadius: 6,
+                    float: 'left',
+                  }}
+                >
+                  <p
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      marginLeft: 10,
+                      color: 'var(--shortcutIconColor)',
+                      fontSize: '.85rem',
+                      float: 'left',
+                    }}
+                  >
+                    Background Color
+                  </p>
+                  <input
+                    type="text"
+                    style={{
+                      position: 'relative',
+                      width: 'calc(100% - 139px)',
+                      height: '100%',
+                      padding: 0,
+                      marginRight: 10,
+                      borderRadius: 0,
+                      fontSize: '.9rem',
+                      border: 'none',
+                      backgroundColor: '#00000000',
+                      float: 'right',
+                      color: 'var(--fieldTextColor)',
+                    }}
+                    value={
+                      windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .backgroundColor
+                    }
+                    onFocus={() => {
+                      setInputFocused(2);
+                    }}
+                    onBlur={() => {
+                      setInputFocused(undefined);
+                    }}
+                    onChange={(event) =>
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          backgroundColor: event.target.value!,
+                        })
+                      )
+                    }
                   />
                 </div>
               </div>
@@ -1951,9 +2422,10 @@ export default function Property({
               <GetComponent current={curr} type={ComponentType.TEXT} />
             </div>
           ),
-          toggle: (
+          checkbox: (
             <div>
               <GetComponent current={curr} type={ComponentType.POSITION} />
+              <GetComponent current={curr} type={ComponentType.CHECKBOX} />
             </div>
           ),
           'sl-input': (

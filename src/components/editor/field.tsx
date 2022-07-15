@@ -223,9 +223,11 @@ export default function Field(data: IToolData) {
                                 ? `${element.y}px`
                                 : element.y
                             })`,
-                            left: !isNaN(element.x as any)
-                              ? `${element.x}px`
-                              : element.x,
+                            left: `calc(${
+                              !isNaN(element.x as any)
+                                ? `${element.x}px`
+                                : element.x
+                            })`,
                             fontSize: element.fontSize,
                             margin: 0,
                             color: element.color,
@@ -237,7 +239,7 @@ export default function Field(data: IToolData) {
                                 ? `${element.rotation}deg`
                                 : element.rotation
                             }))`,
-                            zIndex: -1,
+                            zIndex: -10000 + element.index,
                           }}
                         >
                           {element.text}
@@ -254,9 +256,11 @@ export default function Field(data: IToolData) {
                                 ? `${element.y}px`
                                 : element.y
                             })`,
-                            left: !isNaN(element.x as any)
-                              ? `${element.x}px`
-                              : element.x,
+                            left: `calc(${
+                              !isNaN(element.x as any)
+                                ? `${element.x}px`
+                                : element.x
+                            })`,
                             width: `calc(${
                               !isNaN(element.width as any)
                                 ? `${element.width}px`
@@ -276,7 +280,7 @@ export default function Field(data: IToolData) {
                                 ? `${element.rotation}deg`
                                 : element.rotation
                             }))`,
-                            zIndex: -1,
+                            zIndex: -10000 + element.index,
                           }}
                         />
                       );
@@ -296,9 +300,11 @@ export default function Field(data: IToolData) {
                                 ? `${element.y}px`
                                 : element.y
                             })`,
-                            left: !isNaN(element.x as any)
-                              ? `${element.x}px`
-                              : element.x,
+                            left: `calc(${
+                              !isNaN(element.x as any)
+                                ? `${element.x}px`
+                                : element.x
+                            })`,
                             width: `calc(${
                               !isNaN(element.width as any)
                                 ? `${element.width}px`
@@ -321,6 +327,7 @@ export default function Field(data: IToolData) {
                                 ? `${element.borderRadius}px`
                                 : element.borderRadius
                             })`,
+                            zIndex: -10000 + element.index,
                           }}
                         />
                       );
@@ -339,9 +346,11 @@ export default function Field(data: IToolData) {
                                 ? `${element.y}px`
                                 : element.y
                             })`,
-                            left: !isNaN(element.x as any)
-                              ? `${element.x}px`
-                              : element.x,
+                            left: `calc(${
+                              !isNaN(element.x as any)
+                                ? `${element.x}px`
+                                : element.x
+                            })`,
                             width: `calc(${
                               !isNaN(element.width as any)
                                 ? `${element.width}px`
@@ -364,6 +373,7 @@ export default function Field(data: IToolData) {
                                 ? `${element.borderRadius}px`
                                 : element.borderRadius
                             })`,
+                            zIndex: -10000 + element.index,
                           }}
                         >
                           <source
@@ -377,7 +387,7 @@ export default function Field(data: IToolData) {
                       );
                     case 'button':
                       return (
-                        <button
+                        <div
                           key={element.id}
                           style={{
                             position: 'absolute',
@@ -386,9 +396,11 @@ export default function Field(data: IToolData) {
                                 ? `${element.y}px`
                                 : element.y
                             })`,
-                            left: !isNaN(element.x as any)
-                              ? `${element.x}px`
-                              : element.x,
+                            left: `calc(${
+                              !isNaN(element.x as any)
+                                ? `${element.x}px`
+                                : element.x
+                            })`,
                             width: `calc(${
                               !isNaN(element.width as any)
                                 ? `${element.width}px`
@@ -420,11 +432,14 @@ export default function Field(data: IToolData) {
                             outline: 0,
                             color: element.color,
                             fontSize: element.fontSize,
+                            zIndex: -10000 + element.index,
                           }}
                         >
                           <p
                             style={{
                               position: 'relative',
+                              top: '50%',
+                              transform: 'translateY(-50%)',
                               textAlign: 'center',
                               overflow: 'hidden',
                               textOverflow: 'ellipsis',
@@ -435,7 +450,77 @@ export default function Field(data: IToolData) {
                           >
                             {element.text}
                           </p>
-                        </button>
+                        </div>
+                      );
+                    case 'checkbox':
+                      return (
+                        <div
+                          key={element.id}
+                          style={{
+                            position: 'absolute',
+                            top: `calc(${
+                              !isNaN(element.y as any)
+                                ? `${element.y}px`
+                                : element.y
+                            })`,
+                            left: `calc(${
+                              !isNaN(element.x as any)
+                                ? `${element.x}px`
+                                : element.x
+                            })`,
+                            width: `calc(${
+                              !isNaN(element.width as any)
+                                ? `${element.width}px`
+                                : element.width
+                            })`,
+                            height: `calc(${
+                              !isNaN(element.width as any)
+                                ? `${element.width}px`
+                                : element.width
+                            })`,
+                            backgroundColor: element.backgroundColor,
+                            transform: `translate(-${element.xAlign}%, -${
+                              element.yAlign
+                            }%) rotate(calc(${
+                              !isNaN(element.rotation as any)
+                                ? `${element.rotation}deg`
+                                : element.rotation
+                            }))`,
+                            zIndex: -10000 + element.index,
+                            borderRadius: '20%',
+                            boxSizing: 'border-box',
+                            border: element.isChecked
+                              ? undefined
+                              : '1.5px solid #e2e2e2',
+                          }}
+                        >
+                          {element.isChecked ? (
+                            <div
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                backgroundColor: element.color,
+                                borderRadius: '20%',
+                                cursor: 'pointer',
+                              }}
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                                fill="#fff"
+                                style={{
+                                  position: 'relative',
+                                }}
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </div>
+                          ) : null}
+                        </div>
                       );
                     default:
                       return undefined;
@@ -646,7 +731,7 @@ export default function Field(data: IToolData) {
                     />
                   </svg>
                 ),
-                toggle: (
+                checkbox: (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -663,7 +748,7 @@ export default function Field(data: IToolData) {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
                 ),

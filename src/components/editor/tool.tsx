@@ -349,19 +349,19 @@ export default function Tool() {
                         },
                       },
                       {
-                        text: 'Toggle',
+                        text: 'Checkbox',
                         onClick: () => {
                           dispatch(
                             createElement({
-                              name: `Toggle ${
+                              name: `Checkbox ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
                                   ?.elementData.filter(
                                     (element) =>
-                                      element.type === ElementType.TOGGLE
+                                      element.type === ElementType.CHECKBOX
                                   ).length! + 1
                               }`,
-                              type: ElementType.TOGGLE,
+                              type: ElementType.CHECKBOX,
                             })
                           );
                           setShowNodePopover(false);
@@ -878,6 +878,26 @@ export default function Tool() {
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                                      />
+                                    </svg>
+                                  ),
+                                  checkbox: (
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      style={{
+                                        width: '1.1rem',
+                                        height: '1.1rem',
+                                        marginTop: -1.5,
+                                      }}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                                       />
                                     </svg>
                                   ),

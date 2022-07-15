@@ -19,6 +19,7 @@ interface Element {
   xAlign: number;
   yAlign: number;
   rotation: string;
+  index: number;
   // Size
   width?: string;
   height?: string;
@@ -31,6 +32,7 @@ interface Element {
   part?: Part;
   src?: number;
   canControl?: boolean;
+  isChecked?: boolean;
 }
 
 interface ElementPropMethod {
@@ -40,6 +42,7 @@ interface ElementPropMethod {
   xAlign?: number;
   yAlign?: number;
   rotation?: string;
+  index?: number;
   width?: string;
   height?: string;
   text?: string;
@@ -50,6 +53,7 @@ interface ElementPropMethod {
   part?: Part;
   src?: number;
   canControl?: boolean;
+  isChecked?: boolean;
 }
 
 interface WindowState {
@@ -173,8 +177,8 @@ export const windowSlice = createSlice({
           xAlign: 0,
           yAlign: 0,
           rotation: '0',
+          index: 0,
           width:
-            action.payload.type === ElementType.TOGGLE ||
             action.payload.type === ElementType.SLINPUT ||
             action.payload.type === ElementType.MLINPUT
               ? '10'
@@ -184,10 +188,11 @@ export const windowSlice = createSlice({
                 action.payload.type === ElementType.VIDEO
               ? '150'
               : action.payload.type === ElementType.BUTTON
-              ? '110'
+              ? '70'
+              : action.payload.type === ElementType.CHECKBOX
+              ? '15'
               : undefined,
           height:
-            action.payload.type === ElementType.TOGGLE ||
             action.payload.type === ElementType.SLINPUT ||
             action.payload.type === ElementType.MLINPUT
               ? '10'
@@ -197,7 +202,9 @@ export const windowSlice = createSlice({
                 action.payload.type === ElementType.VIDEO
               ? '150'
               : action.payload.type === ElementType.BUTTON
-              ? '45'
+              ? '40'
+              : action.payload.type === ElementType.CHECKBOX
+              ? '15'
               : undefined,
           text:
             action.payload.type === ElementType.TEXT ||
@@ -209,6 +216,8 @@ export const windowSlice = createSlice({
               ? '#000'
               : action.payload.type === ElementType.BUTTON
               ? '#fff'
+              : action.payload.type === ElementType.CHECKBOX
+              ? '#8052ff'
               : undefined,
           fontSize:
             action.payload.type === ElementType.TEXT ||
@@ -220,6 +229,8 @@ export const windowSlice = createSlice({
               ? '#d8e0e5'
               : action.payload.type === ElementType.BUTTON
               ? '#7f52ff'
+              : action.payload.type === ElementType.CHECKBOX
+              ? '#fff'
               : undefined,
           borderRadius:
             action.payload.type === ElementType.IMAGE ||
@@ -234,6 +245,8 @@ export const windowSlice = createSlice({
               : undefined,
           canControl:
             action.payload.type === ElementType.VIDEO ? false : undefined,
+          isChecked:
+            action.payload.type === ElementType.CHECKBOX ? false : undefined,
         });
     },
     deleteElement: (state: WindowState, action: { payload: number }) => {

@@ -4,7 +4,7 @@ export enum ElementType {
   IMAGE = 'image',
   VIDEO = 'video',
   BUTTON = 'button',
-  TOGGLE = 'toggle',
+  CHECKBOX = 'checkbox',
   SLINPUT = 'sl-input',
   MLINPUT = 'ml-input',
 }
@@ -29,6 +29,7 @@ export enum ComponentType {
   IMAGE = 'Image',
   VIDEO = 'Video',
   BUTTON = 'Button',
+  CHECKBOX = 'Checkbox',
 }
 
 export enum Part {

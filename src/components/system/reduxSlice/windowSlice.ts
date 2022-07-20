@@ -25,10 +25,12 @@ interface Element {
   height?: string;
   // Text
   text?: string;
+  placeholder?: string;
   fontSize?: number;
   color?: string;
   backgroundColor?: string;
   borderRadius?: string;
+  borderColor?: string;
   part?: Part;
   src?: number;
   canControl?: boolean;
@@ -50,6 +52,7 @@ interface ElementPropMethod {
   color?: string;
   backgroundColor?: string;
   borderRadius?: string;
+  borderColor?: string;
   part?: Part;
   src?: number;
   canControl?: boolean;
@@ -179,13 +182,12 @@ export const windowSlice = createSlice({
           rotation: '0',
           index: 0,
           width:
-            action.payload.type === ElementType.SLINPUT ||
-            action.payload.type === ElementType.MLINPUT
-              ? '10'
-              : action.payload.type === ElementType.LINE
+            action.payload.type === ElementType.LINE
               ? '250'
               : action.payload.type === ElementType.IMAGE ||
-                action.payload.type === ElementType.VIDEO
+                action.payload.type === ElementType.VIDEO ||
+                action.payload.type === ElementType.SLINPUT ||
+                action.payload.type === ElementType.MLINPUT
               ? '150'
               : action.payload.type === ElementType.BUTTON
               ? '70'
@@ -193,10 +195,7 @@ export const windowSlice = createSlice({
               ? '15'
               : undefined,
           height:
-            action.payload.type === ElementType.SLINPUT ||
-            action.payload.type === ElementType.MLINPUT
-              ? '10'
-              : action.payload.type === ElementType.LINE
+            action.payload.type === ElementType.LINE
               ? '1'
               : action.payload.type === ElementType.IMAGE ||
                 action.payload.type === ElementType.VIDEO
@@ -205,14 +204,22 @@ export const windowSlice = createSlice({
               ? '40'
               : action.payload.type === ElementType.CHECKBOX
               ? '15'
+              : action.payload.type === ElementType.SLINPUT
+              ? '35'
+              : action.payload.type === ElementType.MLINPUT
+              ? '70'
               : undefined,
           text:
             action.payload.type === ElementType.TEXT ||
-            action.payload.type === ElementType.BUTTON
+            action.payload.type === ElementType.BUTTON ||
+            action.payload.type === ElementType.SLINPUT ||
+            action.payload.type === ElementType.MLINPUT
               ? 'New Text'
               : undefined,
           color:
-            action.payload.type === ElementType.TEXT
+            action.payload.type === ElementType.TEXT ||
+            action.payload.type === ElementType.SLINPUT ||
+            action.payload.type === ElementType.MLINPUT
               ? '#000'
               : action.payload.type === ElementType.BUTTON
               ? '#fff'
@@ -221,7 +228,9 @@ export const windowSlice = createSlice({
               : undefined,
           fontSize:
             action.payload.type === ElementType.TEXT ||
-            action.payload.type === ElementType.BUTTON
+            action.payload.type === ElementType.BUTTON ||
+            action.payload.type === ElementType.SLINPUT ||
+            action.payload.type === ElementType.MLINPUT
               ? 16
               : undefined,
           backgroundColor:
@@ -234,10 +243,19 @@ export const windowSlice = createSlice({
               : undefined,
           borderRadius:
             action.payload.type === ElementType.IMAGE ||
-            action.payload.type === ElementType.VIDEO
+            action.payload.type === ElementType.VIDEO ||
+            action.payload.type === ElementType.CHECKBOX ||
+            action.payload.type === ElementType.SLINPUT ||
+            action.payload.type === ElementType.MLINPUT
               ? '7'
               : action.payload.type === ElementType.BUTTON
               ? '5'
+              : undefined,
+          borderColor:
+            action.payload.type === ElementType.CHECKBOX ||
+            action.payload.type === ElementType.SLINPUT ||
+            action.payload.type === ElementType.MLINPUT
+              ? '#e2e2e2'
               : undefined,
           part:
             action.payload.type === ElementType.LINE

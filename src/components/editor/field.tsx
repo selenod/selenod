@@ -229,8 +229,8 @@ export default function Field(data: IToolData) {
                                 : element.x
                             })`,
                             fontSize: element.fontSize,
-                            margin: 0,
                             color: element.color,
+                            margin: 0,
                             backgroundColor: element.backgroundColor,
                             transform: `translate(-${element.xAlign}%, -${
                               element.yAlign
@@ -487,11 +487,15 @@ export default function Field(data: IToolData) {
                                 : element.rotation
                             }))`,
                             zIndex: -10000 + element.index,
-                            borderRadius: '20%',
+                            borderRadius: `calc(${
+                              !isNaN(element.borderRadius as any)
+                                ? `${element.borderRadius}px`
+                                : element.borderRadius
+                            })`,
                             boxSizing: 'border-box',
                             border: element.isChecked
                               ? undefined
-                              : '1.5px solid #e2e2e2',
+                              : `1.5px solid ${element.borderColor}`,
                           }}
                         >
                           {element.isChecked ? (
@@ -500,7 +504,7 @@ export default function Field(data: IToolData) {
                                 width: '100%',
                                 height: '100%',
                                 backgroundColor: element.color,
-                                borderRadius: '20%',
+                                borderRadius: element.borderRadius,
                                 cursor: 'pointer',
                               }}
                             >
@@ -521,6 +525,101 @@ export default function Field(data: IToolData) {
                             </div>
                           ) : null}
                         </div>
+                      );
+                    case 'sl-input':
+                      return (
+                        <input
+                          key={element.id}
+                          style={{
+                            position: 'absolute',
+                            top: `calc(${
+                              !isNaN(element.y as any)
+                                ? `${element.y}px`
+                                : element.y
+                            })`,
+                            left: `calc(${
+                              !isNaN(element.x as any)
+                                ? `${element.x}px`
+                                : element.x
+                            })`,
+                            width: `calc(${
+                              !isNaN(element.width as any)
+                                ? `${element.width}px`
+                                : element.width
+                            })`,
+                            height: `calc(${
+                              !isNaN(element.height as any)
+                                ? `${element.height}px`
+                                : element.height
+                            })`,
+                            transform: `translate(-${element.xAlign}%, -${
+                              element.yAlign
+                            }%) rotate(calc(${
+                              !isNaN(element.rotation as any)
+                                ? `${element.rotation}deg`
+                                : element.rotation
+                            }))`,
+                            zIndex: -10000 + element.index,
+                            borderRadius: `calc(${
+                              !isNaN(element.borderRadius as any)
+                                ? `${element.borderRadius}px`
+                                : element.borderRadius
+                            })`,
+                            boxSizing: 'border-box',
+                            border: `1.5px solid ${element.borderColor}`,
+                            fontSize: element.fontSize,
+                            color: element.color,
+                          }}
+                          type="text"
+                          placeholder={element.text}
+                        />
+                      );
+                    case 'ml-input':
+                      return (
+                        <textarea
+                          key={element.id}
+                          style={{
+                            position: 'absolute',
+                            top: `calc(${
+                              !isNaN(element.y as any)
+                                ? `${element.y}px`
+                                : element.y
+                            })`,
+                            left: `calc(${
+                              !isNaN(element.x as any)
+                                ? `${element.x}px`
+                                : element.x
+                            })`,
+                            width: `calc(${
+                              !isNaN(element.width as any)
+                                ? `${element.width}px`
+                                : element.width
+                            })`,
+                            height: `calc(${
+                              !isNaN(element.height as any)
+                                ? `${element.height}px`
+                                : element.height
+                            })`,
+                            transform: `translate(-${element.xAlign}%, -${
+                              element.yAlign
+                            }%) rotate(calc(${
+                              !isNaN(element.rotation as any)
+                                ? `${element.rotation}deg`
+                                : element.rotation
+                            }))`,
+                            zIndex: -10000 + element.index,
+                            borderRadius: `calc(${
+                              !isNaN(element.borderRadius as any)
+                                ? `${element.borderRadius}px`
+                                : element.borderRadius
+                            })`,
+                            boxSizing: 'border-box',
+                            border: `1.5px solid ${element.borderColor}`,
+                            fontSize: element.fontSize,
+                            color: element.color,
+                          }}
+                          placeholder={element.text}
+                        />
                       );
                     default:
                       return undefined;

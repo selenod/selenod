@@ -746,6 +746,164 @@ function GetComponent({
               </div>
             </div>
           ),
+          Border: (
+            <div>
+              <div
+                style={{
+                  width: '100%',
+                  height: 30,
+                  marginTop: 5,
+                }}
+              >
+                <div
+                  className="property-input"
+                  style={{
+                    width: '100%',
+                    height: 30,
+                    backgroundColor:
+                      inputFocused === 0 ? 'var(--panelPathColor)' : undefined,
+                    borderRadius: 6,
+                  }}
+                >
+                  <p
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      marginLeft: 10,
+                      color: 'var(--shortcutIconColor)',
+                      fontSize: '.85rem',
+                      float: 'left',
+                    }}
+                  >
+                    Border Radius
+                  </p>
+                  <input
+                    type="text"
+                    style={{
+                      width: 'calc(100% - 115px)',
+                      height: '100%',
+                      padding: 0,
+                      marginRight: 10,
+                      borderRadius: 0,
+                      fontSize: '.9rem',
+                      border: 'none',
+                      backgroundColor: '#00000000',
+                      float: 'right',
+                      color: 'var(--fieldTextColor)',
+                    }}
+                    value={
+                      windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .borderRadius
+                    }
+                    onFocus={() => {
+                      setInputFocused(0);
+                    }}
+                    onBlur={() => {
+                      if (
+                        windowList
+                          .find((window) => window.id === currentWindow)!
+                          .elementData.find(
+                            (element) => element.id === current
+                          )!.borderRadius === ''
+                      ) {
+                        dispatch(
+                          editElementProp({
+                            id: currentElement!,
+                            borderRadius: '0',
+                          })
+                        );
+                      }
+                      setInputFocused(undefined);
+                    }}
+                    onChange={(event) => {
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          borderRadius:
+                            event.target.value === ''
+                              ? ''
+                              : event.target.value!,
+                        })
+                      );
+                    }}
+                  />
+                </div>
+              </div>
+              <div
+                style={{
+                  width: '100%',
+                  height: 30,
+                  marginTop: 5,
+                }}
+              >
+                <div
+                  className="property-input"
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: 30,
+                    backgroundColor:
+                      inputFocused === 1 ? 'var(--panelPathColor)' : undefined,
+                    borderRadius: 6,
+                    float: 'left',
+                  }}
+                >
+                  <p
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      marginLeft: 10,
+                      color: 'var(--shortcutIconColor)',
+                      fontSize: '.85rem',
+                      float: 'left',
+                    }}
+                  >
+                    Border Color
+                  </p>
+                  <input
+                    type="text"
+                    style={{
+                      position: 'relative',
+                      width: 'calc(100% - 106px)',
+                      height: '100%',
+                      padding: 0,
+                      marginRight: 10,
+                      borderRadius: 0,
+                      fontSize: '.9rem',
+                      border: 'none',
+                      backgroundColor: '#00000000',
+                      float: 'right',
+                      color: 'var(--fieldTextColor)',
+                    }}
+                    value={
+                      windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .borderColor
+                    }
+                    onFocus={() => {
+                      setInputFocused(1);
+                    }}
+                    onBlur={() => {
+                      setInputFocused(undefined);
+                    }}
+                    onChange={(event) =>
+                      dispatch(
+                        editElementProp({
+                          id: currentElement!,
+                          borderColor: event.target.value!,
+                        })
+                      )
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+          ),
           Text: (
             <div>
               <div
@@ -763,7 +921,7 @@ function GetComponent({
                       inputFocused === 1 ? 'var(--panelPathColor)' : undefined,
                     borderRadius: 6,
                     float: 'left',
-                    height: 30,
+                    minHeight: 30,
                   }}
                 >
                   <p
@@ -810,7 +968,6 @@ function GetComponent({
                       setTextAreaHeight(
                         event.target.value!.split('\n').length - 1
                       );
-                      console.log(textAreaHeight);
                       dispatch(
                         editElementProp({
                           id: currentElement!,
@@ -2304,6 +2461,7 @@ function GetComponent({
                 style={{
                   width: '100%',
                   height: 30,
+                  marginTop: 10,
                 }}
               >
                 <div
@@ -2418,24 +2576,31 @@ export default function Property({
             <div>
               <GetComponent current={curr} type={ComponentType.POSITION} />
               <GetComponent current={curr} type={ComponentType.SIZE} />
-              <GetComponent current={curr} type={ComponentType.BUTTON} />
               <GetComponent current={curr} type={ComponentType.TEXT} />
+              <GetComponent current={curr} type={ComponentType.BUTTON} />
             </div>
           ),
           checkbox: (
             <div>
               <GetComponent current={curr} type={ComponentType.POSITION} />
+              <GetComponent current={curr} type={ComponentType.BORDER} />
               <GetComponent current={curr} type={ComponentType.CHECKBOX} />
             </div>
           ),
           'sl-input': (
             <div>
               <GetComponent current={curr} type={ComponentType.POSITION} />
+              <GetComponent current={curr} type={ComponentType.SIZE} />
+              <GetComponent current={curr} type={ComponentType.BORDER} />
+              <GetComponent current={curr} type={ComponentType.TEXT} />
             </div>
           ),
           'ml-input': (
             <div>
               <GetComponent current={curr} type={ComponentType.POSITION} />
+              <GetComponent current={curr} type={ComponentType.SIZE} />
+              <GetComponent current={curr} type={ComponentType.BORDER} />
+              <GetComponent current={curr} type={ComponentType.TEXT} />
             </div>
           ),
         }[type]

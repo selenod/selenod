@@ -24,6 +24,7 @@ export enum AssetType {
 export enum ComponentType {
   POSITION = 'Position',
   SIZE = 'Size',
+  BORDER = 'Border',
   TEXT = 'Text',
   LINE = 'Line',
   IMAGE = 'Image',

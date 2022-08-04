@@ -5,6 +5,13 @@ import { RootState } from '../../store';
 import { useSelector } from 'react-redux';
 import { imageExtensions, videoExtensions } from '../../data';
 import Property from '../system/property';
+import Selene, {
+  NodeType,
+  SeleneNodeData,
+  SeleneNodeObject,
+  SeleneNodesObject,
+} from '@selenod/selene';
+import Type from '@selenod/selene/dist/data/SeleneType';
 
 interface IToolData {
   panelWidth: number;
@@ -628,7 +635,19 @@ export default function Field(data: IToolData) {
             </div>
           </div>
         ) : toggle === 1 ? (
-          <div>Script Panel</div>
+          <div>
+            <Selene
+              nodesData={{
+                'selene.test.Sans': new SeleneNodeData({
+                  name: 'Sans',
+                  nodeType: NodeType.Method,
+                  inputs: [{ name: 'param1', type: Type.String }],
+                  output: Type.Int,
+                }),
+              }}
+              onNodesUpdated={(object: SeleneNodesObject) => {}}
+            />
+          </div>
         ) : assetData.find((asset) => asset.id === currentOpenedPanel)
             ?.extension !== undefined &&
           imageExtensions.includes(

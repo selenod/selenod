@@ -290,8 +290,21 @@ export default function Active(data: IToolData) {
             content={() => (
               <PopContent
                 contents={[
-                  { text: 'Close All Tabs' },
-                  { text: 'Close Saved Tabs' },
+                  {
+                    text: 'Close All Tabs',
+                    onClick: () => {
+                      openedPanelList.forEach((panel) => {
+                        dispatch(
+                          togglePanelOpened({
+                            id: panel,
+                            toggle: false,
+                          })
+                        );
+                        dispatch(setFalse());
+                        setShowPopover(false);
+                      });
+                    },
+                  },
                 ]}
               />
             )}

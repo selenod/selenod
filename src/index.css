@@ -278,3 +278,7 @@ textarea {
   background: var(--headerColor) !important;
   box-shadow: 0 5px 20px #00000015 !important;
 }
+
+.selene-workspace {
+  background-color: var(--editorColor) !important;
+}

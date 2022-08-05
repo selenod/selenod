@@ -286,9 +286,11 @@ textarea {
 .selene-head {
   border-radius: 10px 10px 0 0 !important;
   height: 35px !important;
+
+  background-color: #ff6599 !important;
 }
 
-.selene-node .selene-body {
+.selene-node > .selene-body {
   border-radius: 0 0 10px 10px !important;
 }
 

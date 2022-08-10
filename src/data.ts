@@ -34,8 +34,8 @@ export enum ComponentType {
 }
 
 export enum Part {
-  HORIZONTAL,
-  VERTICAL,
+  HORIZONTAL = 'Horizontal',
+  VERTICAL = 'Vertical',
 }
 
 export const imageExtensions: Array<string> = [

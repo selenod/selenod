@@ -7,7 +7,7 @@ interface Window {
   resizable: boolean;
 }
 
-interface Script {}
+interface Node {}
 
 interface Element {
   name: string;
@@ -64,7 +64,7 @@ interface WindowState {
     name: string;
     id: number;
     windowData: Window;
-    scriptData: Script;
+    scriptData: Array<Node>;
     elementData: Array<Element>;
   }>;
   currentWindow: number | undefined;

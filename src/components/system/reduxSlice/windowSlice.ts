@@ -64,7 +64,11 @@ interface WindowState {
     name: string;
     id: number;
     windowData: Window;
+<<<<<<< HEAD
     scriptData: Array<Node>;
+=======
+    scriptData: Array<Script>;
+>>>>>>> cf34dd9 (update)
     elementData: Array<Element>;
   }>;
   currentWindow: number | undefined;
@@ -83,7 +87,7 @@ const initialState: WindowState = {
         height: 768,
         resizable: false,
       },
-      scriptData: {},
+      scriptData: [],
       elementData: [],
     },
   ],
@@ -106,7 +110,7 @@ export const windowSlice = createSlice({
           height: 768,
           resizable: false,
         },
-        scriptData: {},
+        scriptData: [],
         elementData: [],
       });
       //서버에도 푸시

@@ -1,0 +1,108 @@
+.Footer {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 25rem;
+  background-color: var(--headerColor);
+  border-top: 1px solid var(--lineColor);
+}
+
+.Footer > .preset {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1250px;
+  max-width: 90vw;
+  height: 100%;
+}
+
+.Footer > .preset > div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+}
+
+.Footer > .preset > div > .part-up {
+  width: 100%;
+  height: 13rem;
+  border-bottom: 1px solid var(--lineColor);
+}
+
+.Footer > .preset > div > .part-up > .section {
+  float: left;
+  height: 100%;
+  width: 15rem;
+}
+
+.Footer
+  > .preset
+  > div
+  > .part-up
+  > .section:not(.Footer > .preset > div > .part-up > .section:last-child) {
+  margin-right: 0.5rem;
+}
+
+.Footer > .preset > div > .part-up > .section > img {
+  width: 10rem;
+}
+
+.Footer > .preset > div > .part-up > .section > .rep {
+  margin-top: 1.3rem;
+  margin-bottom: 0.2rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #1a1b1c;
+}
+
+.Footer > .preset > div > .part-up > .section > div > a {
+  text-decoration: none;
+  outline: none;
+}
+
+.Footer > .preset > div > .part-up > .section > div > a > p {
+  clear: both;
+  float: left;
+  color: var(--textGrayColor);
+  font-size: 1.05rem;
+  margin-top: 1.25rem;
+}
+
+.Footer > .preset > div > .part-up > .section > div > a > p:hover {
+  text-decoration: underline;
+}
+
+.Footer > .preset > div > .part-up > .button {
+  width: 3rem;
+  height: 3rem;
+  background-color: #d9d3eb;
+  float: right;
+  border-radius: 10px;
+  padding: 0;
+  min-width: auto;
+}
+
+.Footer > .preset > div > .part-up > .button > svg {
+  position: relative;
+  width: 1.75rem;
+  height: 1.75rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: ease-out background-color 100ms;
+}
+
+.Footer > .preset > div > .part-down {
+  width: 100%;
+  height: 1.5rem;
+}
+
+.Footer > .preset > div > .part-down > p {
+  color: var(--textGrayColor);
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}

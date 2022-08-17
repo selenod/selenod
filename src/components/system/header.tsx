@@ -53,7 +53,10 @@ export default function Header() {
               contents={[
                 {
                   text: 'Workspace',
-                  onClick: () => navigate('/'),
+                  onClick: () => {
+                    navigate('/');
+                    setIsPopoverOpen({ ...isPopoverOpen, workspace: false });
+                  },
                 },
                 {
                   text: 'Log out',

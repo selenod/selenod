@@ -8,7 +8,7 @@ export interface Asset {
   contents?: string;
   extension?: string;
   isOpened?: boolean;
-  isDisabled?: boolean;
+  isDisabled?: boolean; //Not used.
 }
 
 export interface AssetList {

@@ -64,11 +64,7 @@ interface WindowState {
     name: string;
     id: number;
     windowData: Window;
-<<<<<<< HEAD
     scriptData: Array<Node>;
-=======
-    scriptData: Array<Script>;
->>>>>>> cf34dd9 (update)
     elementData: Array<Element>;
   }>;
   currentWindow: number | undefined;

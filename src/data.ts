@@ -49,3 +49,8 @@ export const imageExtensions: Array<string> = [
 ];
 
 export const videoExtensions: Array<string> = ['mp4', 'mov'];
+
+export interface ResponseProps {
+  status?: string;
+  message?: string;
+}

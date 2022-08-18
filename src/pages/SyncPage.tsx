@@ -29,13 +29,9 @@ export default function SyncPage() {
       ) {
         localStorage.removeItem('id');
         localStorage.removeItem('nickname');
-        window.location.href = landingURL;
-      } else {
-        setProps({
-          status: '404',
-          message: 'Page not found.',
-        });
       }
+
+      window.location.href = landingURL;
     } else {
       setProps({
         status: '404',

@@ -11,6 +11,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   user-select: none;
   -webkit-user-drag: none;
+
+  background-color: var(--headerColor);
 }
 
 * {
@@ -353,7 +355,7 @@ textarea {
   margin-top: 5px;
   border-radius: 15px;
   background-color: #e1e7eb00;
-  transition: ease-out background-color 100ms;
+  transition: ease-out background-color 150ms;
 }
 
 .project-stack > div > .name {
@@ -368,7 +370,7 @@ textarea {
 .project-stack > svg {
   visibility: hidden;
   opacity: 0;
-  transition: ease-out visibility 0s, ease-out opacity 100ms;
+  transition: ease-out visibility 0s, ease-out opacity 150ms;
 }
 
 .project-stack:hover {

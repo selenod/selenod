@@ -20,16 +20,10 @@ export default function SyncPage() {
         localStorage.setItem('id', id!);
         localStorage.setItem('nickname', nickname!);
         navigate('/');
-      } else if (
-        localStorage.getItem('id') &&
-        localStorage.getItem('nickname') &&
-        method === 'logout' &&
-        id === localStorage.getItem('id') &&
-        nickname === localStorage.getItem('nickname')
-      ) {
-        localStorage.removeItem('id');
-        localStorage.removeItem('nickname');
       }
+    } else if (method === 'logout') {
+      localStorage.removeItem('id');
+      localStorage.removeItem('nickname');
 
       window.location.href = landingURL;
     } else {

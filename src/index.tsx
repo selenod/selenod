@@ -18,6 +18,7 @@ ReactDOM.render(
       <Header />
       <Routes>
         <Route path="/:method/:id/:nickname" element={<SyncPage />} />
+        <Route path="/:method" element={<SyncPage />} />
         <Route path="/" element={<Workpsace />} />
         <Route path="/editor" element={<Editor />} />
         <Route

@@ -445,11 +445,11 @@ export default function Workspace() {
                           marginTop: 15,
                           marginBottom: 40,
                         }}
-                        onClick={() => {
+                        onClick={async () => {
                           // two-factor (who knows?)
                           setFormDisable(true);
 
-                          api
+                          await api
                             .delete(
                               `/project/delete/${localStorage.getItem('id')}/${
                                 project._id

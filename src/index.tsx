@@ -11,6 +11,7 @@ import Editor from './pages/EditorPage';
 import Workpsace from './pages/Workspace';
 import ResponsePage from './pages/ResponsePage';
 import SyncPage from './pages/SyncPage';
+import { Toaster } from 'react-hot-toast';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -26,6 +27,14 @@ ReactDOM.render(
           element={<ResponsePage message="Page not found." status="404" />}
         />
       </Routes>
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            maxWidth: '70vw',
+          },
+        }}
+      />
     </Router>
   </Provider>,
   document.getElementById('root')

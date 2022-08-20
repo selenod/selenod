@@ -64,6 +64,12 @@ body {
   background-color: var(--scroll);
 }
 
+.urbanist {
+  font-family: 'Urbanist', Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo',
+    'Noto Sans KR', 'Malgun Gothic', sans-serif;
+}
+
 #root {
   position: absolute;
   width: 100vw;
@@ -137,6 +143,11 @@ textarea {
 
 .button.primary:active {
   background-color: #6642cc;
+}
+
+.button.danger {
+  color: #fff;
+  background-color: var(--red);
 }
 
 .react-tiny-popover-container {

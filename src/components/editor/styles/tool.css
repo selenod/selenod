@@ -67,7 +67,7 @@
   width: 50px;
   left: 50%;
   margin-top: 15px;
-  transform: translateX(-75%);
+  transform: translateX(-50%);
 }
 
 .Tool > .shortcut > ul > li {

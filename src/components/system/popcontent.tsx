@@ -235,7 +235,7 @@ export function PopContent({
                                 maxWidth: '100%',
                               }}
                             >
-                              Rename the window to..
+                              Rename window to..
                             </p>
                             <input
                               style={{
@@ -246,6 +246,7 @@ export function PopContent({
                               onChange={(e) => {
                                 setFormInput(e.target.value);
                               }}
+                              maxLength={50}
                             />
                             <button
                               className="button primary"
@@ -286,13 +287,11 @@ export function PopContent({
                                       selected: contentTarget.selected,
                                     }
                                   );
-                                  toast.success(`The window has been renamed.`);
+                                  toast.success(`Window has been renamed.`);
                                 } else if (
                                   formInput.replaceAll(' ', '') === ''
                                 ) {
-                                  toast.error(
-                                    `The window's name cannot be blank.`
-                                  );
+                                  toast.error(`Window name cannot be blank.`);
                                 } else if (
                                   contentsState.find(
                                     (ct) => ct.text === formInput
@@ -362,7 +361,7 @@ export function PopContent({
                               and all nodes.
                             </p>
                             <button
-                              className="button primary"
+                              className="button danger"
                               style={{
                                 display: 'inherit',
                                 marginLeft: 'auto',
@@ -380,7 +379,7 @@ export function PopContent({
                                   setDelModal(null);
                                   setFormDisable(false);
                                   toast.error(
-                                    'The window opened cannot be deleted.'
+                                    'Window opened cannot be deleted.'
                                   );
                                   return false;
                                 }
@@ -393,7 +392,7 @@ export function PopContent({
                                   ),
                                   1
                                 );
-                                toast.success(`The window has been deleted.`);
+                                toast.success(`Window has been deleted.`);
                                 setDelModal(null);
                                 setFormDisable(false);
                               }}

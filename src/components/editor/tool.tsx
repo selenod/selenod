@@ -530,6 +530,7 @@ export default function Tool() {
                       onChange={(e) => {
                         setFormInput(e.target.value);
                       }}
+                      maxLength={50}
                     />
                     <button
                       className="button primary"
@@ -555,13 +556,14 @@ export default function Tool() {
                             setWinOpenId(undefined);
                             setFormDisable(false);
                             setFormInput('');
-                            return false;
+
+                            return;
                           }
 
                           dispatch(createWindow(formInput));
-                          toast.success(`The window has been created.`);
+                          toast.success(`Window has been created.`);
                         } else if (formInput.replaceAll(' ', '') === '') {
-                          toast.error(`Window's name cannot be blank.`);
+                          toast.error(`Window name cannot be blank.`);
                         } else {
                           toast.error(`An error occured.`);
                         }
@@ -633,7 +635,7 @@ export default function Tool() {
                                 maxWidth: '100%',
                               }}
                             >
-                              Rename the element to..
+                              Rename element to..
                             </p>
                             <input
                               style={{
@@ -665,9 +667,7 @@ export default function Tool() {
                                       name: assetFormInput,
                                     })
                                   );
-                                  toast.success(
-                                    `The element has been renamed.`
-                                  );
+                                  toast.success(`Element has been renamed.`);
                                 } else if (
                                   assetFormInput.replaceAll(' ', '') === ''
                                 ) {
@@ -716,9 +716,7 @@ export default function Tool() {
                                   dispatch(deleteElement(element.id));
                                   dispatch(setFalse());
                                   setShowElementPopover(undefined);
-                                  toast.success(
-                                    'The element has been deleted.'
-                                  );
+                                  toast.success('Element has been deleted.');
                                 },
                               },
                             ]}
@@ -1003,7 +1001,7 @@ export default function Tool() {
                 onChange={async (event) => {
                   if (100 - assetLength - event.target.files!.length < 0) {
                     toast.error(
-                      'The upload has been canceled because the upload exceeds the number of assets remaining.'
+                      'Upload has been canceled because the upload exceeds number of assets remaining.'
                     );
                   } else {
                     const lastIdx =
@@ -1228,7 +1226,7 @@ export default function Tool() {
                             assetFormInput.includes('|')
                           ) {
                             toast.error(
-                              `The asset's name cannot include \\, /, :, *, ?, ", <, >, |`
+                              `Asset name cannot include \\, /, :, *, ?, ", <, >, |`
                             );
                           } else {
                             dispatch(
@@ -1261,7 +1259,7 @@ export default function Tool() {
                                 contents: assetFormContents,
                               })
                             );
-                            toast.success(`The asset has been created.`);
+                            toast.success(`Asset has been created.`);
                           }
                         } else if (assetFormInput.replaceAll(' ', '') === '') {
                           toast.error(`Asset's name cannot be blank.`);
@@ -1301,7 +1299,7 @@ export default function Tool() {
 
                     if (100 - assetLength - files!.length < 0) {
                       toast.error(
-                        'The upload has been canceled because the upload exceeds the number of assets remaining.'
+                        'Upload has been canceled because the upload exceeds number of assets remaining.'
                       );
                     } else {
                       const lastIdx =
@@ -1365,7 +1363,7 @@ export default function Tool() {
                             }
                           } else {
                             toast.error(
-                              `The folder '${
+                              `Folder '${
                                 files![i].name
                               }' couldn't be uploaded because it is unable to upload folders as asset.`
                             );
@@ -1424,7 +1422,7 @@ export default function Tool() {
                                 maxWidth: '100%',
                               }}
                             >
-                              Rename the asset to..
+                              Rename asset to..
                             </p>
                             <input
                               style={{
@@ -1462,7 +1460,7 @@ export default function Tool() {
                                     assetFormInput.includes('|')
                                   ) {
                                     toast.error(
-                                      `The asset's name cannot include \\, /, :, *, ?, ", <, >, |`
+                                      `Asset name cannot include \\, /, :, *, ?, ", <, >, |`
                                     );
                                   } else {
                                     dispatch(
@@ -1481,9 +1479,7 @@ export default function Tool() {
                                           : '',
                                       })
                                     );
-                                    toast.success(
-                                      `The asset has been renamed.`
-                                    );
+                                    toast.success(`Asset has been renamed.`);
                                   }
                                 } else if (
                                   assetFormInput.replaceAll(' ', '') === ''
@@ -1527,7 +1523,7 @@ export default function Tool() {
                                   dispatch(deleteAssetById(asset.id));
                                   dispatch(setFalse());
                                   setShowAssetPopover(undefined);
-                                  toast.success('The asset has been deleted.');
+                                  toast.success('Asset has been deleted.');
                                 },
                               },
                             ]}

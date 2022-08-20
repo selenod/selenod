@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { ResponseProps } from '../data';
+import Footer from '../components/system/footer';
 
 export default function ErrorPage({ status, message }: ResponseProps) {
   useEffect(() => {
@@ -7,60 +8,66 @@ export default function ErrorPage({ status, message }: ResponseProps) {
   }, []);
 
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '50rem',
-      }}
-    >
-      {status === undefined && message === undefined ? (
-        <div
-          className="loading"
-          style={{
-            position: 'relative',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            textAlign: 'center',
-          }}
-        >
-          <span />
-          <span />
-          <span />
-        </div>
-      ) : (
-        <div
-          style={{
-            position: 'relative',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            textAlign: 'center',
-          }}
-        >
-          <p
-            className="urbanist"
+    <div>
+      <div
+        style={{
+          width: '100vw',
+          height: '50rem',
+        }}
+      >
+        {status === undefined && message === undefined ? (
+          <div
+            className="loading"
             style={{
-              fontSize: '10rem',
-              // WebkitTextStroke: '5px var(--textBlack)',
-              color: 'var(--textBlack)',
-              fontWeight: 900,
-              letterSpacing: '.5rem',
+              position: 'relative',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              textAlign: 'center',
             }}
           >
-            {status}
-          </p>
-          <p
+            <span />
+            <span />
+            <span />
+          </div>
+        ) : (
+          <div
             style={{
-              fontSize: '1.8rem',
-              color: 'var(--textBlack)',
-              fontWeight: 600,
+              position: 'relative',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              textAlign: 'center',
             }}
           >
-            {message}
-          </p>
-        </div>
-      )}
+            <p
+              style={{
+                fontSize: '10rem',
+                color: 'var(--textBlack)',
+                fontWeight: 900,
+                letterSpacing: '.5rem',
+              }}
+            >
+              {status}
+            </p>
+            <p
+              style={{
+                position: 'relative',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                fontSize: '1.8rem',
+                color: 'var(--textBlack)',
+                fontWeight: 600,
+                width: '80vw',
+                wordBreak: 'break-all',
+              }}
+            >
+              {message}
+            </p>
+          </div>
+        )}
+      </div>
+      <Footer />
     </div>
   );
 }

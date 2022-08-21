@@ -21,7 +21,7 @@ ReactDOM.render(
         <Route path="/:method/:id/:nickname" element={<SyncPage />} />
         <Route path="/:method" element={<SyncPage />} />
         <Route path="/" element={<Workpsace />} />
-        <Route path="/editor/:project" element={<EditorPage />} />
+        <Route path="/editor/:projectID" element={<EditorPage />} />
         <Route
           path="*"
           element={<ResponsePage message="Page not found." status="404" />}

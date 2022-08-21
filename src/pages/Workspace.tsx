@@ -26,9 +26,7 @@ export default function Workspace() {
     if (!localStorage.getItem('id') || !localStorage.getItem('nickname')) {
       window.location.href = landingURL;
     }
-  }, []);
 
-  useEffect(() => {
     (async () => {
       await api
         .get(`/project/list/${localStorage.getItem('id')}`)
@@ -38,7 +36,7 @@ export default function Workspace() {
         .catch((err) => {
           setProps({
             status: err.response.status,
-            message: err.response.data.message,
+            message: err.response.data.message.message,
           });
         });
     })();

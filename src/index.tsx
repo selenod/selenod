@@ -7,7 +7,7 @@ import { store } from './store';
 import { Provider } from 'react-redux';
 
 import Header from './components/system/header';
-import Editor from './pages/EditorPage';
+import EditorPage from './pages/EditorPage';
 import Workpsace from './pages/Workspace';
 import ResponsePage from './pages/ResponsePage';
 import SyncPage from './pages/SyncPage';
@@ -21,7 +21,7 @@ ReactDOM.render(
         <Route path="/:method/:id/:nickname" element={<SyncPage />} />
         <Route path="/:method" element={<SyncPage />} />
         <Route path="/" element={<Workpsace />} />
-        <Route path="/editor" element={<Editor />} />
+        <Route path="/editor/:project" element={<EditorPage />} />
         <Route
           path="*"
           element={<ResponsePage message="Page not found." status="404" />}

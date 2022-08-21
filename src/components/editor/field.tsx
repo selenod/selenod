@@ -30,11 +30,13 @@ export default function Field(data: IToolData) {
   const currentElement = useSelector(
     (state: RootState) => state.window.currentElement
   );
-
   const [winHeight, setWinHeight] = useState<number>(window.innerHeight);
 
   useEffect(() => {
-    window.addEventListener('resize', () => setWinHeight(window.innerHeight));
+    const handleResize = () => setWinHeight(window.innerHeight);
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (

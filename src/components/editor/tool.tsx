@@ -56,14 +56,6 @@ export default function Tool() {
     (state: RootState) => state.asset.assetLength
   );
 
-  if (
-    windowList.find(
-      (w) => w.id === parseInt(window.sessionStorage.getItem('current_window')!)
-    ) === undefined
-  ) {
-    window.sessionStorage.setItem('current_window', '0');
-  }
-
   const [pnlCase, setPnlCase] = useState<number | null>(0);
   const [pnlSize, setPnlSize] = useState<IPnlSize>({
     width: 380,
@@ -103,6 +95,15 @@ export default function Tool() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (
+      windowList.find(
+        (w) =>
+          w.id === parseInt(window.sessionStorage.getItem('current_window')!)
+      ) === undefined
+    ) {
+      window.sessionStorage.setItem('current_window', '0');
+    }
+
     dispatch(
       setCurrWin(
         window.sessionStorage.getItem('current_window') !== null
@@ -110,6 +111,7 @@ export default function Tool() {
           : windowList[0].id
       )
     );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

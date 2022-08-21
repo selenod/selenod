@@ -351,8 +351,9 @@ export function PopContent({
                               style={{
                                 margin: 0,
                                 color: 'var(--textSubBlackColor)',
-                                paddingBottom: '1.5rem',
+                                paddingBottom: '1rem',
                                 maxWidth: '100%',
+                                lineHeight: '1.5',
                               }}
                             >
                               You cannot undone this action.

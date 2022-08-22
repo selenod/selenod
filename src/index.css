@@ -51,19 +51,6 @@ body {
   outline: 0;
 }
 
-.EditorPage::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
-}
-
-.EditorPage::-webkit-scrollbar-track,
-.EditorPage::-webkit-scrollbar-corner {
-  background-color: var(--panelColor);
-}
-.EditorPage::-webkit-scrollbar-thumb {
-  background-color: var(--scroll);
-}
-
 .urbanist {
   font-family: 'Urbanist', Pretendard, -apple-system, BlinkMacSystemFont,
     system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo',

@@ -17,7 +17,7 @@ export const coverSlice = createSlice({
     setTrue: (state: { actived: boolean }) => {
       state.actived = true;
     },
-    setFalse: (state: { actived: boolean; clicked: boolean }) => {
+    setFalse: (state: CoverState) => {
       state.actived = false;
       state.clicked = false;
     },

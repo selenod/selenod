@@ -12,6 +12,8 @@ import {
   renameElement,
   setCurrElement,
   togglePanel,
+  createWindow,
+  setCurrWin,
 } from '../system/reduxSlice/windowSlice';
 import {
   addAsset,
@@ -23,7 +25,6 @@ import {
 import { FileDrop } from 'react-file-drop';
 import toast from 'react-hot-toast';
 import Modal from 'react-modal';
-
 import Active from './active';
 import Field from './field';
 import { PopContent } from '../system/popcontent';
@@ -34,7 +35,6 @@ import {
   videoExtensions,
   ElementType,
 } from '../../data';
-import { createWindow, setCurrWin } from '../system/reduxSlice/windowSlice';
 
 Modal.setAppElement('#root');
 
@@ -44,6 +44,7 @@ export default function Tool() {
     height: string;
   }
 
+  const projectData = useSelector((state: RootState) => state.project.data);
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const windowList = useSelector((state: RootState) => state.window.windowList);
   const assetList = useSelector((state: RootState) => state.asset.assetList);
@@ -195,7 +196,7 @@ export default function Tool() {
                       paddingRight: '21px',
                     }}
                   >
-                    MyProject/
+                    {projectData.name}/
                     {
                       windowList.find((window) => currentWindow === window.id)!
                         .name
@@ -1667,6 +1668,7 @@ export default function Tool() {
     assetFormInput,
     assetFormContents,
     windowToggle,
+    projectData.name,
   ]);
 
   useEffect(() => {

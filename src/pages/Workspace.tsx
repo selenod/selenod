@@ -36,7 +36,7 @@ export default function Workspace() {
         .catch((err) => {
           setProps({
             status: err.response.status,
-            message: err.response.data.message.message,
+            message: err.response.data.message,
           });
         });
     })();

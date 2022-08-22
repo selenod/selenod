@@ -4,7 +4,6 @@ import { ElementType, Part } from '../../../data';
 interface Window {
   width: number;
   height: number;
-  resizable: boolean;
 }
 
 interface Node {}
@@ -60,6 +59,7 @@ interface ElementPropMethod {
 }
 
 interface WindowState {
+  doSetup: boolean;
   windowList: Array<{
     name: string;
     id: number;
@@ -73,21 +73,9 @@ interface WindowState {
 }
 
 const initialState: WindowState = {
-  //임시기본값
-  windowList: [
-    {
-      name: 'Default Window',
-      id: 0,
-      windowData: {
-        width: 1366,
-        height: 768,
-        resizable: false,
-      },
-      scriptData: [],
-      elementData: [],
-    },
-  ],
-  currentWindow: 0,
+  doSetup: false,
+  windowList: [],
+  currentWindow: undefined,
   currentElement: undefined,
   toggle: undefined,
 };
@@ -96,15 +84,32 @@ export const windowSlice = createSlice({
   name: 'window',
   initialState,
   reducers: {
+    setWindowData: (
+      state: WindowState,
+      action: {
+        payload: {
+          windowList: Array<{
+            name: string;
+            id: number;
+            windowData: Window;
+            scriptData: Array<Node>;
+            elementData: Array<Element>;
+          }>;
+          currentWindow: number;
+        };
+      }
+    ) => {
+      state.windowList = action.payload.windowList;
+      state.currentWindow = action.payload.currentWindow;
+      state.doSetup = true;
+    },
     createWindow: (state: WindowState, action: { payload: string }) => {
       state.windowList.push({
         name: action.payload,
         id: state.windowList[state.windowList.length - 1].id + 1,
-        //temp
         windowData: {
           width: 1366,
           height: 768,
-          resizable: false,
         },
         scriptData: [],
         elementData: [],
@@ -330,6 +335,7 @@ export const windowSlice = createSlice({
 });
 
 export const {
+  setWindowData,
   createWindow,
   renameWindow,
   deleteWindow,

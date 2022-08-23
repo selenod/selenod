@@ -301,7 +301,7 @@ export default function Workspace() {
               >
                 There's no project here yet.
                 <br />
-                Projects you create appeare here.
+                Projects you create appear here.
               </div>
             ) : (
               projectList.map((project, index) => (

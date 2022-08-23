@@ -29,7 +29,7 @@ export default function Workspace() {
 
     (async () => {
       await api
-        .get(`/project/list/${localStorage.getItem('id')}`)
+        .get(`/user/projects/${localStorage.getItem('id')}`)
         .then((res) => {
           setProjectList(res.data.projectList);
         })
@@ -173,14 +173,14 @@ export default function Workspace() {
                       if (formInput.replaceAll(' ', '') !== '') {
                         (async () => {
                           await api
-                            .post('/project/create', {
+                            .post('/project', {
                               name: formInput,
                               uid: localStorage.getItem('id'),
                             })
                             .then(() => {
                               api
                                 .get(
-                                  `/project/list/${localStorage.getItem('id')}`
+                                  `/user/projects/${localStorage.getItem('id')}`
                                 )
                                 .then((res) => {
                                   setProjectList(res.data.projectList);
@@ -473,14 +473,14 @@ export default function Workspace() {
 
                             await api
                               .delete(
-                                `/project/delete/${localStorage.getItem(
-                                  'id'
-                                )}/${project._id}`
+                                `/project/${localStorage.getItem('id')}/${
+                                  project._id
+                                }`
                               )
                               .then(() => {
                                 api
                                   .get(
-                                    `/project/list/${localStorage.getItem(
+                                    `/user/project/${localStorage.getItem(
                                       'id'
                                     )}`
                                   )

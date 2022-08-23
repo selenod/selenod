@@ -480,7 +480,7 @@ export default function Workspace() {
                               .then(() => {
                                 api
                                   .get(
-                                    `/user/project/${localStorage.getItem(
+                                    `/user/projects/${localStorage.getItem(
                                       'id'
                                     )}`
                                   )

@@ -5,8 +5,14 @@ import { Popover } from 'react-tiny-popover';
 import Modal from 'react-modal';
 import { RootState } from '../../store';
 import { useSelector, useDispatch } from 'react-redux';
-import { renameWindow, deleteWindow } from '../system/reduxSlice/windowSlice';
+import {
+  setWindowData,
+  setWindowShown,
+} from '../system/reduxSlice/windowSlice';
 import toast from 'react-hot-toast';
+import api from '../../config/api';
+import { setProjectData } from './reduxSlice/projectSlice';
+import { setFalse } from './reduxSlice/coverSlice';
 
 interface IContentData {
   cacheKey?: string;
@@ -48,6 +54,10 @@ export function PopContent({
   const [formDisable, setFormDisable] = useState<boolean>(false);
   const [formInput, setFormInput] = useState<string>('');
 
+  const currentWindow = useSelector(
+    (state: RootState) => state.window.currentWindow
+  );
+  const projectData = useSelector((state: RootState) => state.project.data);
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const windowList = useSelector((state: RootState) => state.window.windowList);
   const dispatch = useDispatch();
@@ -266,28 +276,55 @@ export function PopContent({
                                     (ct) => ct.text === formInput
                                   ) === undefined
                                 ) {
-                                  dispatch(
-                                    renameWindow({
-                                      id: content.id!,
-                                      value: formInput,
+                                  api
+                                    .put('/project/window', {
+                                      uid: localStorage.getItem('id'),
+                                      id: projectData.id!,
+                                      _id: windowList.find(
+                                        (window) => window.id === content.id!
+                                      )!._id,
+                                      name: formInput,
+                                      windowData: windowList.find(
+                                        (window) => window.id === content.id!
+                                      )!.windowData,
                                     })
-                                  );
+                                    .then(() => {
+                                      api
+                                        .get(
+                                          `/project/${localStorage.getItem(
+                                            'id'
+                                          )}/${projectData.id!}`
+                                        )
+                                        .then((res) => {
+                                          dispatch(
+                                            setWindowData({
+                                              windowList:
+                                                res.data.project.windowList,
+                                              currentWindow: currentWindow!,
+                                            })
+                                          );
+                                          dispatch(
+                                            setProjectData({
+                                              id: projectData.id!,
+                                              name: projectData.name!,
+                                              owner: projectData.owner!,
+                                              createAt: projectData.createAt!,
+                                              modifiedAt:
+                                                res.data.project.modifiedAt,
+                                            })
+                                          );
 
-                                  const contentTarget = contentsState.filter(
-                                    (ct) => ct.id === content.id
-                                  )[0];
-                                  contentsState.splice(
-                                    contentsState.indexOf(contentTarget),
-                                    1,
-                                    {
-                                      text: formInput,
-                                      id: contentTarget.id,
-                                      type: contentTarget.type,
-                                      onClick: contentTarget.onClick,
-                                      selected: contentTarget.selected,
-                                    }
-                                  );
-                                  toast.success(`Window has been renamed.`);
+                                          toast.success(
+                                            `Window has been renamed.`
+                                          );
+                                        })
+                                        .catch((err) => {
+                                          toast.error(err);
+                                        });
+                                    })
+                                    .catch((err) => {
+                                      toast.error(err);
+                                    });
                                 } else if (
                                   formInput.replaceAll(' ', '') === ''
                                 ) {
@@ -304,8 +341,11 @@ export function PopContent({
                                   toast.error(`An error occured.`);
                                 }
                                 setEditModal(null);
+                                setEditedWindow(null);
                                 setFormDisable(false);
                                 setFormInput('');
+                                dispatch(setWindowShown(false));
+                                dispatch(setFalse());
                               }}
                             >
                               Rename Window
@@ -384,18 +424,91 @@ export function PopContent({
                                   );
                                   return false;
                                 }
-                                dispatch(deleteWindow(content.id!));
-                                contentsState.splice(
-                                  contentsState.indexOf(
-                                    contentsState.filter(
-                                      (ct) => content.id === ct.id
-                                    )[0]
-                                  ),
-                                  1
-                                );
-                                toast.success(`Window has been deleted.`);
+
+                                if (
+                                  window.sessionStorage.getItem(
+                                    'current_window'
+                                  ) === content.id!.toString() &&
+                                  windowList.indexOf(
+                                    windowList.find(
+                                      (window) => content.id! === window.id
+                                    )!
+                                  ) !== 0
+                                ) {
+                                  window.sessionStorage.setItem(
+                                    'current_window',
+                                    windowList[0].id.toString()
+                                  );
+                                } else if (
+                                  window.sessionStorage.getItem(
+                                    'current_window'
+                                  ) === content.id!.toString()
+                                ) {
+                                  window.sessionStorage.setItem(
+                                    'current_window',
+                                    windowList[1].id.toString()
+                                  );
+                                }
+
+                                api
+                                  .delete(
+                                    `/project/window/${localStorage.getItem(
+                                      'id'
+                                    )}/${projectData.id!}/${
+                                      windowList.find(
+                                        (window) => window.id === content.id!
+                                      )!._id
+                                    }`
+                                  )
+                                  .then(() => {
+                                    api
+                                      .get(
+                                        `/project/${localStorage.getItem(
+                                          'id'
+                                        )}/${projectData.id!}`
+                                      )
+                                      .then((res) => {
+                                        dispatch(
+                                          setWindowData({
+                                            windowList:
+                                              res.data.project.windowList,
+                                            currentWindow: currentWindow!,
+                                          })
+                                        );
+                                        dispatch(
+                                          setProjectData({
+                                            id: projectData.id!,
+                                            name: projectData.name!,
+                                            owner: projectData.owner!,
+                                            createAt: projectData.createAt!,
+                                            modifiedAt:
+                                              res.data.project.modifiedAt,
+                                          })
+                                        );
+                                        contentsState.splice(
+                                          contentsState.indexOf(
+                                            contentsState.filter(
+                                              (ct) => content.id === ct.id
+                                            )[0]
+                                          ),
+                                          1
+                                        );
+                                        toast.success(
+                                          `Window has been deleted.`
+                                        );
+                                      })
+                                      .catch((err) => {
+                                        toast.error(err);
+                                      });
+                                  })
+                                  .catch((err) => {
+                                    toast.error(err);
+                                  });
+
                                 setDelModal(null);
                                 setFormDisable(false);
+                                dispatch(setWindowShown(false));
+                                dispatch(setFalse());
                               }}
                               disabled={formDisable}
                             >

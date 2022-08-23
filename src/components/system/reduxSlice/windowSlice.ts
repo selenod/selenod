@@ -59,8 +59,10 @@ interface ElementPropMethod {
 }
 
 interface WindowState {
+  isWindowShown: boolean;
   doSetup: boolean;
   windowList: Array<{
+    _id: string;
     name: string;
     id: number;
     windowData: Window;
@@ -73,6 +75,7 @@ interface WindowState {
 }
 
 const initialState: WindowState = {
+  isWindowShown: false,
   doSetup: false,
   windowList: [],
   currentWindow: undefined,
@@ -84,11 +87,15 @@ export const windowSlice = createSlice({
   name: 'window',
   initialState,
   reducers: {
+    setWindowShown: (state: WindowState, action: { payload: boolean }) => {
+      state.isWindowShown = action.payload;
+    },
     setWindowData: (
       state: WindowState,
       action: {
         payload: {
           windowList: Array<{
+            _id: string;
             name: string;
             id: number;
             windowData: Window;
@@ -103,63 +110,9 @@ export const windowSlice = createSlice({
       state.currentWindow = action.payload.currentWindow;
       state.doSetup = true;
     },
-    createWindow: (state: WindowState, action: { payload: string }) => {
-      state.windowList.push({
-        name: action.payload,
-        id: state.windowList[state.windowList.length - 1].id + 1,
-        windowData: {
-          width: 1366,
-          height: 768,
-        },
-        scriptData: [],
-        elementData: [],
-      });
-      //서버에도 푸시
-    },
     setCurrWin: (state: WindowState, action: { payload: number }) => {
       state.currentWindow = action.payload;
       state.currentElement = undefined;
-    },
-    renameWindow: (
-      state: WindowState,
-      action: { payload: { id: number; value: string } }
-    ) => {
-      const targetWindow = state.windowList.find(
-        (window) => action.payload.id === window.id
-      )!;
-      state.windowList.splice(state.windowList.indexOf(targetWindow!), 1, {
-        ...targetWindow,
-        name: action.payload.value,
-      });
-      //서버에도 푸시
-    },
-    deleteWindow: (state: WindowState, action: { payload: number }) => {
-      if (
-        window.sessionStorage.getItem('current_window') ===
-          action.payload.toString() &&
-        state.windowList.indexOf(
-          state.windowList.find((window) => action.payload === window.id)!
-        ) !== 0
-      ) {
-        window.sessionStorage.setItem(
-          'current_window',
-          state.windowList[0].id.toString()
-        );
-      } else if (
-        window.sessionStorage.getItem('current_window') ===
-        action.payload.toString()
-      ) {
-        window.sessionStorage.setItem(
-          'current_window',
-          state.windowList[1].id.toString()
-        );
-      }
-      state.windowList.splice(
-        state.windowList.indexOf(
-          state.windowList.find((window) => action.payload === window.id)!
-        ),
-        1
-      );
     },
     togglePanel: (
       state: WindowState,
@@ -335,10 +288,8 @@ export const windowSlice = createSlice({
 });
 
 export const {
+  setWindowShown,
   setWindowData,
-  createWindow,
-  renameWindow,
-  deleteWindow,
   togglePanel,
   setCurrWin,
   createElement,

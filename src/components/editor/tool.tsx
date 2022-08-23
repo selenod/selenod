@@ -12,8 +12,9 @@ import {
   renameElement,
   setCurrElement,
   togglePanel,
-  createWindow,
   setCurrWin,
+  setWindowData,
+  setWindowShown,
 } from '../system/reduxSlice/windowSlice';
 import {
   addAsset,
@@ -35,6 +36,8 @@ import {
   videoExtensions,
   ElementType,
 } from '../../data';
+import api from '../../config/api';
+import { setProjectData } from '../system/reduxSlice/projectSlice';
 
 Modal.setAppElement('#root');
 
@@ -45,6 +48,9 @@ export default function Tool() {
   }
 
   const projectData = useSelector((state: RootState) => state.project.data);
+  const isWindowShown = useSelector(
+    (state: RootState) => state.window.isWindowShown
+  );
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const windowList = useSelector((state: RootState) => state.window.windowList);
   const assetList = useSelector((state: RootState) => state.asset.assetList);
@@ -79,10 +85,8 @@ export default function Tool() {
     useState<number>();
   const [showPopover, setShowPopover] = useState<{
     option?: boolean;
-    windowMgr?: boolean;
   }>({
     option: false,
-    windowMgr: false,
   });
   const [showNodePopover, setShowNodePopover] = useState<boolean>(false);
   const [showAssetPopover, setShowAssetPopover] = useState<number>();
@@ -135,7 +139,7 @@ export default function Tool() {
             </div>
             <nav className="pnl-explore">
               <Popover
-                isOpen={showPopover.windowMgr as boolean}
+                isOpen={isWindowShown as boolean}
                 positions={['bottom']}
                 padding={5}
                 align="start"
@@ -143,9 +147,7 @@ export default function Tool() {
                 onClickOutside={() => {
                   if (isClicked) {
                     dispatch(setFalse());
-                    setShowPopover({
-                      windowMgr: false,
-                    });
+                    dispatch(setWindowShown(false));
                   }
                 }}
                 content={() => (
@@ -159,9 +161,7 @@ export default function Tool() {
                       onClick: () => {
                         dispatch(setCurrWin(window.id));
                         dispatch(setFalse());
-                        setShowPopover({
-                          windowMgr: false,
-                        });
+                        dispatch(setWindowShown(false));
                       },
                     }))}
                   />
@@ -177,13 +177,9 @@ export default function Tool() {
                   title="Manage Windows"
                   onClick={() => {
                     dispatch(
-                      showPopover.windowMgr
-                        ? dispatch(setFalse())
-                        : dispatch(setTrue())
+                      isWindowShown ? dispatch(setFalse()) : dispatch(setTrue())
                     );
-                    setShowPopover({
-                      windowMgr: !showPopover.windowMgr,
-                    });
+                    dispatch(setWindowShown(!isWindowShown));
                   }}
                 >
                   <p
@@ -563,8 +559,45 @@ export default function Tool() {
                             return;
                           }
 
-                          dispatch(createWindow(formInput));
-                          toast.success(`Window has been created.`);
+                          api
+                            .post('/project/window', {
+                              uid: localStorage.getItem('id'),
+                              id: projectData.id!,
+                              name: formInput,
+                            })
+                            .then(() => {
+                              api
+                                .get(
+                                  `/project/${localStorage.getItem(
+                                    'id'
+                                  )}/${projectData.id!}`
+                                )
+                                .then((res) => {
+                                  dispatch(
+                                    setWindowData({
+                                      windowList: res.data.project.windowList,
+                                      currentWindow: currentWindow!,
+                                    })
+                                  );
+                                  dispatch(
+                                    setProjectData({
+                                      id: projectData.id!,
+                                      name: projectData.name!,
+                                      owner: projectData.owner!,
+                                      createAt: projectData.createAt!,
+                                      modifiedAt: res.data.project.modifiedAt,
+                                    })
+                                  );
+
+                                  toast.success(`Window has been created.`);
+                                })
+                                .catch((err) => {
+                                  toast.error(err);
+                                });
+                            })
+                            .catch((err) => {
+                              toast.error(err);
+                            });
                         } else if (formInput.replaceAll(' ', '') === '') {
                           toast.error(`Window name cannot be blank.`);
                         } else {
@@ -1649,10 +1682,11 @@ export default function Tool() {
   }, [
     pnlCase,
     pnlSize.width,
-    showPopover.windowMgr,
+    showPopover,
     dispatch,
     currentWindow,
     isClicked,
+    isWindowShown,
     windowList,
     formDisable,
     winOpenId,
@@ -1668,7 +1702,7 @@ export default function Tool() {
     assetFormInput,
     assetFormContents,
     windowToggle,
-    projectData.name,
+    projectData,
   ]);
 
   useEffect(() => {

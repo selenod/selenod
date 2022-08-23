@@ -46,7 +46,7 @@ export default function EditorPage() {
           );
           dispatch(
             setProjectData({
-              id: res.data.project.id,
+              id: res.data.project._id,
               name: res.data.project.name,
               owner: res.data.project.owner,
               createAt: res.data.project.createAt,

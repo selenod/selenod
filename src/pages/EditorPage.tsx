@@ -10,6 +10,10 @@ import api from '../config/api';
 import { setProjectData } from '../components/system/reduxSlice/projectSlice';
 import { setWindowData } from '../components/system/reduxSlice/windowSlice';
 import { RootState } from '../store';
+import {
+  resetData,
+  setAssetData,
+} from '../components/system/reduxSlice/assetSlice';
 
 export default function EditorPage() {
   const { projectID } = useParams();
@@ -27,7 +31,7 @@ export default function EditorPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = 'Editor - Selenod';
+    document.title = 'Selenod Editor';
 
     if (!localStorage.getItem('id') || !localStorage.getItem('nickname')) {
       window.location.href = landingURL;
@@ -37,7 +41,16 @@ export default function EditorPage() {
       await api
         .get(`/project/${localStorage.getItem('id')}/${projectID}`)
         .then((res) => {
-          document.title = `${res.data.project.name} - Editor - Selenod`;
+          document.title = `${res.data.project.name} - Selenod Editor`;
+          //여기랑 tool.tsx 에셋 생성부분 일단 불러오게하고 수정/삭제 api도 만들면됨
+
+          dispatch(
+            setAssetData({
+              assetList: res.data.project.assetList,
+              assetData: res.data.project.assetData,
+              assetLength: res.data.project.assetLength,
+            })
+          );
           dispatch(
             setWindowData({
               windowList: res.data.project.windowList,
@@ -61,6 +74,10 @@ export default function EditorPage() {
           });
         });
     })();
+
+    return () => {
+      dispatch(resetData());
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectID]);
 

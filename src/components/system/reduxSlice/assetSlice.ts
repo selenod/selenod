@@ -8,12 +8,10 @@ export interface Asset {
   contents?: string;
   extension?: string;
   isOpened?: boolean;
-  isDisabled?: boolean; //Not used.
 }
 
 export interface AssetList {
   id: number;
-  contents?: Array<AssetList>;
 }
 
 export interface AssetState {
@@ -36,24 +34,32 @@ export const assetSlice = createSlice({
   name: 'asset',
   initialState,
   reducers: {
+    resetData: (state: AssetState) => {
+      state.assetList = [];
+      state.assetData = [];
+      state.assetLength = 0;
+      state.openedPanelList = [];
+      state.currentOpenedPanel = null;
+    },
+    setAssetData: (
+      state: AssetState,
+      action: {
+        payload: {
+          assetList: Array<AssetList>;
+          assetData: Array<Asset>;
+          assetLength: number;
+        };
+      }
+    ) => {
+      state.assetList = action.payload.assetList;
+      state.assetData = action.payload.assetData;
+      state.assetLength = action.payload.assetLength;
+    },
     addAssetWithoutAddLength: (
       state: { assetList: Array<AssetList> },
       action: { payload: AssetList }
     ) => {
       state.assetList.push(action.payload);
-    },
-    addAsset: (
-      state: { assetLength: number; assetList: Array<AssetList> },
-      action: { payload: AssetList }
-    ) => {
-      state.assetLength += 1;
-      state.assetList.push(action.payload);
-    },
-    addData: (
-      state: { assetData: Array<Asset> },
-      action: { payload: Asset }
-    ) => {
-      state.assetData.push(action.payload);
     },
     setOpened: (
       state: { assetData: Array<Asset>; assetList: Array<AssetList> },
@@ -61,40 +67,6 @@ export const assetSlice = createSlice({
     ) => {
       state.assetData.find((asset) => asset.id === action.payload)!.isOpened =
         !state.assetData.find((asset) => asset.id === action.payload)!.isOpened;
-
-      const recursive = (assetId: number, bool: boolean) => {
-        if (
-          state.assetList.find((asset) => asset.id === assetId)?.contents !==
-          undefined
-        ) {
-          state.assetList
-            .find((asset) => asset.id === assetId)!
-            .contents?.forEach((content) => {
-              if (bool) {
-                state.assetData.find(
-                  (asset) => asset.id === content.id
-                )!.isDisabled = true;
-              } else {
-                if (
-                  state.assetData.find((asset) => asset.id === assetId)
-                    ?.isOpened &&
-                  !state.assetData.find((asset) => asset.id === assetId)
-                    ?.isDisabled
-                ) {
-                  state.assetData.find(
-                    (asset) => asset.id === content.id
-                  )!.isDisabled = false;
-                }
-              }
-              recursive(content.id, bool);
-            });
-        }
-      };
-
-      recursive(
-        state.assetList.find((asset) => asset.id === action.payload)!.id,
-        !state.assetData.find((asset) => asset.id === action.payload)!.isOpened
-      );
     },
     addAssetLength: (
       state: { assetLength: number },
@@ -191,9 +163,9 @@ export const assetSlice = createSlice({
 });
 
 export const {
-  addAsset,
+  resetData,
+  setAssetData,
   addAssetWithoutAddLength,
-  addData,
   addAssetLength,
   setOpened,
   togglePanelOpened,

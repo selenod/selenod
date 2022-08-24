@@ -57,6 +57,7 @@ export default function Field(data: IToolData) {
             toggle === 0 && currentElement !== undefined
               ? 'calc(100% - 350px)'
               : '100%',
+          overflow: toggle === 1 ? 'hidden' : 'auto',
         }}
       >
         {toggle === 0 ? (

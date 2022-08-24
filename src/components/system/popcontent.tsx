@@ -308,22 +308,25 @@ export function PopContent({
                                               id: projectData.id!,
                                               name: projectData.name!,
                                               owner: projectData.owner!,
-                                              createAt: projectData.createAt!,
+                                              createAt:
+                                                res.data.project.createAt,
                                               modifiedAt:
                                                 res.data.project.modifiedAt,
                                             })
                                           );
 
                                           toast.success(
-                                            `Window has been renamed.`
+                                            `Window has been renamed successfully.`
                                           );
                                         })
                                         .catch((err) => {
-                                          toast.error(err);
+                                          toast.error(
+                                            err.response.data.message
+                                          );
                                         });
                                     })
                                     .catch((err) => {
-                                      toast.error(err);
+                                      toast.error(err.response.data.message);
                                     });
                                 } else if (
                                   formInput.replaceAll(' ', '') === ''
@@ -422,6 +425,11 @@ export function PopContent({
                                   toast.error(
                                     'Window opened cannot be deleted.'
                                   );
+
+                                  setDelModal(null);
+                                  setFormDisable(false);
+                                  dispatch(setWindowShown(false));
+                                  dispatch(setFalse());
                                   return false;
                                 }
 
@@ -480,7 +488,7 @@ export function PopContent({
                                             id: projectData.id!,
                                             name: projectData.name!,
                                             owner: projectData.owner!,
-                                            createAt: projectData.createAt!,
+                                            createAt: res.data.project.createAt,
                                             modifiedAt:
                                               res.data.project.modifiedAt,
                                           })
@@ -494,15 +502,15 @@ export function PopContent({
                                           1
                                         );
                                         toast.success(
-                                          `Window has been deleted.`
+                                          `Window has been deleted successfully.`
                                         );
                                       })
                                       .catch((err) => {
-                                        toast.error(err);
+                                        toast.error(err.response.data.message);
                                       });
                                   })
                                   .catch((err) => {
-                                    toast.error(err);
+                                    toast.error(err.response.data.message);
                                   });
 
                                 setDelModal(null);

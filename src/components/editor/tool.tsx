@@ -17,11 +17,10 @@ import {
   setWindowShown,
 } from '../system/reduxSlice/windowSlice';
 import {
-  addAsset,
-  addData,
   togglePanelOpened,
   deleteAssetById,
   renameAsset,
+  setAssetData,
 } from '../system/reduxSlice/assetSlice';
 import { FileDrop } from 'react-file-drop';
 import toast from 'react-hot-toast';
@@ -100,22 +99,12 @@ export default function Tool() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (
-      windowList.find(
-        (w) =>
-          w.id === parseInt(window.sessionStorage.getItem('current_window')!)
-      ) === undefined
-    ) {
-      window.sessionStorage.setItem('current_window', '0');
-    }
-
-    dispatch(
-      setCurrWin(
-        window.sessionStorage.getItem('current_window') !== null
-          ? parseInt(window.sessionStorage.getItem('current_window')!)
-          : windowList[0].id
-      )
+    window.sessionStorage.setItem(
+      'current_window',
+      windowList[0].id.toString()
     );
+
+    dispatch(setCurrWin(windowList[0].id));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -584,19 +573,21 @@ export default function Tool() {
                                       id: projectData.id!,
                                       name: projectData.name!,
                                       owner: projectData.owner!,
-                                      createAt: projectData.createAt!,
+                                      createAt: res.data.project.createAt,
                                       modifiedAt: res.data.project.modifiedAt,
                                     })
                                   );
 
-                                  toast.success(`Window has been created.`);
+                                  toast.success(
+                                    `Window has been created successfully.`
+                                  );
                                 })
                                 .catch((err) => {
-                                  toast.error(err);
+                                  toast.error(err.response.data.message);
                                 });
                             })
                             .catch((err) => {
-                              toast.error(err);
+                              toast.error(err.response.data.message);
                             });
                         } else if (formInput.replaceAll(' ', '') === '') {
                           toast.error(`Window name cannot be blank.`);
@@ -1035,71 +1026,89 @@ export default function Tool() {
                   (event as any).target.value = null;
                 }}
                 onChange={async (event) => {
-                  if (100 - assetLength - event.target.files!.length < 0) {
+                  if (assetLength >= 100) {
                     toast.error(
                       'Upload has been canceled because the upload exceeds number of assets remaining.'
                     );
                   } else {
-                    const lastIdx =
-                      assetLength === 0 ? 0 : assetData[assetLength - 1].id;
+                    const reader = new FileReader();
 
-                    for (
-                      let i = 0, index = assetLength;
-                      i < event.target.files!.length;
-                      i++
-                    ) {
-                      index++;
-
-                      const reader = new FileReader();
-
-                      reader.addEventListener('load', () => {
-                        dispatch(
-                          addAsset({
-                            id: lastIdx + index - 1,
-                          })
-                        );
-
-                        dispatch(
-                          addData({
-                            name: event.target.files![i].name.includes('.')
-                              ? event.target.files![i].name.substr(
-                                  0,
-                                  event.target.files![i].name.lastIndexOf('.')
-                                )
-                              : event.target.files![i].name,
-                            id: lastIdx + index - 1,
-                            type: AssetType.FILE,
-                            extension: event.target.files![i].name.includes('.')
-                              ? event.target.files![i].name.substr(
-                                  event.target.files![i].name.lastIndexOf('.')
-                                )
-                              : '',
-                            contents: reader.result as string,
-                          })
-                        );
-                      });
-
-                      if (
-                        event.target.files![i].name.includes('.') &&
-                        (imageExtensions.includes(
-                          event.target.files![i].name.substr(
-                            event.target.files![i].name.lastIndexOf('.') + 1
-                          )
-                        ) ||
-                          videoExtensions.includes(
-                            event.target.files![i].name.substr(
-                              event.target.files![i].name.lastIndexOf('.') + 1
+                    reader.addEventListener('load', async () => {
+                      await api
+                        .post('/project/asset', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          name: event.target.files![0].name.includes('.')
+                            ? event.target.files![0].name.substr(
+                                0,
+                                event.target.files![0].name.lastIndexOf('.')
+                              )
+                            : event.target.files![0].name,
+                          contents: reader.result as string,
+                          type: AssetType.FILE,
+                          extension: event.target.files![0].name.includes('.')
+                            ? event.target.files![0].name.substr(
+                                event.target.files![0].name.lastIndexOf('.')
+                              )
+                            : '',
+                        })
+                        .then(() => {
+                          api
+                            .get(
+                              `/project/${localStorage.getItem('id')}/${
+                                projectData.id
+                              }`
                             )
-                          ))
-                      ) {
-                        reader.readAsDataURL(event.target.files![i]);
-                      } else {
-                        reader.readAsText(event.target.files![i]);
-                      }
+                            .then((res) => {
+                              dispatch(
+                                setAssetData({
+                                  assetList: res.data.project.assetList,
+                                  assetData: res.data.project.assetData,
+                                  assetLength: res.data.project.assetLength,
+                                })
+                              );
+                              dispatch(
+                                setProjectData({
+                                  id: res.data.project._id,
+                                  name: res.data.project.name,
+                                  owner: res.data.project.owner,
+                                  createAt: res.data.project.createAt,
+                                  modifiedAt: res.data.project.modifiedAt,
+                                })
+                              );
+
+                              toast.success(
+                                `Asset has been added successfully.`
+                              );
+                            })
+                            .catch((err) => {
+                              toast.error(err.response.data.message);
+                            });
+                        })
+                        .catch((err) => {
+                          toast.error(err.response.data.message);
+                        });
+                    });
+
+                    if (
+                      event.target.files![0].name.includes('.') &&
+                      (imageExtensions.includes(
+                        event.target.files![0].name.substr(
+                          event.target.files![0].name.lastIndexOf('.') + 1
+                        )
+                      ) ||
+                        videoExtensions.includes(
+                          event.target.files![0].name.substr(
+                            event.target.files![0].name.lastIndexOf('.') + 1
+                          )
+                        ))
+                    ) {
+                      reader.readAsDataURL(event.target.files![0]);
+                    } else {
+                      reader.readAsText(event.target.files![0]);
                     }
                   }
                 }}
-                multiple
               />
               <div
                 className="tool-btn"
@@ -1265,37 +1274,64 @@ export default function Tool() {
                               `Asset name cannot include \\, /, :, *, ?, ", <, >, |`
                             );
                           } else {
-                            dispatch(
-                              addAsset({
-                                id:
-                                  assetLength === 0
-                                    ? 0
-                                    : assetData[assetLength - 1].id + 1,
-                              })
-                            );
+                            (async () => {
+                              await api
+                                .post('/project/asset', {
+                                  uid: localStorage.getItem('id'),
+                                  id: projectData.id,
+                                  name: assetFormInput.includes('.')
+                                    ? assetFormInput.substr(
+                                        0,
+                                        assetFormInput.lastIndexOf('.')
+                                      )
+                                    : assetFormInput,
+                                  contents: assetFormContents,
+                                  type: AssetType.FILE,
+                                  extension: assetFormInput.includes('.')
+                                    ? assetFormInput.substr(
+                                        assetFormInput.lastIndexOf('.')
+                                      )
+                                    : '',
+                                })
+                                .then(() => {
+                                  api
+                                    .get(
+                                      `/project/${localStorage.getItem('id')}/${
+                                        projectData.id
+                                      }`
+                                    )
+                                    .then((res) => {
+                                      dispatch(
+                                        setAssetData({
+                                          assetList: res.data.project.assetList,
+                                          assetData: res.data.project.assetData,
+                                          assetLength:
+                                            res.data.project.assetLength,
+                                        })
+                                      );
+                                      dispatch(
+                                        setProjectData({
+                                          id: res.data.project._id,
+                                          name: res.data.project.name,
+                                          owner: res.data.project.owner,
+                                          createAt: res.data.project.createAt,
+                                          modifiedAt:
+                                            res.data.project.modifiedAt,
+                                        })
+                                      );
 
-                            dispatch(
-                              addData({
-                                name: assetFormInput.includes('.')
-                                  ? assetFormInput.substr(
-                                      0,
-                                      assetFormInput.lastIndexOf('.')
-                                    )
-                                  : assetFormInput,
-                                id:
-                                  assetLength === 0
-                                    ? 0
-                                    : assetData[assetLength - 1].id + 1,
-                                type: AssetType.FILE,
-                                extension: assetFormInput.includes('.')
-                                  ? assetFormInput.substr(
-                                      assetFormInput.lastIndexOf('.')
-                                    )
-                                  : '',
-                                contents: assetFormContents,
-                              })
-                            );
-                            toast.success(`Asset has been created.`);
+                                      toast.success(
+                                        `Asset has been created successfully.`
+                                      );
+                                    })
+                                    .catch((err) => {
+                                      toast.error(err.response.data.message);
+                                    });
+                                })
+                                .catch((err) => {
+                                  toast.error(err.response.data.message);
+                                });
+                            })();
                           }
                         } else if (assetFormInput.replaceAll(' ', '') === '') {
                           toast.error(`Asset's name cannot be blank.`);
@@ -1323,87 +1359,101 @@ export default function Tool() {
                 }}
               >
                 <FileDrop
-                  onDragOver={(e) => console.log('범위로 들어옴')}
-                  onDragLeave={(e) => console.log('범위에서 나감')}
                   onDrop={async (files, event) => {
-                    const entryArr: Array<FileSystemEntry | null> = [];
-                    for (let i = 0; i < event.dataTransfer.items.length; i++) {
-                      entryArr.push(
-                        event.dataTransfer.items[i].webkitGetAsEntry()
-                      );
-                    }
+                    const entryArr: FileSystemEntry | null =
+                      event.dataTransfer.items[0].webkitGetAsEntry();
 
-                    if (100 - assetLength - files!.length < 0) {
+                    if (assetLength >= 100) {
                       toast.error(
                         'Upload has been canceled because the upload exceeds number of assets remaining.'
                       );
                     } else {
-                      const lastIdx =
-                        assetLength === 0 ? 0 : assetData[assetLength - 1].id;
+                      const fileAsEntry = entryArr;
+                      if (fileAsEntry) {
+                        if (fileAsEntry.isFile) {
+                          const reader = new FileReader();
 
-                      for (
-                        let i = 0, index = assetLength;
-                        i < files!.length;
-                        i++
-                      ) {
-                        const fileAsEntry = entryArr[i];
-                        if (fileAsEntry) {
-                          if (fileAsEntry.isFile) {
-                            index++;
-
-                            const reader = new FileReader();
-
-                            reader.addEventListener('load', () => {
-                              dispatch(
-                                addAsset({
-                                  id: lastIdx + index - 1,
-                                })
-                              );
-
-                              dispatch(
-                                addData({
-                                  name: files![i].name.includes('.')
-                                    ? files![i].name.substr(
-                                        0,
-                                        files![i].name.lastIndexOf('.')
-                                      )
-                                    : files![i].name,
-                                  id: lastIdx + index - 1,
-                                  type: AssetType.FILE,
-                                  extension: files![i].name.includes('.')
-                                    ? files![i].name.substr(
-                                        files![i].name.lastIndexOf('.')
-                                      )
-                                    : '',
-                                  contents: reader.result as string,
-                                })
-                              );
-                            });
-
-                            if (
-                              files![i].name.includes('.') &&
-                              (imageExtensions.includes(
-                                files![i].name.substr(
-                                  files![i].name.lastIndexOf('.') + 1
-                                )
-                              ) ||
-                                videoExtensions.includes(
-                                  files![i].name.substr(
-                                    files![i].name.lastIndexOf('.') + 1
+                          reader.addEventListener('load', async () => {
+                            await api
+                              .post('/project/asset', {
+                                uid: localStorage.getItem('id'),
+                                id: projectData.id,
+                                name: files![0].name.includes('.')
+                                  ? files![0].name.substr(
+                                      0,
+                                      files![0].name.lastIndexOf('.')
+                                    )
+                                  : files![0].name,
+                                contents: reader.result as string,
+                                type: AssetType.FILE,
+                                extension: files![0].name.includes('.')
+                                  ? files![0].name.substr(
+                                      files![0].name.lastIndexOf('.')
+                                    )
+                                  : '',
+                              })
+                              .then(() => {
+                                api
+                                  .get(
+                                    `/project/${localStorage.getItem('id')}/${
+                                      projectData.id
+                                    }`
                                   )
-                                ))
-                            ) {
-                              reader.readAsDataURL(files![i]);
-                            } else {
-                              reader.readAsText(files![i]);
-                            }
+                                  .then((res) => {
+                                    dispatch(
+                                      setAssetData({
+                                        assetList: res.data.project.assetList,
+                                        assetData: res.data.project.assetData,
+                                        assetLength:
+                                          res.data.project.assetLength,
+                                      })
+                                    );
+                                    dispatch(
+                                      setProjectData({
+                                        id: res.data.project._id,
+                                        name: res.data.project.name,
+                                        owner: res.data.project.owner,
+                                        createAt: res.data.project.createAt,
+                                        modifiedAt: res.data.project.modifiedAt,
+                                      })
+                                    );
+
+                                    toast.success(
+                                      `Asset has been added successfully.`
+                                    );
+                                  })
+                                  .catch((err) => {
+                                    toast.error(err.response.data.message);
+                                  });
+                              })
+                              .catch((err) => {
+                                toast.error(err.response.data.message);
+                              });
+                          });
+
+                          if (
+                            files![0].name.includes('.') &&
+                            (imageExtensions.includes(
+                              files![0].name.substr(
+                                files![0].name.lastIndexOf('.') + 1
+                              )
+                            ) ||
+                              videoExtensions.includes(
+                                files![0].name.substr(
+                                  files![0].name.lastIndexOf('.') + 1
+                                )
+                              ))
+                          ) {
+                            reader.readAsDataURL(files![0]);
                           } else {
-                            toast.error(
-                              `Folder '${
-                                files![i].name
-                              }' couldn't be uploaded because it is unable to upload folders as asset.`
-                            );
+                            reader.readAsText(files![0]);
                           }
+                        } else {
+                          toast.error(
+                            `Folder '${
+                              files![0].name
+                            }' couldn't be uploaded because it is unable to upload folders as asset.`
+                          );
                         }
                       }
                     }
@@ -1499,9 +1549,11 @@ export default function Tool() {
                                       `Asset name cannot include \\, /, :, *, ?, ", <, >, |`
                                     );
                                   } else {
-                                    dispatch(
-                                      renameAsset({
-                                        id: asset.id,
+                                    api
+                                      .put('/project/asset', {
+                                        uid: localStorage.getItem('id'),
+                                        id: projectData.id,
+                                        index: asset.id,
                                         name: assetFormInput.includes('.')
                                           ? assetFormInput.substr(
                                               0,
@@ -1514,8 +1566,49 @@ export default function Tool() {
                                             )
                                           : '',
                                       })
-                                    );
-                                    toast.success(`Asset has been renamed.`);
+                                      .then(() => {
+                                        api
+                                          .get(
+                                            `/project/${localStorage.getItem(
+                                              'id'
+                                            )}/${projectData.id}`
+                                          )
+                                          .then((res) => {
+                                            dispatch(
+                                              setAssetData({
+                                                assetList:
+                                                  res.data.project.assetList,
+                                                assetData:
+                                                  res.data.project.assetData,
+                                                assetLength:
+                                                  res.data.project.assetLength,
+                                              })
+                                            );
+                                            dispatch(
+                                              setProjectData({
+                                                id: res.data.project._id,
+                                                name: res.data.project.name,
+                                                owner: res.data.project.owner,
+                                                createAt:
+                                                  res.data.project.createAt,
+                                                modifiedAt:
+                                                  res.data.project.modifiedAt,
+                                              })
+                                            );
+
+                                            toast.success(
+                                              `Asset has been renamed successfully.`
+                                            );
+                                          })
+                                          .catch((err) => {
+                                            toast.error(
+                                              err.response.data.message
+                                            );
+                                          });
+                                      })
+                                      .catch((err) => {
+                                        toast.error(err.response.data.message);
+                                      });
                                   }
                                 } else if (
                                   assetFormInput.replaceAll(' ', '') === ''
@@ -1555,11 +1648,59 @@ export default function Tool() {
                               {
                                 text: 'Delete Asset',
                                 type: ContentType.DANGER,
-                                onClick: () => {
-                                  dispatch(deleteAssetById(asset.id));
+                                onClick: async () => {
+                                  await api
+                                    .delete(
+                                      `/project/asset/${localStorage.getItem(
+                                        'id'
+                                      )}/${projectData.id}/${asset.id}`
+                                    )
+                                    .then(() => {
+                                      api
+                                        .get(
+                                          `/project/${localStorage.getItem(
+                                            'id'
+                                          )}/${projectData.id}`
+                                        )
+                                        .then((res) => {
+                                          dispatch(
+                                            setAssetData({
+                                              assetList:
+                                                res.data.project.assetList,
+                                              assetData:
+                                                res.data.project.assetData,
+                                              assetLength:
+                                                res.data.project.assetLength,
+                                            })
+                                          );
+                                          dispatch(
+                                            setProjectData({
+                                              id: res.data.project._id,
+                                              name: res.data.project.name,
+                                              owner: res.data.project.owner,
+                                              createAt:
+                                                res.data.project.createAt,
+                                              modifiedAt:
+                                                res.data.project.modifiedAt,
+                                            })
+                                          );
+
+                                          toast.success(
+                                            'Asset has been deleted successfully.'
+                                          );
+                                        })
+                                        .catch((err) => {
+                                          toast.error(
+                                            err.response.data.message
+                                          );
+                                        });
+                                    })
+                                    .catch((err) => {
+                                      toast.error(err.response.data.message);
+                                    });
+
                                   dispatch(setFalse());
                                   setShowAssetPopover(undefined);
-                                  toast.success('Asset has been deleted.');
                                 },
                               },
                             ]}

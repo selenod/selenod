@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { landingURL } from '../config/config';
 import Modal from 'react-modal';
 import toast from 'react-hot-toast';
@@ -17,7 +16,6 @@ export default function Workspace() {
     message: undefined,
   });
   const [projectList, setProjectList] = useState<Array<any>>();
-  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -330,7 +328,7 @@ export default function Workspace() {
                         whiteSpace: 'nowrap',
                       }}
                       onClick={() => {
-                        navigate(`/editor/${project._id}`);
+                        window.location.href = `/editor/${project._id}`;
                       }}
                     >
                       {project.name}
@@ -358,7 +356,10 @@ export default function Workspace() {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {project.createAt.split('T')[0]}
+                      {new Date(project.createAt).toLocaleDateString('sv', {
+                        timeZone:
+                          Intl.DateTimeFormat().resolvedOptions().timeZone,
+                      })}
                     </p>
                   </div>
                   <div
@@ -383,7 +384,10 @@ export default function Workspace() {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {project.modifiedAt.split('T')[0]}
+                      {new Date(project.modifiedAt).toLocaleDateString('sv', {
+                        timeZone:
+                          Intl.DateTimeFormat().resolvedOptions().timeZone,
+                      })}
                     </p>
                   </div>
                   <svg
@@ -489,7 +493,9 @@ export default function Workspace() {
                                     setProjectList(res.data.projectList);
                                   })
                                   .catch((err) => {
-                                    toast.error(err.response.data.message);
+                                    toast.error(
+                                      err.response.data.message.message
+                                    );
                                   });
                               })
                               .catch((err) => {

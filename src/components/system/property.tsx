@@ -11,10 +11,12 @@ import {
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
-import { editElementProp } from './reduxSlice/windowSlice';
+import { setWindowData } from './reduxSlice/windowSlice';
 import { Popover } from 'react-tiny-popover';
 import { PopContent } from './popcontent';
 import { setFalse, setTrue } from './reduxSlice/coverSlice';
+import api from '../../config/api';
+import { setProjectData } from './reduxSlice/projectSlice';
 
 function GetComponent({
   current,
@@ -24,6 +26,7 @@ function GetComponent({
   type: ComponentType;
   disable?: Array<string>;
 }) {
+  const projectData = useSelector((state: RootState) => state.project.data);
   const windowList = useSelector((state: RootState) => state.window.windowList);
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const currentWindow = useSelector(
@@ -47,6 +50,35 @@ function GetComponent({
 
   const dispatch = useDispatch();
 
+  const handleElement = async () => {
+    await api
+      .get(`/project/${localStorage.getItem('id')}/${projectData.id}`)
+      .then((res) => {
+        dispatch(
+          setWindowData({
+            windowList: res.data.project.windowList,
+            currentWindow: res.data.project.windowList[0].id,
+          })
+        );
+        dispatch(
+          setProjectData({
+            id: res.data.project._id,
+            name: res.data.project.name,
+            owner: res.data.project.owner,
+            createAt: res.data.project.createAt,
+            modifiedAt: res.data.project.modifiedAt,
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(
+          err.response.data.message
+            ? err.response.data.message
+            : 'Fail to update database.'
+        );
+      });
+  };
+
   useEffect(() => {
     windowList
       .find((window) => window.id === currentWindow)
@@ -55,13 +87,25 @@ function GetComponent({
           element.src !== undefined &&
           assetData.find((asset) => asset.id === element.src) === undefined
       )
-      .forEach((element) => {
-        dispatch(
-          editElementProp({
-            id: element.id,
-            src: undefined,
+      .forEach(async (element) => {
+        await api
+          .put('/project/element', {
+            uid: localStorage.getItem('id'),
+            id: projectData.id,
+            windowId: currentWindow,
+            index: element.id,
+            prop: {
+              src: undefined,
+            },
           })
-        );
+          .then(async () => await handleElement())
+          .catch((err) => {
+            console.log(
+              err.response.data.message
+                ? err.response.data.message
+                : 'Fail to update database.'
+            );
+          });
       });
   }, [assetData, currentElement, currentWindow, dispatch, windowList]);
 
@@ -130,7 +174,7 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(0);
                     }}
-                    onBlur={() => {
+                    onBlur={async () => {
                       if (
                         windowList
                           .find((window) => window.id === currentWindow)!
@@ -138,25 +182,49 @@ function GetComponent({
                             (element) => element.id === current
                           )!.x === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            x: '0',
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              x: '0',
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          x:
-                            event.target.value === ''
-                              ? ''
-                              : event.target.value!,
+                    onChange={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            x:
+                              event.target.value === ''
+                                ? ''
+                                : event.target.value!,
+                          },
                         })
-                      );
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
                     }}
                   />
                 </div>
@@ -208,7 +276,7 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(1);
                     }}
-                    onBlur={() => {
+                    onBlur={async () => {
                       if (
                         windowList
                           .find((window) => window.id === currentWindow)!
@@ -216,25 +284,49 @@ function GetComponent({
                             (element) => element.id === current
                           )!.y === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            y: '0',
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              y: '0',
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          y:
-                            event.target.value === ''
-                              ? ''
-                              : event.target.value!,
+                    onChange={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            y:
+                              event.target.value === ''
+                                ? ''
+                                : event.target.value!,
+                          },
                         })
-                      );
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
                     }}
                   />
                 </div>
@@ -296,28 +388,40 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
+                    onChange={async (event) => {
                       if (
                         !isNaN(
                           parseFloat(event.target.value.replace('%', '')!)
                         ) ||
                         event.target.value.replace('%', '') === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            xAlign:
-                              event.target.value === '%'
-                                ? 0
-                                : parseFloat(
-                                    event.target.value.replace('%', '')!
-                                  ) < 100
-                                ? parseFloat(
-                                    event.target.value.replace('%', '')!
-                                  )
-                                : 100,
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              xAlign:
+                                event.target.value === '%'
+                                  ? 0
+                                  : parseFloat(
+                                      event.target.value.replace('%', '')!
+                                    ) < 100
+                                  ? parseFloat(
+                                      event.target.value.replace('%', '')!
+                                    )
+                                  : 100,
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                     }}
                   />
@@ -373,28 +477,40 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
+                    onChange={async (event) => {
                       if (
                         !isNaN(
                           parseFloat(event.target.value.replace('%', '')!)
                         ) ||
                         event.target.value.replace('%', '') === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            yAlign:
-                              event.target.value === '%'
-                                ? 0
-                                : parseFloat(
-                                    event.target.value.replace('%', '')!
-                                  ) < 100
-                                ? parseFloat(
-                                    event.target.value.replace('%', '')!
-                                  )
-                                : 100,
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              yAlign:
+                                event.target.value === '%'
+                                  ? 0
+                                  : parseFloat(
+                                      event.target.value.replace('%', '')!
+                                    ) < 100
+                                  ? parseFloat(
+                                      event.target.value.replace('%', '')!
+                                    )
+                                  : 100,
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                     }}
                   />
@@ -453,7 +569,7 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(4);
                     }}
-                    onBlur={() => {
+                    onBlur={async () => {
                       if (
                         windowList
                           .find((window) => window.id === currentWindow)!
@@ -461,25 +577,49 @@ function GetComponent({
                             (element) => element.id === current
                           )!.rotation === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            rotation: '0',
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              rotation: '0',
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          rotation:
-                            event.target.value === ''
-                              ? ''
-                              : event.target.value!,
+                    onChange={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            rotation:
+                              event.target.value === ''
+                                ? ''
+                                : event.target.value!,
+                          },
                         })
-                      );
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
                     }}
                   />
                 </div>
@@ -537,7 +677,7 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(5);
                     }}
-                    onBlur={() => {
+                    onBlur={async () => {
                       if (
                         windowList
                           .find((window) => window.id === currentWindow)!
@@ -545,33 +685,57 @@ function GetComponent({
                             (element) => element.id === current
                           )!.rotation === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            index: 0,
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              index: 0,
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
+                    onChange={async (event) => {
                       if (
                         !isNaN(parseFloat(event.target.value!)) ||
                         event.target.value === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            index:
-                              event.target.value === ''
-                                ? 0
-                                : parseFloat(event.target.value!) < 10000
-                                ? parseFloat(event.target.value!) > 0
-                                  ? parseFloat(event.target.value!)
-                                  : 0
-                                : 9999,
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              index:
+                                event.target.value === ''
+                                  ? 0
+                                  : parseFloat(event.target.value!) < 10000
+                                  ? parseFloat(event.target.value!) > 0
+                                    ? parseFloat(event.target.value!)
+                                    : 0
+                                  : 9999,
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                     }}
                   />
@@ -635,7 +799,7 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(0);
                     }}
-                    onBlur={() => {
+                    onBlur={async () => {
                       if (
                         windowList
                           .find((window) => window.id === currentWindow)!
@@ -643,25 +807,49 @@ function GetComponent({
                             (element) => element.id === current
                           )!.width === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            width: '0',
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              width: '0',
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          width:
-                            event.target.value === ''
-                              ? ''
-                              : event.target.value!,
+                    onChange={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            width:
+                              event.target.value === ''
+                                ? ''
+                                : event.target.value!,
+                          },
                         })
-                      );
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
                     }}
                   />
                 </div>
@@ -713,7 +901,7 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(1);
                     }}
-                    onBlur={() => {
+                    onBlur={async () => {
                       if (
                         windowList
                           .find((window) => window.id === currentWindow)!
@@ -721,25 +909,49 @@ function GetComponent({
                             (element) => element.id === current
                           )!.height === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            height: '0',
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              height: '0',
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          height:
-                            event.target.value === ''
-                              ? ''
-                              : event.target.value!,
+                    onChange={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            height:
+                              event.target.value === ''
+                                ? ''
+                                : event.target.value!,
+                          },
                         })
-                      );
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
                     }}
                   />
                 </div>
@@ -801,7 +1013,7 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(0);
                     }}
-                    onBlur={() => {
+                    onBlur={async () => {
                       if (
                         windowList
                           .find((window) => window.id === currentWindow)!
@@ -809,25 +1021,49 @@ function GetComponent({
                             (element) => element.id === current
                           )!.borderRadius === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            borderRadius: '0',
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              borderRadius: '0',
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          borderRadius:
-                            event.target.value === ''
-                              ? ''
-                              : event.target.value!,
+                    onChange={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            borderRadius:
+                              event.target.value === ''
+                                ? ''
+                                : event.target.value!,
+                          },
                         })
-                      );
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
                     }}
                   />
                 </div>
@@ -891,13 +1127,25 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) =>
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          borderColor: event.target.value!,
+                    onChange={async (event) =>
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            borderColor: event.target.value!,
+                          },
                         })
-                      )
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        })
                     }
                   />
                 </div>
@@ -964,16 +1212,29 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
+                    onChange={async (event) => {
                       setTextAreaHeight(
                         event.target.value!.split('\n').length - 1
                       );
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          text: event.target.value!,
+
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            text: event.target.value!,
+                          },
                         })
-                      );
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
                     }}
                   />
                 </div>
@@ -1037,22 +1298,34 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
+                    onChange={async (event) => {
                       if (
                         !isNaN(parseFloat(event.target.value!)) ||
                         event.target.value === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            fontSize:
-                              event.target.value === ''
-                                ? 0
-                                : parseFloat(event.target.value!) < 10000
-                                ? parseFloat(event.target.value!)
-                                : 9999,
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              fontSize:
+                                event.target.value === ''
+                                  ? 0
+                                  : parseFloat(event.target.value!) < 10000
+                                  ? parseFloat(event.target.value!)
+                                  : 9999,
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                     }}
                   />
@@ -1117,13 +1390,25 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) =>
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          color: event.target.value!,
+                    onChange={async (event) =>
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            color: event.target.value!,
+                          },
                         })
-                      )
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        })
                     }
                   />
                 </div>
@@ -1163,7 +1448,7 @@ function GetComponent({
                               .elementData.find(
                                 (element) => element.id === current
                               )!.part === Part.HORIZONTAL,
-                          onClick: () => {
+                          onClick: async () => {
                             if (
                               windowList
                                 .find((window) => window.id === currentWindow)!
@@ -1171,30 +1456,32 @@ function GetComponent({
                                   (element) => element.id === current
                                 )!.part === Part.VERTICAL
                             ) {
-                              dispatch(
-                                editElementProp({
-                                  id: currentElement!,
-                                  width: windowList
-                                    .find(
-                                      (window) => window.id === currentWindow
-                                    )!
-                                    .elementData.find(
-                                      (element) => element.id === current
-                                    )!.height,
+                              await api
+                                .put('/project/element', {
+                                  uid: localStorage.getItem('id'),
+                                  id: projectData.id,
+                                  windowId: currentWindow,
+                                  index: currentElement,
+                                  prop: {
+                                    width: windowList
+                                      .find(
+                                        (window) => window.id === currentWindow
+                                      )!
+                                      .elementData.find(
+                                        (element) => element.id === current
+                                      )!.height,
+                                    height: '1',
+                                    part: Part.HORIZONTAL,
+                                  },
                                 })
-                              );
-                              dispatch(
-                                editElementProp({
-                                  id: currentElement!,
-                                  height: '1',
-                                })
-                              );
-                              dispatch(
-                                editElementProp({
-                                  id: currentElement!,
-                                  part: Part.HORIZONTAL,
-                                })
-                              );
+                                .then(async () => await handleElement())
+                                .catch((err) => {
+                                  console.log(
+                                    err.response.data.message
+                                      ? err.response.data.message
+                                      : 'Fail to update database.'
+                                  );
+                                });
                             }
                             dispatch(setFalse());
                             setShowPopover(false);
@@ -1209,7 +1496,7 @@ function GetComponent({
                               .elementData.find(
                                 (element) => element.id === current
                               )!.part === Part.VERTICAL,
-                          onClick: () => {
+                          onClick: async () => {
                             if (
                               windowList
                                 .find((window) => window.id === currentWindow)!
@@ -1217,30 +1504,32 @@ function GetComponent({
                                   (element) => element.id === current
                                 )!.part === Part.HORIZONTAL
                             ) {
-                              dispatch(
-                                editElementProp({
-                                  id: currentElement!,
-                                  height: windowList
-                                    .find(
-                                      (window) => window.id === currentWindow
-                                    )!
-                                    .elementData.find(
-                                      (element) => element.id === current
-                                    )!.width,
+                              await api
+                                .put('/project/element', {
+                                  uid: localStorage.getItem('id'),
+                                  id: projectData.id,
+                                  windowId: currentWindow,
+                                  index: currentElement,
+                                  prop: {
+                                    height: windowList
+                                      .find(
+                                        (window) => window.id === currentWindow
+                                      )!
+                                      .elementData.find(
+                                        (element) => element.id === current
+                                      )!.width,
+                                    width: '1',
+                                    part: Part.VERTICAL,
+                                  },
                                 })
-                              );
-                              dispatch(
-                                editElementProp({
-                                  id: currentElement!,
-                                  width: '1',
-                                })
-                              );
-                              dispatch(
-                                editElementProp({
-                                  id: currentElement!,
-                                  part: Part.VERTICAL,
-                                })
-                              );
+                                .then(async () => await handleElement())
+                                .catch((err) => {
+                                  console.log(
+                                    err.response.data.message
+                                      ? err.response.data.message
+                                      : 'Fail to update database.'
+                                  );
+                                });
                             }
                             dispatch(setFalse());
                             setShowPopover(false);
@@ -1379,7 +1668,7 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(0);
                     }}
-                    onBlur={() => {
+                    onBlur={async () => {
                       if (
                         windowList
                           .find((window) => window.id === currentWindow)!
@@ -1392,12 +1681,24 @@ function GetComponent({
                             (element) => element.id === current
                           )!.width === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            width: '0',
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              width: '0',
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       } else if (
                         windowList
                           .find((window) => window.id === currentWindow)!
@@ -1410,37 +1711,74 @@ function GetComponent({
                             (element) => element.id === current
                           )!.height === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            height: '0',
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              height: '0',
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
-                      dispatch(
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.part === Part.HORIZONTAL
-                          ? editElementProp({
-                              id: currentElement!,
-                              width:
-                                event.target.value === ''
-                                  ? ''
-                                  : event.target.value!,
+                    onChange={async (event) => {
+                      windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .part === Part.HORIZONTAL
+                        ? await api
+                            .put('/project/element', {
+                              uid: localStorage.getItem('id'),
+                              id: projectData.id,
+                              windowId: currentWindow,
+                              index: currentElement,
+                              prop: {
+                                width:
+                                  event.target.value === ''
+                                    ? ''
+                                    : event.target.value!,
+                              },
                             })
-                          : editElementProp({
-                              id: currentElement!,
-                              height:
-                                event.target.value === ''
-                                  ? ''
-                                  : event.target.value!,
+                            .then(async () => await handleElement())
+                            .catch((err) => {
+                              console.log(
+                                err.response.data.message
+                                  ? err.response.data.message
+                                  : 'Fail to update database.'
+                              );
                             })
-                      );
+                        : await api
+                            .put('/project/element', {
+                              uid: localStorage.getItem('id'),
+                              id: projectData.id,
+                              windowId: currentWindow,
+                              index: currentElement,
+                              prop: {
+                                height:
+                                  event.target.value === ''
+                                    ? ''
+                                    : event.target.value!,
+                              },
+                            })
+                            .then(async () => await handleElement())
+                            .catch((err) => {
+                              console.log(
+                                err.response.data.message
+                                  ? err.response.data.message
+                                  : 'Fail to update database.'
+                              );
+                            });
                     }}
                   />
                 </div>
@@ -1504,13 +1842,25 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) =>
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          backgroundColor: event.target.value!,
+                    onChange={async (event) =>
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            backgroundColor: event.target.value!,
+                          },
                         })
-                      )
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        })
                     }
                   />
                 </div>
@@ -1572,13 +1922,25 @@ function GetComponent({
                                     .elementData.find(
                                       (element) => element.id === current
                                     )!.src === asset.id,
-                                onClick: () => {
-                                  dispatch(
-                                    editElementProp({
-                                      id: currentElement!,
-                                      src: asset.id,
+                                onClick: async () => {
+                                  await api
+                                    .put('/project/element', {
+                                      uid: localStorage.getItem('id'),
+                                      id: projectData.id,
+                                      windowId: currentWindow,
+                                      index: currentElement,
+                                      prop: {
+                                        src: asset.id,
+                                      },
                                     })
-                                  );
+                                    .then(async () => await handleElement())
+                                    .catch((err) => {
+                                      console.log(
+                                        err.response.data.message
+                                          ? err.response.data.message
+                                          : 'Fail to update database.'
+                                      );
+                                    });
                                   dispatch(setFalse());
                                   setShowPopover(false);
                                 },
@@ -1740,7 +2102,7 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(1);
                     }}
-                    onBlur={() => {
+                    onBlur={async () => {
                       if (
                         windowList
                           .find((window) => window.id === currentWindow)!
@@ -1748,25 +2110,49 @@ function GetComponent({
                             (element) => element.id === current
                           )!.borderRadius === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            borderRadius: '0',
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              borderRadius: '0',
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          borderRadius:
-                            event.target.value === ''
-                              ? ''
-                              : event.target.value!,
+                    onChange={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            borderRadius:
+                              event.target.value === ''
+                                ? ''
+                                : event.target.value!,
+                          },
                         })
-                      );
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
                     }}
                   />
                 </div>
@@ -1828,13 +2214,25 @@ function GetComponent({
                                     .elementData.find(
                                       (element) => element.id === current
                                     )!.src === asset.id,
-                                onClick: () => {
-                                  dispatch(
-                                    editElementProp({
-                                      id: currentElement!,
-                                      src: asset.id,
+                                onClick: async () => {
+                                  await api
+                                    .put('/project/element', {
+                                      uid: localStorage.getItem('id'),
+                                      id: projectData.id,
+                                      windowId: currentWindow,
+                                      index: currentElement,
+                                      prop: {
+                                        src: asset.id,
+                                      },
                                     })
-                                  );
+                                    .then(async () => await handleElement())
+                                    .catch((err) => {
+                                      console.log(
+                                        err.response.data.message
+                                          ? err.response.data.message
+                                          : 'Fail to update database.'
+                                      );
+                                    });
                                   dispatch(setFalse());
                                   setShowPopover(false);
                                 },
@@ -1996,7 +2394,7 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(1);
                     }}
-                    onBlur={() => {
+                    onBlur={async () => {
                       if (
                         windowList
                           .find((window) => window.id === currentWindow)!
@@ -2004,25 +2402,49 @@ function GetComponent({
                             (element) => element.id === current
                           )!.borderRadius === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            borderRadius: '0',
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              borderRadius: '0',
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          borderRadius:
-                            event.target.value === ''
-                              ? ''
-                              : event.target.value!,
+                    onChange={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            borderRadius:
+                              event.target.value === ''
+                                ? ''
+                                : event.target.value!,
+                          },
                         })
-                      );
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
                     }}
                   />
                 </div>
@@ -2089,13 +2511,25 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) =>
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          backgroundColor: event.target.value!,
+                    onChange={async (event) =>
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            backgroundColor: event.target.value!,
+                          },
                         })
-                      )
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        })
                     }
                   />
                 </div>
@@ -2153,7 +2587,7 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(1);
                     }}
-                    onBlur={() => {
+                    onBlur={async () => {
                       if (
                         windowList
                           .find((window) => window.id === currentWindow)!
@@ -2161,25 +2595,49 @@ function GetComponent({
                             (element) => element.id === current
                           )!.borderRadius === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            borderRadius: '0',
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              borderRadius: '0',
+                            },
                           })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          borderRadius:
-                            event.target.value === ''
-                              ? ''
-                              : event.target.value!,
+                    onChange={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            borderRadius:
+                              event.target.value === ''
+                                ? ''
+                                : event.target.value!,
+                          },
                         })
-                      );
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
                     }}
                   />
                 </div>
@@ -2223,17 +2681,29 @@ function GetComponent({
                       float: 'left',
                       cursor: 'pointer',
                     }}
-                    onClick={() => {
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          isChecked: !windowList
-                            .find((window) => window.id === currentWindow)!
-                            .elementData.find(
-                              (element) => element.id === current
-                            )!.isChecked,
+                    onClick={async () => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            isChecked: !windowList
+                              .find((window) => window.id === currentWindow)!
+                              .elementData.find(
+                                (element) => element.id === current
+                              )!.isChecked,
+                          },
                         })
-                      );
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
                     }}
                   >
                     {windowList
@@ -2336,7 +2806,7 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(0);
                     }}
-                    onBlur={() => {
+                    onBlur={async () => {
                       if (
                         windowList
                           .find((window) => window.id === currentWindow)!
@@ -2349,40 +2819,54 @@ function GetComponent({
                             (element) => element.id === current
                           )!.height === ''
                       ) {
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            width: '0',
+                        await api
+                          .put('/project/element', {
+                            uid: localStorage.getItem('id'),
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              width: '0',
+                              height: '0',
+                            },
                           })
-                        );
-                        dispatch(
-                          editElementProp({
-                            id: currentElement!,
-                            height: '0',
-                          })
-                        );
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
                       }
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) => {
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          width:
-                            event.target.value === ''
-                              ? ''
-                              : event.target.value!,
+                    onChange={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            width:
+                              event.target.value === ''
+                                ? ''
+                                : event.target.value!,
+                            height:
+                              event.target.value === ''
+                                ? ''
+                                : event.target.value!,
+                          },
                         })
-                      );
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          height:
-                            event.target.value === ''
-                              ? ''
-                              : event.target.value!,
-                        })
-                      );
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
                     }}
                   />
                 </div>
@@ -2446,13 +2930,25 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) =>
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          color: event.target.value!,
+                    onChange={async (event) =>
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            color: event.target.value!,
+                          },
                         })
-                      )
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        })
                     }
                   />
                 </div>
@@ -2516,13 +3012,25 @@ function GetComponent({
                     onBlur={() => {
                       setInputFocused(undefined);
                     }}
-                    onChange={(event) =>
-                      dispatch(
-                        editElementProp({
-                          id: currentElement!,
-                          backgroundColor: event.target.value!,
+                    onChange={async (event) =>
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            backgroundColor: event.target.value!,
+                          },
                         })
-                      )
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        })
                     }
                   />
                 </div>

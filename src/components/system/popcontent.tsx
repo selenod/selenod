@@ -266,7 +266,7 @@ export function PopContent({
                                 marginBottom: 40,
                               }}
                               disabled={formDisable}
-                              onClick={() => {
+                              onClick={async () => {
                                 // two-factor (who knows?)
                                 setFormDisable(true);
 
@@ -276,7 +276,7 @@ export function PopContent({
                                     (ct) => ct.text === formInput
                                   ) === undefined
                                 ) {
-                                  api
+                                  await api
                                     .put('/project/window', {
                                       uid: localStorage.getItem('id'),
                                       id: projectData.id!,
@@ -288,8 +288,8 @@ export function PopContent({
                                         (window) => window.id === content.id!
                                       )!.windowData,
                                     })
-                                    .then(() => {
-                                      api
+                                    .then(async () => {
+                                      await api
                                         .get(
                                           `/project/${localStorage.getItem(
                                             'id'
@@ -322,11 +322,17 @@ export function PopContent({
                                         .catch((err) => {
                                           toast.error(
                                             err.response.data.message
+                                              ? err.response.data.message
+                                              : 'Fail to update database.'
                                           );
                                         });
                                     })
                                     .catch((err) => {
-                                      toast.error(err.response.data.message);
+                                      toast.error(
+                                        err.response.data.message
+                                          ? err.response.data.message
+                                          : 'Fail to update database.'
+                                      );
                                     });
                                 } else if (
                                   formInput.replaceAll(' ', '') === ''
@@ -412,7 +418,7 @@ export function PopContent({
                                 marginTop: 15,
                                 marginBottom: 40,
                               }}
-                              onClick={() => {
+                              onClick={async () => {
                                 // two-factor (who knows?)
                                 setFormDisable(true);
                                 if (
@@ -458,7 +464,7 @@ export function PopContent({
                                   );
                                 }
 
-                                api
+                                await api
                                   .delete(
                                     `/project/window/${localStorage.getItem(
                                       'id'
@@ -468,8 +474,8 @@ export function PopContent({
                                       )!._id
                                     }`
                                   )
-                                  .then(() => {
-                                    api
+                                  .then(async () => {
+                                    await api
                                       .get(
                                         `/project/${localStorage.getItem(
                                           'id'
@@ -506,11 +512,19 @@ export function PopContent({
                                         );
                                       })
                                       .catch((err) => {
-                                        toast.error(err.response.data.message);
+                                        toast.error(
+                                          err.response.data.message
+                                            ? err.response.data.message
+                                            : 'Fail to update database.'
+                                        );
                                       });
                                   })
                                   .catch((err) => {
-                                    toast.error(err.response.data.message);
+                                    toast.error(
+                                      err.response.data.message
+                                        ? err.response.data.message
+                                        : 'Fail to update database.'
+                                    );
                                   });
 
                                 setDelModal(null);

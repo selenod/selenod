@@ -24,7 +24,6 @@ interface Element {
   height?: string;
   // Text
   text?: string;
-  placeholder?: string;
   fontSize?: number;
   color?: string;
   backgroundColor?: string;
@@ -102,12 +101,16 @@ export const windowSlice = createSlice({
             scriptData: Array<Node>;
             elementData: Array<Element>;
           }>;
-          currentWindow: number;
+          currentWindow?: number;
         };
       }
     ) => {
       state.windowList = action.payload.windowList;
-      state.currentWindow = action.payload.currentWindow;
+
+      if (action.payload.currentWindow !== undefined) {
+        state.currentWindow = action.payload.currentWindow;
+      }
+
       state.doSetup = true;
     },
     setCurrWin: (state: WindowState, action: { payload: number }) => {
@@ -120,160 +123,6 @@ export const windowSlice = createSlice({
     ) => {
       state.toggle =
         state.toggle === action.payload ? undefined : action.payload;
-    },
-    createElement: (
-      state: WindowState,
-      action: { payload: { name: string; type: ElementType } }
-    ) => {
-      state.windowList
-        .find((window) => window.id === state.currentWindow)
-        ?.elementData.push({
-          name: action.payload.name,
-          id: state.windowList.find(
-            (window) => window.id === state.currentWindow
-          )!.elementData.length,
-          type: action.payload.type,
-          x: '0',
-          y: '0',
-          xAlign: 0,
-          yAlign: 0,
-          rotation: '0',
-          index: 0,
-          width:
-            action.payload.type === ElementType.LINE
-              ? '250'
-              : action.payload.type === ElementType.IMAGE ||
-                action.payload.type === ElementType.VIDEO ||
-                action.payload.type === ElementType.SLINPUT ||
-                action.payload.type === ElementType.MLINPUT
-              ? '150'
-              : action.payload.type === ElementType.BUTTON
-              ? '70'
-              : action.payload.type === ElementType.CHECKBOX
-              ? '15'
-              : undefined,
-          height:
-            action.payload.type === ElementType.LINE
-              ? '1'
-              : action.payload.type === ElementType.IMAGE ||
-                action.payload.type === ElementType.VIDEO
-              ? '150'
-              : action.payload.type === ElementType.BUTTON
-              ? '40'
-              : action.payload.type === ElementType.CHECKBOX
-              ? '15'
-              : action.payload.type === ElementType.SLINPUT
-              ? '35'
-              : action.payload.type === ElementType.MLINPUT
-              ? '70'
-              : undefined,
-          text:
-            action.payload.type === ElementType.TEXT ||
-            action.payload.type === ElementType.BUTTON ||
-            action.payload.type === ElementType.SLINPUT ||
-            action.payload.type === ElementType.MLINPUT
-              ? 'New Text'
-              : undefined,
-          color:
-            action.payload.type === ElementType.TEXT ||
-            action.payload.type === ElementType.SLINPUT ||
-            action.payload.type === ElementType.MLINPUT
-              ? '#000'
-              : action.payload.type === ElementType.BUTTON
-              ? '#fff'
-              : action.payload.type === ElementType.CHECKBOX
-              ? '#8052ff'
-              : undefined,
-          fontSize:
-            action.payload.type === ElementType.TEXT ||
-            action.payload.type === ElementType.BUTTON ||
-            action.payload.type === ElementType.SLINPUT ||
-            action.payload.type === ElementType.MLINPUT
-              ? 16
-              : undefined,
-          backgroundColor:
-            action.payload.type === ElementType.LINE
-              ? '#d8e0e5'
-              : action.payload.type === ElementType.BUTTON
-              ? '#7f52ff'
-              : action.payload.type === ElementType.CHECKBOX
-              ? '#fff'
-              : undefined,
-          borderRadius:
-            action.payload.type === ElementType.IMAGE ||
-            action.payload.type === ElementType.VIDEO ||
-            action.payload.type === ElementType.CHECKBOX ||
-            action.payload.type === ElementType.SLINPUT ||
-            action.payload.type === ElementType.MLINPUT
-              ? '7'
-              : action.payload.type === ElementType.BUTTON
-              ? '5'
-              : undefined,
-          borderColor:
-            action.payload.type === ElementType.CHECKBOX ||
-            action.payload.type === ElementType.SLINPUT ||
-            action.payload.type === ElementType.MLINPUT
-              ? '#e2e2e2'
-              : undefined,
-          part:
-            action.payload.type === ElementType.LINE
-              ? Part.HORIZONTAL
-              : undefined,
-          canControl:
-            action.payload.type === ElementType.VIDEO ? false : undefined,
-          isChecked:
-            action.payload.type === ElementType.CHECKBOX ? false : undefined,
-        });
-    },
-    deleteElement: (state: WindowState, action: { payload: number }) => {
-      if (action.payload === state.currentElement) {
-        state.currentElement = undefined;
-      }
-
-      state.windowList.find(
-        (window) => window.id === state.currentWindow
-      )!.elementData = state.windowList
-        .find((window) => window.id === state.currentWindow)!
-        .elementData.filter((element) => element.id !== action.payload);
-    },
-    renameElement: (
-      state: WindowState,
-      action: {
-        payload: {
-          id: number;
-          name: string;
-        };
-      }
-    ) => {
-      state.windowList
-        .find((window) => window.id === state.currentWindow)!
-        .elementData.find((element) => element.id === action.payload.id)!.name =
-        action.payload.name;
-    },
-    editElementProp: (
-      state: WindowState,
-      action: {
-        payload: ElementPropMethod;
-      }
-    ) => {
-      for (let name in action.payload) {
-        if (name !== 'id') {
-          //@ts-ignore
-          state.windowList
-            .find((window) => window.id === state.currentWindow)!
-            .elementData.find((element) => element.id === action.payload.id)![
-            name as keyof ElementPropMethod
-          ] =
-            action.payload[name as keyof ElementPropMethod] !== undefined ||
-            name === 'src'
-              ? action.payload[name as keyof ElementPropMethod]!
-              : state.windowList
-                  .find((window) => window.id === state.currentWindow)!
-                  .elementData.find(
-                    (element) => element.id === action.payload.id
-                  )![name as keyof ElementPropMethod]!;
-        }
-      }
     },
     setCurrElement: (
       state: WindowState,
@@ -292,10 +141,6 @@ export const {
   setWindowData,
   togglePanel,
   setCurrWin,
-  createElement,
-  deleteElement,
-  renameElement,
-  editElementProp,
   setCurrElement,
 } = windowSlice.actions;
 

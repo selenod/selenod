@@ -55,24 +55,12 @@ export const assetSlice = createSlice({
       state.assetData = action.payload.assetData;
       state.assetLength = action.payload.assetLength;
     },
-    addAssetWithoutAddLength: (
-      state: { assetList: Array<AssetList> },
-      action: { payload: AssetList }
-    ) => {
-      state.assetList.push(action.payload);
-    },
     setOpened: (
       state: { assetData: Array<Asset>; assetList: Array<AssetList> },
       action: { payload: number }
     ) => {
       state.assetData.find((asset) => asset.id === action.payload)!.isOpened =
         !state.assetData.find((asset) => asset.id === action.payload)!.isOpened;
-    },
-    addAssetLength: (
-      state: { assetLength: number },
-      action: { payload: number }
-    ) => {
-      state.assetLength += action.payload;
     },
     togglePanelOpened: (
       state: {
@@ -112,66 +100,15 @@ export const assetSlice = createSlice({
     ) => {
       state.currentOpenedPanel = action.payload;
     },
-    renameAsset: (
-      state: { assetData: Array<Asset> },
-      action: { payload: { id: number; name: string; extension: string } }
-    ) => {
-      state.assetData.find((asset) => asset.id === action.payload.id)!.name =
-        action.payload.name;
-      state.assetData.find(
-        (asset) => asset.id === action.payload.id
-      )!.extension = action.payload.extension;
-    },
-    deleteAssetById: (
-      state: {
-        currentOpenedPanel: number | null;
-        openedPanelList: Array<number>;
-        assetList: Array<AssetList>;
-        assetData: Array<Asset>;
-        assetLength: number;
-      },
-      action: { payload: number }
-    ) => {
-      if (state.currentOpenedPanel === action.payload) {
-        if (state.openedPanelList.length <= 1) {
-          state.currentOpenedPanel = null;
-        } else {
-          state.currentOpenedPanel =
-            action.payload === 0
-              ? state.openedPanelList.find((panel) => panel === 1)!
-              : state.openedPanelList.find((panel) => panel === 0)!;
-        }
-      }
-
-      if (state.openedPanelList.includes(action.payload)) {
-        state.openedPanelList = state.openedPanelList.filter(
-          (asset) => asset !== action.payload
-        );
-      }
-
-      state.assetList = state.assetList.filter(
-        (asset) => asset.id !== action.payload
-      );
-
-      state.assetData = state.assetData.filter(
-        (asset) => asset.id !== action.payload
-      );
-
-      state.assetLength--;
-    },
   },
 });
 
 export const {
   resetData,
   setAssetData,
-  addAssetWithoutAddLength,
-  addAssetLength,
   setOpened,
   togglePanelOpened,
   setOpenedPanel,
-  deleteAssetById,
-  renameAsset,
 } = assetSlice.actions;
 
 export default assetSlice.reducer;

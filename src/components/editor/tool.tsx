@@ -7,9 +7,6 @@ import { Popover } from 'react-tiny-popover';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
 import {
-  createElement,
-  deleteElement,
-  renameElement,
   setCurrElement,
   togglePanel,
   setCurrWin,
@@ -18,8 +15,6 @@ import {
 } from '../system/reduxSlice/windowSlice';
 import {
   togglePanelOpened,
-  deleteAssetById,
-  renameAsset,
   setAssetData,
 } from '../system/reduxSlice/assetSlice';
 import { FileDrop } from 'react-file-drop';
@@ -97,6 +92,36 @@ export default function Tool() {
   const assetInput = useRef<any>(null);
 
   const dispatch = useDispatch();
+
+  const handleElement = async () => {
+    await api
+      .get(`/project/${localStorage.getItem('id')}/${projectData.id}`)
+      .then((res) => {
+        dispatch(
+          setWindowData({
+            windowList: res.data.project.windowList,
+          })
+        );
+        dispatch(
+          setProjectData({
+            id: res.data.project._id,
+            name: res.data.project.name,
+            owner: res.data.project.owner,
+            createAt: res.data.project.createAt,
+            modifiedAt: res.data.project.modifiedAt,
+          })
+        );
+
+        toast.success('Element has been created successfully.');
+      })
+      .catch((err) => {
+        toast.error(
+          err.response.data.message
+            ? err.response.data.message
+            : 'Fail to update database.'
+        );
+      });
+  };
 
   useEffect(() => {
     window.sessionStorage.setItem(
@@ -224,9 +249,12 @@ export default function Tool() {
                       },
                       {
                         text: 'Text',
-                        onClick: () => {
-                          dispatch(
-                            createElement({
+                        onClick: async () => {
+                          await api
+                            .post('/project/element', {
+                              uid: localStorage.getItem('id'),
+                              id: projectData.id,
+                              windowId: currentWindow,
                               name: `Text ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
@@ -237,16 +265,26 @@ export default function Tool() {
                               }`,
                               type: ElementType.TEXT,
                             })
-                          );
+                            .then(async () => await handleElement())
+                            .catch((err) => {
+                              toast.error(
+                                err.response.data.message
+                                  ? err.response.data.message
+                                  : 'Fail to update database.'
+                              );
+                            });
                           setShowNodePopover(false);
                           dispatch(setFalse());
                         },
                       },
                       {
                         text: 'Line',
-                        onClick: () => {
-                          dispatch(
-                            createElement({
+                        onClick: async () => {
+                          await api
+                            .post('/project/element', {
+                              uid: localStorage.getItem('id'),
+                              id: projectData.id,
+                              windowId: currentWindow,
                               name: `Line ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
@@ -257,7 +295,14 @@ export default function Tool() {
                               }`,
                               type: ElementType.LINE,
                             })
-                          );
+                            .then(async () => await handleElement())
+                            .catch((err) => {
+                              toast.error(
+                                err.response.data.message
+                                  ? err.response.data.message
+                                  : 'Fail to update database.'
+                              );
+                            });
                           setShowNodePopover(false);
                           dispatch(setFalse());
                         },
@@ -271,9 +316,12 @@ export default function Tool() {
                       },
                       {
                         text: 'Image',
-                        onClick: () => {
-                          dispatch(
-                            createElement({
+                        onClick: async () => {
+                          await api
+                            .post('/project/element', {
+                              uid: localStorage.getItem('id'),
+                              id: projectData.id,
+                              windowId: currentWindow,
                               name: `Image ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
@@ -284,16 +332,26 @@ export default function Tool() {
                               }`,
                               type: ElementType.IMAGE,
                             })
-                          );
+                            .then(async () => await handleElement())
+                            .catch((err) => {
+                              toast.error(
+                                err.response.data.message
+                                  ? err.response.data.message
+                                  : 'Fail to update database.'
+                              );
+                            });
                           setShowNodePopover(false);
                           dispatch(setFalse());
                         },
                       },
                       {
                         text: 'Video',
-                        onClick: () => {
-                          dispatch(
-                            createElement({
+                        onClick: async () => {
+                          await api
+                            .post('/project/element', {
+                              uid: localStorage.getItem('id'),
+                              id: projectData.id,
+                              windowId: currentWindow,
                               name: `Video ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
@@ -304,7 +362,14 @@ export default function Tool() {
                               }`,
                               type: ElementType.VIDEO,
                             })
-                          );
+                            .then(async () => await handleElement())
+                            .catch((err) => {
+                              toast.error(
+                                err.response.data.message
+                                  ? err.response.data.message
+                                  : 'Fail to update database.'
+                              );
+                            });
                           setShowNodePopover(false);
                           dispatch(setFalse());
                         },
@@ -318,9 +383,12 @@ export default function Tool() {
                       },
                       {
                         text: 'Button',
-                        onClick: () => {
-                          dispatch(
-                            createElement({
+                        onClick: async () => {
+                          await api
+                            .post('/project/element', {
+                              uid: localStorage.getItem('id'),
+                              id: projectData.id,
+                              windowId: currentWindow,
                               name: `Button ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
@@ -331,16 +399,26 @@ export default function Tool() {
                               }`,
                               type: ElementType.BUTTON,
                             })
-                          );
+                            .then(async () => await handleElement())
+                            .catch((err) => {
+                              toast.error(
+                                err.response.data.message
+                                  ? err.response.data.message
+                                  : 'Fail to update database.'
+                              );
+                            });
                           setShowNodePopover(false);
                           dispatch(setFalse());
                         },
                       },
                       {
                         text: 'Checkbox',
-                        onClick: () => {
-                          dispatch(
-                            createElement({
+                        onClick: async () => {
+                          await api
+                            .post('/project/element', {
+                              uid: localStorage.getItem('id'),
+                              id: projectData.id,
+                              windowId: currentWindow,
                               name: `Checkbox ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
@@ -351,17 +429,27 @@ export default function Tool() {
                               }`,
                               type: ElementType.CHECKBOX,
                             })
-                          );
+                            .then(async () => await handleElement())
+                            .catch((err) => {
+                              toast.error(
+                                err.response.data.message
+                                  ? err.response.data.message
+                                  : 'Fail to update database.'
+                              );
+                            });
                           setShowNodePopover(false);
                           dispatch(setFalse());
                         },
                       },
                       {
                         text: 'Single-Line Input',
-                        onClick: () => {
-                          dispatch(
-                            createElement({
-                              name: `Single-Line Input ${
+                        onClick: async () => {
+                          await api
+                            .post('/project/element', {
+                              uid: localStorage.getItem('id'),
+                              id: projectData.id,
+                              windowId: currentWindow,
+                              name: `Single-Line ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
                                   ?.elementData.filter(
@@ -371,17 +459,27 @@ export default function Tool() {
                               }`,
                               type: ElementType.SLINPUT,
                             })
-                          );
+                            .then(async () => await handleElement())
+                            .catch((err) => {
+                              toast.error(
+                                err.response.data.message
+                                  ? err.response.data.message
+                                  : 'Fail to update database.'
+                              );
+                            });
                           setShowNodePopover(false);
                           dispatch(setFalse());
                         },
                       },
                       {
                         text: 'Multiple-Line Input',
-                        onClick: () => {
-                          dispatch(
-                            createElement({
-                              name: `Multiple-Line Input ${
+                        onClick: async () => {
+                          await api
+                            .post('/project/element', {
+                              uid: localStorage.getItem('id'),
+                              id: projectData.id,
+                              windowId: currentWindow,
+                              name: `Multiple-Line ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
                                   ?.elementData.filter(
@@ -391,7 +489,14 @@ export default function Tool() {
                               }`,
                               type: ElementType.MLINPUT,
                             })
-                          );
+                            .then(async () => await handleElement())
+                            .catch((err) => {
+                              toast.error(
+                                err.response.data.message
+                                  ? err.response.data.message
+                                  : 'Fail to update database.'
+                              );
+                            });
                           setShowNodePopover(false);
                           dispatch(setFalse());
                         },
@@ -528,7 +633,7 @@ export default function Tool() {
                         marginBottom: 40,
                       }}
                       disabled={formDisable}
-                      onClick={() => {
+                      onClick={async () => {
                         // two-factor
                         setFormDisable(true);
 
@@ -548,14 +653,14 @@ export default function Tool() {
                             return;
                           }
 
-                          api
+                          await api
                             .post('/project/window', {
                               uid: localStorage.getItem('id'),
                               id: projectData.id!,
                               name: formInput,
                             })
-                            .then(() => {
-                              api
+                            .then(async () => {
+                              await api
                                 .get(
                                   `/project/${localStorage.getItem(
                                     'id'
@@ -583,11 +688,19 @@ export default function Tool() {
                                   );
                                 })
                                 .catch((err) => {
-                                  toast.error(err.response.data.message);
+                                  toast.error(
+                                    err.response.data.message
+                                      ? err.response.data.message
+                                      : 'Fail to update database.'
+                                  );
                                 });
                             })
                             .catch((err) => {
-                              toast.error(err.response.data.message);
+                              toast.error(
+                                err.response.data.message
+                                  ? err.response.data.message
+                                  : 'Fail to update database.'
+                              );
                             });
                         } else if (formInput.replaceAll(' ', '') === '') {
                           toast.error(`Window name cannot be blank.`);
@@ -683,18 +796,66 @@ export default function Tool() {
                                 marginBottom: 40,
                               }}
                               disabled={formDisable}
-                              onClick={() => {
+                              onClick={async () => {
                                 // two-factor
                                 setFormDisable(true);
 
                                 if (assetFormInput.replaceAll(' ', '') !== '') {
-                                  dispatch(
-                                    renameElement({
-                                      id: element.id,
-                                      name: assetFormInput,
+                                  await api
+                                    .put('/project/element', {
+                                      uid: localStorage.getItem('id'),
+                                      id: projectData.id,
+                                      windowId: currentWindow,
+                                      index: element.id,
+                                      prop: {
+                                        name: assetFormInput,
+                                      },
                                     })
-                                  );
-                                  toast.success(`Element has been renamed.`);
+                                    .then(async () => {
+                                      await api
+                                        .get(
+                                          `/project/${localStorage.getItem(
+                                            'id'
+                                          )}/${projectData.id}`
+                                        )
+                                        .then((res) => {
+                                          dispatch(
+                                            setWindowData({
+                                              windowList:
+                                                res.data.project.windowList,
+                                            })
+                                          );
+                                          dispatch(
+                                            setProjectData({
+                                              id: res.data.project._id,
+                                              name: res.data.project.name,
+                                              owner: res.data.project.owner,
+                                              createAt:
+                                                res.data.project.createAt,
+                                              modifiedAt:
+                                                res.data.project.modifiedAt,
+                                            })
+                                          );
+
+                                          toast.success(
+                                            `Element has been renamed successfully.`
+                                          );
+                                        })
+                                        .catch((err) => {
+                                          toast.error(
+                                            err.response.data.message
+                                              ? err.response.data.message
+                                              : 'Fail to update database.'
+                                          );
+                                        });
+                                    })
+                                    .catch((err) => {
+                                      toast.error(
+                                        err.response.data.message
+                                          ? err.response.data.message
+                                          : 'Fail to update database.'
+                                      );
+                                    });
                                 } else if (
                                   assetFormInput.replaceAll(' ', '') === ''
                                 ) {
@@ -739,11 +900,65 @@ export default function Tool() {
                               {
                                 text: 'Delete Element',
                                 type: ContentType.DANGER,
-                                onClick: () => {
-                                  dispatch(deleteElement(element.id));
+                                onClick: async () => {
+                                  // dispatch(deleteElement(element.id));
+
+                                  await api
+                                    .delete(
+                                      `/project/element/${localStorage.getItem(
+                                        'id'
+                                      )}/${projectData.id}/${currentWindow}/${
+                                        element.id
+                                      }`
+                                    )
+                                    .then(async () => {
+                                      await api
+                                        .get(
+                                          `/project/${localStorage.getItem(
+                                            'id'
+                                          )}/${projectData.id}`
+                                        )
+                                        .then((res) => {
+                                          dispatch(
+                                            setWindowData({
+                                              windowList:
+                                                res.data.project.windowList,
+                                            })
+                                          );
+                                          dispatch(
+                                            setProjectData({
+                                              id: res.data.project._id,
+                                              name: res.data.project.name,
+                                              owner: res.data.project.owner,
+                                              createAt:
+                                                res.data.project.createAt,
+                                              modifiedAt:
+                                                res.data.project.modifiedAt,
+                                            })
+                                          );
+
+                                          toast.success(
+                                            'Element has been deleted successfully.'
+                                          );
+                                        })
+                                        .catch((err) => {
+                                          toast.error(
+                                            err.response.data.message
+                                              ? err.response.data.message
+                                              : 'Fail to update database.'
+                                          );
+                                        });
+                                    })
+                                    .catch((err) => {
+                                      toast.error(
+                                        err.response.data.message
+                                          ? err.response.data.message
+                                          : 'Fail to update database.'
+                                      );
+                                    });
+
                                   dispatch(setFalse());
                                   setShowElementPopover(undefined);
-                                  toast.success('Element has been deleted.');
                                 },
                               },
                             ]}
@@ -1052,8 +1267,8 @@ export default function Tool() {
                               )
                             : '',
                         })
-                        .then(() => {
-                          api
+                        .then(async () => {
+                          await api
                             .get(
                               `/project/${localStorage.getItem('id')}/${
                                 projectData.id
@@ -1082,11 +1297,23 @@ export default function Tool() {
                               );
                             })
                             .catch((err) => {
-                              toast.error(err.response.data.message);
+                              toast.error(
+                                err.response.data.message
+                                  ? err.response.data.message
+                                  : 'Fail to update database.'
+                              );
                             });
                         })
                         .catch((err) => {
-                          toast.error(err.response.data.message);
+                          toast.error(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                              ? err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                              : 'Fail to update database.'
+                          );
                         });
                     });
 
@@ -1293,8 +1520,8 @@ export default function Tool() {
                                       )
                                     : '',
                                 })
-                                .then(() => {
-                                  api
+                                .then(async () => {
+                                  await api
                                     .get(
                                       `/project/${localStorage.getItem('id')}/${
                                         projectData.id
@@ -1325,11 +1552,19 @@ export default function Tool() {
                                       );
                                     })
                                     .catch((err) => {
-                                      toast.error(err.response.data.message);
+                                      toast.error(
+                                        err.response.data.message
+                                          ? err.response.data.message
+                                          : 'Fail to update database.'
+                                      );
                                     });
                                 })
                                 .catch((err) => {
-                                  toast.error(err.response.data.message);
+                                  toast.error(
+                                    err.response.data.message
+                                      ? err.response.data.message
+                                      : 'Fail to update database.'
+                                  );
                                 });
                             })();
                           }
@@ -1392,8 +1627,8 @@ export default function Tool() {
                                     )
                                   : '',
                               })
-                              .then(() => {
-                                api
+                              .then(async () => {
+                                await api
                                   .get(
                                     `/project/${localStorage.getItem('id')}/${
                                       projectData.id
@@ -1423,11 +1658,19 @@ export default function Tool() {
                                     );
                                   })
                                   .catch((err) => {
-                                    toast.error(err.response.data.message);
+                                    toast.error(
+                                      err.response.data.message
+                                        ? err.response.data.message
+                                        : 'Fail to update database.'
+                                    );
                                   });
                               })
                               .catch((err) => {
-                                toast.error(err.response.data.message);
+                                toast.error(
+                                  err.response.data.message
+                                    ? err.response.data.message
+                                    : 'Fail to update database.'
+                                );
                               });
                           });
 
@@ -1529,7 +1772,7 @@ export default function Tool() {
                                 marginBottom: 40,
                               }}
                               disabled={formDisable}
-                              onClick={() => {
+                              onClick={async () => {
                                 // two-factor
                                 setFormDisable(true);
 
@@ -1549,7 +1792,7 @@ export default function Tool() {
                                       `Asset name cannot include \\, /, :, *, ?, ", <, >, |`
                                     );
                                   } else {
-                                    api
+                                    await api
                                       .put('/project/asset', {
                                         uid: localStorage.getItem('id'),
                                         id: projectData.id,
@@ -1566,8 +1809,8 @@ export default function Tool() {
                                             )
                                           : '',
                                       })
-                                      .then(() => {
-                                        api
+                                      .then(async () => {
+                                        await api
                                           .get(
                                             `/project/${localStorage.getItem(
                                               'id'
@@ -1603,11 +1846,17 @@ export default function Tool() {
                                           .catch((err) => {
                                             toast.error(
                                               err.response.data.message
+                                                ? err.response.data.message
+                                                : 'Fail to update database.'
                                             );
                                           });
                                       })
                                       .catch((err) => {
-                                        toast.error(err.response.data.message);
+                                        toast.error(
+                                          err.response.data.message
+                                            ? err.response.data.message
+                                            : 'Fail to update database.'
+                                        );
                                       });
                                   }
                                 } else if (
@@ -1655,14 +1904,21 @@ export default function Tool() {
                                         'id'
                                       )}/${projectData.id}/${asset.id}`
                                     )
-                                    .then(() => {
-                                      api
+                                    .then(async () => {
+                                      await api
                                         .get(
                                           `/project/${localStorage.getItem(
                                             'id'
                                           )}/${projectData.id}`
                                         )
                                         .then((res) => {
+                                          dispatch(
+                                            togglePanelOpened({
+                                              id: asset.id,
+                                              toggle: false,
+                                            })
+                                          );
+
                                           dispatch(
                                             setAssetData({
                                               assetList:
@@ -1692,11 +1948,17 @@ export default function Tool() {
                                         .catch((err) => {
                                           toast.error(
                                             err.response.data.message
+                                              ? err.response.data.message
+                                              : 'Fail to update database.'
                                           );
                                         });
                                     })
                                     .catch((err) => {
-                                      toast.error(err.response.data.message);
+                                      toast.error(
+                                        err.response.data.message
+                                          ? err.response.data.message
+                                          : 'Fail to update database.'
+                                      );
                                     });
 
                                   dispatch(setFalse());
@@ -1820,6 +2082,7 @@ export default function Tool() {
       default:
         break;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     pnlCase,
     pnlSize.width,

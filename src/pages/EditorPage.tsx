@@ -42,7 +42,6 @@ export default function EditorPage() {
         .get(`/project/${localStorage.getItem('id')}/${projectID}`)
         .then((res) => {
           document.title = `${res.data.project.name} - Selenod Editor`;
-          //여기랑 tool.tsx 에셋 생성부분 일단 불러오게하고 수정/삭제 api도 만들면됨
 
           dispatch(
             setAssetData({

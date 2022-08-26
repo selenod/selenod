@@ -901,7 +901,11 @@ export default function Tool() {
                                 text: 'Delete Element',
                                 type: ContentType.DANGER,
                                 onClick: async () => {
-                                  // dispatch(deleteElement(element.id));
+                                  dispatch(
+                                    setCurrElement({
+                                      id: element.id,
+                                    })
+                                  );
 
                                   await api
                                     .delete(

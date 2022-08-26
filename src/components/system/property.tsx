@@ -57,7 +57,6 @@ function GetComponent({
         dispatch(
           setWindowData({
             windowList: res.data.project.windowList,
-            currentWindow: res.data.project.windowList[0].id,
           })
         );
         dispatch(
@@ -107,7 +106,15 @@ function GetComponent({
             );
           });
       });
-  }, [assetData, currentElement, currentWindow, dispatch, windowList]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    assetData,
+    currentElement,
+    currentWindow,
+    dispatch,
+    windowList,
+    projectData.id,
+  ]);
 
   return (
     <div
@@ -165,7 +172,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -267,7 +274,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -376,7 +383,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -465,7 +472,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -560,7 +567,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -668,7 +675,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -790,7 +797,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -892,7 +899,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -1004,7 +1011,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -1115,7 +1122,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -1200,7 +1207,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -1286,7 +1293,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -1378,7 +1385,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -1649,7 +1656,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -1830,7 +1837,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -2093,7 +2100,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -2385,7 +2392,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -2499,7 +2506,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -2578,7 +2585,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -2797,7 +2804,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -2918,7 +2925,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
@@ -3000,7 +3007,7 @@ function GetComponent({
                       float: 'right',
                       color: 'var(--fieldTextColor)',
                     }}
-                    value={
+                    defaultValue={
                       windowList
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!

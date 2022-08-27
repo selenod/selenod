@@ -5,13 +5,8 @@ import { RootState } from '../../store';
 import { useSelector } from 'react-redux';
 import { imageExtensions, videoExtensions } from '../../data';
 import Property from '../system/property';
-import Selene, {
-  NodeType,
-  SeleneNodeData,
-  SeleneNodeObject,
-  SeleneNodesObject,
-} from '@selenod/selene';
 import Type from '@selenod/selene/dist/data/SeleneType';
+import Selene, { SeleneNodesObject } from '@selenod/selene';
 
 interface IToolData {
   panelWidth: number;
@@ -645,14 +640,68 @@ export default function Field(data: IToolData) {
           <div>
             <Selene
               nodesData={{
-                'selene.test.Sans': new SeleneNodeData({
+                'selene.test.Sans': {
                   name: 'Sans',
-                  nodeType: NodeType.Method,
+                  hasInputFlow: true,
+                  hasOutputFlow: true,
                   inputs: [{ name: 'param1', type: Type.String }],
                   output: Type.Int,
-                }),
+                },
+                'selene.test.Sans2': {
+                  name: 'Sans2',
+                  hasInputFlow: false,
+                  hasOutputFlow: false,
+                  inputs: [{ name: 'param1', type: Type.Int }],
+                  output: Type.String,
+                },
+                'selene.test.Sans3': {
+                  name: 'Sans3',
+                  hasInputFlow: false,
+                  hasOutputFlow: true,
+                  inputs: [],
+                  output: Type.Int,
+                },
+                'selene.test.Sans4': {
+                  name: 'Sans4',
+                  hasInputFlow: false,
+                  hasOutputFlow: false,
+                  inputs: [],
+                  output: Type.Any,
+                },
+                'selene.test.Papyrus': {
+                  name: 'Papyrus5',
+                  hasInputFlow: true,
+                  hasOutputFlow: false,
+                  inputs: [
+                    { name: 'param1', type: Type.Bool },
+                    { name: 'param2', type: Type.Int },
+                    { name: 'param3', type: Type.Float },
+                    { name: 'param4', type: Type.String },
+                    { name: 'param5', type: Type.Func },
+                    { name: 'param6', type: Type.List },
+                    { name: 'param7', type: Type.Dict },
+                    { name: 'param8', type: Type.Object },
+                    { name: 'param9', type: Type.Any },
+                  ],
+                  output: Type.Void,
+                },
               }}
-              onNodesUpdated={(object: SeleneNodesObject) => {}}
+              // setup initial node objects
+              nodesObject={{
+                testNodeObjectId: {
+                  nodeId: 'selene.test.Sans',
+                  outputFlowConnection: null,
+                  inputConnections: [],
+                  position: {
+                    x: 0,
+                    y: 0,
+                  },
+                  zIndex: 0,
+                },
+              }}
+              onNodesUpdated={(object: SeleneNodesObject) => {
+                console.log(object);
+              }}
             />
           </div>
         ) : assetData.find((asset) => asset.id === currentOpenedPanel)

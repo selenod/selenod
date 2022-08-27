@@ -6,7 +6,7 @@ interface Window {
   height: number;
 }
 
-interface Node {}
+interface Script {}
 
 interface Element {
   name: string;
@@ -35,28 +35,6 @@ interface Element {
   isChecked?: boolean;
 }
 
-interface ElementPropMethod {
-  id: number;
-  x?: string;
-  y?: string;
-  xAlign?: number;
-  yAlign?: number;
-  rotation?: string;
-  index?: number;
-  width?: string;
-  height?: string;
-  text?: string;
-  fontSize?: number;
-  color?: string;
-  backgroundColor?: string;
-  borderRadius?: string;
-  borderColor?: string;
-  part?: Part;
-  src?: number;
-  canControl?: boolean;
-  isChecked?: boolean;
-}
-
 interface WindowState {
   isWindowShown: boolean;
   doSetup: boolean;
@@ -65,7 +43,7 @@ interface WindowState {
     name: string;
     id: number;
     windowData: Window;
-    scriptData: Array<Node>;
+    scriptData: Array<Script>;
     elementData: Array<Element>;
   }>;
   currentWindow: number | undefined;

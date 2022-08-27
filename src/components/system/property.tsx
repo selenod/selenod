@@ -181,33 +181,41 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(0);
                     }}
-                    onBlur={async () => {
-                      if (
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.x === ''
-                      ) {
-                        await api
-                          .put('/project/element', {
-                            uid: localStorage.getItem('id'),
-                            id: projectData.id,
-                            windowId: currentWindow,
-                            index: currentElement,
-                            prop: {
-                              x: '0',
-                            },
-                          })
-                          .then(async () => await handleElement())
-                          .catch((err) => {
-                            console.log(
-                              err.response.data.message
-                                ? err.response.data.message
-                                : 'Fail to update database.'
-                            );
-                          });
-                      }
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            x:
+                              event.target.value === ''
+                                ? '0'
+                                : event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.x;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) => {
@@ -220,7 +228,7 @@ function GetComponent({
                           prop: {
                             x:
                               event.target.value === ''
-                                ? ''
+                                ? '0'
                                 : event.target.value!,
                           },
                         })
@@ -283,33 +291,41 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(1);
                     }}
-                    onBlur={async () => {
-                      if (
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.y === ''
-                      ) {
-                        await api
-                          .put('/project/element', {
-                            uid: localStorage.getItem('id'),
-                            id: projectData.id,
-                            windowId: currentWindow,
-                            index: currentElement,
-                            prop: {
-                              y: '0',
-                            },
-                          })
-                          .then(async () => await handleElement())
-                          .catch((err) => {
-                            console.log(
-                              err.response.data.message
-                                ? err.response.data.message
-                                : 'Fail to update database.'
-                            );
-                          });
-                      }
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            y:
+                              event.target.value === ''
+                                ? '0'
+                                : event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.y;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) => {
@@ -392,7 +408,44 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(2);
                     }}
-                    onBlur={() => {
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            xAlign: !isNaN(
+                              parseFloat(event.target.value.replace('%', '')!)
+                            )
+                              ? parseFloat(event.target.value.replace('%', '')!)
+                              : 0,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value =
+                                  windowList
+                                    .find(
+                                      (window) => window.id === currentWindow
+                                    )!
+                                    .elementData.find(
+                                      (element) => element.id === current
+                                    )!.xAlign + '%';
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) => {
@@ -409,16 +462,13 @@ function GetComponent({
                             windowId: currentWindow,
                             index: currentElement,
                             prop: {
-                              xAlign:
-                                event.target.value === '%'
-                                  ? 0
-                                  : parseFloat(
-                                      event.target.value.replace('%', '')!
-                                    ) < 100
-                                  ? parseFloat(
-                                      event.target.value.replace('%', '')!
-                                    )
-                                  : 100,
+                              xAlign: !isNaN(
+                                parseFloat(event.target.value.replace('%', '')!)
+                              )
+                                ? parseFloat(
+                                    event.target.value.replace('%', '')!
+                                  )
+                                : 0,
                             },
                           })
                           .then(async () => await handleElement())
@@ -481,7 +531,44 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(3);
                     }}
-                    onBlur={() => {
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            yAlign: !isNaN(
+                              parseFloat(event.target.value.replace('%', '')!)
+                            )
+                              ? parseFloat(event.target.value.replace('%', '')!)
+                              : 0,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value =
+                                  windowList
+                                    .find(
+                                      (window) => window.id === currentWindow
+                                    )!
+                                    .elementData.find(
+                                      (element) => element.id === current
+                                    )!.yAlign + '%';
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) => {
@@ -498,16 +585,13 @@ function GetComponent({
                             windowId: currentWindow,
                             index: currentElement,
                             prop: {
-                              yAlign:
-                                event.target.value === '%'
-                                  ? 0
-                                  : parseFloat(
-                                      event.target.value.replace('%', '')!
-                                    ) < 100
-                                  ? parseFloat(
-                                      event.target.value.replace('%', '')!
-                                    )
-                                  : 100,
+                              yAlign: !isNaN(
+                                parseFloat(event.target.value.replace('%', '')!)
+                              )
+                                ? parseFloat(
+                                    event.target.value.replace('%', '')!
+                                  )
+                                : 0,
                             },
                           })
                           .then(async () => await handleElement())
@@ -576,33 +660,41 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(4);
                     }}
-                    onBlur={async () => {
-                      if (
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.rotation === ''
-                      ) {
-                        await api
-                          .put('/project/element', {
-                            uid: localStorage.getItem('id'),
-                            id: projectData.id,
-                            windowId: currentWindow,
-                            index: currentElement,
-                            prop: {
-                              rotation: '0',
-                            },
-                          })
-                          .then(async () => await handleElement())
-                          .catch((err) => {
-                            console.log(
-                              err.response.data.message
-                                ? err.response.data.message
-                                : 'Fail to update database.'
-                            );
-                          });
-                      }
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            rotation:
+                              event.target.value === ''
+                                ? '0'
+                                : event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.rotation;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) => {
@@ -615,7 +707,7 @@ function GetComponent({
                           prop: {
                             rotation:
                               event.target.value === ''
-                                ? ''
+                                ? '0'
                                 : event.target.value!,
                           },
                         })
@@ -684,33 +776,47 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(5);
                     }}
-                    onBlur={async () => {
-                      if (
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.rotation === ''
-                      ) {
-                        await api
-                          .put('/project/element', {
-                            uid: localStorage.getItem('id'),
-                            id: projectData.id,
-                            windowId: currentWindow,
-                            index: currentElement,
-                            prop: {
-                              index: 0,
-                            },
-                          })
-                          .then(async () => await handleElement())
-                          .catch((err) => {
-                            console.log(
-                              err.response.data.message
-                                ? err.response.data.message
-                                : 'Fail to update database.'
-                            );
-                          });
-                      }
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            index:
+                              event.target.value === ''
+                                ? 0
+                                : parseFloat(event.target.value!) < 10000
+                                ? parseFloat(event.target.value!) > 0
+                                  ? parseFloat(event.target.value!)
+                                  : 0
+                                : 9999,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!
+                                  .index.toString();
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) => {
@@ -806,33 +912,42 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(0);
                     }}
-                    onBlur={async () => {
-                      if (
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.width === ''
-                      ) {
-                        await api
-                          .put('/project/element', {
-                            uid: localStorage.getItem('id'),
-                            id: projectData.id,
-                            windowId: currentWindow,
-                            index: currentElement,
-                            prop: {
-                              width: '0',
-                            },
-                          })
-                          .then(async () => await handleElement())
-                          .catch((err) => {
-                            console.log(
-                              err.response.data.message
-                                ? err.response.data.message
-                                : 'Fail to update database.'
-                            );
-                          });
-                      }
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            width:
+                              event.target.value === ''
+                                ? '0'
+                                : event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.width!;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) => {
@@ -845,7 +960,7 @@ function GetComponent({
                           prop: {
                             width:
                               event.target.value === ''
-                                ? ''
+                                ? '0'
                                 : event.target.value!,
                           },
                         })
@@ -908,33 +1023,42 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(1);
                     }}
-                    onBlur={async () => {
-                      if (
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.height === ''
-                      ) {
-                        await api
-                          .put('/project/element', {
-                            uid: localStorage.getItem('id'),
-                            id: projectData.id,
-                            windowId: currentWindow,
-                            index: currentElement,
-                            prop: {
-                              height: '0',
-                            },
-                          })
-                          .then(async () => await handleElement())
-                          .catch((err) => {
-                            console.log(
-                              err.response.data.message
-                                ? err.response.data.message
-                                : 'Fail to update database.'
-                            );
-                          });
-                      }
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            height:
+                              event.target.value === ''
+                                ? '0'
+                                : event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.height!;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) => {
@@ -947,7 +1071,7 @@ function GetComponent({
                           prop: {
                             height:
                               event.target.value === ''
-                                ? ''
+                                ? '0'
                                 : event.target.value!,
                           },
                         })
@@ -1020,33 +1144,42 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(0);
                     }}
-                    onBlur={async () => {
-                      if (
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.borderRadius === ''
-                      ) {
-                        await api
-                          .put('/project/element', {
-                            uid: localStorage.getItem('id'),
-                            id: projectData.id,
-                            windowId: currentWindow,
-                            index: currentElement,
-                            prop: {
-                              borderRadius: '0',
-                            },
-                          })
-                          .then(async () => await handleElement())
-                          .catch((err) => {
-                            console.log(
-                              err.response.data.message
-                                ? err.response.data.message
-                                : 'Fail to update database.'
-                            );
-                          });
-                      }
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            borderRadius:
+                              event.target.value === ''
+                                ? '0'
+                                : event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.borderRadius!;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) => {
@@ -1059,7 +1192,7 @@ function GetComponent({
                           prop: {
                             borderRadius:
                               event.target.value === ''
-                                ? ''
+                                ? '0'
                                 : event.target.value!,
                           },
                         })
@@ -1131,7 +1264,39 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(1);
                     }}
-                    onBlur={() => {
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            borderColor: event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.borderColor!;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) =>
@@ -1216,7 +1381,39 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(1);
                     }}
-                    onBlur={() => {
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            text: event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.text!;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) => {
@@ -1302,7 +1499,45 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(2);
                     }}
-                    onBlur={() => {
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            fontSize:
+                              event.target.value === ''
+                                ? 0
+                                : parseFloat(event.target.value!) < 10000
+                                ? parseFloat(event.target.value!)
+                                : 9999,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!
+                                  .fontSize!.toString();
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) => {
@@ -1394,7 +1629,39 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(0);
                     }}
-                    onBlur={() => {
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            color: event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.color!;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) =>
@@ -1675,18 +1942,13 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(0);
                     }}
-                    onBlur={async () => {
+                    onBlur={async (event) => {
                       if (
                         windowList
                           .find((window) => window.id === currentWindow)!
                           .elementData.find(
                             (element) => element.id === current
-                          )!.part === Part.HORIZONTAL &&
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.width === ''
+                          )!.part === Part.HORIZONTAL
                       ) {
                         await api
                           .put('/project/element', {
@@ -1695,10 +1957,43 @@ function GetComponent({
                             windowId: currentWindow,
                             index: currentElement,
                             prop: {
-                              width: '0',
+                              width:
+                                event.target.value === ''
+                                  ? '0'
+                                  : event.target.value!,
                             },
                           })
-                          .then(async () => await handleElement())
+                          .then(
+                            async () =>
+                              await handleElement().then(() => {
+                                if (event) {
+                                  event!.target.value =
+                                    windowList
+                                      .find(
+                                        (window) => window.id === currentWindow
+                                      )!
+                                      .elementData.find(
+                                        (element) => element.id === current
+                                      )!.part === Part.HORIZONTAL
+                                      ? windowList
+                                          .find(
+                                            (window) =>
+                                              window.id === currentWindow
+                                          )!
+                                          .elementData.find(
+                                            (element) => element.id === current
+                                          )!.width!
+                                      : windowList
+                                          .find(
+                                            (window) =>
+                                              window.id === currentWindow
+                                          )!
+                                          .elementData.find(
+                                            (element) => element.id === current
+                                          )!.height!;
+                                }
+                              })
+                          )
                           .catch((err) => {
                             console.log(
                               err.response.data.message
@@ -1706,18 +2001,7 @@ function GetComponent({
                                 : 'Fail to update database.'
                             );
                           });
-                      } else if (
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.part === Part.VERTICAL &&
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.height === ''
-                      ) {
+                      } else {
                         await api
                           .put('/project/element', {
                             uid: localStorage.getItem('id'),
@@ -1725,10 +2009,26 @@ function GetComponent({
                             windowId: currentWindow,
                             index: currentElement,
                             prop: {
-                              height: '0',
+                              height:
+                                event.target.value === ''
+                                  ? '0'
+                                  : event.target.value!,
                             },
                           })
-                          .then(async () => await handleElement())
+                          .then(
+                            async () =>
+                              await handleElement().then(() => {
+                                if (event) {
+                                  event!.target.value = windowList
+                                    .find(
+                                      (window) => window.id === currentWindow
+                                    )!
+                                    .elementData.find(
+                                      (element) => element.id === current
+                                    )!.height!;
+                                }
+                              })
+                          )
                           .catch((err) => {
                             console.log(
                               err.response.data.message
@@ -1753,7 +2053,7 @@ function GetComponent({
                               prop: {
                                 width:
                                   event.target.value === ''
-                                    ? ''
+                                    ? '0'
                                     : event.target.value!,
                               },
                             })
@@ -1774,7 +2074,7 @@ function GetComponent({
                               prop: {
                                 height:
                                   event.target.value === ''
-                                    ? ''
+                                    ? '0'
                                     : event.target.value!,
                               },
                             })
@@ -1846,7 +2146,39 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(3);
                     }}
-                    onBlur={() => {
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            backgroundColor: event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.backgroundColor!;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) =>
@@ -2109,33 +2441,42 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(1);
                     }}
-                    onBlur={async () => {
-                      if (
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.borderRadius === ''
-                      ) {
-                        await api
-                          .put('/project/element', {
-                            uid: localStorage.getItem('id'),
-                            id: projectData.id,
-                            windowId: currentWindow,
-                            index: currentElement,
-                            prop: {
-                              borderRadius: '0',
-                            },
-                          })
-                          .then(async () => await handleElement())
-                          .catch((err) => {
-                            console.log(
-                              err.response.data.message
-                                ? err.response.data.message
-                                : 'Fail to update database.'
-                            );
-                          });
-                      }
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            borderRadius:
+                              event.target.value === ''
+                                ? '0'
+                                : event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.borderRadius!;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) => {
@@ -2148,7 +2489,7 @@ function GetComponent({
                           prop: {
                             borderRadius:
                               event.target.value === ''
-                                ? ''
+                                ? '0'
                                 : event.target.value!,
                           },
                         })
@@ -2401,33 +2742,42 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(1);
                     }}
-                    onBlur={async () => {
-                      if (
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.borderRadius === ''
-                      ) {
-                        await api
-                          .put('/project/element', {
-                            uid: localStorage.getItem('id'),
-                            id: projectData.id,
-                            windowId: currentWindow,
-                            index: currentElement,
-                            prop: {
-                              borderRadius: '0',
-                            },
-                          })
-                          .then(async () => await handleElement())
-                          .catch((err) => {
-                            console.log(
-                              err.response.data.message
-                                ? err.response.data.message
-                                : 'Fail to update database.'
-                            );
-                          });
-                      }
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            borderRadius:
+                              event.target.value === ''
+                                ? ''
+                                : event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.borderRadius!;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) => {
@@ -2440,7 +2790,7 @@ function GetComponent({
                           prop: {
                             borderRadius:
                               event.target.value === ''
-                                ? ''
+                                ? '0'
                                 : event.target.value!,
                           },
                         })
@@ -2515,7 +2865,39 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(0);
                     }}
-                    onBlur={() => {
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            backgroundColor: event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.backgroundColor!;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) =>
@@ -2594,33 +2976,42 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(1);
                     }}
-                    onBlur={async () => {
-                      if (
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.borderRadius === ''
-                      ) {
-                        await api
-                          .put('/project/element', {
-                            uid: localStorage.getItem('id'),
-                            id: projectData.id,
-                            windowId: currentWindow,
-                            index: currentElement,
-                            prop: {
-                              borderRadius: '0',
-                            },
-                          })
-                          .then(async () => await handleElement())
-                          .catch((err) => {
-                            console.log(
-                              err.response.data.message
-                                ? err.response.data.message
-                                : 'Fail to update database.'
-                            );
-                          });
-                      }
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            borderRadius:
+                              event.target.value === ''
+                                ? '0'
+                                : event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.borderRadius!;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) => {
@@ -2633,7 +3024,7 @@ function GetComponent({
                           prop: {
                             borderRadius:
                               event.target.value === ''
-                                ? ''
+                                ? '0'
                                 : event.target.value!,
                           },
                         })
@@ -2731,7 +3122,7 @@ function GetComponent({
                           fill="#fff"
                           style={{
                             position: 'relative',
-                            top: -1.75,
+                            top: -3,
                             textAlign: 'center',
                           }}
                         >
@@ -2813,39 +3204,46 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(0);
                     }}
-                    onBlur={async () => {
-                      if (
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.width === '' ||
-                        windowList
-                          .find((window) => window.id === currentWindow)!
-                          .elementData.find(
-                            (element) => element.id === current
-                          )!.height === ''
-                      ) {
-                        await api
-                          .put('/project/element', {
-                            uid: localStorage.getItem('id'),
-                            id: projectData.id,
-                            windowId: currentWindow,
-                            index: currentElement,
-                            prop: {
-                              width: '0',
-                              height: '0',
-                            },
-                          })
-                          .then(async () => await handleElement())
-                          .catch((err) => {
-                            console.log(
-                              err.response.data.message
-                                ? err.response.data.message
-                                : 'Fail to update database.'
-                            );
-                          });
-                      }
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            width:
+                              event.target.value === ''
+                                ? '0'
+                                : event.target.value!,
+                            height:
+                              event.target.value === ''
+                                ? '0'
+                                : event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.width!;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) => {
@@ -2858,11 +3256,11 @@ function GetComponent({
                           prop: {
                             width:
                               event.target.value === ''
-                                ? ''
+                                ? '0'
                                 : event.target.value!,
                             height:
                               event.target.value === ''
-                                ? ''
+                                ? '0'
                                 : event.target.value!,
                           },
                         })
@@ -2934,7 +3332,39 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(1);
                     }}
-                    onBlur={() => {
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            color: event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.color!;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) =>
@@ -3016,7 +3446,39 @@ function GetComponent({
                     onFocus={() => {
                       setInputFocused(2);
                     }}
-                    onBlur={() => {
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: localStorage.getItem('id'),
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            backgroundColor: event.target.value!,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!.backgroundColor!;
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
                       setInputFocused(undefined);
                     }}
                     onChange={async (event) =>

@@ -514,7 +514,11 @@ export default function Field(data: IToolData) {
                                 width: '100%',
                                 height: '100%',
                                 backgroundColor: element.color,
-                                borderRadius: element.borderRadius,
+                                borderRadius: `calc(${
+                                  !isNaN(element.borderRadius as any)
+                                    ? `${element.borderRadius}px`
+                                    : element.borderRadius
+                                })`,
                                 cursor: 'pointer',
                               }}
                             >

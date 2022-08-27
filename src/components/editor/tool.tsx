@@ -900,69 +900,72 @@ export default function Tool() {
                               {
                                 text: 'Delete Element',
                                 type: ContentType.DANGER,
-                                onClick: async () => {
+                                onClick: () => {
                                   dispatch(
                                     setCurrElement({
                                       id: element.id,
+                                      forceQuit: true,
                                     })
                                   );
 
-                                  await api
-                                    .delete(
-                                      `/project/element/${localStorage.getItem(
-                                        'id'
-                                      )}/${projectData.id}/${currentWindow}/${
-                                        element.id
-                                      }`
-                                    )
-                                    .then(async () => {
-                                      await api
-                                        .get(
-                                          `/project/${localStorage.getItem(
-                                            'id'
-                                          )}/${projectData.id}`
-                                        )
-                                        .then((res) => {
-                                          dispatch(
-                                            setWindowData({
-                                              windowList:
-                                                res.data.project.windowList,
-                                            })
-                                          );
-                                          dispatch(
-                                            setProjectData({
-                                              id: res.data.project._id,
-                                              name: res.data.project.name,
-                                              owner: res.data.project.owner,
-                                              createAt:
-                                                res.data.project.createAt,
-                                              modifiedAt:
-                                                res.data.project.modifiedAt,
-                                            })
-                                          );
+                                  (async () => {
+                                    await api
+                                      .delete(
+                                        `/project/element/${localStorage.getItem(
+                                          'id'
+                                        )}/${projectData.id}/${currentWindow}/${
+                                          element.id
+                                        }`
+                                      )
+                                      .then(async () => {
+                                        await api
+                                          .get(
+                                            `/project/${localStorage.getItem(
+                                              'id'
+                                            )}/${projectData.id}`
+                                          )
+                                          .then((res) => {
+                                            dispatch(
+                                              setWindowData({
+                                                windowList:
+                                                  res.data.project.windowList,
+                                              })
+                                            );
+                                            dispatch(
+                                              setProjectData({
+                                                id: res.data.project._id,
+                                                name: res.data.project.name,
+                                                owner: res.data.project.owner,
+                                                createAt:
+                                                  res.data.project.createAt,
+                                                modifiedAt:
+                                                  res.data.project.modifiedAt,
+                                              })
+                                            );
 
-                                          toast.success(
-                                            'Element has been deleted successfully.'
-                                          );
-                                        })
-                                        .catch((err) => {
-                                          toast.error(
-                                            err.response.data.message
-                                              ? err.response.data.message
-                                              : 'Fail to update database.'
-                                          );
-                                        });
-                                    })
-                                    .catch((err) => {
-                                      toast.error(
-                                        err.response.data.message
-                                          ? err.response.data.message
-                                          : 'Fail to update database.'
-                                      );
-                                    });
-
-                                  dispatch(setFalse());
-                                  setShowElementPopover(undefined);
+                                            toast.success(
+                                              'Element has been deleted successfully.'
+                                            );
+                                          })
+                                          .catch((err) => {
+                                            toast.error(
+                                              err.response.data.message
+                                                ? err.response.data.message
+                                                : 'Fail to update database.'
+                                            );
+                                          });
+                                      })
+                                      .catch((err) => {
+                                        toast.error(
+                                          err.response.data.message
+                                            ? err.response.data.message
+                                            : 'Fail to update database.'
+                                        );
+                                      });
+                                  })().then(() => {
+                                    dispatch(setFalse());
+                                    setShowElementPopover(undefined);
+                                  });
                                 },
                               },
                             ]}

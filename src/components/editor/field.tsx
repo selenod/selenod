@@ -2,11 +2,12 @@ import './styles/field.css';
 
 import { useEffect, useState } from 'react';
 import { RootState } from '../../store';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { imageExtensions, videoExtensions } from '../../data';
 import Property from '../system/property';
 import Type from '@selenod/selene/dist/data/SeleneType';
 import Selene, { SeleneNodesObject } from '@selenod/selene';
+import { setScriptData } from '../system/reduxSlice/windowSlice';
 
 interface IToolData {
   panelWidth: number;
@@ -26,6 +27,8 @@ export default function Field(data: IToolData) {
     (state: RootState) => state.window.currentElement
   );
   const [winHeight, setWinHeight] = useState<number>(window.innerHeight);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleResize = () => setWinHeight(window.innerHeight);
@@ -671,19 +674,9 @@ export default function Field(data: IToolData) {
                 'selene.test.Papyrus': {
                   name: 'Papyrus5',
                   hasInputFlow: true,
-                  hasOutputFlow: false,
-                  inputs: [
-                    { name: 'param1', type: Type.Bool },
-                    { name: 'param2', type: Type.Int },
-                    { name: 'param3', type: Type.Float },
-                    { name: 'param4', type: Type.String },
-                    { name: 'param5', type: Type.Func },
-                    { name: 'param6', type: Type.List },
-                    { name: 'param7', type: Type.Dict },
-                    { name: 'param8', type: Type.Object },
-                    { name: 'param9', type: Type.Any },
-                  ],
-                  output: Type.Void,
+                  hasOutputFlow: true,
+                  inputs: [{ name: 'string property', type: Type.String }],
+                  output: Type.String,
                 },
               }}
               // setup initial node objects
@@ -700,7 +693,9 @@ export default function Field(data: IToolData) {
                 },
               }}
               onNodesUpdated={(object: SeleneNodesObject) => {
-                console.log(object);
+                const scriptData: SeleneNodesObject = object;
+                dispatch(setScriptData(scriptData));
+                // console.log(object);
               }}
             />
           </div>

@@ -21,9 +21,10 @@ export default function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.addEventListener('scroll', () => {
-      setScrollProgress(window.scrollY);
-    });
+    const handleScroll = () => setScrollProgress(window.scrollY);
+    document.addEventListener('scroll', handleScroll);
+
+    return () => document.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
@@ -31,7 +32,10 @@ export default function Header() {
       className="Header"
       style={{
         borderBottom:
-          scrollProgress > 0 ? '1px solid var(--lineColor)' : undefined,
+          scrollProgress > 0 &&
+          window.location.pathname.split('/')[1] !== 'editor'
+            ? '1px solid var(--lineColor)'
+            : undefined,
       }}
     >
       <div>

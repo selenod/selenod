@@ -287,39 +287,6 @@ textarea {
   box-shadow: 0 5px 20px #00000015 !important;
 }
 
-.selene-workspace {
-  background-color: var(--editorColor) !important;
-}
-
-.selene-head {
-  border-radius: 10px 10px 0 0 !important;
-  height: 35px !important;
-
-  background-color: #f06292 !important;
-}
-
-.selene-node > .selene-body {
-  border-radius: 0 0 10px 10px !important;
-}
-
-.selene-nodeName {
-  font-size: 20px !important;
-  font-weight: 600;
-}
-
-.selene-pin {
-  top: 1px !important;
-}
-
-.selene-snap {
-  top: -3px !important;
-}
-
-.selene-paramName {
-  font-weight: 400 !important;
-  font-size: 15px !important;
-}
-
 .loading span {
   display: inline-block;
   width: 20px;

@@ -96,7 +96,7 @@ export default function Active(data: IToolData) {
           />
           <div
             style={{
-              width: 'calc(100% - 157px)',
+              width: 'calc(100% - 192px)',
               marginLeft: 157,
               height: 40,
               overflowX: 'scroll',
@@ -264,22 +264,34 @@ export default function Active(data: IToolData) {
           </div>
         </nav>
         <div>
-          <div title="Build Project">
+          <div title="Upload Script">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="17"
+              height="17"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2.5"
+              stroke="var(--shortcutIconColor)"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+              />
+            </svg>
+          </div>
+          <div title="Upload Script & Build Project">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
               height="20"
-              viewBox="0 0 20 20"
+              viewBox="0 0 24 24"
               fill="var(--shortcutIconColor)"
             >
               <path
                 fillRule="evenodd"
-                d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z"
-                clipRule="evenodd"
-              />
-              <path
-                fillRule="evenodd"
-                d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z"
+                d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
                 clipRule="evenodd"
               />
             </svg>

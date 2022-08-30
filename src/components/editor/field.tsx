@@ -1,19 +1,23 @@
 import './styles/field.css';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { imageExtensions, videoExtensions } from '../../data';
 import Property from '../system/property';
 import Type from '@selenod/selene/dist/data/SeleneType';
 import Selene, { SeleneNodesObject } from '@selenod/selene';
-import { setScriptData } from '../system/reduxSlice/windowSlice';
+import { scriptContext, setScriptContext } from '../..';
+import { setScriptSaved } from '../system/reduxSlice/windowSlice';
 
 interface IToolData {
   panelWidth: number;
 }
 
 export default function Field(data: IToolData) {
+  const scripts = useContext(scriptContext);
+  const setScripts = useContext(setScriptContext);
+
   const currentOpenedPanel = useSelector(
     (state: RootState) => state.asset.currentOpenedPanel
   );
@@ -679,23 +683,20 @@ export default function Field(data: IToolData) {
                   output: Type.String,
                 },
               }}
-              // setup initial node objects
-              nodesObject={{
-                testNodeObjectId: {
-                  nodeId: 'selene.test.Sans',
-                  outputFlowConnection: null,
-                  inputConnections: [],
-                  position: {
-                    x: 0,
-                    y: 0,
-                  },
-                  zIndex: 0,
-                },
-              }}
+              // Setup initial node objects
+              nodesObject={
+                scripts!.find((script) => script.windowId === currentWindow)
+                  ?.script
+              }
               onNodesUpdated={(object: SeleneNodesObject) => {
-                const scriptData: SeleneNodesObject = object;
-                dispatch(setScriptData(scriptData));
-                // console.log(object);
+                dispatch(setScriptSaved(false));
+
+                setScripts!([
+                  ...scripts.filter(
+                    (script) => script.windowId !== currentWindow
+                  ),
+                  { windowId: currentWindow!, script: object },
+                ]);
               }}
             />
           </div>

@@ -296,6 +296,11 @@ export function PopContent({
                                           )}/${projectData.id!}`
                                         )
                                         .then((res) => {
+                                          // Delete scriptData of window for dispatch setWindowData.
+                                          res.data.project.windowList.forEach(
+                                            (win: any) => delete win.scriptData
+                                          );
+
                                           dispatch(
                                             setWindowData({
                                               windowList:
@@ -482,6 +487,11 @@ export function PopContent({
                                         )}/${projectData.id!}`
                                       )
                                       .then((res) => {
+                                        // Delete scriptData of window for dispatch setWindowData.
+                                        res.data.project.windowList.forEach(
+                                          (win: any) => delete win.scriptData
+                                        );
+
                                         dispatch(
                                           setWindowData({
                                             windowList:

@@ -22,9 +22,9 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => setScrollProgress(window.scrollY);
-    document.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll);
 
-    return () => document.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (

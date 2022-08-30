@@ -1,26 +1,40 @@
 import './styles/active.css';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import { PopContent } from '../system/popcontent';
 import { RootState } from '../../store';
 import { Popover } from 'react-tiny-popover';
 import { useSelector, useDispatch } from 'react-redux';
 import { setTrue, setFalse } from '../system/reduxSlice/coverSlice';
-import { togglePanel } from '../system/reduxSlice/windowSlice';
+import { setScriptSaved, togglePanel } from '../system/reduxSlice/windowSlice';
 import {
   setOpenedPanel,
   togglePanelOpened,
 } from '../system/reduxSlice/assetSlice';
 import { imageExtensions, videoExtensions } from '../../data';
+import api from '../../config/api';
+import { scriptContext } from '../..';
+import toast from 'react-hot-toast';
 
 interface IToolData {
   panelWidth: number;
 }
 
 export default function Active(data: IToolData) {
+  const scripts = useContext(scriptContext);
+
   const [showPopover, setShowPopover] = useState<boolean>(false);
+
   const dispatch = useDispatch();
+
+  const projectData = useSelector((state: RootState) => state.project.data);
+  const scriptSaved = useSelector(
+    (state: RootState) => state.window.scriptSaved
+  );
+  const currentWindow = useSelector(
+    (state: RootState) => state.window.currentWindow
+  );
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const assetData = useSelector((state: RootState) => state.asset.assetData);
   const toggle = useSelector((state: RootState) => state.window.toggle);
@@ -264,28 +278,80 @@ export default function Active(data: IToolData) {
           </div>
         </nav>
         <div>
-          <div title="Upload Script">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="17"
-              height="17"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2.5"
-              stroke="var(--shortcutIconColor)"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-              />
-            </svg>
+          <div
+            title={scriptSaved ? undefined : 'Upload Script'}
+            style={{
+              cursor: scriptSaved ? 'auto' : 'pointer',
+            }}
+            onClick={async () => {
+              if (!scriptSaved) {
+                await api
+                  .put('/project/script', {
+                    uid: localStorage.getItem('id'),
+                    id: projectData.id,
+                    windowId: currentWindow,
+                    scriptData: scripts.find(
+                      (script) => script.windowId === currentWindow
+                    )?.script,
+                  })
+                  .then(() => {
+                    dispatch(setScriptSaved(true));
+                    toast.success('Script updated successfully.');
+                  })
+                  .catch((err) => {
+                    toast.error(
+                      err.response.data.message
+                        ? err.response.data.message
+                        : 'Fail to update database.'
+                    );
+                  });
+              }
+            }}
+          >
+            {scriptSaved ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="var(--shortcutIconColor)"
+              >
+                {/* <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4.5 12.75l6 6 9-13.5"
+                /> */}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="17"
+                height="17"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2.5"
+                stroke="var(--shortcutIconColor)"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+                />
+              </svg>
+            )}
           </div>
-          <div title="Upload Script & Build Project">
+          <div title="Build Project">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="var(--shortcutIconColor)"
             >

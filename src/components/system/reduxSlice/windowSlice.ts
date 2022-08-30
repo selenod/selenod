@@ -6,30 +6,6 @@ interface Window {
   height: number;
 }
 
-interface Script {
-  [id: string]: {
-    nodeId: string;
-    outputFlowConnection: {
-      id: string;
-      pinType: number;
-      name: string | null;
-    } | null;
-    inputConnections: {
-      name: string;
-      connection: {
-        id: string;
-        pinType: number;
-        name: string | null;
-      } | null;
-    }[];
-    position: {
-      x: number;
-      y: number;
-    };
-    zIndex: number;
-  };
-}
-
 interface Element {
   name: string;
   id: number;
@@ -58,6 +34,7 @@ interface Element {
 }
 
 interface WindowState {
+  scriptSaved: boolean;
   isWindowShown: boolean;
   doSetup: boolean;
   windowList: Array<{
@@ -65,7 +42,6 @@ interface WindowState {
     name: string;
     id: number;
     windowData: Window;
-    scriptData: Script;
     elementData: Array<Element>;
   }>;
   currentWindow: number | undefined;
@@ -74,6 +50,7 @@ interface WindowState {
 }
 
 const initialState: WindowState = {
+  scriptSaved: true,
   isWindowShown: false,
   doSetup: false,
   windowList: [],
@@ -98,7 +75,6 @@ export const windowSlice = createSlice({
             name: string;
             id: number;
             windowData: Window;
-            scriptData: Script;
             elementData: Array<Element>;
           }>;
           currentWindow?: number;
@@ -134,10 +110,8 @@ export const windowSlice = createSlice({
           ? undefined
           : action.payload.id;
     },
-    setScriptData: (state: WindowState, action: { payload: Script }) => {
-      state.windowList.find(
-        (window) => window.id === state.currentWindow
-      )!.scriptData = action.payload;
+    setScriptSaved: (state: WindowState, action: { payload: boolean }) => {
+      state.scriptSaved = action.payload;
     },
   },
 });
@@ -148,7 +122,7 @@ export const {
   togglePanel,
   setCurrWin,
   setCurrElement,
-  setScriptData,
+  setScriptSaved,
 } = windowSlice.actions;
 
 export default windowSlice.reducer;

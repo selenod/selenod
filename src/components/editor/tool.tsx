@@ -97,6 +97,11 @@ export default function Tool() {
     await api
       .get(`/project/${localStorage.getItem('id')}/${projectData.id}`)
       .then((res) => {
+        // Delete scriptData of window for dispatch setWindowData.
+        res.data.project.windowList.forEach(
+          (win: any) => delete win.scriptData
+        );
+
         dispatch(
           setWindowData({
             windowList: res.data.project.windowList,
@@ -667,6 +672,11 @@ export default function Tool() {
                                   )}/${projectData.id!}`
                                 )
                                 .then((res) => {
+                                  // Delete scriptData of window for dispatch setWindowData.
+                                  res.data.project.windowList.forEach(
+                                    (win: any) => delete win.scriptData
+                                  );
+
                                   dispatch(
                                     setWindowData({
                                       windowList: res.data.project.windowList,
@@ -819,6 +829,11 @@ export default function Tool() {
                                           )}/${projectData.id}`
                                         )
                                         .then((res) => {
+                                          // Delete scriptData of window for dispatch setWindowData.
+                                          res.data.project.windowList.forEach(
+                                            (win: any) => delete win.scriptData
+                                          );
+
                                           dispatch(
                                             setWindowData({
                                               windowList:
@@ -925,6 +940,12 @@ export default function Tool() {
                                             )}/${projectData.id}`
                                           )
                                           .then((res) => {
+                                            // Delete scriptData of window for dispatch setWindowData.
+                                            res.data.project.windowList.forEach(
+                                              (win: any) =>
+                                                delete win.scriptData
+                                            );
+
                                             dispatch(
                                               setWindowData({
                                                 windowList:

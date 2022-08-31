@@ -8,17 +8,22 @@ import { ResponseProps } from '../data';
 import ResponsePage from './ResponsePage';
 import api from '../config/api';
 import { setProjectData } from '../components/system/reduxSlice/projectSlice';
-import { setWindowData } from '../components/system/reduxSlice/windowSlice';
+import {
+  setScriptSaved,
+  setWindowData,
+} from '../components/system/reduxSlice/windowSlice';
 import { RootState } from '../store';
 import {
   resetData,
   setAssetData,
 } from '../components/system/reduxSlice/assetSlice';
-import { setScriptContext } from '..';
+import { scriptContext, setScriptContext } from '..';
+import toast from 'react-hot-toast';
 
 export default function EditorPage() {
   const { projectID } = useParams();
 
+  const scripts = useContext(scriptContext);
   const setScripts = useContext(setScriptContext);
 
   const doProjectSetup = useSelector(
@@ -27,7 +32,10 @@ export default function EditorPage() {
   const scriptSaved = useSelector(
     (state: RootState) => state.window.scriptSaved
   );
-
+  const projectData = useSelector((state: RootState) => state.project.data);
+  const currentWindow = useSelector(
+    (state: RootState) => state.window.currentWindow
+  );
   const doWindowSetup = useSelector((state: RootState) => state.window.doSetup);
 
   const [props, setProps] = useState<ResponseProps>({
@@ -36,6 +44,36 @@ export default function EditorPage() {
   });
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!localStorage.getItem('delay')) {
+      localStorage.setItem('delay', '300');
+    }
+
+    const autoSaveInterval = setInterval(() => {
+      if (!scriptSaved) {
+        (async () => {
+          await api
+            .put('/project/script', {
+              uid: localStorage.getItem('id'),
+              id: projectData.id,
+              windowId: currentWindow,
+              scriptData: scripts.find(
+                (script) => script.windowId === currentWindow
+              )?.script,
+            })
+            .then(() => {
+              dispatch(setScriptSaved(true));
+            })
+            .catch(() => {
+              toast.error('Fail to auto-update database.');
+            });
+        })();
+      }
+    }, 1000 * (parseInt(localStorage.getItem('delay')!) < 10 ? 10 : parseInt(localStorage.getItem('delay')!) > 600 ? 600 : parseInt(localStorage.getItem('delay')!)));
+
+    return () => clearInterval(autoSaveInterval);
+  }, [currentWindow, dispatch, projectData.id, scriptSaved, scripts]);
 
   useEffect(() => {
     const handleUnload = (event: BeforeUnloadEvent) => {
@@ -121,6 +159,8 @@ export default function EditorPage() {
           );
         })
         .catch((err) => {
+          console.log(err);
+
           setProps({
             status: err.response.status,
             message: err.response.data.message,

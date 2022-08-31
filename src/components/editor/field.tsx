@@ -7,8 +7,14 @@ import { imageExtensions, videoExtensions } from '../../data';
 import Property from '../system/property';
 import Type from '@selenod/selene/dist/data/SeleneType';
 import Selene, { SeleneNodesObject } from '@selenod/selene';
-import { scriptContext, setScriptContext } from '../..';
+import {
+  editorDataContext,
+  scriptContext,
+  setEditorDataContext,
+  setScriptContext,
+} from '../..';
 import { setScriptSaved } from '../system/reduxSlice/windowSlice';
+import SeleneEditorData from '@selenod/selene/dist/data/SeleneEditorData';
 
 interface IToolData {
   panelWidth: number;
@@ -16,7 +22,9 @@ interface IToolData {
 
 export default function Field(data: IToolData) {
   const scripts = useContext(scriptContext);
+  const editorData = useContext(editorDataContext);
   const setScripts = useContext(setScriptContext);
+  const setEditorData = useContext(setEditorDataContext);
 
   const currentOpenedPanel = useSelector(
     (state: RootState) => state.asset.currentOpenedPanel
@@ -647,35 +655,35 @@ export default function Field(data: IToolData) {
           <div>
             <Selene
               nodesData={{
-                'selene.test.Sans': {
+                'selene.test.Method1': {
                   name: 'Sans',
                   hasInputFlow: true,
                   hasOutputFlow: true,
                   inputs: [{ name: 'param1', type: Type.String }],
                   output: Type.Int,
                 },
-                'selene.test.Sans2': {
+                'selene.test.Method2': {
                   name: 'Sans2',
                   hasInputFlow: false,
                   hasOutputFlow: false,
                   inputs: [{ name: 'param1', type: Type.Int }],
                   output: Type.String,
                 },
-                'selene.test.Sans3': {
+                'selene.test.Method3': {
                   name: 'Sans3',
                   hasInputFlow: false,
                   hasOutputFlow: true,
                   inputs: [],
                   output: Type.Int,
                 },
-                'selene.test.Sans4': {
+                'selene.test.Method4': {
                   name: 'Sans4',
                   hasInputFlow: false,
                   hasOutputFlow: false,
                   inputs: [],
                   output: Type.Any,
                 },
-                'selene.test.Papyrus': {
+                'selene.test.Method5': {
                   name: 'Papyrus5',
                   hasInputFlow: true,
                   hasOutputFlow: true,
@@ -683,11 +691,25 @@ export default function Field(data: IToolData) {
                   output: Type.String,
                 },
               }}
-              // Setup initial node objects
+              editorData={
+                editorData!.find((data) => data.windowId === currentWindow)
+                  ?.data
+              }
               nodesObject={
                 scripts!.find((script) => script.windowId === currentWindow)
                   ?.script
               }
+              onEditorDataUpdated={(data: SeleneEditorData) => {
+                setEditorData!([
+                  ...editorData.filter(
+                    (data) => data.windowId !== currentWindow
+                  ),
+                  {
+                    windowId: currentElement!,
+                    data,
+                  },
+                ]);
+              }}
               onNodesUpdated={(object: SeleneNodesObject) => {
                 dispatch(setScriptSaved(false));
 
@@ -695,7 +717,10 @@ export default function Field(data: IToolData) {
                   ...scripts.filter(
                     (script) => script.windowId !== currentWindow
                   ),
-                  { windowId: currentWindow!, script: object },
+                  {
+                    windowId: currentWindow!,
+                    script: object,
+                  },
                 ]);
               }}
             />

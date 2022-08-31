@@ -296,7 +296,7 @@ export default function Active(data: IToolData) {
                   })
                   .then(() => {
                     dispatch(setScriptSaved(true));
-                    toast.success('Script updated successfully.');
+                    toast.success('Script has been uploaded successfully.');
                   })
                   .catch((err) => {
                     toast.error(

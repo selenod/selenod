@@ -24,6 +24,34 @@ export const setScriptContext = createContext<
   ((d: Array<{ windowId: number; script: Script }>) => void) | null
 >(null);
 
+export const editorDataContext = createContext<
+  Array<{
+    windowId: number;
+    data: {
+      backgroundPosition: {
+        x: number;
+        y: number;
+      };
+      zoom: number;
+    };
+  }>
+>([]);
+export const setEditorDataContext = createContext<
+  | ((
+      d: Array<{
+        windowId: number;
+        data: {
+          backgroundPosition: {
+            x: number;
+            y: number;
+          };
+          zoom: number;
+        };
+      }>
+    ) => void)
+  | null
+>(null);
+
 function App() {
   const [scripts, setScripts] = useState<
     Array<{
@@ -32,36 +60,53 @@ function App() {
     }>
   >([]);
 
+  const [editorData, setEditorData] = useState<
+    Array<{
+      windowId: number;
+      data: {
+        backgroundPosition: {
+          x: number;
+          y: number;
+        };
+        zoom: number;
+      };
+    }>
+  >([]);
+
   return (
-    <setScriptContext.Provider value={setScripts}>
-      <scriptContext.Provider value={scripts}>
-        <Provider store={store}>
-          <Router>
-            <Header />
-            <Routes>
-              <Route path="/:method/:id/:nickname" element={<SyncPage />} />
-              <Route path="/:method" element={<SyncPage />} />
-              <Route path="/" element={<Workpsace />} />
-              <Route path="/editor/:projectID" element={<EditorPage />} />
-              <Route
-                path="*"
-                element={
-                  <ResponsePage message="Page not found." status="404" />
-                }
-              />
-            </Routes>
-            <Toaster
-              position="top-center"
-              toastOptions={{
-                style: {
-                  maxWidth: '70vw',
-                },
-              }}
-            />
-          </Router>
-        </Provider>
-      </scriptContext.Provider>
-    </setScriptContext.Provider>
+    <setEditorDataContext.Provider value={setEditorData}>
+      <setScriptContext.Provider value={setScripts}>
+        <editorDataContext.Provider value={editorData}>
+          <scriptContext.Provider value={scripts}>
+            <Provider store={store}>
+              <Router>
+                <Header />
+                <Routes>
+                  <Route path="/:method/:id/:nickname" element={<SyncPage />} />
+                  <Route path="/:method" element={<SyncPage />} />
+                  <Route path="/" element={<Workpsace />} />
+                  <Route path="/editor/:projectID" element={<EditorPage />} />
+                  <Route
+                    path="*"
+                    element={
+                      <ResponsePage message="Page not found." status="404" />
+                    }
+                  />
+                </Routes>
+                <Toaster
+                  position="top-center"
+                  toastOptions={{
+                    style: {
+                      maxWidth: '70vw',
+                    },
+                  }}
+                />
+              </Router>
+            </Provider>
+          </scriptContext.Provider>
+        </editorDataContext.Provider>
+      </setScriptContext.Provider>
+    </setEditorDataContext.Provider>
   );
 }
 

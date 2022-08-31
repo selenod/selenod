@@ -178,6 +178,7 @@ export default function Tool() {
                       id: window.id,
                       selected: windowList.indexOf(window) === 0 ? true : false,
                       onClick: () => {
+                        dispatch(togglePanel(undefined));
                         dispatch(setCurrWin(window.id));
                         dispatch(setFalse());
                         dispatch(setWindowShown(false));
@@ -2175,18 +2176,18 @@ export default function Tool() {
               content={() => (
                 <PopContent
                   contents={[
-                    { text: 'Save Project' },
-                    { text: 'Save Project on Local' },
-                    { text: 'Open Project' },
-                    { text: 'Open Project on Local' },
-                    { text: 'Rename Project', type: ContentType.DANGER },
-                    { text: 'Delete Project', type: ContentType.DANGER },
+                    {
+                      text: 'Set Auto-Save Delay',
+                      onClick: () => {
+                        setWinOpenId(2);
+                      },
+                    },
                   ]}
                 />
               )}
             >
               <button
-                title="Project Setting"
+                title="Settings"
                 style={{ backgroundColor: shortcutColor[0] }}
                 onClick={() => {
                   dispatch(
@@ -2314,6 +2315,109 @@ export default function Tool() {
             </button>
           </li>
         </ul>
+        <Modal
+          closeTimeoutMS={150}
+          isOpen={winOpenId === 2}
+          contentLabel="Set Auto-Save Delay"
+          style={{
+            content: {
+              width: '400px',
+            },
+          }}
+        >
+          <div className="header">
+            <p>Set Auto-Save Delay</p>
+            <div
+              title="Cancel"
+              onClick={() => {
+                setWinOpenId(undefined);
+                dispatch(setFalse());
+                setShowPopover({
+                  option: false,
+                });
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="27"
+                height="27"
+                fill="var(--shortcutIconColor)"
+                className="bi bi-x"
+                viewBox="0 0 16 16"
+              >
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+              </svg>
+            </div>
+          </div>
+          <div className="body">
+            <div
+              style={{
+                position: 'relative',
+                top: 20,
+                left: '50%',
+                transform: 'translateX(-50%)',
+              }}
+            >
+              <p
+                style={{
+                  margin: 0,
+                  color: 'var(--textSubBlackColor)',
+                  paddingBottom: '.7rem',
+                }}
+              >
+                Set script auto-save delay as..
+              </p>
+              <input
+                style={{
+                  width: '100%',
+                  margin: '0 0 1rem 0',
+                  fontSize: '.9rem',
+                }}
+                placeholder="Enter the auto-save delay in seconds."
+                onChange={(e) => {
+                  e.target.value = e.target.value
+                    .replace(/[^0-9.]/g, '')
+                    .replace('.', '')
+                    .replace(/(\..*)\./g, '$1');
+
+                  if (parseInt(e.target.value) < 10) {
+                    e.target.value = '10';
+                  } else if (parseInt(e.target.value) > 600) {
+                    e.target.value = '600';
+                  }
+
+                  setFormInput(e.target.value);
+                }}
+              />
+              <button
+                className="button primary"
+                style={{
+                  display: 'inherit',
+                  marginLeft: 'auto',
+                  marginBottom: 40,
+                }}
+                disabled={formDisable}
+                onClick={() => {
+                  // two-factor
+                  setFormDisable(true);
+
+                  localStorage.setItem('delay', formInput);
+                  toast.success('Settings have been saved successfully.');
+
+                  setWinOpenId(undefined);
+                  setFormDisable(false);
+                  setFormInput('');
+                  dispatch(setFalse());
+                  setShowPopover({
+                    option: false,
+                  });
+                }}
+              >
+                Save Settings
+              </button>
+            </div>
+          </div>
+        </Modal>
       </div>
       <Resizable
         className="panel"

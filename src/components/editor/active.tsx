@@ -387,9 +387,9 @@ export default function Active(data: IToolData) {
                             toggle: false,
                           })
                         );
-                        dispatch(setFalse());
-                        setShowPopover(false);
                       });
+                      dispatch(setFalse());
+                      setShowPopover(false);
                     },
                   },
                 ]}

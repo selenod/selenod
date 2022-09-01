@@ -2365,7 +2365,7 @@ export default function Tool() {
                   paddingBottom: '.7rem',
                 }}
               >
-                Set script auto-save delay as..
+                Set script auto-save delay in seconds..
               </p>
               <input
                 style={{
@@ -2373,7 +2373,7 @@ export default function Tool() {
                   margin: '0 0 1rem 0',
                   fontSize: '.9rem',
                 }}
-                placeholder="Enter the auto-save delay in seconds."
+                value={localStorage.getItem('delay') ?? '300'}
                 onChange={(e) => {
                   e.target.value = e.target.value
                     .replace(/[^0-9.]/g, '')

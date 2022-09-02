@@ -49,10 +49,18 @@ export function PopContent({
     }>
   >(contents);
   const [editedWindow, setEditedWindow] = useState<string | null>(null);
+  const [confModal, setConfModal] = useState<string | null>(null);
   const [editModal, setEditModal] = useState<string | null>(null);
   const [delModal, setDelModal] = useState<string | null>(null);
   const [formDisable, setFormDisable] = useState<boolean>(false);
   const [formInput, setFormInput] = useState<string>('');
+  const [confInput, setConfInput] = useState<{
+    width: string;
+    height: string;
+  }>({
+    width: '',
+    height: '',
+  });
 
   const currentWindow = useSelector(
     (state: RootState) => state.window.currentWindow
@@ -165,19 +173,30 @@ export function PopContent({
                       isScrollable
                         ? {
                             height: height,
-                            width: 150,
+                            width: 170,
                           }
                         : {
-                            width: 150,
+                            width: 170,
                           }
                     }
                   >
                     <div
                       className="popover"
                       style={{
-                        width: '150px',
+                        width: '170px',
                       }}
                     >
+                      <div
+                        title="Edit Window Config"
+                        style={{
+                          color: 'var(--textSubBlackColor)',
+                        }}
+                        onClick={() => {
+                          setConfModal(content.text!);
+                        }}
+                      >
+                        <p>Edit Window Config</p>
+                      </div>
                       <div
                         title="Rename Window"
                         style={{
@@ -200,6 +219,243 @@ export function PopContent({
                       >
                         <p>Delete Window</p>
                       </div>
+                      <Modal
+                        closeTimeoutMS={150}
+                        isOpen={confModal === content.text}
+                        contentLabel="Edit Window Config"
+                        style={{
+                          content: {
+                            width: '400px',
+                          },
+                        }}
+                      >
+                        <div className="header">
+                          <p>Edit Window Config</p>
+                          <div
+                            title="Cancel"
+                            onClick={() => setConfModal(null)}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="27"
+                              height="27"
+                              fill="var(--shortcutIconColor)"
+                              className="bi bi-x"
+                              viewBox="0 0 16 16"
+                            >
+                              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                          </div>
+                        </div>
+                        <div className="body">
+                          <div
+                            style={{
+                              position: 'relative',
+                              top: 20,
+                              left: '50%',
+                              transform: 'translateX(-50%)',
+                            }}
+                          >
+                            <p
+                              style={{
+                                margin: 0,
+                                color: 'var(--textSubBlackColor)',
+                                paddingBottom: '.7rem',
+                                maxWidth: '100%',
+                              }}
+                            >
+                              Resize window width to..
+                            </p>
+                            <input
+                              style={{
+                                width: '100%',
+                                margin: '0 0 1rem 0',
+                                fontSize: '.9rem',
+                              }}
+                              value={confInput.width}
+                              onChange={(e) => {
+                                e.target.value = e.target.value
+                                  .replace(/[^0-9.]/g, '')
+                                  .replace('.', '')
+                                  .replace(/(\..*)\./g, '$1');
+
+                                setConfInput({
+                                  ...confInput,
+                                  width: e.target.value,
+                                });
+                              }}
+                              onBlur={() => {
+                                if (parseInt(confInput.width) > 3840) {
+                                  setConfInput({
+                                    ...confInput,
+                                    width: '3840',
+                                  });
+                                } else if (parseInt(confInput.width) < 200) {
+                                  setConfInput({
+                                    ...confInput,
+                                    width: '300',
+                                  });
+                                } else if (!parseInt(confInput.width)) {
+                                  setConfInput({
+                                    ...confInput,
+                                    width: '1366',
+                                  });
+                                }
+                              }}
+                              placeholder={windowList
+                                .find((window) => window.id === content.id!)!
+                                .windowData.width.toString()}
+                            />
+                            <p
+                              style={{
+                                margin: '.7rem 0 0 0',
+                                color: 'var(--textSubBlackColor)',
+                                paddingBottom: '.7rem',
+                                maxWidth: '100%',
+                              }}
+                            >
+                              Resize window height to..
+                            </p>
+                            <input
+                              style={{
+                                width: '100%',
+                                margin: '0 0 1rem 0',
+                                fontSize: '.9rem',
+                              }}
+                              value={confInput.height}
+                              onChange={(e) => {
+                                e.target.value = e.target.value
+                                  .replace(/[^0-9.]/g, '')
+                                  .replace('.', '')
+                                  .replace(/(\..*)\./g, '$1');
+
+                                setConfInput({
+                                  ...confInput,
+                                  height: e.target.value,
+                                });
+                              }}
+                              onBlur={() => {
+                                if (parseInt(confInput.height) > 2160) {
+                                  setConfInput({
+                                    ...confInput,
+                                    height: '2160',
+                                  });
+                                } else if (parseInt(confInput.height) < 200) {
+                                  setConfInput({
+                                    ...confInput,
+                                    height: '200',
+                                  });
+                                } else if (!parseInt(confInput.height)) {
+                                  setConfInput({
+                                    ...confInput,
+                                    height: '768',
+                                  });
+                                }
+                              }}
+                              placeholder={windowList
+                                .find((window) => window.id === content.id!)!
+                                .windowData.height.toString()}
+                            />
+                            <button
+                              className="button primary"
+                              style={{
+                                display: 'inherit',
+                                marginLeft: 'auto',
+                                marginBottom: 40,
+                              }}
+                              disabled={formDisable}
+                              onClick={async () => {
+                                // two-factor (who knows?)
+                                setFormDisable(true);
+
+                                if (
+                                  parseInt(confInput.width) >= 300 &&
+                                  parseInt(confInput.height) >= 200 &&
+                                  parseInt(confInput.width) <= 3840 &&
+                                  parseInt(confInput.height) <= 2160
+                                ) {
+                                  await api
+                                    .put('/project/window', {
+                                      uid: localStorage.getItem('id'),
+                                      id: projectData.id!,
+                                      _id: windowList.find(
+                                        (window) => window.id === content.id!
+                                      )!._id,
+                                      name: windowList.find(
+                                        (window) => window.id === content.id!
+                                      )!.name,
+                                      windowData: {
+                                        width: parseInt(confInput.width),
+                                        height: parseInt(confInput.height),
+                                      },
+                                    })
+                                    .then(async () => {
+                                      await api
+                                        .get(
+                                          `/project/${localStorage.getItem(
+                                            'id'
+                                          )}/${projectData.id!}`
+                                        )
+                                        .then((res) => {
+                                          // Delete scriptData of window for dispatch setWindowData.
+                                          res.data.project.windowList.forEach(
+                                            (win: any) => delete win.scriptData
+                                          );
+
+                                          dispatch(
+                                            setWindowData({
+                                              windowList:
+                                                res.data.project.windowList,
+                                              currentWindow: currentWindow!,
+                                            })
+                                          );
+                                          dispatch(
+                                            setProjectData({
+                                              id: projectData.id!,
+                                              name: projectData.name!,
+                                              owner: projectData.owner!,
+                                              createAt:
+                                                res.data.project.createAt,
+                                              modifiedAt:
+                                                res.data.project.modifiedAt,
+                                            })
+                                          );
+
+                                          toast.success(
+                                            `Window has been configured successfully.`
+                                          );
+                                        })
+                                        .catch((err) => {
+                                          toast.error(
+                                            err.response.data.message
+                                              ? err.response.data.message
+                                              : 'Fail to update database.'
+                                          );
+                                        });
+                                    })
+                                    .catch((err) => {
+                                      toast.error(
+                                        err.response.data.message
+                                          ? err.response.data.message
+                                          : 'Fail to update database.'
+                                      );
+                                    });
+                                } else {
+                                  toast.error(`An error occured.`);
+                                }
+                                setConfModal(null);
+                                setEditedWindow(null);
+                                setFormDisable(false);
+                                setFormInput('');
+                                dispatch(setWindowShown(false));
+                                dispatch(setFalse());
+                              }}
+                            >
+                              Edit Window Config
+                            </button>
+                          </div>
+                        </div>
+                      </Modal>
                       <Modal
                         closeTimeoutMS={150}
                         isOpen={editModal === content.text}

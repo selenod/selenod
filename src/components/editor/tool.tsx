@@ -2373,20 +2373,24 @@ export default function Tool() {
                   margin: '0 0 1rem 0',
                   fontSize: '.9rem',
                 }}
-                value={localStorage.getItem('delay') ?? '300'}
+                placeholder={localStorage.getItem('delay') ?? '300'}
+                value={formInput}
                 onChange={(e) => {
                   e.target.value = e.target.value
                     .replace(/[^0-9.]/g, '')
                     .replace('.', '')
                     .replace(/(\..*)\./g, '$1');
 
-                  if (parseInt(e.target.value) < 10) {
-                    e.target.value = '10';
-                  } else if (parseInt(e.target.value) > 600) {
-                    e.target.value = '600';
-                  }
-
                   setFormInput(e.target.value);
+                }}
+                onBlur={() => {
+                  if (parseInt(formInput) < 10) {
+                    setFormInput('10');
+                  } else if (parseInt(formInput) > 600) {
+                    setFormInput('600');
+                  } else if (!parseInt(formInput)) {
+                    setFormInput('300');
+                  }
                 }}
               />
               <button

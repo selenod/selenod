@@ -656,35 +656,35 @@ export default function Field(data: IToolData) {
             <Selene
               nodesData={{
                 'selene.test.Method1': {
-                  name: 'Sans',
+                  name: 'Method1',
                   hasInputFlow: true,
                   hasOutputFlow: true,
                   inputs: [{ name: 'param1', type: Type.String }],
                   output: Type.Int,
                 },
                 'selene.test.Method2': {
-                  name: 'Sans2',
+                  name: 'Method2',
                   hasInputFlow: false,
                   hasOutputFlow: false,
                   inputs: [{ name: 'param1', type: Type.Int }],
                   output: Type.String,
                 },
                 'selene.test.Method3': {
-                  name: 'Sans3',
+                  name: 'Method3',
                   hasInputFlow: false,
                   hasOutputFlow: true,
                   inputs: [],
                   output: Type.Int,
                 },
                 'selene.test.Method4': {
-                  name: 'Sans4',
+                  name: 'Method4',
                   hasInputFlow: false,
                   hasOutputFlow: false,
                   inputs: [],
                   output: Type.Any,
                 },
                 'selene.test.Method5': {
-                  name: 'Papyrus5',
+                  name: 'Method5',
                   hasInputFlow: true,
                   hasOutputFlow: true,
                   inputs: [{ name: 'string property', type: Type.String }],

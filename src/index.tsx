@@ -101,7 +101,6 @@ function App() {
                         path="/:method/:id/:nickname"
                         element={<SyncPage />}
                       />
-                      <Route path="/:method" element={<SyncPage />} />
                       <Route path="/" element={<Workpsace />} />
                       <Route
                         path="/editor/:projectID"

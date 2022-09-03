@@ -6,7 +6,8 @@ import Footer from '../components/system/footer';
 import { ResponseProps } from '../data';
 import ResponsePage from './ResponsePage';
 import api from '../config/api';
-import { dataContext } from '..';
+import { dataContext, setDataContext } from '..';
+import { useNavigate } from 'react-router-dom';
 
 export default function Workspace() {
   const [winOpenId, setWinOpenId] = useState<number | string>();
@@ -19,30 +20,39 @@ export default function Workspace() {
   const [projectList, setProjectList] = useState<Array<any>>();
 
   const data = useContext(dataContext);
+  const setData = useContext(setDataContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = 'Workspace - Selenod';
 
     if (!data?.uid || !data?.uname) {
-      window.location.replace(landingURL);
-    }
-
-    (async () => {
-      await api
-        .get(`/user/projects/${data?.uid}`)
-        .then((res) => {
-          setProjectList(res.data.projectList);
-        })
-        .catch((err) => {
-          setProps({
-            status: err.response.status,
-            message: err.response.data.message,
-          });
+      if (sessionStorage.getItem('uid') && sessionStorage.getItem('uname')) {
+        setData!({
+          uid: sessionStorage.getItem('uid')!,
+          uname: sessionStorage.getItem('uname')!,
         });
-    })();
+      } else {
+        window.location.replace(landingURL);
+      }
+    } else {
+      (async () => {
+        await api
+          .get(`/user/projects/${data?.uid}`)
+          .then((res) => {
+            setProjectList(res.data.projectList);
+          })
+          .catch((err) => {
+            setProps({
+              status: err.response.status,
+              message: err.response.data.message,
+            });
+          });
+      })();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data]);
 
   return projectList ? (
     <div
@@ -330,7 +340,7 @@ export default function Workspace() {
                         whiteSpace: 'nowrap',
                       }}
                       onClick={() => {
-                        window.location.href = `/editor/${project._id}`;
+                        navigate(`/editor/${project._id}`);
                       }}
                     >
                       {project.name}

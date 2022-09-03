@@ -23,6 +23,9 @@ export default function SyncPage() {
           uid: id!,
           uname: nickname!,
         });
+
+        sessionStorage.setItem('uid', id!);
+        sessionStorage.setItem('uname', nickname!);
         navigate('/');
       }
     } else {

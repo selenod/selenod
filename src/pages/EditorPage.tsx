@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Editor from '../components/editor/editor';
-import { landingURL } from '../config/config';
 import Cover from '../cover';
 import { ResponseProps } from '../data';
 import ResponsePage from './ResponsePage';
@@ -17,8 +16,14 @@ import {
   resetData,
   setAssetData,
 } from '../components/system/reduxSlice/assetSlice';
-import { dataContext, scriptContext, setScriptContext } from '..';
+import {
+  dataContext,
+  scriptContext,
+  setDataContext,
+  setScriptContext,
+} from '..';
 import toast from 'react-hot-toast';
+import { landingURL } from '../config/config';
 
 export default function EditorPage() {
   const { projectID } = useParams();
@@ -26,6 +31,7 @@ export default function EditorPage() {
   const scripts = useContext(scriptContext);
   const setScripts = useContext(setScriptContext);
   const data = useContext(dataContext);
+  const setData = useContext(setDataContext);
 
   const doProjectSetup = useSelector(
     (state: RootState) => state.project.doSetup
@@ -97,84 +103,91 @@ export default function EditorPage() {
     document.title = 'Selenod Editor';
 
     if (!data?.uid || !data?.uname) {
-      window.location.replace(landingURL);
-    }
-
-    (async () => {
-      await api
-        .get(`/project/${data?.uid}/${projectID}`)
-        .then((res) => {
-          document.title = `${res.data.project.name} - Selenod Editor`;
-
-          res.data.project.windowList.forEach((win: any) => {
-            Object.keys(win.scriptData.data).forEach((key) => {
-              delete win.scriptData.data[key]._id;
-              if (!win.scriptData.data[key].outputFlowConnection) {
-                win.scriptData.data[key].outputFlowConnection = null;
-              }
-
-              win.scriptData.data[key].inputConnections.forEach(
-                (connection: any) => {
-                  delete connection._id;
-                  if (!connection.connection) {
-                    connection.connection = null;
-                  }
-                }
-              );
-            });
-            // delete win.scriptData.data._id;
-          });
-
-          setScripts!(
-            res.data.project.windowList.map((win: any) => ({
-              windowId: win.id,
-              script: win.scriptData.data,
-            }))
-          );
-
-          // Delete scriptData of window for dispatch setWindowData.
-          res.data.project.windowList.forEach(
-            (win: any) => delete win.scriptData
-          );
-
-          dispatch(
-            setAssetData({
-              assetList: res.data.project.assetList,
-              assetData: res.data.project.assetData,
-              assetLength: res.data.project.assetLength,
-            })
-          );
-          dispatch(
-            setWindowData({
-              windowList: res.data.project.windowList,
-              currentWindow: res.data.project.windowList[0].id,
-            })
-          );
-          dispatch(
-            setProjectData({
-              id: res.data.project._id,
-              name: res.data.project.name,
-              owner: res.data.project.owner,
-              createAt: res.data.project.createAt,
-              modifiedAt: res.data.project.modifiedAt,
-            })
-          );
-        })
-        .catch((err) => {
-          console.log(err);
-
-          setProps({
-            status: err.response.status,
-            message: err.response.data.message,
-          });
+      if (sessionStorage.getItem('uid') && sessionStorage.getItem('uname')) {
+        setData!({
+          uid: sessionStorage.getItem('uid')!,
+          uname: sessionStorage.getItem('uname')!,
         });
-    })();
+      } else {
+        window.location.replace(landingURL);
+      }
+    } else {
+      (async () => {
+        await api
+          .get(`/project/${data?.uid}/${projectID}`)
+          .then((res) => {
+            document.title = `${res.data.project.name} - Selenod Editor`;
+
+            res.data.project.windowList.forEach((win: any) => {
+              Object.keys(win.scriptData.data).forEach((key) => {
+                delete win.scriptData.data[key]._id;
+                if (!win.scriptData.data[key].outputFlowConnection) {
+                  win.scriptData.data[key].outputFlowConnection = null;
+                }
+
+                win.scriptData.data[key].inputConnections.forEach(
+                  (connection: any) => {
+                    delete connection._id;
+                    if (!connection.connection) {
+                      connection.connection = null;
+                    }
+                  }
+                );
+              });
+              // delete win.scriptData.data._id;
+            });
+
+            setScripts!(
+              res.data.project.windowList.map((win: any) => ({
+                windowId: win.id,
+                script: win.scriptData.data,
+              }))
+            );
+
+            // Delete scriptData of window for dispatch setWindowData.
+            res.data.project.windowList.forEach(
+              (win: any) => delete win.scriptData
+            );
+
+            dispatch(
+              setAssetData({
+                assetList: res.data.project.assetList,
+                assetData: res.data.project.assetData,
+                assetLength: res.data.project.assetLength,
+              })
+            );
+            dispatch(
+              setWindowData({
+                windowList: res.data.project.windowList,
+                currentWindow: res.data.project.windowList[0].id,
+              })
+            );
+            dispatch(
+              setProjectData({
+                id: res.data.project._id,
+                name: res.data.project.name,
+                owner: res.data.project.owner,
+                createAt: res.data.project.createAt,
+                modifiedAt: res.data.project.modifiedAt,
+              })
+            );
+          })
+          .catch((err) => {
+            console.log(err);
+
+            setProps({
+              status: err.response.status,
+              message: err.response.data.message,
+            });
+          });
+      })();
+    }
 
     return () => {
       dispatch(resetData());
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projectID]);
+  }, [projectID, data]);
 
   return doProjectSetup && doWindowSetup ? (
     <div className="EditorPage">

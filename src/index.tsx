@@ -97,14 +97,14 @@ function App() {
                   <Router>
                     <Header />
                     <Routes>
-                      <Route
-                        path="/:method/:id/:nickname"
-                        element={<SyncPage />}
-                      />
                       <Route path="/" element={<Workpsace />} />
                       <Route
                         path="/editor/:projectID"
                         element={<EditorPage />}
+                      />
+                      <Route
+                        path="/:method/:id/:nickname"
+                        element={<SyncPage />}
                       />
                       <Route
                         path="*"

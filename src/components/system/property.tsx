@@ -8,7 +8,7 @@ import {
   ContentType,
   videoExtensions,
 } from '../../data';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
 import { setWindowData } from './reduxSlice/windowSlice';
@@ -17,6 +17,7 @@ import { PopContent } from './popcontent';
 import { setFalse, setTrue } from './reduxSlice/coverSlice';
 import api from '../../config/api';
 import { setProjectData } from './reduxSlice/projectSlice';
+import { dataContext } from '../..';
 
 function GetComponent({
   current,
@@ -49,10 +50,11 @@ function GetComponent({
   const [showPopover, setShowPopover] = useState<boolean>(false);
 
   const dispatch = useDispatch();
+  const data = useContext(dataContext);
 
   const handleElement = async () => {
     await api
-      .get(`/project/${localStorage.getItem('id')}/${projectData.id}`)
+      .get(`/project/${data?.uid}/${projectData.id}`)
       .then((res) => {
         dispatch(
           setWindowData({
@@ -89,7 +91,7 @@ function GetComponent({
       .forEach(async (element) => {
         await api
           .put('/project/element', {
-            uid: localStorage.getItem('id'),
+            uid: data?.uid,
             id: projectData.id,
             windowId: currentWindow,
             index: element.id,
@@ -184,7 +186,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -221,7 +223,7 @@ function GetComponent({
                     onChange={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -294,7 +296,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -331,7 +333,7 @@ function GetComponent({
                     onChange={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -411,7 +413,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -457,7 +459,7 @@ function GetComponent({
                       ) {
                         await api
                           .put('/project/element', {
-                            uid: localStorage.getItem('id'),
+                            uid: data?.uid,
                             id: projectData.id,
                             windowId: currentWindow,
                             index: currentElement,
@@ -534,7 +536,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -580,7 +582,7 @@ function GetComponent({
                       ) {
                         await api
                           .put('/project/element', {
-                            uid: localStorage.getItem('id'),
+                            uid: data?.uid,
                             id: projectData.id,
                             windowId: currentWindow,
                             index: currentElement,
@@ -663,7 +665,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -700,7 +702,7 @@ function GetComponent({
                     onChange={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -779,7 +781,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -826,7 +828,7 @@ function GetComponent({
                       ) {
                         await api
                           .put('/project/element', {
-                            uid: localStorage.getItem('id'),
+                            uid: data?.uid,
                             id: projectData.id,
                             windowId: currentWindow,
                             index: currentElement,
@@ -915,7 +917,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -953,7 +955,7 @@ function GetComponent({
                     onChange={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -1026,7 +1028,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -1064,7 +1066,7 @@ function GetComponent({
                     onChange={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -1147,7 +1149,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -1185,7 +1187,7 @@ function GetComponent({
                     onChange={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -1267,7 +1269,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -1302,7 +1304,7 @@ function GetComponent({
                     onChange={async (event) =>
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -1384,7 +1386,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -1423,7 +1425,7 @@ function GetComponent({
 
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -1502,7 +1504,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -1547,7 +1549,7 @@ function GetComponent({
                       ) {
                         await api
                           .put('/project/element', {
-                            uid: localStorage.getItem('id'),
+                            uid: data?.uid,
                             id: projectData.id,
                             windowId: currentWindow,
                             index: currentElement,
@@ -1632,7 +1634,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -1667,7 +1669,7 @@ function GetComponent({
                     onChange={async (event) =>
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -1732,7 +1734,7 @@ function GetComponent({
                             ) {
                               await api
                                 .put('/project/element', {
-                                  uid: localStorage.getItem('id'),
+                                  uid: data?.uid,
                                   id: projectData.id,
                                   windowId: currentWindow,
                                   index: currentElement,
@@ -1780,7 +1782,7 @@ function GetComponent({
                             ) {
                               await api
                                 .put('/project/element', {
-                                  uid: localStorage.getItem('id'),
+                                  uid: data?.uid,
                                   id: projectData.id,
                                   windowId: currentWindow,
                                   index: currentElement,
@@ -1952,7 +1954,7 @@ function GetComponent({
                       ) {
                         await api
                           .put('/project/element', {
-                            uid: localStorage.getItem('id'),
+                            uid: data?.uid,
                             id: projectData.id,
                             windowId: currentWindow,
                             index: currentElement,
@@ -2004,7 +2006,7 @@ function GetComponent({
                       } else {
                         await api
                           .put('/project/element', {
-                            uid: localStorage.getItem('id'),
+                            uid: data?.uid,
                             id: projectData.id,
                             windowId: currentWindow,
                             index: currentElement,
@@ -2046,7 +2048,7 @@ function GetComponent({
                         .part === Part.HORIZONTAL
                         ? await api
                             .put('/project/element', {
-                              uid: localStorage.getItem('id'),
+                              uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
                               index: currentElement,
@@ -2067,7 +2069,7 @@ function GetComponent({
                             })
                         : await api
                             .put('/project/element', {
-                              uid: localStorage.getItem('id'),
+                              uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
                               index: currentElement,
@@ -2149,7 +2151,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -2184,7 +2186,7 @@ function GetComponent({
                     onChange={async (event) =>
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -2264,7 +2266,7 @@ function GetComponent({
                                 onClick: async () => {
                                   await api
                                     .put('/project/element', {
-                                      uid: localStorage.getItem('id'),
+                                      uid: data?.uid,
                                       id: projectData.id,
                                       windowId: currentWindow,
                                       index: currentElement,
@@ -2444,7 +2446,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -2482,7 +2484,7 @@ function GetComponent({
                     onChange={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -2565,7 +2567,7 @@ function GetComponent({
                                 onClick: async () => {
                                   await api
                                     .put('/project/element', {
-                                      uid: localStorage.getItem('id'),
+                                      uid: data?.uid,
                                       id: projectData.id,
                                       windowId: currentWindow,
                                       index: currentElement,
@@ -2745,7 +2747,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -2783,7 +2785,7 @@ function GetComponent({
                     onChange={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -2868,7 +2870,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -2903,7 +2905,7 @@ function GetComponent({
                     onChange={async (event) =>
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -2979,7 +2981,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -3017,7 +3019,7 @@ function GetComponent({
                     onChange={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -3082,7 +3084,7 @@ function GetComponent({
                     onClick={async () => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -3207,7 +3209,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -3249,7 +3251,7 @@ function GetComponent({
                     onChange={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -3335,7 +3337,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -3370,7 +3372,7 @@ function GetComponent({
                     onChange={async (event) =>
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -3449,7 +3451,7 @@ function GetComponent({
                     onBlur={async (event) => {
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,
@@ -3484,7 +3486,7 @@ function GetComponent({
                     onChange={async (event) =>
                       await api
                         .put('/project/element', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           windowId: currentWindow,
                           index: currentElement,

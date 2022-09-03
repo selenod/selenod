@@ -17,7 +17,7 @@ import {
   resetData,
   setAssetData,
 } from '../components/system/reduxSlice/assetSlice';
-import { scriptContext, setScriptContext } from '..';
+import { dataContext, scriptContext, setScriptContext } from '..';
 import toast from 'react-hot-toast';
 
 export default function EditorPage() {
@@ -25,6 +25,7 @@ export default function EditorPage() {
 
   const scripts = useContext(scriptContext);
   const setScripts = useContext(setScriptContext);
+  const data = useContext(dataContext);
 
   const doProjectSetup = useSelector(
     (state: RootState) => state.project.doSetup
@@ -55,7 +56,7 @@ export default function EditorPage() {
         (async () => {
           await api
             .put('/project/script', {
-              uid: localStorage.getItem('id'),
+              uid: data?.uid,
               id: projectData.id,
               windowId: currentWindow,
               scriptData: scripts.find(
@@ -73,6 +74,7 @@ export default function EditorPage() {
     }, 1000 * (parseInt(localStorage.getItem('delay')!) < 10 ? 10 : parseInt(localStorage.getItem('delay')!) > 600 ? 600 : parseInt(localStorage.getItem('delay')!)));
 
     return () => clearInterval(autoSaveInterval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentWindow, dispatch, projectData.id, scriptSaved, scripts]);
 
   useEffect(() => {
@@ -94,13 +96,13 @@ export default function EditorPage() {
     window.scrollTo(0, 0);
     document.title = 'Selenod Editor';
 
-    if (!localStorage.getItem('id') || !localStorage.getItem('nickname')) {
-      window.location.href = landingURL;
+    if (!data?.uid || !data?.uname) {
+      window.location.replace(landingURL);
     }
 
     (async () => {
       await api
-        .get(`/project/${localStorage.getItem('id')}/${projectID}`)
+        .get(`/project/${data?.uid}/${projectID}`)
         .then((res) => {
           document.title = `${res.data.project.name} - Selenod Editor`;
 

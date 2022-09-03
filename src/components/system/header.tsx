@@ -1,11 +1,12 @@
 import './styles/header.css';
 import logo from '../../assets/svgs/logo.svg';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { Popover } from 'react-tiny-popover';
 import { PopContent } from './popcontent';
 import { landingURL } from '../../config/config';
 import { useNavigate } from 'react-router-dom';
+import { dataContext } from '../..';
 
 interface PopoverInterface {
   workspace: boolean;
@@ -19,6 +20,8 @@ export default function Header() {
     translation: false,
   });
   const navigate = useNavigate();
+
+  const data = useContext(dataContext);
 
   useEffect(() => {
     const handleScroll = () => setScrollProgress(window.scrollY);
@@ -65,13 +68,8 @@ export default function Header() {
                 {
                   text: 'Log out',
                   onClick: () => {
-                    const id = localStorage.getItem('id');
-                    const nickname = localStorage.getItem('nickname');
-
-                    localStorage.removeItem('id');
-                    localStorage.removeItem('nickname');
                     setIsPopoverOpen({ ...isPopoverOpen, workspace: false });
-                    window.location.href = `${landingURL}/logout/${id}/${nickname}`;
+                    window.location.href = `${landingURL}/logout/${data?.uid}/${data?.uname}`;
                   },
                 },
               ]}
@@ -96,7 +94,7 @@ export default function Header() {
                 float: 'right',
               }}
             >
-              {localStorage.getItem('nickname')}
+              {data?.uname ?? 'Loading..'}
             </p>
           </div>
         </Popover>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { landingURL } from '../config/config';
 import Modal from 'react-modal';
 import toast from 'react-hot-toast';
@@ -6,6 +6,7 @@ import Footer from '../components/system/footer';
 import { ResponseProps } from '../data';
 import ResponsePage from './ResponsePage';
 import api from '../config/api';
+import { dataContext } from '..';
 
 export default function Workspace() {
   const [winOpenId, setWinOpenId] = useState<number | string>();
@@ -17,17 +18,19 @@ export default function Workspace() {
   });
   const [projectList, setProjectList] = useState<Array<any>>();
 
+  const data = useContext(dataContext);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = 'Workspace - Selenod';
 
-    if (!localStorage.getItem('id') || !localStorage.getItem('nickname')) {
-      window.location.href = landingURL;
+    if (!data?.uid || !data?.uname) {
+      window.location.replace(landingURL);
     }
 
     (async () => {
       await api
-        .get(`/user/projects/${localStorage.getItem('id')}`)
+        .get(`/user/projects/${data?.uid}`)
         .then((res) => {
           setProjectList(res.data.projectList);
         })
@@ -38,6 +41,7 @@ export default function Workspace() {
           });
         });
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return projectList ? (
@@ -173,13 +177,11 @@ export default function Workspace() {
                           await api
                             .post('/project', {
                               name: formInput,
-                              uid: localStorage.getItem('id'),
+                              uid: data?.uid,
                             })
                             .then(() => {
                               api
-                                .get(
-                                  `/user/projects/${localStorage.getItem('id')}`
-                                )
+                                .get(`/user/projects/${data?.uid}`)
                                 .then((res) => {
                                   setProjectList(res.data.projectList);
                                   toast.success(`Project has been created.`);
@@ -476,18 +478,10 @@ export default function Workspace() {
                             setFormDisable(true);
 
                             await api
-                              .delete(
-                                `/project/${localStorage.getItem('id')}/${
-                                  project._id
-                                }`
-                              )
+                              .delete(`/project/${data?.uid}/${project._id}`)
                               .then(() => {
                                 api
-                                  .get(
-                                    `/user/projects/${localStorage.getItem(
-                                      'id'
-                                    )}`
-                                  )
+                                  .get(`/user/projects/${data?.uid}`)
                                   .then((res) => {
                                     toast.success(`Project has been deleted.`);
                                     setProjectList(res.data.projectList);

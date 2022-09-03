@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { landingURL } from '../config/config';
+import { setDataContext } from '..';
 import { ResponseProps } from '../data';
 import ResponsePage from './ResponsePage';
 
 export default function SyncPage() {
   const { method, id, nickname } = useParams();
   const navigate = useNavigate();
+
+  const setData = useContext(setDataContext);
 
   const [props, setProps] = useState<ResponseProps>({
     status: undefined,
@@ -17,22 +19,19 @@ export default function SyncPage() {
     window.scrollTo(0, 0);
     if (method && id && nickname) {
       if (method === 'login') {
-        localStorage.setItem('id', id!);
-        localStorage.setItem('nickname', nickname!);
+        setData!({
+          uid: id!,
+          uname: nickname!,
+        });
         navigate('/');
       }
-    } else if (method === 'logout') {
-      localStorage.removeItem('id');
-      localStorage.removeItem('nickname');
-
-      window.location.href = landingURL;
     } else {
       setProps({
         status: '404',
         message: 'Page not found.',
       });
     }
-  }, [method, id, nickname, navigate]);
+  }, [method, id, nickname, navigate, setData]);
 
   return <ResponsePage {...props} />;
 }

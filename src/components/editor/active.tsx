@@ -14,15 +14,16 @@ import {
 } from '../system/reduxSlice/assetSlice';
 import { imageExtensions, videoExtensions } from '../../data';
 import api from '../../config/api';
-import { scriptContext } from '../..';
+import { dataContext, scriptContext } from '../..';
 import toast from 'react-hot-toast';
 
 interface IToolData {
   panelWidth: number;
 }
 
-export default function Active(data: IToolData) {
+export default function Active(propData: IToolData) {
   const scripts = useContext(scriptContext);
+  const data = useContext(dataContext);
 
   const [showPopover, setShowPopover] = useState<boolean>(false);
 
@@ -49,7 +50,7 @@ export default function Active(data: IToolData) {
     <div
       className="Active"
       style={{
-        width: `calc(100% - ${data.panelWidth}px - 70px)`,
+        width: `calc(100% - ${propData.panelWidth}px - 70px)`,
       }}
     >
       <div>
@@ -287,7 +288,7 @@ export default function Active(data: IToolData) {
               if (!scriptSaved) {
                 await api
                   .put('/project/script', {
-                    uid: localStorage.getItem('id'),
+                    uid: data?.uid,
                     id: projectData.id,
                     windowId: currentWindow,
                     scriptData: scripts.find(

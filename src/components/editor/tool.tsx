@@ -1,6 +1,6 @@
 import './styles/tool.css';
 
-import { useState, useEffect, useRef, ReactElement } from 'react';
+import { useState, useEffect, useRef, ReactElement, useContext } from 'react';
 import { RootState } from '../../store';
 import { Resizable } from 're-resizable';
 import { Popover } from 'react-tiny-popover';
@@ -32,6 +32,7 @@ import {
 } from '../../data';
 import api from '../../config/api';
 import { setProjectData } from '../system/reduxSlice/projectSlice';
+import { dataContext } from '../..';
 
 Modal.setAppElement('#root');
 
@@ -91,11 +92,12 @@ export default function Tool() {
 
   const assetInput = useRef<any>(null);
 
+  const data = useContext(dataContext);
   const dispatch = useDispatch();
 
   const handleElement = async () => {
     await api
-      .get(`/project/${localStorage.getItem('id')}/${projectData.id}`)
+      .get(`/project/${data?.uid}/${projectData.id}`)
       .then((res) => {
         // Delete scriptData of window for dispatch setWindowData.
         res.data.project.windowList.forEach(
@@ -258,7 +260,7 @@ export default function Tool() {
                         onClick: async () => {
                           await api
                             .post('/project/element', {
-                              uid: localStorage.getItem('id'),
+                              uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
                               name: `Text ${
@@ -288,7 +290,7 @@ export default function Tool() {
                         onClick: async () => {
                           await api
                             .post('/project/element', {
-                              uid: localStorage.getItem('id'),
+                              uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
                               name: `Line ${
@@ -325,7 +327,7 @@ export default function Tool() {
                         onClick: async () => {
                           await api
                             .post('/project/element', {
-                              uid: localStorage.getItem('id'),
+                              uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
                               name: `Image ${
@@ -355,7 +357,7 @@ export default function Tool() {
                         onClick: async () => {
                           await api
                             .post('/project/element', {
-                              uid: localStorage.getItem('id'),
+                              uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
                               name: `Video ${
@@ -392,7 +394,7 @@ export default function Tool() {
                         onClick: async () => {
                           await api
                             .post('/project/element', {
-                              uid: localStorage.getItem('id'),
+                              uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
                               name: `Button ${
@@ -422,7 +424,7 @@ export default function Tool() {
                         onClick: async () => {
                           await api
                             .post('/project/element', {
-                              uid: localStorage.getItem('id'),
+                              uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
                               name: `Checkbox ${
@@ -452,7 +454,7 @@ export default function Tool() {
                         onClick: async () => {
                           await api
                             .post('/project/element', {
-                              uid: localStorage.getItem('id'),
+                              uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
                               name: `Single-Line ${
@@ -482,7 +484,7 @@ export default function Tool() {
                         onClick: async () => {
                           await api
                             .post('/project/element', {
-                              uid: localStorage.getItem('id'),
+                              uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
                               name: `Multiple-Line ${
@@ -661,17 +663,13 @@ export default function Tool() {
 
                           await api
                             .post('/project/window', {
-                              uid: localStorage.getItem('id'),
+                              uid: data?.uid,
                               id: projectData.id!,
                               name: formInput,
                             })
                             .then(async () => {
                               await api
-                                .get(
-                                  `/project/${localStorage.getItem(
-                                    'id'
-                                  )}/${projectData.id!}`
-                                )
+                                .get(`/project/${data?.uid}/${projectData.id!}`)
                                 .then((res) => {
                                   // Delete scriptData of window for dispatch setWindowData.
                                   res.data.project.windowList.forEach(
@@ -814,7 +812,7 @@ export default function Tool() {
                                 if (assetFormInput.replaceAll(' ', '') !== '') {
                                   await api
                                     .put('/project/element', {
-                                      uid: localStorage.getItem('id'),
+                                      uid: data?.uid,
                                       id: projectData.id,
                                       windowId: currentWindow,
                                       index: element.id,
@@ -825,9 +823,7 @@ export default function Tool() {
                                     .then(async () => {
                                       await api
                                         .get(
-                                          `/project/${localStorage.getItem(
-                                            'id'
-                                          )}/${projectData.id}`
+                                          `/project/${data?.uid}/${projectData.id}`
                                         )
                                         .then((res) => {
                                           // Delete scriptData of window for dispatch setWindowData.
@@ -927,18 +923,12 @@ export default function Tool() {
                                   (async () => {
                                     await api
                                       .delete(
-                                        `/project/element/${localStorage.getItem(
-                                          'id'
-                                        )}/${projectData.id}/${currentWindow}/${
-                                          element.id
-                                        }`
+                                        `/project/element/${data?.uid}/${projectData.id}/${currentWindow}/${element.id}`
                                       )
                                       .then(async () => {
                                         await api
                                           .get(
-                                            `/project/${localStorage.getItem(
-                                              'id'
-                                            )}/${projectData.id}`
+                                            `/project/${data?.uid}/${projectData.id}`
                                           )
                                           .then((res) => {
                                             // Delete scriptData of window for dispatch setWindowData.
@@ -1280,7 +1270,7 @@ export default function Tool() {
                     reader.addEventListener('load', async () => {
                       await api
                         .post('/project/asset', {
-                          uid: localStorage.getItem('id'),
+                          uid: data?.uid,
                           id: projectData.id,
                           name: event.target.files![0].name.includes('.')
                             ? event.target.files![0].name.substr(
@@ -1298,11 +1288,7 @@ export default function Tool() {
                         })
                         .then(async () => {
                           await api
-                            .get(
-                              `/project/${localStorage.getItem('id')}/${
-                                projectData.id
-                              }`
-                            )
+                            .get(`/project/${data?.uid}/${projectData.id}`)
                             .then((res) => {
                               dispatch(
                                 setAssetData({
@@ -1533,7 +1519,7 @@ export default function Tool() {
                             (async () => {
                               await api
                                 .post('/project/asset', {
-                                  uid: localStorage.getItem('id'),
+                                  uid: data?.uid,
                                   id: projectData.id,
                                   name: assetFormInput.includes('.')
                                     ? assetFormInput.substr(
@@ -1552,9 +1538,7 @@ export default function Tool() {
                                 .then(async () => {
                                   await api
                                     .get(
-                                      `/project/${localStorage.getItem('id')}/${
-                                        projectData.id
-                                      }`
+                                      `/project/${data?.uid}/${projectData.id}`
                                     )
                                     .then((res) => {
                                       dispatch(
@@ -1640,7 +1624,7 @@ export default function Tool() {
                           reader.addEventListener('load', async () => {
                             await api
                               .post('/project/asset', {
-                                uid: localStorage.getItem('id'),
+                                uid: data?.uid,
                                 id: projectData.id,
                                 name: files![0].name.includes('.')
                                   ? files![0].name.substr(
@@ -1659,9 +1643,7 @@ export default function Tool() {
                               .then(async () => {
                                 await api
                                   .get(
-                                    `/project/${localStorage.getItem('id')}/${
-                                      projectData.id
-                                    }`
+                                    `/project/${data?.uid}/${projectData.id}`
                                   )
                                   .then((res) => {
                                     dispatch(
@@ -1823,7 +1805,7 @@ export default function Tool() {
                                   } else {
                                     await api
                                       .put('/project/asset', {
-                                        uid: localStorage.getItem('id'),
+                                        uid: data?.uid,
                                         id: projectData.id,
                                         index: asset.id,
                                         name: assetFormInput.includes('.')
@@ -1841,9 +1823,7 @@ export default function Tool() {
                                       .then(async () => {
                                         await api
                                           .get(
-                                            `/project/${localStorage.getItem(
-                                              'id'
-                                            )}/${projectData.id}`
+                                            `/project/${data?.uid}/${projectData.id}`
                                           )
                                           .then((res) => {
                                             dispatch(
@@ -1929,16 +1909,12 @@ export default function Tool() {
                                 onClick: async () => {
                                   await api
                                     .delete(
-                                      `/project/asset/${localStorage.getItem(
-                                        'id'
-                                      )}/${projectData.id}/${asset.id}`
+                                      `/project/asset/${data?.uid}/${projectData.id}/${asset.id}`
                                     )
                                     .then(async () => {
                                       await api
                                         .get(
-                                          `/project/${localStorage.getItem(
-                                            'id'
-                                          )}/${projectData.id}`
+                                          `/project/${data?.uid}/${projectData.id}`
                                         )
                                         .then((res) => {
                                           dispatch(

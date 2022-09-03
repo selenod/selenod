@@ -1,6 +1,6 @@
 import { ContentType } from '../../data';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Popover } from 'react-tiny-popover';
 import Modal from 'react-modal';
 import { RootState } from '../../store';
@@ -13,6 +13,7 @@ import toast from 'react-hot-toast';
 import api from '../../config/api';
 import { setProjectData } from './reduxSlice/projectSlice';
 import { setFalse } from './reduxSlice/coverSlice';
+import { dataContext } from '../..';
 
 interface IContentData {
   cacheKey?: string;
@@ -69,6 +70,8 @@ export function PopContent({
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
   const windowList = useSelector((state: RootState) => state.window.windowList);
   const dispatch = useDispatch();
+
+  const data = useContext(dataContext);
 
   useEffect(() => {
     if (
@@ -376,7 +379,7 @@ export function PopContent({
                                 ) {
                                   await api
                                     .put('/project/window', {
-                                      uid: localStorage.getItem('id'),
+                                      uid: data?.uid,
                                       id: projectData.id!,
                                       _id: windowList.find(
                                         (window) => window.id === content.id!
@@ -392,9 +395,9 @@ export function PopContent({
                                     .then(async () => {
                                       await api
                                         .get(
-                                          `/project/${localStorage.getItem(
-                                            'id'
-                                          )}/${projectData.id!}`
+                                          `/project/${
+                                            data?.uid
+                                          }/${projectData.id!}`
                                         )
                                         .then((res) => {
                                           // Delete scriptData of window for dispatch setWindowData.
@@ -534,7 +537,7 @@ export function PopContent({
                                 ) {
                                   await api
                                     .put('/project/window', {
-                                      uid: localStorage.getItem('id'),
+                                      uid: data?.uid,
                                       id: projectData.id!,
                                       _id: windowList.find(
                                         (window) => window.id === content.id!
@@ -547,9 +550,9 @@ export function PopContent({
                                     .then(async () => {
                                       await api
                                         .get(
-                                          `/project/${localStorage.getItem(
-                                            'id'
-                                          )}/${projectData.id!}`
+                                          `/project/${
+                                            data?.uid
+                                          }/${projectData.id!}`
                                         )
                                         .then((res) => {
                                           // Delete scriptData of window for dispatch setWindowData.
@@ -727,9 +730,9 @@ export function PopContent({
 
                                 await api
                                   .delete(
-                                    `/project/window/${localStorage.getItem(
-                                      'id'
-                                    )}/${projectData.id!}/${
+                                    `/project/window/${
+                                      data?.uid
+                                    }/${projectData.id!}/${
                                       windowList.find(
                                         (window) => window.id === content.id!
                                       )!._id
@@ -738,9 +741,9 @@ export function PopContent({
                                   .then(async () => {
                                     await api
                                       .get(
-                                        `/project/${localStorage.getItem(
-                                          'id'
-                                        )}/${projectData.id!}`
+                                        `/project/${
+                                          data?.uid
+                                        }/${projectData.id!}`
                                       )
                                       .then((res) => {
                                         // Delete scriptData of window for dispatch setWindowData.

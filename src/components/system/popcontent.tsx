@@ -14,6 +14,7 @@ import api from '../../config/api';
 import { setProjectData } from './reduxSlice/projectSlice';
 import { setFalse } from './reduxSlice/coverSlice';
 import { dataContext } from '../..';
+import { useTranslation } from 'react-i18next';
 
 interface IContentData {
   cacheKey?: string;
@@ -40,6 +41,8 @@ export function PopContent({
   width = 190,
   contents,
 }: IContentData) {
+  const { t } = useTranslation(['page']);
+
   const [contentsState, setContentsState] = useState<
     Array<{
       text?: string;
@@ -190,7 +193,7 @@ export function PopContent({
                       }}
                     >
                       <div
-                        title="Edit Window Config"
+                        title={t('writ62')}
                         style={{
                           color: 'var(--textSubBlackColor)',
                         }}
@@ -198,10 +201,10 @@ export function PopContent({
                           setConfModal(content.text!);
                         }}
                       >
-                        <p>Edit Window Config</p>
+                        <p>{t('writ62')}</p>
                       </div>
                       <div
-                        title="Rename Window"
+                        title={t('writ63')}
                         style={{
                           color: 'var(--textSubBlackColor)',
                         }}
@@ -209,10 +212,10 @@ export function PopContent({
                           setEditModal(content.text!);
                         }}
                       >
-                        <p>Rename Window</p>
+                        <p>{t('writ63')}</p>
                       </div>
                       <div
-                        title="Delete Window"
+                        title={t('writ64')}
                         style={{
                           color: 'var(--red)',
                         }}
@@ -220,12 +223,12 @@ export function PopContent({
                           setDelModal(content.text!);
                         }}
                       >
-                        <p>Delete Window</p>
+                        <p>{t('writ64')}</p>
                       </div>
                       <Modal
                         closeTimeoutMS={150}
                         isOpen={confModal === content.text}
-                        contentLabel="Edit Window Config"
+                        contentLabel={t('writ62')}
                         style={{
                           content: {
                             width: '400px',
@@ -233,9 +236,9 @@ export function PopContent({
                         }}
                       >
                         <div className="header">
-                          <p>Edit Window Config</p>
+                          <p>{t('writ62')}</p>
                           <div
-                            title="Cancel"
+                            title={t('cancel')}
                             onClick={() => setConfModal(null)}
                           >
                             <svg
@@ -267,7 +270,7 @@ export function PopContent({
                                 maxWidth: '100%',
                               }}
                             >
-                              Resize window width to..
+                              {t('writ65')}
                             </p>
                             <input
                               style={{
@@ -325,7 +328,7 @@ export function PopContent({
                                 maxWidth: '100%',
                               }}
                             >
-                              Resize window height to..
+                              {t('writ66')}
                             </p>
                             <input
                               style={{
@@ -440,9 +443,7 @@ export function PopContent({
                                             })
                                           );
 
-                                          toast.success(
-                                            `Window has been configured successfully.`
-                                          );
+                                          toast.success(t('writ67'));
                                         })
                                         .catch((err) => {
                                           toast.error(
@@ -470,7 +471,7 @@ export function PopContent({
                                 dispatch(setFalse());
                               }}
                             >
-                              Edit Window Config
+                              {t('writ62')}
                             </button>
                           </div>
                         </div>
@@ -478,7 +479,7 @@ export function PopContent({
                       <Modal
                         closeTimeoutMS={150}
                         isOpen={editModal === content.text}
-                        contentLabel="Rename Window"
+                        contentLabel={t('writ63')}
                         style={{
                           content: {
                             width: '400px',
@@ -486,9 +487,9 @@ export function PopContent({
                         }}
                       >
                         <div className="header">
-                          <p>Rename Window</p>
+                          <p>{t('writ63')}</p>
                           <div
-                            title="Cancel"
+                            title={t('cancel')}
                             onClick={() => setEditModal(null)}
                           >
                             <svg
@@ -520,7 +521,7 @@ export function PopContent({
                                 maxWidth: '100%',
                               }}
                             >
-                              Rename window to..
+                              {t('writ68')}
                             </p>
                             <input
                               style={{
@@ -595,9 +596,7 @@ export function PopContent({
                                             })
                                           );
 
-                                          toast.success(
-                                            `Window has been renamed successfully.`
-                                          );
+                                          toast.success(t('writ69'));
                                         })
                                         .catch((err) => {
                                           toast.error(
@@ -617,15 +616,13 @@ export function PopContent({
                                 } else if (
                                   formInput.replaceAll(' ', '') === ''
                                 ) {
-                                  toast.error(`Window name cannot be blank.`);
+                                  toast.error(t('writ25'));
                                 } else if (
                                   contentsState.find(
                                     (ct) => ct.text === formInput
                                   ) !== undefined
                                 ) {
-                                  toast.error(
-                                    `There's already a window with the same name.`
-                                  );
+                                  toast.error(t('writ23'));
                                 } else {
                                   toast.error(`An error occured.`);
                                 }
@@ -637,7 +634,7 @@ export function PopContent({
                                 dispatch(setFalse());
                               }}
                             >
-                              Rename Window
+                              {t('writ63')}
                             </button>
                           </div>
                         </div>
@@ -645,7 +642,7 @@ export function PopContent({
                       <Modal
                         closeTimeoutMS={150}
                         isOpen={delModal === content.text}
-                        contentLabel="Delete Window"
+                        contentLabel={t('writ64')}
                         style={{
                           content: {
                             width: '450px',
@@ -653,8 +650,11 @@ export function PopContent({
                         }}
                       >
                         <div className="header">
-                          <p>Delete Window</p>
-                          <div title="Cancel" onClick={() => setDelModal(null)}>
+                          <p>{t('writ64')}</p>
+                          <div
+                            title={t('cancel')}
+                            onClick={() => setDelModal(null)}
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               width="27"
@@ -685,10 +685,9 @@ export function PopContent({
                                 lineHeight: '1.5',
                               }}
                             >
-                              You cannot undone this action.
+                              {t('writ70')}
                               <br />
-                              This will permanently delete the window, objects,
-                              and all nodes.
+                              {t('writ71')}
                             </p>
                             <button
                               className="button danger"
@@ -708,9 +707,7 @@ export function PopContent({
                                 ) {
                                   setDelModal(null);
                                   setFormDisable(false);
-                                  toast.error(
-                                    'Window opened cannot be deleted.'
-                                  );
+                                  toast.error(t('writ72'));
 
                                   setDelModal(null);
                                   setFormDisable(false);
@@ -792,9 +789,7 @@ export function PopContent({
                                           ),
                                           1
                                         );
-                                        toast.success(
-                                          `Window has been deleted successfully.`
-                                        );
+                                        toast.success(t('writ73'));
                                       })
                                       .catch((err) => {
                                         toast.error(
@@ -819,7 +814,7 @@ export function PopContent({
                               }}
                               disabled={formDisable}
                             >
-                              I understand
+                              {t('writ74')}
                             </button>
                           </div>
                         </div>

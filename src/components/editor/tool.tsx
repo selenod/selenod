@@ -1255,7 +1255,7 @@ export default function Tool() {
                   (event as any).target.value = null;
                 }}
                 onChange={async (event) => {
-                  if (assetLength >= 1) {
+                  if (assetLength >= 100) {
                     toast.error(t('writ36'));
                   } else {
                     const reader = new FileReader();
@@ -1300,9 +1300,7 @@ export default function Tool() {
                                 })
                               );
 
-                              toast.success(
-                                `Asset has been added successfully.`
-                              );
+                              toast.success(t('writ37'));
                             })
                             .catch((err) => {
                               toast.error(
@@ -1316,11 +1314,7 @@ export default function Tool() {
                           toast.error(
                             err.response.data.message
                               ? err.response.data.message
-                              : 'Fail to update database.'
-                              ? err.response.data.message
-                                ? err.response.data.message
-                                : 'Fail to update database.'
-                              : 'Fail to update database.'
+                              : t('writ50')
                           );
                         });
                     });
@@ -1347,7 +1341,7 @@ export default function Tool() {
               />
               <div
                 className="tool-btn"
-                title="Upload File From Local"
+                title={t('writ38')}
                 style={{
                   float: 'right',
                   backgroundColor: 'var(--panelPathColor)',
@@ -1375,7 +1369,7 @@ export default function Tool() {
               </div>
               <div
                 className="tool-btn"
-                title="Create Asset"
+                title={t('writ39')}
                 style={{
                   float: 'right',
                   backgroundColor: 'var(--panelPathColor)',
@@ -1408,7 +1402,7 @@ export default function Tool() {
               <Modal
                 closeTimeoutMS={150}
                 isOpen={winOpenId === 1}
-                contentLabel="Create New Asset"
+                contentLabel={t('writ40')}
                 style={{
                   content: {
                     width: '400px',
@@ -1416,8 +1410,11 @@ export default function Tool() {
                 }}
               >
                 <div className="header">
-                  <p>Create New Asset</p>
-                  <div title="Cancel" onClick={() => setWinOpenId(undefined)}>
+                  <p>{t('writ40')}</p>
+                  <div
+                    title={t('cancel')}
+                    onClick={() => setWinOpenId(undefined)}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="27"
@@ -1446,7 +1443,7 @@ export default function Tool() {
                         paddingBottom: '.7rem',
                       }}
                     >
-                      Create new asset named..
+                      {t('writ41')}
                     </p>
                     <input
                       style={{
@@ -1457,7 +1454,7 @@ export default function Tool() {
                       onChange={(e) => {
                         setAssetFormInput(e.target.value);
                       }}
-                      placeholder="asset_name.txt"
+                      placeholder={t('writ42')}
                     />
                     <p
                       style={{
@@ -1467,7 +1464,7 @@ export default function Tool() {
                         marginTop: 5,
                       }}
                     >
-                      and its contents..
+                      {t('writ43')}
                     </p>
                     <textarea
                       style={{
@@ -1479,7 +1476,7 @@ export default function Tool() {
                       onChange={(e) => {
                         setAssetFormContents(e.target.value);
                       }}
-                      placeholder="Type something awesome here.."
+                      placeholder={t('writ44')}
                     />
                     <button
                       className="button primary"
@@ -1494,7 +1491,9 @@ export default function Tool() {
                         setFormDisable(true);
 
                         if (assetFormInput.replaceAll(' ', '') !== '') {
-                          if (
+                          if (assetLength >= 100) {
+                            toast.error(t('writ36'));
+                          } else if (
                             assetFormInput.includes('\\') ||
                             assetFormInput.includes('/') ||
                             assetFormInput.includes(':') ||
@@ -1505,9 +1504,7 @@ export default function Tool() {
                             assetFormInput.includes('>') ||
                             assetFormInput.includes('|')
                           ) {
-                            toast.error(
-                              `Asset name cannot include \\, /, :, *, ?, ", <, >, |`
-                            );
+                            toast.error(t('writ45'));
                           } else {
                             (async () => {
                               await api
@@ -1553,9 +1550,7 @@ export default function Tool() {
                                         })
                                       );
 
-                                      toast.success(
-                                        `Asset has been created successfully.`
-                                      );
+                                      toast.success(t('writ46'));
                                     })
                                     .catch((err) => {
                                       toast.error(
@@ -1569,15 +1564,15 @@ export default function Tool() {
                                   toast.error(
                                     err.response.data.message
                                       ? err.response.data.message
-                                      : 'Fail to update database.'
+                                      : t('writ50')
                                   );
                                 });
                             })();
                           }
                         } else if (assetFormInput.replaceAll(' ', '') === '') {
-                          toast.error(`Asset's name cannot be blank.`);
+                          toast.error(t('writ47'));
                         } else {
-                          toast.error(`An error occured.`);
+                          toast.error('An error occured.');
                         }
                         setWinOpenId(undefined);
                         setFormDisable(false);
@@ -1585,7 +1580,7 @@ export default function Tool() {
                         setAssetFormContents('');
                       }}
                     >
-                      Create Asset
+                      {t('writ39')}
                     </button>
                   </div>
                 </div>
@@ -1605,9 +1600,7 @@ export default function Tool() {
                       event.dataTransfer.items[0].webkitGetAsEntry();
 
                     if (assetLength >= 100) {
-                      toast.error(
-                        'Upload has been canceled because the upload exceeds number of assets remaining.'
-                      );
+                      toast.error(t('writ36'));
                     } else {
                       const fileAsEntry = entryArr;
                       if (fileAsEntry) {
@@ -1657,9 +1650,7 @@ export default function Tool() {
                                       })
                                     );
 
-                                    toast.success(
-                                      `Asset has been added successfully.`
-                                    );
+                                    toast.success(t('writ37'));
                                   })
                                   .catch((err) => {
                                     toast.error(
@@ -1673,7 +1664,7 @@ export default function Tool() {
                                 toast.error(
                                   err.response.data.message
                                     ? err.response.data.message
-                                    : 'Fail to update database.'
+                                    : t('writ50')
                                 );
                               });
                           });
@@ -1697,9 +1688,7 @@ export default function Tool() {
                           }
                         } else {
                           toast.error(
-                            `Folder '${
-                              files![0].name
-                            }' couldn't be uploaded because it is unable to upload folders as asset.`
+                            `${t('writ48')} '${files![0].name}' ${t('writ49')}`
                           );
                         }
                       }
@@ -1713,7 +1702,7 @@ export default function Tool() {
                       <Modal
                         closeTimeoutMS={150}
                         isOpen={assetRenameWinOpenId === asset.id}
-                        contentLabel="Rename Asset"
+                        contentLabel={t('writ51')}
                         style={{
                           content: {
                             width: '400px',
@@ -1721,9 +1710,9 @@ export default function Tool() {
                         }}
                       >
                         <div className="header">
-                          <p>Rename Asset</p>
+                          <p>{t('writ51')}</p>
                           <div
-                            title="Cancel"
+                            title={t('cancel')}
                             onClick={() => setAssetRenameWinOpenId(undefined)}
                           >
                             <svg
@@ -1755,7 +1744,7 @@ export default function Tool() {
                                 maxWidth: '100%',
                               }}
                             >
-                              Rename asset to..
+                              {t('writ52')}
                             </p>
                             <input
                               style={{
@@ -1792,9 +1781,7 @@ export default function Tool() {
                                     assetFormInput.includes('>') ||
                                     assetFormInput.includes('|')
                                   ) {
-                                    toast.error(
-                                      `Asset name cannot include \\, /, :, *, ?, ", <, >, |`
-                                    );
+                                    toast.error(t('writ45'));
                                   } else {
                                     await api
                                       .put('/project/asset', {
@@ -1841,9 +1828,7 @@ export default function Tool() {
                                               })
                                             );
 
-                                            toast.success(
-                                              `Asset has been renamed successfully.`
-                                            );
+                                            toast.success(t('writ53'));
                                           })
                                           .catch((err) => {
                                             toast.error(
@@ -1864,7 +1849,7 @@ export default function Tool() {
                                 } else if (
                                   assetFormInput.replaceAll(' ', '') === ''
                                 ) {
-                                  toast.error(`Asset's name cannot be blank.`);
+                                  toast.error(t('writ54'));
                                 } else {
                                   toast.error(`An error occured.`);
                                 }
@@ -1873,7 +1858,7 @@ export default function Tool() {
                                 setAssetFormInput('');
                               }}
                             >
-                              Rename Asset
+                              {t('writ51')}
                             </button>
                           </div>
                         </div>
@@ -1892,12 +1877,12 @@ export default function Tool() {
                           <PopContent
                             contents={[
                               {
-                                text: 'Rename Asset',
+                                text: t('writ51'),
                                 onClick: () =>
                                   setAssetRenameWinOpenId(asset.id),
                               },
                               {
-                                text: 'Delete Asset',
+                                text: t('writ55'),
                                 type: ContentType.DANGER,
                                 onClick: async () => {
                                   await api
@@ -1939,9 +1924,7 @@ export default function Tool() {
                                             })
                                           );
 
-                                          toast.success(
-                                            'Asset has been deleted successfully.'
-                                          );
+                                          toast.success(t('writ56'));
                                         })
                                         .catch((err) => {
                                           toast.error(
@@ -2147,7 +2130,7 @@ export default function Tool() {
                 <PopContent
                   contents={[
                     {
-                      text: 'Set Auto-Save Delay',
+                      text: t('writ57'),
                       onClick: () => {
                         setWinOpenId(2);
                       },
@@ -2157,7 +2140,7 @@ export default function Tool() {
               )}
             >
               <button
-                title="Settings"
+                title={t('writ58')}
                 style={{ backgroundColor: shortcutColor[0] }}
                 onClick={() => {
                   dispatch(
@@ -2204,7 +2187,7 @@ export default function Tool() {
           <div className="hl" />
           <li>
             <button
-              title="Explore"
+              title={t('writ7')}
               onClick={() => (pnlCase === 0 ? setPnlCase(null) : setPnlCase(0))}
               style={{
                 backgroundColor:
@@ -2245,7 +2228,7 @@ export default function Tool() {
           </li>
           <li>
             <button
-              title="Asset"
+              title={t('writ34')}
               onClick={() => (pnlCase === 1 ? setPnlCase(null) : setPnlCase(1))}
               style={{
                 backgroundColor:
@@ -2288,7 +2271,7 @@ export default function Tool() {
         <Modal
           closeTimeoutMS={150}
           isOpen={winOpenId === 2}
-          contentLabel="Set Auto-Save Delay"
+          contentLabel={t('writ57')}
           style={{
             content: {
               width: '400px',
@@ -2296,7 +2279,7 @@ export default function Tool() {
           }}
         >
           <div className="header">
-            <p>Set Auto-Save Delay</p>
+            <p>{t('writ57')}</p>
             <div
               title="Cancel"
               onClick={() => {
@@ -2335,7 +2318,7 @@ export default function Tool() {
                   paddingBottom: '.7rem',
                 }}
               >
-                Set script auto-save delay in seconds..
+                {t('writ59')}
               </p>
               <input
                 style={{
@@ -2376,7 +2359,7 @@ export default function Tool() {
                   setFormDisable(true);
 
                   localStorage.setItem('delay', formInput);
-                  toast.success('Settings have been saved successfully.');
+                  toast.success(t('writ60'));
 
                   setWinOpenId(undefined);
                   setFormDisable(false);
@@ -2387,7 +2370,7 @@ export default function Tool() {
                   });
                 }}
               >
-                Save Settings
+                {t('writ61')}
               </button>
             </div>
           </div>

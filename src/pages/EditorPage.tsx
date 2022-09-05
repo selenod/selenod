@@ -5,6 +5,7 @@ import Editor from '../components/editor/editor';
 import Cover from '../cover';
 import { ResponseProps } from '../data';
 import ResponsePage from './ResponsePage';
+import { useTranslation } from 'react-i18next';
 import api from '../config/api';
 import { setProjectData } from '../components/system/reduxSlice/projectSlice';
 import {
@@ -26,6 +27,8 @@ import toast from 'react-hot-toast';
 import { landingURL } from '../config/config';
 
 export default function EditorPage() {
+  const { t } = useTranslation(['page']);
+
   const { projectID } = useParams();
 
   const scripts = useContext(scriptContext);
@@ -73,7 +76,7 @@ export default function EditorPage() {
               dispatch(setScriptSaved(true));
             })
             .catch(() => {
-              toast.error('Fail to auto-update database.');
+              toast.error(t('writ95'));
             });
         })();
       }

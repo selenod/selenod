@@ -10,6 +10,7 @@ import {
 } from '../../data';
 import { useState, useEffect, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { RootState } from '../../store';
 import { setWindowData } from './reduxSlice/windowSlice';
 import { Popover } from 'react-tiny-popover';
@@ -18,6 +19,7 @@ import { setFalse, setTrue } from './reduxSlice/coverSlice';
 import api from '../../config/api';
 import { setProjectData } from './reduxSlice/projectSlice';
 import { dataContext } from '../..';
+import i18n from '../../locale';
 
 function GetComponent({
   current,
@@ -27,6 +29,8 @@ function GetComponent({
   type: ComponentType;
   disable?: Array<string>;
 }) {
+  const { t } = useTranslation(['page']);
+
   const projectData = useSelector((state: RootState) => state.project.data);
   const windowList = useSelector((state: RootState) => state.window.windowList);
   const isClicked = useSelector((state: RootState) => state.cover.clicked);
@@ -125,7 +129,7 @@ function GetComponent({
         height: 'auto',
       }}
     >
-      <p className="title">{type}</p>
+      <p className="title">{i18n.language !== 'en' ? t(type) : type}</p>
       {
         {
           Position: (
@@ -385,12 +389,14 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    X Align
+                    {t('writ75')}
                   </p>
                   <input
                     type="text"
                     style={{
-                      width: 'calc(100% - 70px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 62 : 70
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -508,12 +514,14 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Y Align
+                    {t('writ76')}
                   </p>
                   <input
                     type="text"
                     style={{
-                      width: 'calc(100% - 70px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 62 : 70
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -637,12 +645,14 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Rotation
+                    {t('writ77')}
                   </p>
                   <input
                     type="text"
                     style={{
-                      width: 'calc(100% - 79px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 50 : 79
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -753,12 +763,14 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Index
+                    {t('writ78')}
                   </p>
                   <input
                     type="text"
                     style={{
-                      width: 'calc(100% - 61px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 89 : 96
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -889,12 +901,14 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    W
+                    {t('writ79')}
                   </p>
                   <input
                     type="text"
                     style={{
-                      width: 'calc(100% - 40px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 50 : 39
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -1000,12 +1014,14 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    H
+                    {t('writ80')}
                   </p>
                   <input
                     type="text"
                     style={{
-                      width: 'calc(100% - 37px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 50 : 37
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -1121,12 +1137,14 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Border Radius
+                    {t('writ81')}
                   </p>
                   <input
                     type="text"
                     style={{
-                      width: 'calc(100% - 115px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 100 : 115
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -1240,13 +1258,15 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Border Color
+                    {t('writ82')}
                   </p>
                   <input
                     type="text"
                     style={{
                       position: 'relative',
-                      width: 'calc(100% - 106px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 89 : 106
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -1356,13 +1376,15 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Text
+                    {t('writ83')}
                   </p>
                   <textarea
                     className="text"
                     style={{
                       position: 'relative',
-                      width: 'calc(100% - 54px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 62 : 54
+                      }px)`,
                       height: `calc(23.25px + ${textAreaHeight}rem)`,
                       maxHeight: 300,
                       padding: '6.75px 0 0 0',
@@ -1476,13 +1498,15 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Font Size
+                    {t('writ84')}
                   </p>
                   <input
                     type="text"
                     style={{
                       position: 'relative',
-                      width: 'calc(100% - 85px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 77 : 85
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -1606,13 +1630,15 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Color
+                    {t('writ85')}
                   </p>
                   <input
                     type="text"
                     style={{
                       position: 'relative',
-                      width: 'calc(100% - 61px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 50 : 61
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -1717,7 +1743,7 @@ function GetComponent({
                       isSelection={true}
                       contents={[
                         {
-                          text: 'Horizontal line',
+                          text: t('writ86'),
                           id: 0,
                           selected:
                             windowList
@@ -1765,7 +1791,7 @@ function GetComponent({
                           },
                         },
                         {
-                          text: 'Vertical line',
+                          text: t('writ87'),
                           id: 1,
                           selected:
                             windowList
@@ -1858,8 +1884,8 @@ function GetComponent({
                         .find((window) => window.id === currentWindow)!
                         .elementData.find((element) => element.id === current)!
                         .part === Part.HORIZONTAL
-                        ? 'Horizontal line'
-                        : 'Vertical line'}
+                        ? t('writ86')
+                        : t('writ87')}
                     </p>
                     <svg
                       style={{
@@ -1910,12 +1936,14 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Length
+                    {t('writ88')}
                   </p>
                   <input
                     type="text"
                     style={{
-                      width: 'calc(100% - 71px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 50 : 71
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -2123,13 +2151,15 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Color
+                    {t('writ85')}
                   </p>
                   <input
                     type="text"
                     style={{
                       position: 'relative',
-                      width: 'calc(100% - 61px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 50 : 61
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -2242,7 +2272,7 @@ function GetComponent({
                         ).length === 0
                           ? [
                               {
-                                text: 'NO ASSETS AVAILABLE',
+                                text: t('writ89'),
                                 type: ContentType.CATEGORY,
                               },
                             ]
@@ -2345,7 +2375,7 @@ function GetComponent({
                               (element) => element.id === current
                             )!.src
                       ) === undefined
-                        ? 'No Image'
+                        ? t('writ90')
                         : `${
                             assetData.find(
                               (asset) =>
@@ -2419,12 +2449,14 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Border Radius
+                    {t('writ81')}
                   </p>
                   <input
                     type="text"
                     style={{
-                      width: 'calc(100% - 115px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 100 : 115
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -2543,7 +2575,7 @@ function GetComponent({
                         ).length === 0
                           ? [
                               {
-                                text: 'NO ASSETS AVAILABLE',
+                                text: t('writ89'),
                                 type: ContentType.CATEGORY,
                               },
                             ]
@@ -2646,7 +2678,7 @@ function GetComponent({
                               (element) => element.id === current
                             )!.src
                       ) === undefined
-                        ? 'No Video'
+                        ? t('writ91')
                         : `${
                             assetData.find(
                               (asset) =>
@@ -2720,12 +2752,14 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Border Radius
+                    {t('writ81')}
                   </p>
                   <input
                     type="text"
                     style={{
-                      width: 'calc(100% - 115px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 100 : 115
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -2842,13 +2876,15 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Background Color
+                    {t('writ92')}
                   </p>
                   <input
                     type="text"
                     style={{
                       position: 'relative',
-                      width: 'calc(100% - 139px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 77 : 139
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -2954,12 +2990,14 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Border Radius
+                    {t('writ81')}
                   </p>
                   <input
                     type="text"
                     style={{
-                      width: 'calc(100% - 115px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 100 : 115
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -3149,7 +3187,7 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Selected
+                    {t('writ93')}
                   </p>
                 </div>
               </div>
@@ -3182,12 +3220,14 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Size
+                    {t('writ94')}
                   </p>
                   <input
                     type="text"
                     style={{
-                      width: 'calc(100% - 53px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 50 : 53
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -3309,13 +3349,15 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Color
+                    {t('writ85')}
                   </p>
                   <input
                     type="text"
                     style={{
                       position: 'relative',
-                      width: 'calc(100% - 61px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 50 : 61
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,
@@ -3423,13 +3465,15 @@ function GetComponent({
                       float: 'left',
                     }}
                   >
-                    Background Color
+                    {t('writ92')}
                   </p>
                   <input
                     type="text"
                     style={{
                       position: 'relative',
-                      width: 'calc(100% - 139px)',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 77 : 139
+                      }px)`,
                       height: '100%',
                       padding: 0,
                       marginRight: 10,

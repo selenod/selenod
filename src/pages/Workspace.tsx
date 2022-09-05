@@ -7,9 +7,12 @@ import { ResponseProps } from '../data';
 import ResponsePage from './ResponsePage';
 import api from '../config/api';
 import { dataContext, setDataContext } from '..';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 export default function Workspace() {
+  const { t } = useTranslation(['page']);
+
   const [winOpenId, setWinOpenId] = useState<number | string>();
   const [formInput, setFormInput] = useState<string>('');
   const [formDisable, setFormDisable] = useState<boolean>(false);
@@ -108,7 +111,7 @@ export default function Workspace() {
                 color: 'var(--textBlackColor)',
               }}
             >
-              Workspace
+              {t('writ96')}
             </p>
             <div
               className="button primary"
@@ -125,13 +128,13 @@ export default function Workspace() {
                   transform: 'translateY(-50%)',
                 }}
               >
-                New Project
+                {t('writ97')}
               </p>
             </div>
             <Modal
               closeTimeoutMS={150}
               isOpen={winOpenId === 0}
-              contentLabel="Create New Project"
+              contentLabel={t('writ98')}
               style={{
                 content: {
                   width: '400px',
@@ -139,8 +142,11 @@ export default function Workspace() {
               }}
             >
               <div className="header">
-                <p>Create New Project</p>
-                <div title="Cancel" onClick={() => setWinOpenId(undefined)}>
+                <p>{t('writ98')}</p>
+                <div
+                  title={t('cancel')}
+                  onClick={() => setWinOpenId(undefined)}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="27"
@@ -169,7 +175,7 @@ export default function Workspace() {
                       paddingBottom: '.7rem',
                     }}
                   >
-                    Create new project named..
+                    {t('writ99')}
                   </p>
                   <input
                     style={{
@@ -206,7 +212,7 @@ export default function Workspace() {
                                 .get(`/user/projects/${data?.uid}`)
                                 .then((res) => {
                                   setProjectList(res.data.projectList);
-                                  toast.success(`Project has been created.`);
+                                  toast.success(t('writ100'));
                                 })
                                 .catch((err) => {
                                   toast.error(err.response.data.message);
@@ -217,16 +223,16 @@ export default function Workspace() {
                             });
                         })();
                       } else if (formInput.replaceAll(' ', '') === '') {
-                        toast.error(`Project name cannot be blank.`);
+                        toast.error(t('writ101'));
                       } else {
-                        toast.error(`An error occured.`);
+                        toast.error('An error occured.');
                       }
                       setWinOpenId(undefined);
                       setFormDisable(false);
                       setFormInput('');
                     }}
                   >
-                    Create Project
+                    {t('writ102')}
                   </button>
                 </div>
               </div>
@@ -257,7 +263,7 @@ export default function Workspace() {
                   color: 'var(--shortcutIconColor)',
                 }}
               >
-                Name
+                {t('writ103')}
               </p>
             </div>
             <div
@@ -277,7 +283,7 @@ export default function Workspace() {
                   color: 'var(--shortcutIconColor)',
                 }}
               >
-                Create At
+                {t('writ104')}
               </p>
             </div>
             <div
@@ -297,7 +303,7 @@ export default function Workspace() {
                   color: 'var(--shortcutIconColor)',
                 }}
               >
-                Modified At
+                {t('writ105')}
               </p>
             </div>
           </div>
@@ -321,9 +327,9 @@ export default function Workspace() {
                   marginTop: 50,
                 }}
               >
-                There's no project here yet.
+                {t('writ106')}
                 <br />
-                Projects you create appear here.
+                {t('writ107')}
               </div>
             ) : (
               projectList.map((project, index) => (
@@ -439,7 +445,7 @@ export default function Workspace() {
                   <Modal
                     closeTimeoutMS={150}
                     isOpen={winOpenId === project._id}
-                    contentLabel="Delete Modal"
+                    contentLabel={t('writ108')}
                     style={{
                       content: {
                         width: '450px',
@@ -447,9 +453,9 @@ export default function Workspace() {
                     }}
                   >
                     <div className="header">
-                      <p>Delete Project</p>
+                      <p>{t('writ108')}</p>
                       <div
-                        title="Cancel"
+                        title={t('cancel')}
                         onClick={() => setWinOpenId(undefined)}
                       >
                         <svg
@@ -482,10 +488,9 @@ export default function Workspace() {
                             lineHeight: '1.5',
                           }}
                         >
-                          You cannot undone this action.
+                          {t('writ70')}
                           <br />
-                          This will permanently delete the project, window,
-                          objects, and all nodes.
+                          {t('writ109')}
                         </p>
                         <button
                           className="button danger"
@@ -505,7 +510,7 @@ export default function Workspace() {
                                 api
                                   .get(`/user/projects/${data?.uid}`)
                                   .then((res) => {
-                                    toast.success(`Project has been deleted.`);
+                                    toast.success(t('writ110'));
                                     setProjectList(res.data.projectList);
                                   })
                                   .catch((err) => {
@@ -523,7 +528,7 @@ export default function Workspace() {
                           }}
                           disabled={formDisable}
                         >
-                          I understand
+                          {t('writ74')}
                         </button>
                       </div>
                     </div>

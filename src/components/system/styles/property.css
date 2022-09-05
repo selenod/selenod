@@ -29,8 +29,3 @@
 .property-input:hover {
   background-color: var(--panelPathColor);
 }
-
-.text::-webkit-scrollbar-track,
-.text::-webkit-scrollbar-corner {
-  background-color: var(--panelPathColor);
-}

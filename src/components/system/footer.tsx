@@ -1,8 +1,11 @@
 import './styles/footer.css';
 import logo from '../../assets/svgs/logo.svg';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
+  const { t } = useTranslation(['page']);
+
   return (
     <div className="Footer">
       <div className="preset">
@@ -12,24 +15,21 @@ export default function Footer() {
               <img src={logo} alt="" />
               <div>
                 <Link to="/">
-                  <p>Privacy Policy</p>
+                  <p>{t('privacy_policy')}</p>
                 </Link>
                 <Link to="/">
-                  <p>Terms of Use</p>
-                </Link>
-                <Link to="/">
-                  <p>Cookie Policy</p>
+                  <p>{t('terms_of_use')}</p>
                 </Link>
               </div>
             </div>
             <div className="section">
-              <p className="rep">Learn More</p>
+              <p className="rep">{t('learn_more')}</p>
               <div>
                 <a href="https://github.com/selenod/support/issues/new">
-                  <p>Support</p>
+                  <p>{t('support')}</p>
                 </a>
                 <Link to="/">
-                  <p>Developers</p>
+                  <p>{t('developers')}</p>
                 </Link>
               </div>
             </div>

@@ -305,9 +305,17 @@ export function PopContent({
                                   });
                                 }
                               }}
-                              placeholder={windowList
-                                .find((window) => window.id === content.id!)!
-                                .windowData.width.toString()}
+                              placeholder={
+                                windowList.find(
+                                  (window) => window.id === content.id!
+                                )!
+                                  ? windowList
+                                      .find(
+                                        (window) => window.id === content.id!
+                                      )!
+                                      .windowData.width.toString()
+                                  : undefined
+                              }
                             />
                             <p
                               style={{
@@ -355,9 +363,17 @@ export function PopContent({
                                   });
                                 }
                               }}
-                              placeholder={windowList
-                                .find((window) => window.id === content.id!)!
-                                .windowData.height.toString()}
+                              placeholder={
+                                windowList.find(
+                                  (window) => window.id === content.id!
+                                )!
+                                  ? windowList
+                                      .find(
+                                        (window) => window.id === content.id!
+                                      )!
+                                      .windowData.height.toString()
+                                  : undefined
+                              }
                             />
                             <button
                               className="button primary"
@@ -462,7 +478,7 @@ export function PopContent({
                       <Modal
                         closeTimeoutMS={150}
                         isOpen={editModal === content.text}
-                        contentLabel="Rename Modal"
+                        contentLabel="Rename Window"
                         style={{
                           content: {
                             width: '400px',
@@ -629,7 +645,7 @@ export function PopContent({
                       <Modal
                         closeTimeoutMS={150}
                         isOpen={delModal === content.text}
-                        contentLabel="Delete Modal"
+                        contentLabel="Delete Window"
                         style={{
                           content: {
                             width: '450px',

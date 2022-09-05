@@ -28,11 +28,23 @@ export default function Workspace() {
     document.title = 'Workspace - Selenod';
 
     if (!data?.uid || !data?.uname) {
-      if (sessionStorage.getItem('uid') && sessionStorage.getItem('uname')) {
-        setData!({
-          uid: sessionStorage.getItem('uid')!,
-          uname: sessionStorage.getItem('uname')!,
-        });
+      if (sessionStorage.getItem('token')) {
+        (async () => {
+          await api
+            .get(`/user/${sessionStorage.getItem('token')}`)
+            .then((res) => {
+              setData!({
+                uid: res.data.uid,
+                uname: res.data.username,
+              });
+            })
+            .catch((err) => {
+              setProps({
+                status: err.response.status,
+                message: err.response.data.message,
+              });
+            });
+        })();
       } else {
         window.location.replace(landingURL);
       }

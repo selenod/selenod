@@ -16,12 +16,15 @@ import { imageExtensions, videoExtensions } from '../../data';
 import api from '../../config/api';
 import { dataContext, scriptContext } from '../..';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 interface IToolData {
   panelWidth: number;
 }
 
 export default function Active(propData: IToolData) {
+  const { t } = useTranslation(['page']);
+
   const scripts = useContext(scriptContext);
   const data = useContext(dataContext);
 
@@ -75,7 +78,7 @@ export default function Active(propData: IToolData) {
                 color: 'var(--shortcutIconColor)',
               }}
             >
-              Window
+              {t('writ0')}
             </p>
           </div>
           <div
@@ -98,7 +101,7 @@ export default function Active(propData: IToolData) {
                 color: 'var(--shortcutIconColor)',
               }}
             >
-              Script
+              {t('writ1')}
             </p>
           </div>
           <div
@@ -280,7 +283,7 @@ export default function Active(propData: IToolData) {
         </nav>
         <div>
           <div
-            title={scriptSaved ? undefined : 'Upload Script'}
+            title={scriptSaved ? undefined : t('writ2')}
             style={{
               cursor: scriptSaved ? 'auto' : 'pointer',
             }}
@@ -319,11 +322,6 @@ export default function Active(propData: IToolData) {
                 strokeWidth="2"
                 stroke="var(--shortcutIconColor)"
               >
-                {/* <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 12.75l6 6 9-13.5"
-                /> */}
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -348,7 +346,7 @@ export default function Active(propData: IToolData) {
               </svg>
             )}
           </div>
-          <div title="Build Project">
+          <div title={t('writ3')}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"
@@ -379,7 +377,7 @@ export default function Active(propData: IToolData) {
               <PopContent
                 contents={[
                   {
-                    text: 'Close All Tabs',
+                    text: t('writ5'),
                     onClick: () => {
                       openedPanelList.forEach((panel) => {
                         dispatch(
@@ -398,7 +396,7 @@ export default function Active(propData: IToolData) {
             )}
           >
             <div
-              title="More Actions.."
+              title={t('writ4')}
               onClick={() => {
                 dispatch(showPopover === true ? setFalse() : setTrue());
                 setShowPopover(!showPopover);

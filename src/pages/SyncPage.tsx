@@ -5,7 +5,7 @@ import { ResponseProps } from '../data';
 import ResponsePage from './ResponsePage';
 
 export default function SyncPage() {
-  const { method, id, nickname } = useParams();
+  const { method, token, id, nickname } = useParams();
   const navigate = useNavigate();
 
   const setData = useContext(setDataContext);
@@ -17,15 +17,14 @@ export default function SyncPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (method && id && nickname) {
+    if (method && token && id && nickname) {
       if (method === 'login') {
         setData!({
           uid: id!,
           uname: nickname!,
         });
 
-        sessionStorage.setItem('uid', id!);
-        sessionStorage.setItem('uname', nickname!);
+        sessionStorage.setItem('token', token!);
         navigate('/');
       }
     } else {
@@ -34,7 +33,7 @@ export default function SyncPage() {
         message: 'Page not found.',
       });
     }
-  }, [method, id, nickname, navigate, setData]);
+  }, [method, id, nickname, navigate, setData, token]);
 
   return <ResponsePage {...props} />;
 }

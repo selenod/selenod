@@ -1,6 +1,6 @@
 import './index.css';
 
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { store } from './store';
@@ -13,6 +13,7 @@ import ResponsePage from './pages/ResponsePage';
 import SyncPage from './pages/SyncPage';
 import { Toaster } from 'react-hot-toast';
 import { Script } from './data';
+import i18n from './locale';
 
 export const scriptContext = createContext<
   Array<{
@@ -86,6 +87,15 @@ function App() {
     uname?: string;
   }>({});
 
+  useEffect(() => {
+    const translateCookie = document.cookie.match(
+      '(^|;) ?translate=([^;]*)(;|$)'
+    );
+    if (translateCookie) {
+      i18n.changeLanguage(translateCookie[2]);
+    }
+  }, []);
+
   return (
     <setDataContext.Provider value={setData}>
       <setEditorDataContext.Provider value={setEditorData}>
@@ -103,7 +113,7 @@ function App() {
                         element={<EditorPage />}
                       />
                       <Route
-                        path="/:method/:id/:nickname"
+                        path="/:method/:token/:id/:nickname"
                         element={<SyncPage />}
                       />
                       <Route

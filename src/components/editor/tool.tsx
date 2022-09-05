@@ -33,10 +33,13 @@ import {
 import api from '../../config/api';
 import { setProjectData } from '../system/reduxSlice/projectSlice';
 import { dataContext } from '../..';
+import { useTranslation } from 'react-i18next';
 
 Modal.setAppElement('#root');
 
 export default function Tool() {
+  const { t } = useTranslation(['page']);
+
   interface IPnlSize {
     width: number;
     height: string;
@@ -119,7 +122,7 @@ export default function Tool() {
           })
         );
 
-        toast.success('Element has been created successfully.');
+        toast.success(t('writ6'));
       })
       .catch((err) => {
         toast.error(
@@ -137,7 +140,6 @@ export default function Tool() {
     );
 
     dispatch(setCurrWin(windowList[0].id));
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -155,7 +157,7 @@ export default function Tool() {
             <div>
               <div className="hl" />
               <p style={{ color: 'var(--shortcutIconColor)', fontWeight: 800 }}>
-                Explore
+                {t('writ7')}
               </p>
             </div>
             <nav className="pnl-explore">
@@ -196,7 +198,7 @@ export default function Tool() {
                     float: 'left',
                   }}
                   className="mgr-window tool-btn"
-                  title="Manage Windows"
+                  title={t('writ8')}
                   onClick={() => {
                     dispatch(
                       isWindowShown ? dispatch(setFalse()) : dispatch(setTrue())
@@ -252,18 +254,18 @@ export default function Tool() {
                     height={350}
                     contents={[
                       {
-                        text: 'BASIC',
+                        text: t('writ9'),
                         type: ContentType.CATEGORY,
                       },
                       {
-                        text: 'Text',
+                        text: t('writ10'),
                         onClick: async () => {
                           await api
                             .post('/project/element', {
                               uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
-                              name: `Text ${
+                              name: `${t('writ10')} ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
                                   ?.elementData.filter(
@@ -286,14 +288,14 @@ export default function Tool() {
                         },
                       },
                       {
-                        text: 'Line',
+                        text: t('writ11'),
                         onClick: async () => {
                           await api
                             .post('/project/element', {
                               uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
-                              name: `Line ${
+                              name: `${t('writ11')} ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
                                   ?.elementData.filter(
@@ -319,18 +321,18 @@ export default function Tool() {
                         type: ContentType.LINE,
                       },
                       {
-                        text: 'ASSET',
+                        text: t('writ12'),
                         type: ContentType.CATEGORY,
                       },
                       {
-                        text: 'Image',
+                        text: t('writ13'),
                         onClick: async () => {
                           await api
                             .post('/project/element', {
                               uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
-                              name: `Image ${
+                              name: `${t('writ13')} ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
                                   ?.elementData.filter(
@@ -353,14 +355,14 @@ export default function Tool() {
                         },
                       },
                       {
-                        text: 'Video',
+                        text: t('writ14'),
                         onClick: async () => {
                           await api
                             .post('/project/element', {
                               uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
-                              name: `Video ${
+                              name: `${t('writ14')} ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
                                   ?.elementData.filter(
@@ -386,18 +388,18 @@ export default function Tool() {
                         type: ContentType.LINE,
                       },
                       {
-                        text: 'INPUT',
+                        text: t('writ15'),
                         type: ContentType.CATEGORY,
                       },
                       {
-                        text: 'Button',
+                        text: t('writ16'),
                         onClick: async () => {
                           await api
                             .post('/project/element', {
                               uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
-                              name: `Button ${
+                              name: `${t('writ16')} ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
                                   ?.elementData.filter(
@@ -420,14 +422,14 @@ export default function Tool() {
                         },
                       },
                       {
-                        text: 'Checkbox',
+                        text: t('writ17'),
                         onClick: async () => {
                           await api
                             .post('/project/element', {
                               uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
-                              name: `Checkbox ${
+                              name: `${t('writ17')} ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
                                   ?.elementData.filter(
@@ -450,14 +452,14 @@ export default function Tool() {
                         },
                       },
                       {
-                        text: 'Single-Line Input',
+                        text: t('writ18'),
                         onClick: async () => {
                           await api
                             .post('/project/element', {
                               uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
-                              name: `Single-Line ${
+                              name: `${t('writ18')} ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
                                   ?.elementData.filter(
@@ -480,14 +482,14 @@ export default function Tool() {
                         },
                       },
                       {
-                        text: 'Multiple-Line Input',
+                        text: t('writ19'),
                         onClick: async () => {
                           await api
                             .post('/project/element', {
                               uid: data?.uid,
                               id: projectData.id,
                               windowId: currentWindow,
-                              name: `Multiple-Line ${
+                              name: `${t('writ19')} ${
                                 windowList
                                   .find((window) => window.id === currentWindow)
                                   ?.elementData.filter(
@@ -515,7 +517,7 @@ export default function Tool() {
               >
                 <div
                   className="tool-btn"
-                  title="Create Element"
+                  title={t('writ20')}
                   style={{
                     float: 'right',
                     backgroundColor: 'var(--panelPathColor)',
@@ -550,7 +552,7 @@ export default function Tool() {
               </Popover>
               <div
                 className="tool-btn"
-                title="Create New Window"
+                title={t('writ21')}
                 style={{
                   float: 'left',
                   backgroundColor: 'var(--panelPathColor)',
@@ -582,7 +584,7 @@ export default function Tool() {
               <Modal
                 closeTimeoutMS={150}
                 isOpen={winOpenId === 0}
-                contentLabel="Create New Window"
+                contentLabel={t('writ21')}
                 style={{
                   content: {
                     width: '400px',
@@ -590,8 +592,11 @@ export default function Tool() {
                 }}
               >
                 <div className="header">
-                  <p>Create New Window</p>
-                  <div title="Cancel" onClick={() => setWinOpenId(undefined)}>
+                  <p>{t('writ21')}</p>
+                  <div
+                    title={t('cancel')}
+                    onClick={() => setWinOpenId(undefined)}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="27"
@@ -620,7 +625,7 @@ export default function Tool() {
                         paddingBottom: '.7rem',
                       }}
                     >
-                      Create new window named..
+                      {t('writ22')}
                     </p>
                     <input
                       style={{
@@ -651,9 +656,7 @@ export default function Tool() {
                               (window) => window.name === formInput
                             )
                           ) {
-                            toast.error(
-                              `There's already a window with the same name.`
-                            );
+                            toast.error(t('writ23'));
                             setWinOpenId(undefined);
                             setFormDisable(false);
                             setFormInput('');
@@ -692,9 +695,7 @@ export default function Tool() {
                                     })
                                   );
 
-                                  toast.success(
-                                    `Window has been created successfully.`
-                                  );
+                                  toast.success(t('writ24'));
                                 })
                                 .catch((err) => {
                                   toast.error(
@@ -712,7 +713,7 @@ export default function Tool() {
                               );
                             });
                         } else if (formInput.replaceAll(' ', '') === '') {
-                          toast.error(`Window name cannot be blank.`);
+                          toast.error(t('writ25'));
                         } else {
                           toast.error(`An error occured.`);
                         }
@@ -721,7 +722,7 @@ export default function Tool() {
                         setFormInput('');
                       }}
                     >
-                      Create Window
+                      {t('writ26')}
                     </button>
                   </div>
                 </div>
@@ -742,7 +743,7 @@ export default function Tool() {
                       <Modal
                         closeTimeoutMS={150}
                         isOpen={elementRenameWinOpenId === element.id}
-                        contentLabel="Rename Element"
+                        contentLabel={t('writ27')}
                         style={{
                           content: {
                             width: '400px',
@@ -750,9 +751,9 @@ export default function Tool() {
                         }}
                       >
                         <div className="header">
-                          <p>Rename Element</p>
+                          <p>{t('writ27')}</p>
                           <div
-                            title="Cancel"
+                            title={t('cancel')}
                             onClick={() => setElementRenameWinOpenId(undefined)}
                           >
                             <svg
@@ -784,7 +785,7 @@ export default function Tool() {
                                 maxWidth: '100%',
                               }}
                             >
-                              Rename element to..
+                              {t('writ28')}
                             </p>
                             <input
                               style={{
@@ -849,9 +850,7 @@ export default function Tool() {
                                             })
                                           );
 
-                                          toast.success(
-                                            `Element has been renamed successfully.`
-                                          );
+                                          toast.success(t('writ29'));
                                         })
                                         .catch((err) => {
                                           toast.error(
@@ -871,9 +870,7 @@ export default function Tool() {
                                 } else if (
                                   assetFormInput.replaceAll(' ', '') === ''
                                 ) {
-                                  toast.error(
-                                    `Element's name cannot be blank.`
-                                  );
+                                  toast.error(t('writ30'));
                                 } else {
                                   toast.error(`An error occured.`);
                                 }
@@ -882,7 +879,7 @@ export default function Tool() {
                                 setAssetFormInput('');
                               }}
                             >
-                              Rename Element
+                              {t('writ31')}
                             </button>
                           </div>
                         </div>
@@ -902,7 +899,7 @@ export default function Tool() {
                           <PopContent
                             contents={[
                               {
-                                text: 'Rename Element',
+                                text: t('writ31'),
                                 onClick: () => {
                                   setElementRenameWinOpenId(element.id);
                                   dispatch(setFalse());
@@ -910,7 +907,7 @@ export default function Tool() {
                                 },
                               },
                               {
-                                text: 'Delete Element',
+                                text: t('writ32'),
                                 type: ContentType.DANGER,
                                 onClick: () => {
                                   dispatch(
@@ -955,9 +952,7 @@ export default function Tool() {
                                               })
                                             );
 
-                                            toast.success(
-                                              'Element has been deleted successfully.'
-                                            );
+                                            toast.success(t('writ33'));
                                           })
                                           .catch((err) => {
                                             toast.error(
@@ -1233,7 +1228,7 @@ export default function Tool() {
             <div>
               <div className="hl" />
               <p style={{ color: 'var(--shortcutIconColor)', fontWeight: 800 }}>
-                Asset
+                {t('writ34')}
               </p>
             </div>
             <nav className="pnl-asset">
@@ -1250,7 +1245,7 @@ export default function Tool() {
                   fontWeight: 500,
                 }}
               >
-                Remaining Assets: {100 - assetLength} / {100}
+                {t('writ35')}: {100 - assetLength} / {100}
               </p>
               <input
                 type="file"
@@ -1260,10 +1255,8 @@ export default function Tool() {
                   (event as any).target.value = null;
                 }}
                 onChange={async (event) => {
-                  if (assetLength >= 100) {
-                    toast.error(
-                      'Upload has been canceled because the upload exceeds number of assets remaining.'
-                    );
+                  if (assetLength >= 1) {
+                    toast.error(t('writ36'));
                   } else {
                     const reader = new FileReader();
 
@@ -2112,6 +2105,7 @@ export default function Tool() {
     assetFormContents,
     windowToggle,
     projectData,
+    t,
   ]);
 
   useEffect(() => {

@@ -1363,9 +1363,10 @@ function GetComponent({
                     style={{
                       position: 'relative',
                       width: 'calc(100% - 54px)',
-                      height: `calc(30px + ${textAreaHeight}rem)`,
+                      height: `calc(23.25px + ${textAreaHeight}rem)`,
                       maxHeight: 300,
                       padding: '6.75px 0 0 0',
+                      marginBottom: 6.75,
                       marginRight: 10,
                       borderRadius: 0,
                       fontSize: '.9rem',

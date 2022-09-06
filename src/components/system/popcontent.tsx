@@ -391,6 +391,32 @@ export function PopContent({
                                 setFormDisable(true);
 
                                 if (
+                                  confInput.width === '' &&
+                                  windowList.find(
+                                    (window) => window.id === content.id!
+                                  )!
+                                ) {
+                                  confInput.width = windowList
+                                    .find(
+                                      (window) => window.id === content.id!
+                                    )!
+                                    .windowData.width.toString();
+                                }
+
+                                if (
+                                  confInput.height === '' &&
+                                  windowList.find(
+                                    (window) => window.id === content.id!
+                                  )!
+                                ) {
+                                  confInput.height = windowList
+                                    .find(
+                                      (window) => window.id === content.id!
+                                    )!
+                                    .windowData.height.toString();
+                                }
+
+                                if (
                                   parseInt(confInput.width) >= 300 &&
                                   parseInt(confInput.height) >= 200 &&
                                   parseInt(confInput.width) <= 3840 &&

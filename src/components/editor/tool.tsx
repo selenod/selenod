@@ -2358,7 +2358,10 @@ export default function Tool() {
                   // two-factor
                   setFormDisable(true);
 
-                  localStorage.setItem('delay', formInput);
+                  if (formInput !== '') {
+                    localStorage.setItem('delay', formInput);
+                  }
+
                   toast.success(t('writ60'));
 
                   setWinOpenId(undefined);

@@ -83,14 +83,18 @@ export default function Field(data: IToolData) {
                   ? 0
                   : '50%',
               left:
-                document.body.offsetWidth - data.panelWidth - 70 <=
+                document.body.offsetWidth -
+                  data.panelWidth -
+                  (currentElement !== undefined ? 420 : 70) <=
                 windowList.find((window) => window.id === currentWindow)
                   ?.windowData.width! /
                   2
                   ? 0
                   : '50%',
               transform:
-                document.body.offsetWidth - data.panelWidth - 70 <=
+                document.body.offsetWidth -
+                  data.panelWidth -
+                  (currentElement !== undefined ? 420 : 70) <=
                 windowList.find((window) => window.id === currentWindow)
                   ?.windowData.width! /
                   2
@@ -228,6 +232,14 @@ export default function Field(data: IToolData) {
                 top: 35,
               }}
             >
+              {`${
+                document.body.offsetWidth -
+                  data.panelWidth -
+                  (currentElement !== undefined ? 420 : 70) <=
+                windowList.find((window) => window.id === currentWindow)
+                  ?.windowData.width! /
+                  2
+              }`.repeat(50)}
               {windowList
                 .find((window) => window.id === currentWindow)
                 ?.elementData.map((element) => {

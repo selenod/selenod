@@ -14,6 +14,7 @@ import SyncPage from './pages/SyncPage';
 import { Toaster } from 'react-hot-toast';
 import { Script } from './data';
 import i18n from './locale';
+import api from './config/api';
 
 export const scriptContext = createContext<
   Array<{
@@ -94,6 +95,27 @@ function App() {
     if (translateCookie) {
       i18n.changeLanguage(translateCookie[2]);
     }
+
+    (async () => {
+      if (sessionStorage.getItem('token') !== null) {
+        api
+          .get(`/user/${sessionStorage.getItem('token')}`)
+          .then((res) => {
+            document.cookie = `translate=${res.data.translate};max-age=${
+              365 * 24 * 60 * 60 * 1000
+            };path=/`;
+            i18n.changeLanguage(res.data.translate);
+            setData({
+              ...data,
+              uid: res.data.uid,
+              uname: res.data.username,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    })();
   }, []);
 
   return (

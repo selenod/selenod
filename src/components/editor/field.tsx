@@ -102,7 +102,7 @@ export default function Field(data: IToolData) {
                       ?.windowData.height! /
                       2 +
                       35
-                    ? undefined
+                    ? 'translate(0, 0)'
                     : 'translateY(-50%)'
                   : winHeight - 104 <=
                     windowList.find((window) => window.id === currentWindow)

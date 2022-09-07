@@ -5,8 +5,7 @@ import { RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { imageExtensions, videoExtensions } from '../../data';
 import Property from '../system/property';
-import Type from '@selenod/selene/dist/data/SeleneType';
-import Selene, { SeleneNodesObject } from '@selenod/selene';
+import Selene, { SeleneNodesObject, SeleneType } from '@selenod/selene';
 import {
   editorDataContext,
   scriptContext,
@@ -661,38 +660,39 @@ export default function Field(data: IToolData) {
               nodesData={{
                 'selene.test.Method1': {
                   name: 'Method1',
-                  hasInputFlow: true,
-                  hasOutputFlow: true,
-                  inputs: [{ name: 'param1', type: Type.String }],
-                  output: Type.Int,
+                  inputs: [
+                    {
+                      name: 'Sans',
+                      type: SeleneType.Bool,
+                      isRequired: true,
+                    },
+                  ],
+                  outputs: [],
                 },
                 'selene.test.Method2': {
                   name: 'Method2',
-                  hasInputFlow: false,
-                  hasOutputFlow: false,
-                  inputs: [{ name: 'param1', type: Type.Int }],
-                  output: Type.String,
+                  inputs: [],
+                  outputs: [
+                    {
+                      name: 'Sans',
+                      type: SeleneType.Bool,
+                    },
+                  ],
                 },
                 'selene.test.Method3': {
                   name: 'Method3',
-                  hasInputFlow: false,
-                  hasOutputFlow: true,
                   inputs: [],
-                  output: Type.Int,
+                  outputs: [],
                 },
                 'selene.test.Method4': {
                   name: 'Method4',
-                  hasInputFlow: false,
-                  hasOutputFlow: false,
                   inputs: [],
-                  output: Type.Any,
+                  outputs: [],
                 },
                 'selene.test.Method5': {
                   name: 'Method5',
-                  hasInputFlow: true,
-                  hasOutputFlow: true,
-                  inputs: [{ name: 'string property', type: Type.String }],
-                  output: Type.String,
+                  inputs: [],
+                  outputs: [],
                 },
               }}
               editorData={

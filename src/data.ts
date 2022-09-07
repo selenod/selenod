@@ -58,17 +58,12 @@ export interface ResponseProps {
 export interface Script {
   [id: string]: {
     nodeId: string;
-    outputFlowConnection: {
-      id: string;
-      pinType: number;
-      name: string | null;
-    } | null;
     inputConnections: {
       name: string;
       connection: {
         id: string;
         pinType: number;
-        name: string | null;
+        name: string;
       } | null;
     }[];
     position: {

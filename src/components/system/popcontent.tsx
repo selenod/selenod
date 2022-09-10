@@ -214,17 +214,21 @@ export function PopContent({
                       >
                         <p>{t('writ63')}</p>
                       </div>
-                      <div
-                        title={t('writ64')}
-                        style={{
-                          color: 'var(--red)',
-                        }}
-                        onClick={() => {
-                          setDelModal(content.text!);
-                        }}
-                      >
-                        <p>{t('writ64')}</p>
-                      </div>
+                      {windowList.find((window) => window.id === content.id!) &&
+                      windowList.find((window) => window.id === content.id!)!
+                        .id !== 0 ? (
+                        <div
+                          title={t('writ64')}
+                          style={{
+                            color: 'var(--red)',
+                          }}
+                          onClick={() => {
+                            setDelModal(content.text!);
+                          }}
+                        >
+                          <p>{t('writ64')}</p>
+                        </div>
+                      ) : null}
                       <Modal
                         closeTimeoutMS={150}
                         isOpen={confModal === content.text}

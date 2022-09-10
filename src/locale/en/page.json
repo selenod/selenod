@@ -110,6 +110,8 @@
   "writ108": "Delete Project",
   "writ109": "This action will permanently delete the project, windows, assets, elements, and all nodes.",
   "writ110": "Project has been deleted successfully.",
+  "writ111": "Proejct has been built successfully.",
+  "writ112": "Script has been uploaded successfully.",
   "cancel": "Cancel",
   "workspace": "Workspace",
   "logout": "Log out",

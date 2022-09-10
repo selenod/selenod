@@ -300,7 +300,7 @@ export default function Active(propData: IToolData) {
                   })
                   .then(() => {
                     dispatch(setScriptSaved(true));
-                    toast.success('Script has been uploaded successfully.');
+                    toast.success(t('writ112'));
                   })
                   .catch((err) => {
                     toast.error(
@@ -346,7 +346,23 @@ export default function Active(propData: IToolData) {
               </svg>
             )}
           </div>
-          <div title={t('writ3')}>
+          <div
+            title={t('writ3')}
+            onClick={async () => {
+              api
+                .get(`/project/build/${data!.uid}/${projectData.id}`)
+                .then((res) => {
+                  toast.success(t('writ111'));
+                })
+                .catch((err) => {
+                  toast.error(
+                    err.response.data.message
+                      ? err.response.data.message
+                      : 'Fail to update database.'
+                  );
+                });
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"

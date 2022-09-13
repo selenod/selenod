@@ -5,7 +5,7 @@ import { RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { imageExtensions, videoExtensions } from '../../data';
 import Property from '../system/property';
-import Selene, { SeleneNodesObject, SeleneType } from '@selenod/selene';
+import Ieum, { NodesObject } from '@ieum-lang/ieum';
 import {
   editorDataContext,
   scriptContext,
@@ -13,7 +13,8 @@ import {
   setScriptContext,
 } from '../..';
 import { setScriptSaved } from '../system/reduxSlice/windowSlice';
-import SeleneEditorData from '@selenod/selene/dist/data/SeleneEditorData';
+import Edit from '@ieum-lang/ieum/dist/data/EditorData';
+import { PrimitiveTypes } from '@ieum-lang/ieum/dist/data/type/PrimitiveType';
 
 interface IToolData {
   panelWidth: number;
@@ -76,8 +77,7 @@ export default function Field(data: IToolData) {
               top:
                 winHeight - 104 <=
                 windowList.find((window) => window.id === currentWindow)
-                  ?.windowData.height! /
-                  2 +
+                  ?.windowData.height! +
                   35
                   ? 0
                   : '50%',
@@ -86,8 +86,7 @@ export default function Field(data: IToolData) {
                   data.panelWidth -
                   (currentElement !== undefined ? 420 : 70) <=
                 windowList.find((window) => window.id === currentWindow)
-                  ?.windowData.width! /
-                  2
+                  ?.windowData.width!
                   ? 0
                   : '50%',
               transform:
@@ -95,30 +94,24 @@ export default function Field(data: IToolData) {
                   data.panelWidth -
                   (currentElement !== undefined ? 420 : 70) <=
                 windowList.find((window) => window.id === currentWindow)
-                  ?.windowData.width! /
-                  2
+                  ?.windowData.width!
                   ? winHeight - 104 <=
                     windowList.find((window) => window.id === currentWindow)
-                      ?.windowData.height! /
-                      2 +
+                      ?.windowData.height! +
                       35
                     ? 'translate(0, 0)'
                     : 'translateY(-50%)'
                   : winHeight - 104 <=
                     windowList.find((window) => window.id === currentWindow)
-                      ?.windowData.height! /
-                      2 +
+                      ?.windowData.height! +
                       35
                   ? 'translateX(-50%)'
                   : 'translate(-50%, -50%)',
-              width:
-                windowList.find((window) => window.id === currentWindow)
-                  ?.windowData.width! / 2,
+              width: windowList.find((window) => window.id === currentWindow)
+                ?.windowData.width!,
               height:
                 windowList.find((window) => window.id === currentWindow)
-                  ?.windowData.height! /
-                  2 +
-                35,
+                  ?.windowData.height! + 35,
               backgroundColor: 'white',
               borderRadius: 10,
               boxShadow: '0px 1px 40px 0px #00000005',
@@ -656,14 +649,15 @@ export default function Field(data: IToolData) {
           </div>
         ) : toggle === 1 ? (
           <div>
-            <Selene
+            <Ieum
+              types={[...PrimitiveTypes]}
               nodesData={{
                 'selene.test.Method1': {
                   name: 'Method1',
                   inputs: [
                     {
                       name: 'Sans',
-                      type: SeleneType.Bool,
+                      type: 'bool',
                       isRequired: true,
                     },
                   ],
@@ -675,7 +669,7 @@ export default function Field(data: IToolData) {
                   outputs: [
                     {
                       name: 'Sans',
-                      type: SeleneType.Bool,
+                      type: 'bool',
                     },
                   ],
                 },
@@ -703,7 +697,7 @@ export default function Field(data: IToolData) {
                 scripts!.find((script) => script.windowId === currentWindow)
                   ?.script
               }
-              onEditorDataUpdated={(data: SeleneEditorData) => {
+              onEditorDataUpdated={(data: Edit) => {
                 setEditorData!([
                   ...editorData.filter(
                     (data) => data.windowId !== currentWindow
@@ -714,7 +708,7 @@ export default function Field(data: IToolData) {
                   },
                 ]);
               }}
-              onNodesUpdated={(object: SeleneNodesObject) => {
+              onNodesUpdated={(object: NodesObject) => {
                 dispatch(setScriptSaved(false));
 
                 setScripts!([

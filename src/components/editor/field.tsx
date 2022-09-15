@@ -222,6 +222,7 @@ export default function Field(data: IToolData) {
                 width: '100%',
                 height: 'calc(100% - 35px)',
                 top: 35,
+                overflow: 'auto',
               }}
             >
               {windowList

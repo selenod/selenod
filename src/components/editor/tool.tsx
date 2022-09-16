@@ -354,36 +354,36 @@ export default function Tool() {
                           dispatch(setFalse());
                         },
                       },
-                      {
-                        text: t('writ14'),
-                        onClick: async () => {
-                          await api
-                            .post('/project/element', {
-                              uid: data?.uid,
-                              id: projectData.id,
-                              windowId: currentWindow,
-                              name: `${t('writ14')} ${
-                                windowList
-                                  .find((window) => window.id === currentWindow)
-                                  ?.elementData.filter(
-                                    (element) =>
-                                      element.type === ElementType.VIDEO
-                                  ).length! + 1
-                              }`,
-                              type: ElementType.VIDEO,
-                            })
-                            .then(async () => await handleElement())
-                            .catch((err) => {
-                              toast.error(
-                                err.response.data.message
-                                  ? err.response.data.message
-                                  : 'Fail to update database.'
-                              );
-                            });
-                          setShowNodePopover(false);
-                          dispatch(setFalse());
-                        },
-                      },
+                      // {
+                      //   text: t('writ14'),
+                      //   onClick: async () => {
+                      //     await api
+                      //       .post('/project/element', {
+                      //         uid: data?.uid,
+                      //         id: projectData.id,
+                      //         windowId: currentWindow,
+                      //         name: `${t('writ14')} ${
+                      //           windowList
+                      //             .find((window) => window.id === currentWindow)
+                      //             ?.elementData.filter(
+                      //               (element) =>
+                      //                 element.type === ElementType.VIDEO
+                      //             ).length! + 1
+                      //         }`,
+                      //         type: ElementType.VIDEO,
+                      //       })
+                      //       .then(async () => await handleElement())
+                      //       .catch((err) => {
+                      //         toast.error(
+                      //           err.response.data.message
+                      //             ? err.response.data.message
+                      //             : 'Fail to update database.'
+                      //         );
+                      //       });
+                      //     setShowNodePopover(false);
+                      //     dispatch(setFalse());
+                      //   },
+                      // },
                       {
                         type: ContentType.LINE,
                       },

@@ -54,6 +54,9 @@ export default function Tool() {
   const assetList = useSelector((state: RootState) => state.asset.assetList);
   const assetData = useSelector((state: RootState) => state.asset.assetData);
   const windowToggle = useSelector((state: RootState) => state.window.toggle);
+  const currentElement = useSelector(
+    (state: RootState) => state.window.currentElement
+  );
   const currentWindow = useSelector(
     (state: RootState) => state.window.currentWindow
   );
@@ -284,6 +287,27 @@ export default function Tool() {
                               );
                             });
                           setShowNodePopover(false);
+                          dispatch(
+                            setCurrElement({
+                              forceQuit: true,
+                            })
+                          );
+                          dispatch(
+                            setCurrElement({
+                              id:
+                                windowList.find(
+                                  (window) => window.id === currentWindow
+                                )?.elementData.length === 0
+                                  ? 0
+                                  : windowList.find(
+                                      (window) => window.id === currentWindow
+                                    )!.elementData[
+                                      windowList.find(
+                                        (window) => window.id === currentWindow
+                                      )!.elementData.length - 1
+                                    ].id + 1,
+                            })
+                          );
                           dispatch(setFalse());
                         },
                       },
@@ -314,6 +338,27 @@ export default function Tool() {
                               );
                             });
                           setShowNodePopover(false);
+                          dispatch(
+                            setCurrElement({
+                              forceQuit: true,
+                            })
+                          );
+                          dispatch(
+                            setCurrElement({
+                              id:
+                                windowList.find(
+                                  (window) => window.id === currentWindow
+                                )?.elementData.length === 0
+                                  ? 0
+                                  : windowList.find(
+                                      (window) => window.id === currentWindow
+                                    )!.elementData[
+                                      windowList.find(
+                                        (window) => window.id === currentWindow
+                                      )!.elementData.length - 1
+                                    ].id + 1,
+                            })
+                          );
                           dispatch(setFalse());
                         },
                       },
@@ -351,6 +396,27 @@ export default function Tool() {
                               );
                             });
                           setShowNodePopover(false);
+                          dispatch(
+                            setCurrElement({
+                              forceQuit: true,
+                            })
+                          );
+                          dispatch(
+                            setCurrElement({
+                              id:
+                                windowList.find(
+                                  (window) => window.id === currentWindow
+                                )?.elementData.length === 0
+                                  ? 0
+                                  : windowList.find(
+                                      (window) => window.id === currentWindow
+                                    )!.elementData[
+                                      windowList.find(
+                                        (window) => window.id === currentWindow
+                                      )!.elementData.length - 1
+                                    ].id + 1,
+                            })
+                          );
                           dispatch(setFalse());
                         },
                       },
@@ -381,6 +447,22 @@ export default function Tool() {
                       //         );
                       //       });
                       //     setShowNodePopover(false);
+                      //     dispatch(
+                      //       setCurrElement({
+                      //         id:
+                      //           windowList.find(
+                      //             (window) => window.id === currentWindow
+                      //           )?.elementData.length === 0
+                      //             ? 0
+                      //             : windowList.find(
+                      //                 (window) => window.id === currentWindow
+                      //               )!.elementData[
+                      //                 windowList.find(
+                      //                   (window) => window.id === currentWindow
+                      //                 )!.elementData.length - 1
+                      //               ].id + 1,
+                      //       })
+                      //     );
                       //     dispatch(setFalse());
                       //   },
                       // },
@@ -418,6 +500,27 @@ export default function Tool() {
                               );
                             });
                           setShowNodePopover(false);
+                          dispatch(
+                            setCurrElement({
+                              forceQuit: true,
+                            })
+                          );
+                          dispatch(
+                            setCurrElement({
+                              id:
+                                windowList.find(
+                                  (window) => window.id === currentWindow
+                                )?.elementData.length === 0
+                                  ? 0
+                                  : windowList.find(
+                                      (window) => window.id === currentWindow
+                                    )!.elementData[
+                                      windowList.find(
+                                        (window) => window.id === currentWindow
+                                      )!.elementData.length - 1
+                                    ].id + 1,
+                            })
+                          );
                           dispatch(setFalse());
                         },
                       },
@@ -448,6 +551,27 @@ export default function Tool() {
                               );
                             });
                           setShowNodePopover(false);
+                          dispatch(
+                            setCurrElement({
+                              forceQuit: true,
+                            })
+                          );
+                          dispatch(
+                            setCurrElement({
+                              id:
+                                windowList.find(
+                                  (window) => window.id === currentWindow
+                                )?.elementData.length === 0
+                                  ? 0
+                                  : windowList.find(
+                                      (window) => window.id === currentWindow
+                                    )!.elementData[
+                                      windowList.find(
+                                        (window) => window.id === currentWindow
+                                      )!.elementData.length - 1
+                                    ].id + 1,
+                            })
+                          );
                           dispatch(setFalse());
                         },
                       },
@@ -478,6 +602,27 @@ export default function Tool() {
                               );
                             });
                           setShowNodePopover(false);
+                          dispatch(
+                            setCurrElement({
+                              forceQuit: true,
+                            })
+                          );
+                          dispatch(
+                            setCurrElement({
+                              id:
+                                windowList.find(
+                                  (window) => window.id === currentWindow
+                                )?.elementData.length === 0
+                                  ? 0
+                                  : windowList.find(
+                                      (window) => window.id === currentWindow
+                                    )!.elementData[
+                                      windowList.find(
+                                        (window) => window.id === currentWindow
+                                      )!.elementData.length - 1
+                                    ].id + 1,
+                            })
+                          );
                           dispatch(setFalse());
                         },
                       },
@@ -508,6 +653,27 @@ export default function Tool() {
                               );
                             });
                           setShowNodePopover(false);
+                          dispatch(
+                            setCurrElement({
+                              forceQuit: true,
+                            })
+                          );
+                          dispatch(
+                            setCurrElement({
+                              id:
+                                windowList.find(
+                                  (window) => window.id === currentWindow
+                                )?.elementData.length === 0
+                                  ? 0
+                                  : windowList.find(
+                                      (window) => window.id === currentWindow
+                                    )!.elementData[
+                                      windowList.find(
+                                        (window) => window.id === currentWindow
+                                      )!.elementData.length - 1
+                                    ].id + 1,
+                            })
+                          );
                           dispatch(setFalse());
                         },
                       },
@@ -993,11 +1159,27 @@ export default function Tool() {
                                   })
                                 );
                               } else {
-                                dispatch(
-                                  setCurrElement({
-                                    id: element.id,
-                                  })
-                                );
+                                if (element.id === currentElement) {
+                                  dispatch(
+                                    setCurrElement({
+                                      forceQuit: true,
+                                    })
+                                  );
+                                } else {
+                                  dispatch(
+                                    setCurrElement({
+                                      forceQuit: true,
+                                    })
+                                  );
+
+                                  setTimeout(() => {
+                                    dispatch(
+                                      setCurrElement({
+                                        id: element.id,
+                                      })
+                                    );
+                                  }, 0);
+                                }
                               }
                             }}
                             onContextMenu={(e) => {
@@ -2088,6 +2270,7 @@ export default function Tool() {
     assetFormContents,
     windowToggle,
     projectData,
+    currentElement,
     t,
   ]);
 

@@ -103,7 +103,7 @@ export const windowSlice = createSlice({
     },
     setCurrElement: (
       state: WindowState,
-      action: { payload: { id: number; value?: boolean; forceQuit?: boolean } }
+      action: { payload: { id?: number; value?: boolean; forceQuit?: boolean } }
     ) => {
       state.currentElement =
         (state.currentElement === action.payload.id && !action.payload.value) ||

@@ -246,6 +246,7 @@ export default function Field(data: IToolData) {
                                 : element.x
                             })`,
                             fontSize: element.fontSize,
+                            fontWeight: element.fontWeight,
                             color: element.color,
                             margin: 0,
                             backgroundColor: element.backgroundColor,
@@ -449,6 +450,7 @@ export default function Field(data: IToolData) {
                             outline: 0,
                             color: element.color,
                             fontSize: element.fontSize,
+                            fontWeight: element.fontWeight,
                             zIndex: -10000 + element.index,
                           }}
                         >
@@ -589,6 +591,7 @@ export default function Field(data: IToolData) {
                             boxSizing: 'border-box',
                             border: `1.5px solid ${element.borderColor}`,
                             fontSize: element.fontSize,
+                            fontWeight: element.fontWeight,
                             color: element.color,
                           }}
                           type="text"
@@ -637,6 +640,7 @@ export default function Field(data: IToolData) {
                             boxSizing: 'border-box',
                             border: `1.5px solid ${element.borderColor}`,
                             fontSize: element.fontSize,
+                            fontWeight: element.fontWeight,
                             color: element.color,
                           }}
                           placeholder={element.text}

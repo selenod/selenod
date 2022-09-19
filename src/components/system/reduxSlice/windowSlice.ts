@@ -23,6 +23,7 @@ interface Element {
   // Text
   text?: string;
   fontSize?: number;
+  fontWeight?: number;
   color?: string;
   backgroundColor?: string;
   borderRadius?: string;

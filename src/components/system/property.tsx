@@ -1613,6 +1613,138 @@ function GetComponent({
                     width: '100%',
                     height: 30,
                     backgroundColor:
+                      inputFocused === 10 ? 'var(--panelPathColor)' : undefined,
+                    borderRadius: 6,
+                    float: 'left',
+                    marginTop: 5,
+                  }}
+                >
+                  <p
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      marginLeft: 10,
+                      color: 'var(--shortcutIconColor)',
+                      fontSize: '.85rem',
+                      float: 'left',
+                    }}
+                  >
+                    {t('writ113')}
+                  </p>
+                  <input
+                    type="text"
+                    style={{
+                      position: 'relative',
+                      width: `calc(100% - ${
+                        i18n.language === 'ko' ? 77 : 102
+                      }px)`,
+                      height: '100%',
+                      padding: 0,
+                      marginRight: 10,
+                      borderRadius: 0,
+                      fontSize: '.9rem',
+                      border: 'none',
+                      backgroundColor: '#00000000',
+                      float: 'right',
+                      color: 'var(--fieldTextColor)',
+                    }}
+                    defaultValue={
+                      windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .fontWeight
+                    }
+                    onFocus={() => {
+                      setInputFocused(10);
+                    }}
+                    onBlur={async (event) => {
+                      await api
+                        .put('/project/element', {
+                          uid: data?.uid,
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            fontWeight:
+                              event.target.value === ''
+                                ? 0
+                                : parseFloat(event.target.value!) < 10000
+                                ? parseFloat(event.target.value!)
+                                : 9999,
+                          },
+                        })
+                        .then(
+                          async () =>
+                            await handleElement().then(() => {
+                              if (event) {
+                                event!.target.value = windowList
+                                  .find(
+                                    (window) => window.id === currentWindow
+                                  )!
+                                  .elementData.find(
+                                    (element) => element.id === current
+                                  )!
+                                  .fontWeight!.toString();
+                              }
+                            })
+                        )
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+
+                      setInputFocused(undefined);
+                    }}
+                    onChange={async (event) => {
+                      if (
+                        !isNaN(parseFloat(event.target.value!)) ||
+                        event.target.value === ''
+                      ) {
+                        await api
+                          .put('/project/element', {
+                            uid: data?.uid,
+                            id: projectData.id,
+                            windowId: currentWindow,
+                            index: currentElement,
+                            prop: {
+                              fontWeight:
+                                event.target.value === ''
+                                  ? 0
+                                  : parseFloat(event.target.value!) < 10000
+                                  ? parseFloat(event.target.value!)
+                                  : 9999,
+                            },
+                          })
+                          .then(async () => await handleElement())
+                          .catch((err) => {
+                            console.log(
+                              err.response.data.message
+                                ? err.response.data.message
+                                : 'Fail to update database.'
+                            );
+                          });
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+              <div
+                style={{
+                  width: '100%',
+                  height: 30,
+                }}
+              >
+                <div
+                  className="property-input"
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: 30,
+                    backgroundColor:
                       inputFocused === 0 ? 'var(--panelPathColor)' : undefined,
                     borderRadius: 6,
                     float: 'left',

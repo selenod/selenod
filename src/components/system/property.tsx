@@ -1637,7 +1637,7 @@ function GetComponent({
                     style={{
                       position: 'relative',
                       width: `calc(100% - ${
-                        i18n.language === 'ko' ? 77 : 85
+                        i18n.language === 'ko' ? 77 : 102
                       }px)`,
                       height: '100%',
                       padding: 0,

@@ -17,6 +17,7 @@ import api from '../../config/api';
 import { dataContext, scriptContext } from '../..';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { serverURL } from '../../config/config';
 
 interface IToolData {
   panelWidth: number;
@@ -348,20 +349,11 @@ export default function Active(propData: IToolData) {
           </div>
           <div
             title={t('writ3')}
-            onClick={async () => {
-              api
-                .get(`/project/build/${data!.uid}/${projectData.id}`)
-                .then((res) => {
-                  toast.success(t('writ111'));
-                })
-                .catch((err) => {
-                  toast.error(
-                    err.response.data.message
-                      ? err.response.data.message
-                      : 'Fail to update database.'
-                  );
-                });
-            }}
+            onClick={() =>
+              (window.location.href = `${serverURL}/project/build/${
+                data!.uid
+              }/${projectData.id}`)
+            }
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -696,7 +696,6 @@ export default function Active(propData: IToolData) {
                                       target="_blank"
                                     >
                                       어플리케이션이 손상되어 열 수 없습니다.
-                                      (영문)
                                     </a>
                                   </p>
                                 ) : (

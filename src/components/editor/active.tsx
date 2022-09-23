@@ -18,9 +18,16 @@ import { dataContext, scriptContext } from '../..';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { serverURL } from '../../config/config';
+import Modal from 'react-modal';
+import i18n from '../../locale';
 
 interface IToolData {
   panelWidth: number;
+}
+
+enum Maker {
+  EXE = 'exe',
+  DMG = 'dmg',
 }
 
 export default function Active(propData: IToolData) {
@@ -29,7 +36,17 @@ export default function Active(propData: IToolData) {
   const scripts = useContext(scriptContext);
   const data = useContext(dataContext);
 
-  const [showPopover, setShowPopover] = useState<boolean>(false);
+  const [showPopover, setShowPopover] = useState<{
+    action: boolean;
+    build: boolean;
+    modal: Maker | null;
+    sectionID: number;
+  }>({
+    action: false,
+    build: false,
+    modal: null,
+    sectionID: 0,
+  });
 
   const dispatch = useDispatch();
 
@@ -347,30 +364,8 @@ export default function Active(propData: IToolData) {
               </svg>
             )}
           </div>
-          <div
-            title={t('writ3')}
-            onClick={() =>
-              (window.location.href = `${serverURL}/project/build/${
-                data!.uid
-              }/${projectData.id}`)
-            }
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="var(--shortcutIconColor)"
-            >
-              <path
-                fillRule="evenodd"
-                d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
           <Popover
-            isOpen={showPopover}
+            isOpen={showPopover.build}
             positions={['bottom']}
             padding={10}
             align="end"
@@ -378,7 +373,82 @@ export default function Active(propData: IToolData) {
             onClickOutside={() => {
               if (isClicked) {
                 dispatch(setFalse());
-                setShowPopover(false);
+                setShowPopover({
+                  ...showPopover,
+                  build: false,
+                });
+              }
+            }}
+            content={() => (
+              <PopContent
+                contents={[
+                  {
+                    text: t('writ114'),
+                    onClick: () => {
+                      setShowPopover({
+                        ...showPopover,
+                        modal: Maker.EXE,
+                        sectionID: 0,
+                      });
+                    },
+                  },
+                  {
+                    text: t('writ115'),
+                    onClick: () => {
+                      setShowPopover({
+                        ...showPopover,
+                        modal: Maker.DMG,
+                        sectionID: 0,
+                      });
+                    },
+                  },
+                ]}
+              />
+            )}
+          >
+            <div
+              title={t('writ3')}
+              // onClick={() =>
+              //   (window.location.href = `${serverURL}/project/build/${
+              //     data!.uid
+              //   }/${projectData.id}`)
+              // }
+              onClick={() => {
+                dispatch(showPopover.build === true ? setFalse() : setTrue());
+                setShowPopover({
+                  ...showPopover,
+                  build: !showPopover.build,
+                });
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="var(--shortcutIconColor)"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+          </Popover>
+          <Popover
+            isOpen={showPopover.action}
+            positions={['bottom']}
+            padding={10}
+            align="end"
+            reposition={false}
+            onClickOutside={() => {
+              if (isClicked) {
+                dispatch(setFalse());
+                setShowPopover({
+                  ...showPopover,
+                  action: false,
+                });
               }
             }}
             content={() => (
@@ -396,7 +466,10 @@ export default function Active(propData: IToolData) {
                         );
                       });
                       dispatch(setFalse());
-                      setShowPopover(false);
+                      setShowPopover({
+                        ...showPopover,
+                        action: false,
+                      });
                     },
                   },
                 ]}
@@ -406,8 +479,11 @@ export default function Active(propData: IToolData) {
             <div
               title={t('writ4')}
               onClick={() => {
-                dispatch(showPopover === true ? setFalse() : setTrue());
-                setShowPopover(!showPopover);
+                dispatch(showPopover.action === true ? setFalse() : setTrue());
+                setShowPopover({
+                  ...showPopover,
+                  action: !showPopover.action,
+                });
               }}
             >
               <svg
@@ -428,6 +504,285 @@ export default function Active(propData: IToolData) {
               </svg>
             </div>
           </Popover>
+          <Modal
+            closeTimeoutMS={150}
+            isOpen={showPopover.modal !== null}
+            contentLabel={t('writ21')}
+            style={{
+              content: {
+                width: '450px',
+              },
+            }}
+          >
+            <div className="header">
+              <p>
+                {t(showPopover.modal === Maker.EXE ? 'writ114' : 'writ115')}
+              </p>
+              <div
+                title={t('cancel')}
+                onClick={() =>
+                  setShowPopover({
+                    ...showPopover,
+                    modal: null,
+                  })
+                }
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="27"
+                  height="27"
+                  fill="var(--shortcutIconColor)"
+                  className="bi bi-x"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                </svg>
+              </div>
+            </div>
+            <div className="body">
+              <div
+                style={{
+                  position: 'relative',
+                  top: 20,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                }}
+              >
+                {
+                  {
+                    exe: (
+                      <div>
+                        {
+                          {
+                            0: (
+                              <div>
+                                {i18n.language === 'ko' ? (
+                                  <p
+                                    style={{
+                                      margin: 0,
+                                      color: 'var(--textSubBlackColor)',
+                                      paddingBottom: '1rem',
+                                      maxWidth: '100%',
+                                      lineHeight: '1.5',
+                                    }}
+                                  >
+                                    셀레노드 프로젝트 <b>{projectData.name}</b>{' '}
+                                    를 exe 파일로 빌드합니다.
+                                    <br />
+                                    Windows 7 이상의 Windows 운영 체제를
+                                    지원합니다.
+                                  </p>
+                                ) : (
+                                  <p
+                                    style={{
+                                      margin: 0,
+                                      color: 'var(--textSubBlackColor)',
+                                      paddingBottom: '1rem',
+                                      maxWidth: '100%',
+                                      lineHeight: '1.5',
+                                    }}
+                                  >
+                                    Build a Selenod project{' '}
+                                    <b>{projectData.name}</b> as exe file.
+                                    <br />
+                                    It supports Windows 7 and later Windows OS.
+                                  </p>
+                                )}
+                              </div>
+                            ),
+                            1: (
+                              <div>
+                                {i18n.language === 'ko' ? (
+                                  <p
+                                    style={{
+                                      margin: 0,
+                                      color: 'var(--textSubBlackColor)',
+                                      paddingBottom: '1rem',
+                                      maxWidth: '100%',
+                                      lineHeight: '1.5',
+                                    }}
+                                  >
+                                    <b>{projectData.name}.exe </b>가 빌드 큐에
+                                    추가되었습니다.
+                                    <br />
+                                    잠시 후에 어플리케이션이 다운로드 될
+                                    것입니다.
+                                  </p>
+                                ) : (
+                                  <p
+                                    style={{
+                                      margin: 0,
+                                      color: 'var(--textSubBlackColor)',
+                                      paddingBottom: '1rem',
+                                      maxWidth: '100%',
+                                      lineHeight: '1.5',
+                                    }}
+                                  >
+                                    <b>{projectData.name}.exe </b>has been added
+                                    to build queue.
+                                    <br />
+                                    The application will be downloaded after a
+                                    while.
+                                  </p>
+                                )}
+                              </div>
+                            ),
+                          }[showPopover.sectionID]
+                        }
+                      </div>
+                    ),
+                    dmg: (
+                      <div>
+                        {
+                          {
+                            0: (
+                              <div>
+                                {i18n.language === 'ko' ? (
+                                  <p
+                                    style={{
+                                      margin: 0,
+                                      color: 'var(--textSubBlackColor)',
+                                      paddingBottom: '1rem',
+                                      maxWidth: '100%',
+                                      lineHeight: '1.5',
+                                    }}
+                                  >
+                                    셀레노드 프로젝트 <b>{projectData.name}</b>{' '}
+                                    를 dmg 파일로 빌드합니다.
+                                    <br />
+                                    macOS 10.10 이상의 macOS 운영 체제를
+                                    지원합니다.
+                                  </p>
+                                ) : (
+                                  <p
+                                    style={{
+                                      margin: 0,
+                                      color: 'var(--textSubBlackColor)',
+                                      paddingBottom: '1rem',
+                                      maxWidth: '100%',
+                                      lineHeight: '1.5',
+                                    }}
+                                  >
+                                    Build a Selenod project{' '}
+                                    <b>{projectData.name}</b> as dmg file.
+                                    <br />
+                                    It supports macOS 10.10 and later macOS.
+                                  </p>
+                                )}
+                              </div>
+                            ),
+                            1: (
+                              <div>
+                                {i18n.language === 'ko' ? (
+                                  <p
+                                    style={{
+                                      margin: 0,
+                                      color: 'var(--textSubBlackColor)',
+                                      paddingBottom: '1rem',
+                                      maxWidth: '100%',
+                                      lineHeight: '1.5',
+                                    }}
+                                  >
+                                    <b>{projectData.name}.dmg </b>가 빌드 큐에
+                                    추가되었습니다.
+                                    <br />
+                                    잠시 후에 어플리케이션이 다운로드 될
+                                    것입니다.
+                                    <br />
+                                    <br />
+                                    <a
+                                      href="https://selenod.notion.site/My-macOS-application-is-damaged-and-can-t-be-opened-73b0e09f048a4e99871c9144c110c10c"
+                                      rel="external noreferrer"
+                                      target="_blank"
+                                    >
+                                      어플리케이션이 손상되어 열 수 없습니다.
+                                      (영문)
+                                    </a>
+                                  </p>
+                                ) : (
+                                  <p
+                                    style={{
+                                      margin: 0,
+                                      color: 'var(--textSubBlackColor)',
+                                      paddingBottom: '1rem',
+                                      maxWidth: '100%',
+                                      lineHeight: '1.5',
+                                    }}
+                                  >
+                                    <b>{projectData.name}.dmg </b>has been added
+                                    to build queue.
+                                    <br />
+                                    The application will be downloaded after a
+                                    while.
+                                    <br />
+                                    <br />
+                                    <a
+                                      href="https://selenod.notion.site/My-macOS-application-is-damaged-and-can-t-be-opened-73b0e09f048a4e99871c9144c110c10c"
+                                      rel="external noreferrer"
+                                      target="_blank"
+                                    >
+                                      Application is damaged and can’t be
+                                      opened.
+                                    </a>
+                                  </p>
+                                )}
+                              </div>
+                            ),
+                          }[showPopover.sectionID]
+                        }
+                      </div>
+                    ),
+                  }[showPopover.modal!]
+                }
+                <button
+                  className="button primary"
+                  style={{
+                    display: 'inherit',
+                    marginLeft: 'auto',
+                    marginTop: 15,
+                    marginBottom: 40,
+                  }}
+                  onClick={async () => {
+                    switch (showPopover.modal) {
+                      case Maker.EXE:
+                        if (showPopover.sectionID === 0) {
+                          setShowPopover({
+                            ...showPopover,
+                            sectionID: 1,
+                          });
+                        } else {
+                          setShowPopover({
+                            ...showPopover,
+                            modal: null,
+                          });
+                        }
+                        break;
+                      case Maker.DMG:
+                        if (showPopover.sectionID === 0) {
+                          await setShowPopover({
+                            ...showPopover,
+                            sectionID: 1,
+                          });
+                          window.location.href = `${serverURL}/project/build/${
+                            data!.uid
+                          }/${projectData.id}/dmg`;
+                        } else {
+                          setShowPopover({
+                            ...showPopover,
+                            modal: null,
+                          });
+                        }
+                        break;
+                      default:
+                        break;
+                    }
+                  }}
+                >
+                  {showPopover.sectionID === 0 ? t('writ116') : t('writ117')}
+                </button>
+              </div>
+            </div>
+          </Modal>
         </div>
       </div>
     </div>

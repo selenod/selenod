@@ -78,6 +78,11 @@ p {
   margin: 0;
 }
 
+a {
+  text-decoration: underline;
+  color: #25a0ff;
+}
+
 /* Only div tag can get this class '.hl', '.vl' */
 .hl {
   height: 1px;

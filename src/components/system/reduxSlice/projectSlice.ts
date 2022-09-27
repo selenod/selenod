@@ -6,6 +6,7 @@ export interface ProjectState {
     id?: string;
     name?: string;
     owner?: string;
+    route?: string;
     createAt?: Date;
     modifiedAt?: Date;
   };
@@ -27,6 +28,7 @@ export const projectSlice = createSlice({
           id: string;
           name: string;
           owner: string;
+          route?: string;
           createAt: Date;
           modifiedAt: Date;
         };

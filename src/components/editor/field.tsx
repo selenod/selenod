@@ -63,594 +63,457 @@ export default function Field(data: IToolData) {
       <div
         className="View"
         style={{
+          position: 'relative',
           width:
             toggle === 0 && currentElement !== undefined
               ? 'calc(100% - 350px)'
               : '100%',
           overflow: toggle === 1 ? 'hidden' : 'auto',
+          backgroundColor:
+            toggle === 0
+              ? windowList.find((window) => window.id === currentWindow)
+                  ?.windowData.themeColor
+              : 'var(--editorColor)',
         }}
       >
         {toggle === 0 ? (
           <div
             style={{
-              position: 'relative',
-              top:
-                winHeight - 104 <=
-                windowList.find((window) => window.id === currentWindow)
-                  ?.windowData.height! +
-                  35
-                  ? 0
-                  : '50%',
-              left:
-                document.body.offsetWidth -
-                  data.panelWidth -
-                  (currentElement !== undefined ? 420 : 70) <=
-                windowList.find((window) => window.id === currentWindow)
-                  ?.windowData.width!
-                  ? 0
-                  : '50%',
-              transform:
-                document.body.offsetWidth -
-                  data.panelWidth -
-                  (currentElement !== undefined ? 420 : 70) <=
-                windowList.find((window) => window.id === currentWindow)
-                  ?.windowData.width!
-                  ? winHeight - 104 <=
-                    windowList.find((window) => window.id === currentWindow)
-                      ?.windowData.height! +
-                      35
-                    ? 'translate(0, 0)'
-                    : 'translateY(-50%)'
-                  : winHeight - 104 <=
-                    windowList.find((window) => window.id === currentWindow)
-                      ?.windowData.height! +
-                      35
-                  ? 'translateX(-50%)'
-                  : 'translate(-50%, -50%)',
-              width: windowList.find((window) => window.id === currentWindow)
-                ?.windowData.width!,
-              height:
-                windowList.find((window) => window.id === currentWindow)
-                  ?.windowData.height! + 35,
-              backgroundColor: 'white',
-              borderRadius: 10,
-              boxShadow: '0px 1px 40px 0px #00000005',
+              width: '100%',
+              height: '100%',
+              background: '#fff',
+              backgroundColor: windowList.find(
+                (window) => window.id === currentWindow
+              )?.windowData.themeColor,
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
             }}
           >
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                height: 35,
-                borderRadius: '10px 10px 0 0',
-                backgroundColor: '#8052ff',
-                zIndex: 1,
-              }}
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="#fff"
-                style={{
-                  position: 'relative',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  float: 'left',
-                  left: 10,
-                }}
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <p
-                style={{
-                  position: 'relative',
-                  top: 'calc(50% - .5px)',
-                  transform: 'translateY(-50%)',
-                  float: 'left',
-                  color: '#fff',
-                  fontSize: '.9rem',
-                  left: 17,
-                  fontWeight: 500,
-                  maxWidth: 'calc(100% - 170px)',
-                  textOverflow: 'ellipsis',
-                  overflow: 'hidden',
-                  whiteSpace: 'nowrap',
-                  cursor: 'default',
-                }}
-              >
-                {windowList.find((window) => window.id === currentWindow)?.name}
-              </p>
-              <svg
-                width="10"
-                height="10"
-                fill="#fff"
-                viewBox="0 0 10 10"
-                style={{
-                  position: 'relative',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  float: 'right',
-                  right: 20,
-                }}
-              >
-                <polygon points="10.2,0.7 9.5,0 5.1,4.4 0.7,0 0,0.7 4.4,5.1 0,9.5 0.7,10.2 5.1,5.8 9.5,10.2 10.2,9.5 5.8,5.1" />
-              </svg>
-              <svg
-                width="10"
-                height="10"
-                fill="#fff"
-                viewBox="0 0 10 10"
-                style={{
-                  position: 'relative',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  float: 'right',
-                  right: 50,
-                }}
-              >
-                <path d="M0,0v10h10V0H0z M9,9H1V1h8V9z" />
-              </svg>
-              <svg
-                width="10"
-                height="10"
-                fill="#fff"
-                x="0px"
-                y="0px"
-                viewBox="0 0 10.2 1"
-                style={{
-                  position: 'relative',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  float: 'right',
-                  right: 80,
-                }}
-              >
-                <rect x="0" y="50%" width="10.2" height="1" />
-              </svg>
-            </div>
-            <div
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: 'calc(100% - 35px)',
-                top: 35,
-                overflow: 'auto',
-              }}
-            >
-              {windowList
-                .find((window) => window.id === currentWindow)
-                ?.elementData.map((element) => {
-                  switch (element.type) {
-                    case 'text':
-                      return (
-                        <pre
-                          key={element.id}
-                          style={{
-                            position: 'absolute',
-                            top: `calc(${
-                              !isNaN(element.y as any)
-                                ? `${element.y}px`
-                                : element.y
-                            })`,
-                            left: `calc(${
-                              !isNaN(element.x as any)
-                                ? `${element.x}px`
-                                : element.x
-                            })`,
-                            fontSize: element.fontSize,
-                            fontWeight: element.fontWeight,
-                            color: element.color,
-                            margin: 0,
-                            backgroundColor: element.backgroundColor,
-                            transform: `translate(-${element.xAlign}%, -${
-                              element.yAlign
-                            }%) rotate(calc(${
-                              !isNaN(element.rotation as any)
-                                ? `${element.rotation}deg`
-                                : element.rotation
-                            }))`,
-                            zIndex: -10000 + element.index,
-                          }}
-                        >
-                          {element.text}
-                        </pre>
-                      );
-                    case 'line':
-                      return (
-                        <div
-                          key={element.id}
-                          style={{
-                            position: 'absolute',
-                            top: `calc(${
-                              !isNaN(element.y as any)
-                                ? `${element.y}px`
-                                : element.y
-                            })`,
-                            left: `calc(${
-                              !isNaN(element.x as any)
-                                ? `${element.x}px`
-                                : element.x
-                            })`,
-                            width: `calc(${
-                              !isNaN(element.width as any)
-                                ? `${element.width}px`
-                                : element.width
-                            })`,
-                            height: `calc(${
-                              !isNaN(element.height as any)
-                                ? `${element.height}px`
-                                : element.height
-                            })`,
-                            borderRadius: '1rem',
-                            backgroundColor: element.backgroundColor,
-                            transform: `translate(-${element.xAlign}%, -${
-                              element.yAlign
-                            }%) rotate(calc(${
-                              !isNaN(element.rotation as any)
-                                ? `${element.rotation}deg`
-                                : element.rotation
-                            }))`,
-                            zIndex: -10000 + element.index,
-                          }}
-                        />
-                      );
-                    case 'image':
-                      return (
-                        <img
-                          key={element.id}
+            {windowList
+              .find((window) => window.id === currentWindow)
+              ?.elementData.map((element) => {
+                switch (element.type) {
+                  case 'text':
+                    return (
+                      <pre
+                        key={element.id}
+                        style={{
+                          position: 'absolute',
+                          top: `calc(${
+                            !isNaN(element.y as any)
+                              ? `${element.y}px`
+                              : element.y
+                          })`,
+                          left: `calc(${
+                            !isNaN(element.x as any)
+                              ? `${element.x}px`
+                              : element.x
+                          })`,
+                          fontSize: element.fontSize,
+                          fontWeight: element.fontWeight,
+                          color: element.color,
+                          margin: 0,
+                          backgroundColor: element.backgroundColor,
+                          transform: `translate(-${element.xAlign}%, -${
+                            element.yAlign
+                          }%) rotate(calc(${
+                            !isNaN(element.rotation as any)
+                              ? `${element.rotation}deg`
+                              : element.rotation
+                          }))`,
+                          zIndex: element.index,
+                        }}
+                      >
+                        {element.text}
+                      </pre>
+                    );
+                  case 'line':
+                    return (
+                      <div
+                        key={element.id}
+                        style={{
+                          position: 'absolute',
+                          top: `calc(${
+                            !isNaN(element.y as any)
+                              ? `${element.y}px`
+                              : element.y
+                          })`,
+                          left: `calc(${
+                            !isNaN(element.x as any)
+                              ? `${element.x}px`
+                              : element.x
+                          })`,
+                          width: `calc(${
+                            !isNaN(element.width as any)
+                              ? `${element.width}px`
+                              : element.width
+                          })`,
+                          height: `calc(${
+                            !isNaN(element.height as any)
+                              ? `${element.height}px`
+                              : element.height
+                          })`,
+                          borderRadius: '1rem',
+                          backgroundColor: element.backgroundColor,
+                          transform: `translate(-${element.xAlign}%, -${
+                            element.yAlign
+                          }%) rotate(calc(${
+                            !isNaN(element.rotation as any)
+                              ? `${element.rotation}deg`
+                              : element.rotation
+                          }))`,
+                          zIndex: element.index,
+                        }}
+                      />
+                    );
+                  case 'image':
+                    return (
+                      <img
+                        key={element.id}
+                        src={
+                          assetData.find((asset) => asset.id === element.src)
+                            ?.contents
+                        }
+                        alt=""
+                        style={{
+                          position: 'absolute',
+                          top: `calc(${
+                            !isNaN(element.y as any)
+                              ? `${element.y}px`
+                              : element.y
+                          })`,
+                          left: `calc(${
+                            !isNaN(element.x as any)
+                              ? `${element.x}px`
+                              : element.x
+                          })`,
+                          width: `calc(${
+                            !isNaN(element.width as any)
+                              ? `${element.width}px`
+                              : element.width
+                          })`,
+                          height: `calc(${
+                            !isNaN(element.height as any)
+                              ? `${element.height}px`
+                              : element.height
+                          })`,
+                          transform: `translate(-${element.xAlign}%, -${
+                            element.yAlign
+                          }%) rotate(calc(${
+                            !isNaN(element.rotation as any)
+                              ? `${element.rotation}deg`
+                              : element.rotation
+                          }))`,
+                          borderRadius: `calc(${
+                            !isNaN(element.borderRadius as any)
+                              ? `${element.borderRadius}px`
+                              : element.borderRadius
+                          })`,
+                          zIndex: element.index,
+                        }}
+                      />
+                    );
+                  case 'video':
+                    return (
+                      <video
+                        key={element.id}
+                        poster={
+                          assetData.find((asset) => asset.id === element.src)
+                            ?.contents
+                        }
+                        style={{
+                          position: 'absolute',
+                          top: `calc(${
+                            !isNaN(element.y as any)
+                              ? `${element.y}px`
+                              : element.y
+                          })`,
+                          left: `calc(${
+                            !isNaN(element.x as any)
+                              ? `${element.x}px`
+                              : element.x
+                          })`,
+                          width: `calc(${
+                            !isNaN(element.width as any)
+                              ? `${element.width}px`
+                              : element.width
+                          })`,
+                          height: `calc(${
+                            !isNaN(element.height as any)
+                              ? `${element.height}px`
+                              : element.height
+                          })`,
+                          transform: `translate(-${element.xAlign}%, -${
+                            element.yAlign
+                          }%) rotate(calc(${
+                            !isNaN(element.rotation as any)
+                              ? `${element.rotation}deg`
+                              : element.rotation
+                          }))`,
+                          borderRadius: `calc(${
+                            !isNaN(element.borderRadius as any)
+                              ? `${element.borderRadius}px`
+                              : element.borderRadius
+                          })`,
+                          zIndex: element.index,
+                        }}
+                      >
+                        <source
                           src={
                             assetData.find((asset) => asset.id === element.src)
                               ?.contents
                           }
-                          alt=""
-                          style={{
-                            position: 'absolute',
-                            top: `calc(${
-                              !isNaN(element.y as any)
-                                ? `${element.y}px`
-                                : element.y
-                            })`,
-                            left: `calc(${
-                              !isNaN(element.x as any)
-                                ? `${element.x}px`
-                                : element.x
-                            })`,
-                            width: `calc(${
-                              !isNaN(element.width as any)
-                                ? `${element.width}px`
-                                : element.width
-                            })`,
-                            height: `calc(${
-                              !isNaN(element.height as any)
-                                ? `${element.height}px`
-                                : element.height
-                            })`,
-                            transform: `translate(-${element.xAlign}%, -${
-                              element.yAlign
-                            }%) rotate(calc(${
-                              !isNaN(element.rotation as any)
-                                ? `${element.rotation}deg`
-                                : element.rotation
-                            }))`,
-                            borderRadius: `calc(${
-                              !isNaN(element.borderRadius as any)
-                                ? `${element.borderRadius}px`
-                                : element.borderRadius
-                            })`,
-                            zIndex: -10000 + element.index,
-                          }}
                         />
-                      );
-                    case 'video':
-                      return (
-                        <video
-                          key={element.id}
-                          poster={
-                            assetData.find((asset) => asset.id === element.src)
-                              ?.contents
-                          }
+                      </video>
+                    );
+                  case 'button':
+                    return (
+                      <div
+                        key={element.id}
+                        style={{
+                          position: 'absolute',
+                          top: `calc(${
+                            !isNaN(element.y as any)
+                              ? `${element.y}px`
+                              : element.y
+                          })`,
+                          left: `calc(${
+                            !isNaN(element.x as any)
+                              ? `${element.x}px`
+                              : element.x
+                          })`,
+                          width: `calc(${
+                            !isNaN(element.width as any)
+                              ? `${element.width}px`
+                              : element.width
+                          })`,
+                          height: `calc(${
+                            !isNaN(element.height as any)
+                              ? `${element.height}px`
+                              : element.height
+                          })`,
+                          transform: `translate(-${element.xAlign}%, -${
+                            element.yAlign
+                          }%) rotate(calc(${
+                            !isNaN(element.rotation as any)
+                              ? `${element.rotation}deg`
+                              : element.rotation
+                          }))`,
+                          borderRadius: `calc(${
+                            !isNaN(element.borderRadius as any)
+                              ? `${element.borderRadius}px`
+                              : element.borderRadius
+                          })`,
+                          backgroundColor: element.backgroundColor,
+                          transition: 'ease-out background-color 100ms',
+                          paddingLeft: 15,
+                          paddingRight: 15,
+                          minWidth: 70,
+                          border: 0,
+                          outline: 0,
+                          color: element.color,
+                          fontSize: element.fontSize,
+                          fontWeight: element.fontWeight,
+                          zIndex: element.index,
+                        }}
+                      >
+                        <p
                           style={{
-                            position: 'absolute',
-                            top: `calc(${
-                              !isNaN(element.y as any)
-                                ? `${element.y}px`
-                                : element.y
-                            })`,
-                            left: `calc(${
-                              !isNaN(element.x as any)
-                                ? `${element.x}px`
-                                : element.x
-                            })`,
-                            width: `calc(${
-                              !isNaN(element.width as any)
-                                ? `${element.width}px`
-                                : element.width
-                            })`,
-                            height: `calc(${
-                              !isNaN(element.height as any)
-                                ? `${element.height}px`
-                                : element.height
-                            })`,
-                            transform: `translate(-${element.xAlign}%, -${
-                              element.yAlign
-                            }%) rotate(calc(${
-                              !isNaN(element.rotation as any)
-                                ? `${element.rotation}deg`
-                                : element.rotation
-                            }))`,
-                            borderRadius: `calc(${
-                              !isNaN(element.borderRadius as any)
-                                ? `${element.borderRadius}px`
-                                : element.borderRadius
-                            })`,
-                            zIndex: -10000 + element.index,
+                            position: 'relative',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            textAlign: 'center',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            width: '100%',
+                            margin: 0,
                           }}
                         >
-                          <source
-                            src={
-                              assetData.find(
-                                (asset) => asset.id === element.src
-                              )?.contents
-                            }
-                          />
-                        </video>
-                      );
-                    case 'button':
-                      return (
-                        <div
-                          key={element.id}
-                          style={{
-                            position: 'absolute',
-                            top: `calc(${
-                              !isNaN(element.y as any)
-                                ? `${element.y}px`
-                                : element.y
-                            })`,
-                            left: `calc(${
-                              !isNaN(element.x as any)
-                                ? `${element.x}px`
-                                : element.x
-                            })`,
-                            width: `calc(${
-                              !isNaN(element.width as any)
-                                ? `${element.width}px`
-                                : element.width
-                            })`,
-                            height: `calc(${
-                              !isNaN(element.height as any)
-                                ? `${element.height}px`
-                                : element.height
-                            })`,
-                            transform: `translate(-${element.xAlign}%, -${
-                              element.yAlign
-                            }%) rotate(calc(${
-                              !isNaN(element.rotation as any)
-                                ? `${element.rotation}deg`
-                                : element.rotation
-                            }))`,
-                            borderRadius: `calc(${
-                              !isNaN(element.borderRadius as any)
-                                ? `${element.borderRadius}px`
-                                : element.borderRadius
-                            })`,
-                            backgroundColor: element.backgroundColor,
-                            transition: 'ease-out background-color 100ms',
-                            paddingLeft: 15,
-                            paddingRight: 15,
-                            minWidth: 70,
-                            border: 0,
-                            outline: 0,
-                            color: element.color,
-                            fontSize: element.fontSize,
-                            fontWeight: element.fontWeight,
-                            zIndex: -10000 + element.index,
-                          }}
-                        >
-                          <p
+                          {element.text}
+                        </p>
+                      </div>
+                    );
+                  case 'checkbox':
+                    return (
+                      <div
+                        key={element.id}
+                        style={{
+                          position: 'absolute',
+                          top: `calc(${
+                            !isNaN(element.y as any)
+                              ? `${element.y}px`
+                              : element.y
+                          })`,
+                          left: `calc(${
+                            !isNaN(element.x as any)
+                              ? `${element.x}px`
+                              : element.x
+                          })`,
+                          width: `calc(${
+                            !isNaN(element.width as any)
+                              ? `${element.width}px`
+                              : element.width
+                          })`,
+                          height: `calc(${
+                            !isNaN(element.width as any)
+                              ? `${element.width}px`
+                              : element.width
+                          })`,
+                          backgroundColor: element.backgroundColor,
+                          transform: `translate(-${element.xAlign}%, -${
+                            element.yAlign
+                          }%) rotate(calc(${
+                            !isNaN(element.rotation as any)
+                              ? `${element.rotation}deg`
+                              : element.rotation
+                          }))`,
+                          zIndex: element.index,
+                          borderRadius: `calc(${
+                            !isNaN(element.borderRadius as any)
+                              ? `${element.borderRadius}px`
+                              : element.borderRadius
+                          })`,
+                          boxSizing: 'border-box',
+                          border: element.isChecked
+                            ? undefined
+                            : `1.5px solid ${element.borderColor}`,
+                        }}
+                      >
+                        {element.isChecked ? (
+                          <div
                             style={{
-                              position: 'relative',
-                              top: '50%',
-                              transform: 'translateY(-50%)',
-                              textAlign: 'center',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
                               width: '100%',
-                              margin: 0,
+                              height: '100%',
+                              backgroundColor: element.color,
+                              borderRadius: `calc(${
+                                !isNaN(element.borderRadius as any)
+                                  ? `${element.borderRadius}px`
+                                  : element.borderRadius
+                              })`,
+                              cursor: 'pointer',
                             }}
                           >
-                            {element.text}
-                          </p>
-                        </div>
-                      );
-                    case 'checkbox':
-                      return (
-                        <div
-                          key={element.id}
-                          style={{
-                            position: 'absolute',
-                            top: `calc(${
-                              !isNaN(element.y as any)
-                                ? `${element.y}px`
-                                : element.y
-                            })`,
-                            left: `calc(${
-                              !isNaN(element.x as any)
-                                ? `${element.x}px`
-                                : element.x
-                            })`,
-                            width: `calc(${
-                              !isNaN(element.width as any)
-                                ? `${element.width}px`
-                                : element.width
-                            })`,
-                            height: `calc(${
-                              !isNaN(element.width as any)
-                                ? `${element.width}px`
-                                : element.width
-                            })`,
-                            backgroundColor: element.backgroundColor,
-                            transform: `translate(-${element.xAlign}%, -${
-                              element.yAlign
-                            }%) rotate(calc(${
-                              !isNaN(element.rotation as any)
-                                ? `${element.rotation}deg`
-                                : element.rotation
-                            }))`,
-                            zIndex: -10000 + element.index,
-                            borderRadius: `calc(${
-                              !isNaN(element.borderRadius as any)
-                                ? `${element.borderRadius}px`
-                                : element.borderRadius
-                            })`,
-                            boxSizing: 'border-box',
-                            border: element.isChecked
-                              ? undefined
-                              : `1.5px solid ${element.borderColor}`,
-                          }}
-                        >
-                          {element.isChecked ? (
-                            <div
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="#fff"
                               style={{
-                                width: '100%',
-                                height: '100%',
-                                backgroundColor: element.color,
-                                borderRadius: `calc(${
-                                  !isNaN(element.borderRadius as any)
-                                    ? `${element.borderRadius}px`
-                                    : element.borderRadius
-                                })`,
-                                cursor: 'pointer',
+                                position: 'relative',
                               }}
                             >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="#fff"
-                                style={{
-                                  position: 'relative',
-                                }}
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            </div>
-                          ) : null}
-                        </div>
-                      );
-                    case 'sl-input':
-                      return (
-                        <input
-                          key={element.id}
-                          style={{
-                            position: 'absolute',
-                            top: `calc(${
-                              !isNaN(element.y as any)
-                                ? `${element.y}px`
-                                : element.y
-                            })`,
-                            left: `calc(${
-                              !isNaN(element.x as any)
-                                ? `${element.x}px`
-                                : element.x
-                            })`,
-                            width: `calc(${
-                              !isNaN(element.width as any)
-                                ? `${element.width}px`
-                                : element.width
-                            })`,
-                            height: `calc(${
-                              !isNaN(element.height as any)
-                                ? `${element.height}px`
-                                : element.height
-                            })`,
-                            transform: `translate(-${element.xAlign}%, -${
-                              element.yAlign
-                            }%) rotate(calc(${
-                              !isNaN(element.rotation as any)
-                                ? `${element.rotation}deg`
-                                : element.rotation
-                            }))`,
-                            zIndex: -10000 + element.index,
-                            borderRadius: `calc(${
-                              !isNaN(element.borderRadius as any)
-                                ? `${element.borderRadius}px`
-                                : element.borderRadius
-                            })`,
-                            boxSizing: 'border-box',
-                            border: `1.5px solid ${element.borderColor}`,
-                            fontSize: element.fontSize,
-                            fontWeight: element.fontWeight,
-                            color: element.color,
-                          }}
-                          type="text"
-                          placeholder={element.text}
-                        />
-                      );
-                    case 'ml-input':
-                      return (
-                        <textarea
-                          key={element.id}
-                          style={{
-                            position: 'absolute',
-                            top: `calc(${
-                              !isNaN(element.y as any)
-                                ? `${element.y}px`
-                                : element.y
-                            })`,
-                            left: `calc(${
-                              !isNaN(element.x as any)
-                                ? `${element.x}px`
-                                : element.x
-                            })`,
-                            width: `calc(${
-                              !isNaN(element.width as any)
-                                ? `${element.width}px`
-                                : element.width
-                            })`,
-                            height: `calc(${
-                              !isNaN(element.height as any)
-                                ? `${element.height}px`
-                                : element.height
-                            })`,
-                            transform: `translate(-${element.xAlign}%, -${
-                              element.yAlign
-                            }%) rotate(calc(${
-                              !isNaN(element.rotation as any)
-                                ? `${element.rotation}deg`
-                                : element.rotation
-                            }))`,
-                            zIndex: -10000 + element.index,
-                            borderRadius: `calc(${
-                              !isNaN(element.borderRadius as any)
-                                ? `${element.borderRadius}px`
-                                : element.borderRadius
-                            })`,
-                            boxSizing: 'border-box',
-                            border: `1.5px solid ${element.borderColor}`,
-                            fontSize: element.fontSize,
-                            fontWeight: element.fontWeight,
-                            color: element.color,
-                          }}
-                          placeholder={element.text}
-                        />
-                      );
-                    default:
-                      return undefined;
-                  }
-                })}
-            </div>
+                              <path
+                                fillRule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  case 'sl-input':
+                    return (
+                      <input
+                        key={element.id}
+                        style={{
+                          position: 'absolute',
+                          top: `calc(${
+                            !isNaN(element.y as any)
+                              ? `${element.y}px`
+                              : element.y
+                          })`,
+                          left: `calc(${
+                            !isNaN(element.x as any)
+                              ? `${element.x}px`
+                              : element.x
+                          })`,
+                          width: `calc(${
+                            !isNaN(element.width as any)
+                              ? `${element.width}px`
+                              : element.width
+                          })`,
+                          height: `calc(${
+                            !isNaN(element.height as any)
+                              ? `${element.height}px`
+                              : element.height
+                          })`,
+                          transform: `translate(-${element.xAlign}%, -${
+                            element.yAlign
+                          }%) rotate(calc(${
+                            !isNaN(element.rotation as any)
+                              ? `${element.rotation}deg`
+                              : element.rotation
+                          }))`,
+                          zIndex: element.index,
+                          borderRadius: `calc(${
+                            !isNaN(element.borderRadius as any)
+                              ? `${element.borderRadius}px`
+                              : element.borderRadius
+                          })`,
+                          boxSizing: 'border-box',
+                          border: `1.5px solid ${element.borderColor}`,
+                          fontSize: element.fontSize,
+                          fontWeight: element.fontWeight,
+                          color: element.color,
+                        }}
+                        type="text"
+                        placeholder={element.text}
+                      />
+                    );
+                  case 'ml-input':
+                    return (
+                      <textarea
+                        key={element.id}
+                        style={{
+                          position: 'absolute',
+                          top: `calc(${
+                            !isNaN(element.y as any)
+                              ? `${element.y}px`
+                              : element.y
+                          })`,
+                          left: `calc(${
+                            !isNaN(element.x as any)
+                              ? `${element.x}px`
+                              : element.x
+                          })`,
+                          width: `calc(${
+                            !isNaN(element.width as any)
+                              ? `${element.width}px`
+                              : element.width
+                          })`,
+                          height: `calc(${
+                            !isNaN(element.height as any)
+                              ? `${element.height}px`
+                              : element.height
+                          })`,
+                          transform: `translate(-${element.xAlign}%, -${
+                            element.yAlign
+                          }%) rotate(calc(${
+                            !isNaN(element.rotation as any)
+                              ? `${element.rotation}deg`
+                              : element.rotation
+                          }))`,
+                          zIndex: element.index,
+                          borderRadius: `calc(${
+                            !isNaN(element.borderRadius as any)
+                              ? `${element.borderRadius}px`
+                              : element.borderRadius
+                          })`,
+                          boxSizing: 'border-box',
+                          border: `1.5px solid ${element.borderColor}`,
+                          fontSize: element.fontSize,
+                          fontWeight: element.fontWeight,
+                          color: element.color,
+                        }}
+                        placeholder={element.text}
+                      />
+                    );
+                  default:
+                    return undefined;
+                }
+              })}
           </div>
         ) : toggle === 1 ? (
           <div>

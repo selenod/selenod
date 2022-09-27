@@ -4,6 +4,8 @@ import { ElementType, Part } from '../../../data';
 interface Window {
   width: number;
   height: number;
+  themeColor: string;
+  route: string;
 }
 
 interface Element {

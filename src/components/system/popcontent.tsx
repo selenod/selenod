@@ -59,11 +59,11 @@ export function PopContent({
   const [formDisable, setFormDisable] = useState<boolean>(false);
   const [formInput, setFormInput] = useState<string>('');
   const [confInput, setConfInput] = useState<{
-    width: string;
-    height: string;
+    themeColor: string;
+    route: string;
   }>({
-    width: '',
-    height: '',
+    themeColor: '',
+    route: '',
   });
 
   const currentWindow = useSelector(
@@ -274,7 +274,7 @@ export function PopContent({
                                 maxWidth: '100%',
                               }}
                             >
-                              {t('writ65')}
+                              {t('writ118')}
                             </p>
                             <input
                               style={{
@@ -282,33 +282,20 @@ export function PopContent({
                                 margin: '0 0 1rem 0',
                                 fontSize: '.9rem',
                               }}
-                              value={confInput.width}
+                              value={confInput.themeColor}
                               onChange={(e) => {
-                                e.target.value = e.target.value
-                                  .replace(/[^0-9.]/g, '')
-                                  .replace('.', '')
-                                  .replace(/(\..*)\./g, '$1');
-
                                 setConfInput({
                                   ...confInput,
-                                  width: e.target.value,
+                                  themeColor: e.target.value,
                                 });
                               }}
                               onBlur={() => {
-                                if (parseInt(confInput.width) > 3840) {
+                                if (!confInput.themeColor) {
                                   setConfInput({
                                     ...confInput,
-                                    width: '3840',
-                                  });
-                                } else if (parseInt(confInput.width) < 200) {
-                                  setConfInput({
-                                    ...confInput,
-                                    width: '300',
-                                  });
-                                } else if (!parseInt(confInput.width)) {
-                                  setConfInput({
-                                    ...confInput,
-                                    width: '1366',
+                                    themeColor: windowList.find(
+                                      (window) => window.id === currentWindow
+                                    )?.windowData.themeColor!,
                                   });
                                 }
                               }}
@@ -320,68 +307,71 @@ export function PopContent({
                                       .find(
                                         (window) => window.id === content.id!
                                       )!
-                                      .windowData.width.toString()
+                                      .windowData.themeColor.toString()
                                   : undefined
                               }
                             />
-                            <p
-                              style={{
-                                margin: '.7rem 0 0 0',
-                                color: 'var(--textSubBlackColor)',
-                                paddingBottom: '.7rem',
-                                maxWidth: '100%',
-                              }}
-                            >
-                              {t('writ66')}
-                            </p>
-                            <input
-                              style={{
-                                width: '100%',
-                                margin: '0 0 1rem 0',
-                                fontSize: '.9rem',
-                              }}
-                              value={confInput.height}
-                              onChange={(e) => {
-                                e.target.value = e.target.value
-                                  .replace(/[^0-9.]/g, '')
-                                  .replace('.', '')
-                                  .replace(/(\..*)\./g, '$1');
-
-                                setConfInput({
-                                  ...confInput,
-                                  height: e.target.value,
-                                });
-                              }}
-                              onBlur={() => {
-                                if (parseInt(confInput.height) > 2160) {
-                                  setConfInput({
-                                    ...confInput,
-                                    height: '2160',
-                                  });
-                                } else if (parseInt(confInput.height) < 200) {
-                                  setConfInput({
-                                    ...confInput,
-                                    height: '200',
-                                  });
-                                } else if (!parseInt(confInput.height)) {
-                                  setConfInput({
-                                    ...confInput,
-                                    height: '768',
-                                  });
-                                }
-                              }}
-                              placeholder={
-                                windowList.find(
-                                  (window) => window.id === content.id!
-                                )!
-                                  ? windowList
-                                      .find(
-                                        (window) => window.id === content.id!
-                                      )!
-                                      .windowData.height.toString()
-                                  : undefined
-                              }
-                            />
+                            {windowList.find(
+                              (window) => window.id === content.id!
+                            ) &&
+                            windowList.find(
+                              (window) => window.id === content.id!
+                            )!.id !== 0 ? (
+                              <div>
+                                <p
+                                  style={{
+                                    margin: 0,
+                                    color: 'var(--textSubBlackColor)',
+                                    paddingTop: '1rem',
+                                    paddingBottom: '.7rem',
+                                    maxWidth: '100%',
+                                  }}
+                                >
+                                  {t('writ119')}
+                                </p>
+                                <input
+                                  style={{
+                                    width: '100%',
+                                    margin: '0 0 1rem 0',
+                                    fontSize: '.9rem',
+                                  }}
+                                  value={confInput.route}
+                                  onChange={(e) => {
+                                    setConfInput({
+                                      ...confInput,
+                                      route:
+                                        '/' +
+                                        e.target.value
+                                          .substring(1)
+                                          .replaceAll(/[^A-Za-z0-9_-\s]/g, ''),
+                                    });
+                                  }}
+                                  onBlur={() => {
+                                    if (!confInput.route) {
+                                      setConfInput({
+                                        ...confInput,
+                                        route: windowList.find(
+                                          (window) =>
+                                            window.id === currentWindow
+                                        )?.windowData.route!,
+                                      });
+                                    }
+                                  }}
+                                  placeholder={
+                                    windowList.find(
+                                      (window) => window.id === content.id!
+                                    )!
+                                      ? windowList
+                                          .find(
+                                            (window) =>
+                                              window.id === content.id!
+                                          )!
+                                          .windowData.route.toString()
+                                      : undefined
+                                  }
+                                />
+                              </div>
+                            ) : undefined}
                             <button
                               className="button primary"
                               style={{
@@ -395,104 +385,106 @@ export function PopContent({
                                 setFormDisable(true);
 
                                 if (
-                                  confInput.width === '' &&
-                                  windowList.find(
+                                  !windowList.find(
                                     (window) => window.id === content.id!
                                   )!
                                 ) {
-                                  confInput.width = windowList
+                                  setConfModal(null);
+                                  setEditedWindow(null);
+                                  setFormDisable(false);
+                                  setFormInput('');
+                                  dispatch(setWindowShown(false));
+                                  dispatch(setFalse());
+
+                                  return false;
+                                }
+
+                                if (confInput.themeColor === '') {
+                                  confInput.themeColor = windowList
                                     .find(
                                       (window) => window.id === content.id!
                                     )!
-                                    .windowData.width.toString();
+                                    .windowData.themeColor.toString();
                                 }
 
-                                if (
-                                  confInput.height === '' &&
-                                  windowList.find(
-                                    (window) => window.id === content.id!
-                                  )!
-                                ) {
-                                  confInput.height = windowList
+                                if (confInput.route === '') {
+                                  confInput.route = windowList
                                     .find(
                                       (window) => window.id === content.id!
                                     )!
-                                    .windowData.height.toString();
+                                    .windowData.route.toString();
                                 }
 
-                                if (
-                                  parseInt(confInput.width) >= 300 &&
-                                  parseInt(confInput.height) >= 200 &&
-                                  parseInt(confInput.width) <= 3840 &&
-                                  parseInt(confInput.height) <= 2160
-                                ) {
-                                  await api
-                                    .put('/project/window', {
-                                      uid: data?.uid,
-                                      id: projectData.id!,
-                                      _id: windowList.find(
+                                await api
+                                  .put('/project/window', {
+                                    uid: data?.uid,
+                                    id: projectData.id!,
+                                    _id: windowList.find(
+                                      (window) => window.id === content.id!
+                                    )!._id,
+                                    name: windowList.find(
+                                      (window) => window.id === content.id!
+                                    )!.name,
+                                    windowData: {
+                                      width: windowList.find(
                                         (window) => window.id === content.id!
-                                      )!._id,
-                                      name: windowList.find(
+                                      )!.windowData.width,
+                                      height: windowList.find(
                                         (window) => window.id === content.id!
-                                      )!.name,
-                                      windowData: {
-                                        width: parseInt(confInput.width),
-                                        height: parseInt(confInput.height),
-                                      },
-                                    })
-                                    .then(async () => {
-                                      await api
-                                        .get(
-                                          `/project/${
-                                            data?.uid
-                                          }/${projectData.id!}`
-                                        )
-                                        .then((res) => {
-                                          // Delete scriptData of window for dispatch setWindowData.
-                                          res.data.project.windowList.forEach(
-                                            (win: any) => delete win.scriptData
-                                          );
+                                      )!.windowData.height,
+                                      themeColor: confInput.themeColor,
+                                      route: confInput.route,
+                                    },
+                                  })
+                                  .then(async () => {
+                                    await api
+                                      .get(
+                                        `/project/${
+                                          data?.uid
+                                        }/${projectData.id!}`
+                                      )
+                                      .then((res) => {
+                                        // Delete scriptData of window for dispatch setWindowData.
+                                        res.data.project.windowList.forEach(
+                                          (win: any) => delete win.scriptData
+                                        );
 
-                                          dispatch(
-                                            setWindowData({
-                                              windowList:
-                                                res.data.project.windowList,
-                                              currentWindow: currentWindow!,
-                                            })
-                                          );
-                                          dispatch(
-                                            setProjectData({
-                                              id: projectData.id!,
-                                              name: projectData.name!,
-                                              owner: projectData.owner!,
-                                              createAt:
-                                                res.data.project.createAt,
-                                              modifiedAt:
-                                                res.data.project.modifiedAt,
-                                            })
-                                          );
+                                        dispatch(
+                                          setWindowData({
+                                            windowList:
+                                              res.data.project.windowList,
+                                            currentWindow: currentWindow!,
+                                          })
+                                        );
+                                        dispatch(
+                                          setProjectData({
+                                            id: projectData.id!,
+                                            name: projectData.name!,
+                                            owner: projectData.owner!,
+                                            createAt: res.data.project.createAt,
+                                            modifiedAt:
+                                              res.data.project.modifiedAt,
+                                          })
+                                        );
 
-                                          toast.success(t('writ67'));
-                                        })
-                                        .catch((err) => {
-                                          toast.error(
-                                            err.response.data.message
-                                              ? err.response.data.message
-                                              : 'Fail to update database.'
-                                          );
-                                        });
-                                    })
-                                    .catch((err) => {
-                                      toast.error(
-                                        err.response.data.message
-                                          ? err.response.data.message
-                                          : 'Fail to update database.'
-                                      );
-                                    });
-                                } else {
-                                  toast.error(`An error occured.`);
-                                }
+                                        toast.success(t('writ67'));
+                                      })
+                                      .catch((err) => {
+                                        toast.error(
+                                          err.response.data.message
+                                            ? err.response.data.message
+                                            : 'Fail to update database.'
+                                        );
+                                      });
+                                  })
+                                  .catch((err) => {
+                                    toast.error(
+                                      err.response.data.message
+                                        ? err.response.data.message
+                                        : 'Fail to update database.'
+                                    );
+                                  });
+
                                 setConfModal(null);
                                 setEditedWindow(null);
                                 setFormDisable(false);

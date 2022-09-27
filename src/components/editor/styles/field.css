@@ -1,6 +1,5 @@
 .View {
   height: 100%;
-  background-color: var(--editorColor);
   overflow: auto;
   float: left;
 }

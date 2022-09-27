@@ -219,7 +219,7 @@ textarea {
 }
 
 .ReactModal__Overlay {
-  z-index: 1000;
+  z-index: 10001;
   background-color: rgba(26, 27, 28, 0.65) !important;
   opacity: 0;
   transition: ease-out opacity 150ms;

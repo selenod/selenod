@@ -182,6 +182,7 @@ export default function EditorPage() {
                 id: res.data.project._id,
                 name: res.data.project.name,
                 owner: res.data.project.owner,
+                route: res.data.project.route,
                 createAt: res.data.project.createAt,
                 modifiedAt: res.data.project.modifiedAt,
               })

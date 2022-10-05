@@ -72,12 +72,12 @@ export default function Workspace() {
   return projectList ? (
     <div
       style={{
-        width: '100vw',
+        width: '100%',
       }}
     >
       <div
         style={{
-          width: '100vw',
+          width: '100%',
           height: projectList.length * 80 + 340,
           minHeight: '50rem',
           marginTop: 64,

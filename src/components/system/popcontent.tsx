@@ -461,6 +461,7 @@ export function PopContent({
                                             id: projectData.id!,
                                             name: projectData.name!,
                                             owner: projectData.owner!,
+                                            route: projectData.route!,
                                             createAt: res.data.project.createAt,
                                             modifiedAt:
                                               res.data.project.modifiedAt,
@@ -611,6 +612,7 @@ export function PopContent({
                                               id: projectData.id!,
                                               name: projectData.name!,
                                               owner: projectData.owner!,
+                                              route: projectData.route!,
                                               createAt:
                                                 res.data.project.createAt,
                                               modifiedAt:
@@ -798,6 +800,7 @@ export function PopContent({
                                             id: projectData.id!,
                                             name: projectData.name!,
                                             owner: projectData.owner!,
+                                            route: projectData.route!,
                                             createAt: res.data.project.createAt,
                                             modifiedAt:
                                               res.data.project.modifiedAt,

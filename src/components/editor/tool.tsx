@@ -120,6 +120,7 @@ export default function Tool() {
             id: res.data.project._id,
             name: res.data.project.name,
             owner: res.data.project.owner,
+            route: res.data.project.route,
             createAt: res.data.project.createAt,
             modifiedAt: res.data.project.modifiedAt,
           })
@@ -856,6 +857,7 @@ export default function Tool() {
                                       id: projectData.id!,
                                       name: projectData.name!,
                                       owner: projectData.owner!,
+                                      route: projectData.route,
                                       createAt: res.data.project.createAt,
                                       modifiedAt: res.data.project.modifiedAt,
                                     })
@@ -1009,6 +1011,7 @@ export default function Tool() {
                                               id: res.data.project._id,
                                               name: res.data.project.name,
                                               owner: res.data.project.owner,
+                                              route: res.data.project.route,
                                               createAt:
                                                 res.data.project.createAt,
                                               modifiedAt:
@@ -1111,6 +1114,7 @@ export default function Tool() {
                                                 id: res.data.project._id,
                                                 name: res.data.project.name,
                                                 owner: res.data.project.owner,
+                                                route: res.data.project.route,
                                                 createAt:
                                                   res.data.project.createAt,
                                                 modifiedAt:
@@ -1477,6 +1481,7 @@ export default function Tool() {
                                   id: res.data.project._id,
                                   name: res.data.project.name,
                                   owner: res.data.project.owner,
+                                  route: res.data.project.route,
                                   createAt: res.data.project.createAt,
                                   modifiedAt: res.data.project.modifiedAt,
                                 })
@@ -1726,6 +1731,7 @@ export default function Tool() {
                                           id: res.data.project._id,
                                           name: res.data.project.name,
                                           owner: res.data.project.owner,
+                                          route: res.data.project.route,
                                           createAt: res.data.project.createAt,
                                           modifiedAt:
                                             res.data.project.modifiedAt,
@@ -1827,6 +1833,7 @@ export default function Tool() {
                                         id: res.data.project._id,
                                         name: res.data.project.name,
                                         owner: res.data.project.owner,
+                                        route: res.data.project.route,
                                         createAt: res.data.project.createAt,
                                         modifiedAt: res.data.project.modifiedAt,
                                       })
@@ -2003,6 +2010,7 @@ export default function Tool() {
                                                 id: res.data.project._id,
                                                 name: res.data.project.name,
                                                 owner: res.data.project.owner,
+                                                route: res.data.project.route,
                                                 createAt:
                                                   res.data.project.createAt,
                                                 modifiedAt:
@@ -2099,6 +2107,7 @@ export default function Tool() {
                                               id: res.data.project._id,
                                               name: res.data.project.name,
                                               owner: res.data.project.owner,
+                                              route: res.data.project.route,
                                               createAt:
                                                 res.data.project.createAt,
                                               modifiedAt:

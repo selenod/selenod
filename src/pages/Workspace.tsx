@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { appURN, landingURL } from '../config/config';
+import { appURL, landingURL } from '../config/config';
 import Modal from 'react-modal';
 import toast from 'react-hot-toast';
 import Footer from '../components/system/footer';
@@ -456,9 +456,7 @@ export default function Workspace() {
                       marginRight: 18,
                       cursor: 'pointer',
                     }}
-                    onClick={() =>
-                      window.open(`https://${project.route}.${appURN}`)
-                    }
+                    onClick={() => window.open(`${appURL}${project.route}`)}
                   >
                     <path
                       fillRule="evenodd"

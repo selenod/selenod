@@ -17,17 +17,10 @@ import api from '../../config/api';
 import { dataContext, scriptContext } from '../..';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import { appURN, serverURL } from '../../config/config';
-import Modal from 'react-modal';
-import i18n from '../../locale';
+import { appURL } from '../../config/config';
 
 interface IToolData {
   panelWidth: number;
-}
-
-enum Maker {
-  EXE = 'exe',
-  DMG = 'dmg',
 }
 
 export default function Active(propData: IToolData) {
@@ -360,9 +353,7 @@ export default function Active(propData: IToolData) {
           </div>
           <div
             title={t('writ120')}
-            onClick={() =>
-              window.open(`https://${projectData.route}.${appURN}`)
-            }
+            onClick={() => window.open(`${appURL}${projectData.route}`)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -69,6 +69,7 @@ export default function Field(data: IToolData) {
               ? 'calc(100% - 350px)'
               : '100%',
           overflow: toggle === 1 ? 'hidden' : 'auto',
+          background: toggle === 0 ? '#fff' : undefined,
           backgroundColor:
             toggle === 0
               ? windowList.find((window) => window.id === currentWindow)

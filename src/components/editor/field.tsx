@@ -14,7 +14,7 @@ import {
 } from '../..';
 import { setScriptSaved } from '../system/reduxSlice/windowSlice';
 import Edit from '@ieum-lang/ieum/dist/data/EditorData';
-import { PrimitiveTypes } from '@ieum-lang/ieum/dist/data/type/PrimitiveType';
+import DefaultTypes from '@ieum-lang/ieum/dist/data/type/DefaultTypes';
 
 interface IToolData {
   panelWidth: number;
@@ -519,15 +519,30 @@ export default function Field(data: IToolData) {
         ) : toggle === 1 ? (
           <div>
             <Ieum
-              types={[...PrimitiveTypes]}
+              types={[...DefaultTypes]}
               nodesData={{
                 'selene.test.Method1': {
                   name: 'Method1',
                   inputs: [
                     {
-                      name: 'Sans',
-                      type: 'bool',
-                      isRequired: true,
+                      name: 'Param1 (Boolean)',
+                      type: {
+                        type: 'bool',
+                      },
+                    },
+                    {
+                      name: 'Param2 (Null)',
+                      type: {
+                        type: 'nullable',
+                        metadata: {
+                          T: {
+                            type: 'bool',
+                          },
+                          A: {
+                            type: 'int',
+                          },
+                        },
+                      },
                     },
                   ],
                   outputs: [],
@@ -537,25 +552,32 @@ export default function Field(data: IToolData) {
                   inputs: [],
                   outputs: [
                     {
-                      name: 'Sans',
-                      type: 'bool',
+                      name: 'Param1 (Boolean)',
+                      type: {
+                        type: 'bool',
+                      },
+                    },
+                    {
+                      name: 'Param2 (List)',
+                      type: {
+                        type: 'list',
+                        metadata: {
+                          T: { type: 'bool' },
+                        },
+                      },
+                    },
+                    {
+                      name: 'Param3 (Null)',
+                      type: {
+                        type: 'nullable',
+                        metadata: {
+                          T: {
+                            type: 'bool',
+                          },
+                        },
+                      },
                     },
                   ],
-                },
-                'selene.test.Method3': {
-                  name: 'Method3',
-                  inputs: [],
-                  outputs: [],
-                },
-                'selene.test.Method4': {
-                  name: 'Method4',
-                  inputs: [],
-                  outputs: [],
-                },
-                'selene.test.Method5': {
-                  name: 'Method5',
-                  inputs: [],
-                  outputs: [],
                 },
               }}
               editorData={

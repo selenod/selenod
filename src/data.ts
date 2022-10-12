@@ -54,22 +54,3 @@ export interface ResponseProps {
   status?: string;
   message?: string;
 }
-
-export interface Script {
-  [id: string]: {
-    nodeId: string;
-    inputConnections: {
-      name: string;
-      connection: {
-        id: string;
-        pinType: number;
-        name: string;
-      } | null;
-    }[];
-    position: {
-      x: number;
-      y: number;
-    };
-    zIndex: number;
-  };
-}

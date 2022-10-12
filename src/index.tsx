@@ -12,18 +12,17 @@ import Workpsace from './pages/Workspace';
 import ResponsePage from './pages/ResponsePage';
 import SyncPage from './pages/SyncPage';
 import { Toaster } from 'react-hot-toast';
-import { Script } from './data';
 import i18n from './locale';
 import api from './config/api';
 
 export const scriptContext = createContext<
   Array<{
     windowId: number;
-    script: Script;
+    script: any;
   }>
 >([]);
 export const setScriptContext = createContext<
-  ((d: Array<{ windowId: number; script: Script }>) => void) | null
+  ((d: Array<{ windowId: number; script: any }>) => void) | null
 >(null);
 
 export const editorDataContext = createContext<
@@ -66,7 +65,7 @@ function App() {
   const [scripts, setScripts] = useState<
     Array<{
       windowId: number;
-      script: Script;
+      script: any;
     }>
   >([]);
 

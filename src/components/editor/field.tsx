@@ -3,7 +3,7 @@ import './styles/field.css';
 import { useContext, useEffect, useState } from 'react';
 import { RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
-import { imageExtensions, videoExtensions } from '../../data';
+import { imageExtensions, nodeData, videoExtensions } from '../../data';
 import Property from '../system/property';
 import Ieum, { NodesObject } from '@ieum-lang/ieum';
 import {
@@ -520,66 +520,7 @@ export default function Field(data: IToolData) {
           <div>
             <Ieum
               types={[...DefaultTypes]}
-              nodesData={{
-                'selene.test.Method1': {
-                  name: 'Method1',
-                  inputs: [
-                    {
-                      name: 'Param1 (Boolean)',
-                      type: {
-                        type: 'bool',
-                      },
-                    },
-                    {
-                      name: 'Param2 (Null)',
-                      type: {
-                        type: 'nullable',
-                        metadata: {
-                          T: {
-                            type: 'bool',
-                          },
-                          A: {
-                            type: 'int',
-                          },
-                        },
-                      },
-                    },
-                  ],
-                  outputs: [],
-                },
-                'selene.test.Method2': {
-                  name: 'Method2',
-                  inputs: [],
-                  outputs: [
-                    {
-                      name: 'Param1 (Boolean)',
-                      type: {
-                        type: 'bool',
-                      },
-                    },
-                    {
-                      name: 'Param2 (List)',
-                      type: {
-                        type: 'list',
-                        metadata: {
-                          T: { type: 'bool' },
-                        },
-                      },
-                    },
-                    {
-                      name: 'Param3 (Null)',
-                      type: {
-                        type: 'nullable',
-                        metadata: {
-                          T: {
-                            type: 'bool',
-                          },
-                        },
-                      },
-                    },
-                  ],
-                },
-              }}
+              nodesData={nodeData}
               editorData={
                 editorData!.find((data) => data.windowId === currentWindow)
                   ?.data

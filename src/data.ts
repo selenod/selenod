@@ -1,3 +1,5 @@
+import { NodesData } from '@ieum-lang/ieum';
+
 export enum ElementType {
   TEXT = 'text',
   LINE = 'line',
@@ -54,3 +56,39 @@ export interface ResponseProps {
   status?: string;
   message?: string;
 }
+
+const eventNodeData: NodesData = {
+  'selenod.event.onLoad': {
+    name: 'On Load',
+    inputs: [
+      {
+        name: 'do',
+        type: {
+          type: 'func',
+        },
+      },
+    ],
+    outputs: [],
+  },
+};
+
+const consoleNodeData: NodesData = {
+  'selenod.console.log': {
+    name: 'Console Log',
+    inputs: [
+      {
+        name: 'message',
+        type: {
+          type: 'any',
+        },
+        defaultValue: '',
+      },
+    ],
+    outputs: [],
+  },
+};
+
+export const nodeData: NodesData = {
+  ...eventNodeData,
+  ...consoleNodeData,
+};

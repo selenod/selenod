@@ -62,7 +62,7 @@ const eventNodeData: NodesData = {
     name: 'On Load',
     inputs: [
       {
-        name: 'do',
+        name: 'excute',
         type: {
           type: 'func',
         },
@@ -72,23 +72,102 @@ const eventNodeData: NodesData = {
   },
 };
 
-const consoleNodeData: NodesData = {
-  'selenod.console.log': {
-    name: 'Console Log',
+const systemNodeData: NodesData = {
+  'selenod.system.log': {
+    name: 'Log',
     inputs: [
       {
         name: 'message',
         type: {
           type: 'any',
         },
-        defaultValue: '',
       },
     ],
     outputs: [],
   },
 };
 
+const typeNodeData: NodesData = {
+  'selenod.type.string': {
+    name: 'String',
+    inputs: [
+      {
+        name: 'value',
+        type: {
+          type: 'string',
+        },
+      },
+    ],
+    outputs: [
+      {
+        name: 'value',
+        type: {
+          type: 'string',
+        },
+      },
+    ],
+  },
+  'selenod.type.int': {
+    name: 'Int',
+    inputs: [
+      {
+        name: 'value',
+        type: {
+          type: 'int',
+        },
+      },
+    ],
+    outputs: [
+      {
+        name: 'value',
+        type: {
+          type: 'int',
+        },
+      },
+    ],
+  },
+  'selenod.type.float': {
+    name: 'Float',
+    inputs: [
+      {
+        name: 'value',
+        type: {
+          type: 'float',
+        },
+      },
+    ],
+    outputs: [
+      {
+        name: 'value',
+        type: {
+          type: 'float',
+        },
+      },
+    ],
+  },
+  'selenod.type.bool': {
+    name: 'Bool',
+    inputs: [
+      {
+        name: 'value',
+        type: {
+          type: 'bool',
+        },
+      },
+    ],
+    outputs: [
+      {
+        name: 'value',
+        type: {
+          type: 'bool',
+        },
+      },
+    ],
+  },
+};
+
 export const nodeData: NodesData = {
   ...eventNodeData,
-  ...consoleNodeData,
+  ...systemNodeData,
+  ...typeNodeData,
 };

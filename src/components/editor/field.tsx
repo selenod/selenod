@@ -461,6 +461,7 @@ export default function Field(data: IToolData) {
                         }}
                         type="text"
                         placeholder={element.text}
+                        disabled
                       />
                     );
                   case 'ml-input':
@@ -509,6 +510,7 @@ export default function Field(data: IToolData) {
                           color: element.color,
                         }}
                         placeholder={element.text}
+                        disabled
                       />
                     );
                   default:
@@ -519,7 +521,24 @@ export default function Field(data: IToolData) {
         ) : toggle === 1 ? (
           <div>
             <Ieum
-              types={[...DefaultTypes]}
+              types={[
+                ...DefaultTypes,
+                {
+                  name: 'enum',
+                  elements: [
+                    'No Element',
+                    ...[
+                      ...new Set(
+                        windowList
+                          .find((window) => window.id === currentWindow)
+                          ?.elementData.map((data) => data.name)
+                      ),
+                    ],
+                  ],
+                  initialValue: 'No Element',
+                  color: '#ffc53c',
+                },
+              ]}
               nodesData={nodeData}
               editorData={
                 editorData!.find((data) => data.windowId === currentWindow)

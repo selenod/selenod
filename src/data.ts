@@ -118,13 +118,13 @@ const stringNodeData: NodesData = {
     name: 'Concatenate',
     inputs: [
       {
-        name: 'parameter 1',
+        name: 'value1',
         type: {
           type: 'string',
         },
       },
       {
-        name: 'parameter 2',
+        name: 'value2',
         type: {
           type: 'string',
         },

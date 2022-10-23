@@ -71,6 +71,9 @@ export default function EditorPage() {
               scriptData: scripts.find(
                 (script) => script.windowId === currentWindow
               )?.script,
+              varData: scripts.find(
+                (script) => script.windowId === currentWindow
+              )?.variable,
             })
             .then(() => {
               dispatch(setScriptSaved(true));
@@ -156,6 +159,7 @@ export default function EditorPage() {
               res.data.project.windowList.map((win: any) => ({
                 windowId: win.id,
                 script: win.scriptData.data,
+                variable: win.scriptData.variable,
               }))
             );
 

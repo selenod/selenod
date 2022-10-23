@@ -302,6 +302,9 @@ export default function Active(propData: IToolData) {
                     scriptData: scripts.find(
                       (script) => script.windowId === currentWindow
                     )?.script,
+                    varData: scripts.find(
+                      (script) => script.windowId === currentWindow
+                    )?.variable,
                   })
                   .then(() => {
                     dispatch(setScriptSaved(true));

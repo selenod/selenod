@@ -19,10 +19,11 @@ export const scriptContext = createContext<
   Array<{
     windowId: number;
     script: any;
+    variable: any;
   }>
 >([]);
 export const setScriptContext = createContext<
-  ((d: Array<{ windowId: number; script: any }>) => void) | null
+  ((d: Array<{ windowId: number; script: any; variable: any }>) => void) | null
 >(null);
 
 export const editorDataContext = createContext<
@@ -66,6 +67,7 @@ function App() {
     Array<{
       windowId: number;
       script: any;
+      variable: any;
     }>
   >([]);
 

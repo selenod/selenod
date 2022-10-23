@@ -869,6 +869,112 @@ function GetComponent({
                   />
                 </div>
               </div>
+              <div
+                style={{
+                  width: '100%',
+                  height: 30,
+                  marginTop: 5,
+                }}
+              >
+                <div
+                  className="property-input"
+                  style={{
+                    width: '100%',
+                    height: 30,
+                    borderRadius: 6,
+                    float: 'left',
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      marginLeft: 10,
+                      width: 12,
+                      height: 12,
+                      borderRadius: '20%',
+                      boxSizing: 'border-box',
+                      border: windowList
+                        .find((window) => window.id === currentWindow)!
+                        .elementData.find((element) => element.id === current)!
+                        .isShown
+                        ? undefined
+                        : '1px solid var(--shortcutIconColor)',
+                      float: 'left',
+                      cursor: 'pointer',
+                    }}
+                    onClick={async () => {
+                      await api
+                        .put('/project/element', {
+                          uid: data?.uid,
+                          id: projectData.id,
+                          windowId: currentWindow,
+                          index: currentElement,
+                          prop: {
+                            isShown: !windowList
+                              .find((window) => window.id === currentWindow)!
+                              .elementData.find(
+                                (element) => element.id === current
+                              )!.isShown,
+                          },
+                        })
+                        .then(async () => await handleElement())
+                        .catch((err) => {
+                          console.log(
+                            err.response.data.message
+                              ? err.response.data.message
+                              : 'Fail to update database.'
+                          );
+                        });
+                    }}
+                  >
+                    {windowList
+                      .find((window) => window.id === currentWindow)!
+                      .elementData.find((element) => element.id === current)!
+                      .isShown ? (
+                      <div
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          backgroundColor: 'var(--shortcutIconColor)',
+                          borderRadius: '20%',
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="#fff"
+                          style={{
+                            position: 'relative',
+                            top: -3,
+                            textAlign: 'center',
+                          }}
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    ) : null}
+                  </div>
+                  <p
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      marginLeft: 6,
+                      color: 'var(--shortcutIconColor)',
+                      fontSize: '.85rem',
+                      float: 'left',
+                    }}
+                  >
+                    {t('writ121')}
+                  </p>
+                </div>
+              </div>
             </div>
           ),
           Size: (
@@ -877,7 +983,6 @@ function GetComponent({
                 style={{
                   width: '100%',
                   height: 30,
-                  marginTop: 5,
                 }}
               >
                 <div
@@ -1473,6 +1578,7 @@ function GetComponent({
                 style={{
                   width: '100%',
                   height: 30,
+                  marginTop: 5,
                 }}
               >
                 <div
@@ -1485,7 +1591,6 @@ function GetComponent({
                       inputFocused === 2 ? 'var(--panelPathColor)' : undefined,
                     borderRadius: 6,
                     float: 'left',
-                    marginTop: 5,
                   }}
                 >
                   <p
@@ -1605,6 +1710,7 @@ function GetComponent({
                 style={{
                   width: '100%',
                   height: 30,
+                  marginTop: 5,
                 }}
               >
                 <div
@@ -1617,7 +1723,6 @@ function GetComponent({
                       inputFocused === 4 ? 'var(--panelPathColor)' : undefined,
                     borderRadius: 6,
                     float: 'left',
-                    marginTop: 5,
                   }}
                 >
                   <p
@@ -1737,6 +1842,7 @@ function GetComponent({
                 style={{
                   width: '100%',
                   height: 30,
+                  marginTop: 5,
                 }}
               >
                 <div
@@ -1749,7 +1855,6 @@ function GetComponent({
                       inputFocused === 0 ? 'var(--panelPathColor)' : undefined,
                     borderRadius: 6,
                     float: 'left',
-                    marginTop: 5,
                   }}
                 >
                   <p

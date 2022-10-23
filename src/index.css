@@ -361,3 +361,23 @@ textarea {
     transform: scale(1.1);
   }
 }
+
+.ieum-menuItem {
+  padding: 0 0 0 15px !important;
+  height: 40px !important;
+}
+
+.ieum-categorySelectorTitle {
+  color: #92a5b2 !important;
+  font-weight: 800 !important;
+  font-size: 0.7rem !important;
+  margin: 7px 0px 3px 15px !important;
+  padding-left: 0 !important;
+  text-transform: uppercase !important;
+}
+
+.ieum-nodeHead {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,11 +1,12 @@
 import './styles/field.css';
 
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { imageExtensions, nodeData, videoExtensions } from '../../data';
 import Property from '../system/property';
 import Ieum, { NodesObject } from '@ieum-lang/ieum';
+import scriptData from '@ieum-lang/ieum/dist/data/ScriptData';
 import {
   editorDataContext,
   scriptContext,
@@ -38,16 +39,8 @@ export default function Field(data: IToolData) {
   const currentElement = useSelector(
     (state: RootState) => state.window.currentElement
   );
-  const [winHeight, setWinHeight] = useState<number>(window.innerHeight);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const handleResize = () => setWinHeight(window.innerHeight);
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   return (
     <div
@@ -93,7 +86,8 @@ export default function Field(data: IToolData) {
           >
             {windowList
               .find((window) => window.id === currentWindow)
-              ?.elementData.map((element) => {
+              ?.elementData.filter((element) => element.isShown)
+              .map((element) => {
                 switch (element.type) {
                   case 'text':
                     return (
@@ -524,25 +518,28 @@ export default function Field(data: IToolData) {
               types={[
                 ...DefaultTypes,
                 {
-                  name: 'enum',
+                  name: 'elementType',
                   elements: [
-                    'No Element',
-                    ...[
-                      ...new Set(
-                        windowList
-                          .find((window) => window.id === currentWindow)
-                          ?.elementData.map((data) => data.name)
-                      ),
-                    ],
+                    'Text',
+                    'Line',
+                    'Image',
+                    'Button',
+                    'Checkbox',
+                    'Single-Line Input',
+                    'Multiple-Line Input',
                   ],
-                  initialValue: 'No Element',
-                  color: '#ffc53c',
+                  initialValue: 'Text',
+                  color: '#b86cff',
                 },
               ]}
               nodesData={nodeData}
               editorData={
                 editorData!.find((data) => data.windowId === currentWindow)
                   ?.data
+              }
+              scriptData={
+                scripts!.find((script) => script.windowId === currentWindow)
+                  ?.variable
               }
               nodesObject={
                 scripts!.find((script) => script.windowId === currentWindow)
@@ -569,6 +566,25 @@ export default function Field(data: IToolData) {
                   {
                     windowId: currentWindow!,
                     script: object,
+                    variable: scripts.find(
+                      (script) => script.windowId === currentWindow
+                    )?.variable,
+                  },
+                ]);
+              }}
+              onScriptDataUpdated={(data: scriptData) => {
+                dispatch(setScriptSaved(false));
+
+                setScripts!([
+                  ...scripts.filter(
+                    (script) => script.windowId !== currentWindow
+                  ),
+                  {
+                    windowId: currentWindow!,
+                    script: scripts.find(
+                      (script) => script.windowId === currentWindow
+                    )?.script,
+                    variable: data,
                   },
                 ]);
               }}

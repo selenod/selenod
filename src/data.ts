@@ -2,6 +2,9 @@ import { NodesData } from '@ieum-lang/ieum';
 import IEUM_listNode from '@ieum-lang/ieum/dist/data/defaultNodes/listNodes';
 import IEUM_dictNode from '@ieum-lang/ieum/dist/data/defaultNodes/dictNodes';
 import IEUM_mathNode from '@ieum-lang/ieum/dist/data/defaultNodes/mathNodes';
+import IEUM_functionNode from '@ieum-lang/ieum/dist/data/defaultNodes/functionNodes';
+import IEUM_variableNode from '@ieum-lang/ieum/dist/data/defaultNodes/variableNodes';
+import IEUM_logicNode from '@ieum-lang/ieum/dist/data/defaultNodes/logicNodes';
 
 export enum ElementType {
   TEXT = 'text',
@@ -80,9 +83,21 @@ const eventNodeData: NodesData = {
       {
         name: 'target',
         type: {
-          type: 'enum',
+          type: 'string',
         },
       },
+      {
+        name: 'execute',
+        type: {
+          type: 'func',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.event.onUpdate': {
+    name: 'On Update',
+    inputs: [
       {
         name: 'execute',
         type: {
@@ -139,6 +154,25 @@ const stringNodeData: NodesData = {
       },
     ],
   },
+  'selenod.string.toString': {
+    name: 'To String',
+    inputs: [
+      {
+        name: 'value',
+        type: {
+          type: 'any',
+        },
+      },
+    ],
+    outputs: [
+      {
+        name: 'return',
+        type: {
+          type: 'string',
+        },
+      },
+    ],
+  },
 };
 
 const intNodeData: NodesData = {
@@ -161,13 +195,13 @@ const intNodeData: NodesData = {
       },
     ],
   },
-  'selenod.int.intToFloat': {
-    name: 'Int to Float',
+  'selenod.int.toInt': {
+    name: 'To Int',
     inputs: [
       {
         name: 'value',
         type: {
-          type: 'int',
+          type: 'any',
         },
       },
     ],
@@ -175,7 +209,7 @@ const intNodeData: NodesData = {
       {
         name: 'return',
         type: {
-          type: 'float',
+          type: 'int',
         },
       },
     ],
@@ -202,13 +236,13 @@ const floatNodeData: NodesData = {
       },
     ],
   },
-  'selenod.float.floatToInt': {
-    name: 'Float to Int',
+  'selenod.float.toFloat': {
+    name: 'To Float',
     inputs: [
       {
         name: 'value',
         type: {
-          type: 'float',
+          type: 'any',
         },
       },
     ],
@@ -216,7 +250,7 @@ const floatNodeData: NodesData = {
       {
         name: 'return',
         type: {
-          type: 'int',
+          type: 'float',
         },
       },
     ],
@@ -245,46 +279,6 @@ const boolNodeData: NodesData = {
   },
 };
 
-const variableNodeData: NodesData = {
-  'selenod.variable.setVariable': {
-    name: 'Set Variable',
-    inputs: [
-      {
-        name: 'name',
-        type: {
-          type: 'string',
-        },
-      },
-      {
-        name: 'value',
-        type: {
-          type: 'any',
-        },
-      },
-    ],
-    outputs: [],
-  },
-  'selenod.variable.getVariable': {
-    name: 'Get Variable',
-    inputs: [
-      {
-        name: 'name',
-        type: {
-          type: 'string',
-        },
-      },
-    ],
-    outputs: [
-      {
-        name: 'return',
-        type: {
-          type: 'any',
-        },
-      },
-    ],
-  },
-};
-
 const debugNodeData: NodesData = {
   'selenod.debug.print': {
     name: 'Print',
@@ -305,6 +299,24 @@ const debugNodeData: NodesData = {
         name: 'message',
         type: {
           type: 'any',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.debug.try': {
+    name: 'Try',
+    inputs: [
+      {
+        name: 'execute',
+        type: {
+          type: 'func',
+        },
+      },
+      {
+        name: 'catch',
+        type: {
+          type: 'func',
         },
       },
     ],
@@ -438,6 +450,652 @@ const statementNodeData: NodesData = {
   },
 };
 
+const elementNodeData: NodesData = {
+  'selenod.element.create': {
+    name: 'Create Element',
+    inputs: [
+      {
+        name: 'name',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'type',
+        type: {
+          type: 'elementType',
+        },
+      },
+      {
+        name: 'is Shown',
+        type: {
+          type: 'bool',
+        },
+      },
+    ],
+    outputs: [
+      {
+        name: 'id',
+        type: {
+          type: 'int',
+        },
+      },
+    ],
+  },
+  'selenod.element.getByName': {
+    name: 'Get Element By Name',
+    inputs: [
+      {
+        name: 'name',
+        type: {
+          type: 'string',
+        },
+      },
+    ],
+    outputs: [
+      {
+        name: 'name',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'id',
+        type: {
+          type: 'int',
+        },
+      },
+      {
+        name: 'x',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'y',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'x Align',
+        type: {
+          type: 'float',
+        },
+      },
+      {
+        name: 'y Align',
+        type: {
+          type: 'float',
+        },
+      },
+      {
+        name: 'rotation',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'index',
+        type: {
+          type: 'int',
+        },
+      },
+      {
+        name: 'is Shown',
+        type: {
+          type: 'bool',
+        },
+      },
+      {
+        name: 'width',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'height',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'text',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'font Size',
+        type: {
+          type: 'float',
+        },
+      },
+      {
+        name: 'font Weight',
+        type: {
+          type: 'int',
+        },
+      },
+      {
+        name: 'color',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'background Color',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'border Radius',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'border Color',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'is Checked',
+        type: {
+          type: 'bool',
+        },
+      },
+      {
+        name: 'asset Id',
+        type: {
+          type: 'int',
+        },
+      },
+    ],
+  },
+  'selenod.element.getById': {
+    name: 'Get Element By Id',
+    inputs: [
+      {
+        name: 'id',
+        type: {
+          type: 'int',
+        },
+      },
+    ],
+    outputs: [
+      {
+        name: 'name',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'id',
+        type: {
+          type: 'int',
+        },
+      },
+      {
+        name: 'x',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'y',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'x Align',
+        type: {
+          type: 'float',
+        },
+      },
+      {
+        name: 'y Align',
+        type: {
+          type: 'float',
+        },
+      },
+      {
+        name: 'rotation',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'index',
+        type: {
+          type: 'int',
+        },
+      },
+      {
+        name: 'is Shown',
+        type: {
+          type: 'bool',
+        },
+      },
+      {
+        name: 'width',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'height',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'text',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'font Size',
+        type: {
+          type: 'float',
+        },
+      },
+      {
+        name: 'font Weight',
+        type: {
+          type: 'int',
+        },
+      },
+      {
+        name: 'color',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'background Color',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'border Radius',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'border Color',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'is Checked',
+        type: {
+          type: 'bool',
+        },
+      },
+      {
+        name: 'asset Id',
+        type: {
+          type: 'int',
+        },
+      },
+    ],
+  },
+  'selenod.element.getList': {
+    name: 'Get Element List',
+    inputs: [],
+    outputs: [
+      {
+        name: 'name List',
+        type: {
+          type: 'list',
+          metadata: {
+            generics: ['T'],
+            genericValues: { T: { type: 'string' } },
+          },
+        },
+      },
+    ],
+  },
+  'selenod.element.deleteByName': {
+    name: 'Delete Element By Name',
+    inputs: [
+      {
+        name: 'name',
+        type: {
+          type: 'string',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.deleteById': {
+    name: 'Delete Element By Id',
+    inputs: [
+      {
+        name: 'id',
+        type: {
+          type: 'int',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.rename': {
+    name: 'Rename Element',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'name',
+        type: {
+          type: 'string',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.setPos': {
+    name: 'Set Position',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'x',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'y',
+        type: {
+          type: 'string',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.setAlign': {
+    name: 'Set Align',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'x Align',
+        type: {
+          type: 'float',
+        },
+      },
+      {
+        name: 'y Align',
+        type: {
+          type: 'float',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.setRotation': {
+    name: 'Set Rotation',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'rotation',
+        type: {
+          type: 'string',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.setIndex': {
+    name: 'Set Index Order',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'order',
+        type: {
+          type: 'int',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.setShow': {
+    name: 'Set Show',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'is Shown',
+        type: {
+          type: 'bool',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.setSize': {
+    name: 'Set Size',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'width',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'height',
+        type: {
+          type: 'string',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.setText': {
+    name: 'Set Text',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'text',
+        type: {
+          type: 'string',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.setFontSize': {
+    name: 'Set Font Size',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'size',
+        type: {
+          type: 'float',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.setFontWeight': {
+    name: 'Set Font Weight',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'weight',
+        type: {
+          type: 'int',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.setColor': {
+    name: 'Set Color',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'color',
+        type: {
+          type: 'string',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.setBackgroundColor': {
+    name: 'Set Background Color',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'color',
+        type: {
+          type: 'string',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.setBorderRadius': {
+    name: 'Set Border Radius',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'radius',
+        type: {
+          type: 'string',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.setBorderColor': {
+    name: 'Set Border Color',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'color',
+        type: {
+          type: 'string',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.setChecked': {
+    name: 'Set Checked',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'is Checked',
+        type: {
+          type: 'bool',
+        },
+      },
+    ],
+    outputs: [],
+  },
+  'selenod.element.setAsset': {
+    name: 'Set Asset',
+    inputs: [
+      {
+        name: 'target',
+        type: {
+          type: 'string',
+        },
+      },
+      {
+        name: 'asset Id',
+        type: {
+          type: 'int',
+        },
+      },
+    ],
+    outputs: [],
+  },
+};
+
 // Export Field
 export const nodeData: NodesData = {
   ...eventNodeData,
@@ -448,7 +1106,10 @@ export const nodeData: NodesData = {
   ...IEUM_listNode,
   ...IEUM_dictNode,
   ...statementNodeData,
-  ...variableNodeData,
+  ...IEUM_variableNode,
+  ...IEUM_functionNode,
+  ...IEUM_logicNode,
+  ...elementNodeData,
   ...debugNodeData,
   ...IEUM_mathNode,
 };

@@ -12,6 +12,7 @@ interface Element {
   name: string;
   id: number;
   type: ElementType;
+  isShown: boolean;
   // Posiiton
   x: string;
   y: string;

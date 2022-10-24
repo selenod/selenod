@@ -339,9 +339,8 @@ const statementNodeData: NodesData = {
         type: {
           type: 'nullable',
           metadata: {
-            T: {
-              type: 'func',
-            },
+            generics: ['T'],
+            genericValues: { T: { type: 'func' } },
           },
         },
       },
@@ -350,9 +349,8 @@ const statementNodeData: NodesData = {
         type: {
           type: 'nullable',
           metadata: {
-            T: {
-              type: 'func',
-            },
+            generics: ['T'],
+            genericValues: { T: { type: 'func' } },
           },
         },
       },

@@ -1,6 +1,6 @@
 import './styles/field.css';
 
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { imageExtensions, nodeData, videoExtensions } from '../../data';
@@ -12,6 +12,8 @@ import {
   scriptContext,
   setEditorDataContext,
   setScriptContext,
+  setVariableContext,
+  variableContext,
 } from '../..';
 import { setScriptSaved } from '../system/reduxSlice/windowSlice';
 import Edit from '@ieum-lang/ieum/dist/data/EditorData';
@@ -23,8 +25,10 @@ interface IToolData {
 
 export default function Field(data: IToolData) {
   const scripts = useContext(scriptContext);
+  const vars = useContext(variableContext);
   const editorData = useContext(editorDataContext);
   const setScripts = useContext(setScriptContext);
+  const setVariable = useContext(setVariableContext);
   const setEditorData = useContext(setEditorDataContext);
 
   const currentOpenedPanel = useSelector(
@@ -41,6 +45,27 @@ export default function Field(data: IToolData) {
   );
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (
+      editorData.find((data) => data.windowId === currentWindow) === undefined
+    ) {
+      setEditorData!([
+        ...editorData.filter((data) => data.windowId !== currentWindow),
+        {
+          windowId: currentWindow!,
+          data: {
+            backgroundPosition: {
+              x: -5000,
+              y: -5000,
+            },
+            zoom: 1,
+          },
+        },
+      ]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentWindow]);
 
   return (
     <div
@@ -533,12 +558,74 @@ export default function Field(data: IToolData) {
                 },
               ]}
               nodesData={nodeData}
-              editorData={
-                editorData!.find((data) => data.windowId === currentWindow)
-                  ?.data
-              }
+              editorData={{
+                ...editorData!.find((data) => data.windowId === currentWindow)
+                  ?.data!,
+                projects: {
+                  selenod: {
+                    displayName: 'SELENOD',
+                  },
+                  ieum: {
+                    displayName: 'IEUM',
+                  },
+                },
+                categories: {
+                  'selenod.event': {
+                    displayName: 'Event',
+                    color: '#f7b906',
+                  },
+                  'selenod.element': {
+                    displayName: 'Element',
+                    color: '#936bff',
+                  },
+                  'selenod.asset': {
+                    displayName: 'Asset',
+                    color: '#936bff',
+                  },
+                  'selenod.debug': {
+                    displayName: 'Debug',
+                    color: '#7d8085',
+                  },
+                  'selenod.fetch': {
+                    displayName: 'Fetch',
+                    color: '#7d8085',
+                  },
+                  'selenod.utilities': {
+                    displayName: 'Utilities',
+                    color: '#7d8085',
+                  },
+                  'ieum.list': {
+                    displayName: 'List',
+                    color: '#6b90ff',
+                  },
+                  'ieum.dict': {
+                    displayName: 'Dictionary',
+                    color: '#6b90ff',
+                  },
+                  'ieum.statement': {
+                    displayName: 'Statement',
+                    color: '#7d8085',
+                  },
+                  'ieum.logic': {
+                    displayName: 'Logic',
+                    color: '#7d8085',
+                  },
+                  'ieum.math': {
+                    displayName: 'Math',
+                    color: '#7d8085',
+                  },
+                  'ieum.variable': {
+                    displayName: 'Variable',
+                    color: '#ed5360',
+                  },
+                  'ieum.function': {
+                    displayName: 'Function',
+                    color: '#ed5360',
+                  },
+                },
+              }}
               scriptData={
-                scripts!.find((script) => script.windowId === currentWindow)
+                vars!.find((script) => script.windowId === currentWindow)
                   ?.variable
               }
               nodesObject={
@@ -551,7 +638,7 @@ export default function Field(data: IToolData) {
                     (data) => data.windowId !== currentWindow
                   ),
                   {
-                    windowId: currentElement!,
+                    windowId: currentWindow!,
                     data,
                   },
                 ]);
@@ -566,24 +653,16 @@ export default function Field(data: IToolData) {
                   {
                     windowId: currentWindow!,
                     script: object,
-                    variable: scripts.find(
-                      (script) => script.windowId === currentWindow
-                    )?.variable,
                   },
                 ]);
               }}
               onScriptDataUpdated={(data: scriptData) => {
                 dispatch(setScriptSaved(false));
 
-                setScripts!([
-                  ...scripts.filter(
-                    (script) => script.windowId !== currentWindow
-                  ),
+                setVariable!([
+                  ...vars.filter((script) => script.windowId !== currentWindow),
                   {
                     windowId: currentWindow!,
-                    script: scripts.find(
-                      (script) => script.windowId === currentWindow
-                    )?.script,
                     variable: data,
                   },
                 ]);

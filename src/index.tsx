@@ -19,11 +19,19 @@ export const scriptContext = createContext<
   Array<{
     windowId: number;
     script: any;
+  }>
+>([]);
+export const variableContext = createContext<
+  Array<{
+    windowId: number;
     variable: any;
   }>
 >([]);
 export const setScriptContext = createContext<
-  ((d: Array<{ windowId: number; script: any; variable: any }>) => void) | null
+  ((d: Array<{ windowId: number; script: any }>) => void) | null
+>(null);
+export const setVariableContext = createContext<
+  ((d: Array<{ windowId: number; variable: any }>) => void) | null
 >(null);
 
 export const editorDataContext = createContext<
@@ -67,6 +75,11 @@ function App() {
     Array<{
       windowId: number;
       script: any;
+    }>
+  >([]);
+  const [variable, setVariable] = useState<
+    Array<{
+      windowId: number;
       variable: any;
     }>
   >([]);
@@ -124,45 +137,49 @@ function App() {
     <setDataContext.Provider value={setData}>
       <setEditorDataContext.Provider value={setEditorData}>
         <setScriptContext.Provider value={setScripts}>
-          <dataContext.Provider value={data}>
-            <editorDataContext.Provider value={editorData}>
-              <scriptContext.Provider value={scripts}>
-                <Provider store={store}>
-                  <Router>
-                    <Header />
-                    <Routes>
-                      <Route path="/" element={<Workpsace />} />
-                      <Route
-                        path="/editor/:projectID"
-                        element={<EditorPage />}
-                      />
-                      <Route
-                        path="/:method/:token/:id/:nickname"
-                        element={<SyncPage />}
-                      />
-                      <Route
-                        path="*"
-                        element={
-                          <ResponsePage
-                            message="Page not found."
-                            status="404"
+          <setVariableContext.Provider value={setVariable}>
+            <dataContext.Provider value={data}>
+              <editorDataContext.Provider value={editorData}>
+                <scriptContext.Provider value={scripts}>
+                  <variableContext.Provider value={variable}>
+                    <Provider store={store}>
+                      <Router>
+                        <Header />
+                        <Routes>
+                          <Route path="/" element={<Workpsace />} />
+                          <Route
+                            path="/editor/:projectID"
+                            element={<EditorPage />}
                           />
-                        }
-                      />
-                    </Routes>
-                    <Toaster
-                      position="top-center"
-                      toastOptions={{
-                        style: {
-                          maxWidth: '70vw',
-                        },
-                      }}
-                    />
-                  </Router>
-                </Provider>
-              </scriptContext.Provider>
-            </editorDataContext.Provider>
-          </dataContext.Provider>
+                          <Route
+                            path="/:method/:token/:id/:nickname"
+                            element={<SyncPage />}
+                          />
+                          <Route
+                            path="*"
+                            element={
+                              <ResponsePage
+                                message="Page not found."
+                                status="404"
+                              />
+                            }
+                          />
+                        </Routes>
+                        <Toaster
+                          position="top-center"
+                          toastOptions={{
+                            style: {
+                              maxWidth: '70vw',
+                            },
+                          }}
+                        />
+                      </Router>
+                    </Provider>
+                  </variableContext.Provider>
+                </scriptContext.Provider>
+              </editorDataContext.Provider>
+            </dataContext.Provider>
+          </setVariableContext.Provider>
         </setScriptContext.Provider>
       </setEditorDataContext.Provider>
     </setDataContext.Provider>

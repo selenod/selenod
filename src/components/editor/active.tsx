@@ -14,7 +14,7 @@ import {
 } from '../system/reduxSlice/assetSlice';
 import { imageExtensions, videoExtensions } from '../../data';
 import api from '../../config/api';
-import { dataContext, scriptContext } from '../..';
+import { dataContext, scriptContext, variableContext } from '../..';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { appURL } from '../../config/config';
@@ -27,6 +27,7 @@ export default function Active(propData: IToolData) {
   const { t } = useTranslation(['page']);
 
   const scripts = useContext(scriptContext);
+  const vars = useContext(variableContext);
   const data = useContext(dataContext);
 
   const [showPopover, setShowPopover] = useState<{
@@ -38,6 +39,7 @@ export default function Active(propData: IToolData) {
   const dispatch = useDispatch();
 
   const projectData = useSelector((state: RootState) => state.project.data);
+  const windowList = useSelector((state: RootState) => state.window.windowList);
   const scriptSaved = useSelector(
     (state: RootState) => state.window.scriptSaved
   );
@@ -302,7 +304,7 @@ export default function Active(propData: IToolData) {
                     scriptData: scripts.find(
                       (script) => script.windowId === currentWindow
                     )?.script,
-                    varData: scripts.find(
+                    varData: vars.find(
                       (script) => script.windowId === currentWindow
                     )?.variable,
                   })
@@ -349,7 +351,17 @@ export default function Active(propData: IToolData) {
           </div>
           <div
             title={t('writ120')}
-            onClick={() => window.open(`${appURL}${projectData.route}`)}
+            onClick={() =>
+              window.open(
+                `${appURL}${projectData.route}${
+                  currentWindow === 0
+                    ? ''
+                    : '/' +
+                      windowList.find((window) => window.id === currentWindow)
+                        ?._id
+                }`
+              )
+            }
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

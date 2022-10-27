@@ -96,12 +96,25 @@ a {
   background-color: var(--lineColor);
 }
 
-input {
+input:not(.ieum-inputComponent > * > input) {
   border: 1px solid var(--lineColor);
   border-radius: 5px;
   height: 40px;
   box-sizing: border-box;
   padding: 0 0.7rem;
+}
+
+.ieum-inputComponent > * > input {
+  border: 1px solid var(--lineColor);
+  border-radius: 3px;
+  position: relative;
+  top: -0.5px;
+  padding: 0 0.1rem;
+  font-size: 0.75rem;
+}
+
+.ieum-paramName {
+  max-width: 100px !important;
 }
 
 textarea {

@@ -10,6 +10,8 @@ import { useTranslation } from 'react-i18next';
 import { dataContext } from '../..';
 import i18n from '../../locale';
 import api from '../../config/api';
+import { useDispatch } from 'react-redux';
+import { togglePanel } from './reduxSlice/windowSlice';
 
 interface PopoverInterface {
   workspace: boolean;
@@ -23,6 +25,7 @@ export default function Header() {
     workspace: false,
   });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const data = useContext(dataContext);
 
@@ -65,6 +68,7 @@ export default function Header() {
                   text: t('workspace'),
                   onClick: () => {
                     navigate('/');
+                    dispatch(togglePanel(undefined));
                     setIsPopoverOpen({ ...isPopoverOpen, workspace: false });
                   },
                 },

@@ -22,6 +22,8 @@ import {
   scriptContext,
   setDataContext,
   setScriptContext,
+  setVariableContext,
+  variableContext,
 } from '..';
 import toast from 'react-hot-toast';
 import { landingURL } from '../config/config';
@@ -34,7 +36,9 @@ export default function EditorPage() {
   const scripts = useContext(scriptContext);
   const setScripts = useContext(setScriptContext);
   const data = useContext(dataContext);
+  const vars = useContext(variableContext);
   const setData = useContext(setDataContext);
+  const setVars = useContext(setVariableContext);
 
   const doProjectSetup = useSelector(
     (state: RootState) => state.project.doSetup
@@ -71,9 +75,8 @@ export default function EditorPage() {
               scriptData: scripts.find(
                 (script) => script.windowId === currentWindow
               )?.script,
-              varData: scripts.find(
-                (script) => script.windowId === currentWindow
-              )?.variable,
+              varData: vars.find((script) => script.windowId === currentWindow)
+                ?.variable,
             })
             .then(() => {
               dispatch(setScriptSaved(true));
@@ -159,6 +162,12 @@ export default function EditorPage() {
               res.data.project.windowList.map((win: any) => ({
                 windowId: win.id,
                 script: win.scriptData.data,
+              }))
+            );
+
+            setVars!(
+              res.data.project.windowList.map((win: any) => ({
+                windowId: win.id,
                 variable: win.scriptData.variable,
               }))
             );

@@ -2,6 +2,7 @@ import './styles/footer.css';
 import logo from '../../assets/svgs/logo.svg';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { landingURL } from '../../config/config';
 
 export default function Footer() {
   const { t } = useTranslation(['page']);
@@ -14,12 +15,9 @@ export default function Footer() {
             <div className="section">
               <img src={logo} alt="" />
               <div>
-                <Link to="/">
+                <a href="https://www.privacypolicygenerator.info/live.php?token=ebG79IWXMB6odM7Ga4FZXe8HV3H9NWQp">
                   <p>{t('privacy_policy')}</p>
-                </Link>
-                <Link to="/">
-                  <p>{t('terms_of_use')}</p>
-                </Link>
+                </a>
               </div>
             </div>
             <div className="section">
@@ -28,9 +26,9 @@ export default function Footer() {
                 <a href="https://github.com/selenod/support/issues/new">
                   <p>{t('support')}</p>
                 </a>
-                <Link to="/">
+                <a href={landingURL + '/developers'}>
                   <p>{t('developers')}</p>
-                </Link>
+                </a>
               </div>
             </div>
             <div

@@ -390,6 +390,12 @@ textarea {
   white-space: nowrap;
 }
 
-.ieum-subNodeSelect {
-  margin: 0.5rem 0;
+.ieum-subNodeSelect,
+.ieum-input {
+  margin: 0.2rem 0 !important;
+}
+
+.ieum-inputModifyButtons > button {
+  width: 25px;
+  height: 20px;
 }

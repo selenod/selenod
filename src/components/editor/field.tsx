@@ -566,7 +566,30 @@ export default function Field(data: IToolData) {
                     displayName: 'SELENOD',
                   },
                   ieum: {
-                    displayName: 'IEUM',
+                    displayName: 'DEFAULT',
+                  },
+                },
+                superNodes: {
+                  'ieum.math.intCalc': {
+                    displayName: 'Int Calculation',
+                  },
+                  'ieum.math.floatCalc': {
+                    displayName: 'Float Calculation',
+                  },
+                  'ieum.logic.compare': {
+                    displayName: 'Compare',
+                  },
+                  'selenod.element.get': {
+                    displayName: 'Get Element',
+                  },
+                  'selenod.element.set': {
+                    displayName: 'Set Element',
+                  },
+                  'selenod.element.del': {
+                    displayName: 'Delete Element',
+                  },
+                  'selenod.asset.get': {
+                    displayName: 'Get Asset',
                   },
                 },
                 categories: {
@@ -596,6 +619,26 @@ export default function Field(data: IToolData) {
                   },
                   'ieum.list': {
                     displayName: 'List',
+                    color: '#6b90ff',
+                  },
+                  'ieum.string': {
+                    displayName: 'String',
+                    color: '#6b90ff',
+                  },
+                  'ieum.int': {
+                    displayName: 'Int',
+                    color: '#6b90ff',
+                  },
+                  'ieum.float': {
+                    displayName: 'Float',
+                    color: '#6b90ff',
+                  },
+                  'ieum.bool': {
+                    displayName: 'Bool',
+                    color: '#6b90ff',
+                  },
+                  'ieum.nullable': {
+                    displayName: 'Nullable',
                     color: '#6b90ff',
                   },
                   'ieum.dict': {

@@ -108,13 +108,8 @@ input:not(.ieum-inputComponent > * > input) {
   border: 1px solid var(--lineColor);
   border-radius: 3px;
   position: relative;
-  top: -0.5px;
   padding: 0 0.1rem;
   font-size: 0.75rem;
-}
-
-.ieum-paramName {
-  max-width: 100px !important;
 }
 
 textarea {
@@ -393,4 +388,8 @@ textarea {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.ieum-subNodeSelect {
+  margin: 0.5rem 0;
 }

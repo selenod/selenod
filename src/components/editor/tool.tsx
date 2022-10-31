@@ -184,7 +184,7 @@ export default function Tool() {
                     contents={windowList.map((window) => ({
                       text: window.name,
                       id: window.id,
-                      selected: windowList.indexOf(window) === 0 ? true : false,
+                      selected: windowList.indexOf(window) === 0,
                       onClick: () => {
                         dispatch(togglePanel(undefined));
                         dispatch(setCurrWin(window.id));

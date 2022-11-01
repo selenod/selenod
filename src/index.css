@@ -399,3 +399,11 @@ textarea {
   width: 25px;
   height: 20px;
 }
+
+.ieum-typeInput > input {
+  background-color: #f1f3f5;
+}
+
+.ieum-TypeInputTypeSelector {
+  z-index: 1;
+}

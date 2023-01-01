@@ -420,21 +420,23 @@ export default function Workspace() {
                       })}
                     </p>
                   </div>
-                  <div title={t('writ108')}>
+                  <div
+                    title={t('writ108')}
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      float: 'right',
+                      marginRight: 50,
+                      cursor: 'pointer',
+                    }}
+                  >
                     <svg
                       width="21"
                       height="21"
                       viewBox="0 0 25 25"
                       fill="var(--textGrayColor)"
                       xmlns="http://www.w3.org/2000/svg"
-                      style={{
-                        position: 'relative',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        float: 'right',
-                        marginRight: 50,
-                        cursor: 'pointer',
-                      }}
                       onClick={() => setWinOpenId(project._id)}
                     >
                       <path
@@ -444,21 +446,23 @@ export default function Workspace() {
                       />
                     </svg>
                   </div>
-                  <div title={t('writ120')}>
+                  <div
+                    title={t('writ120')}
+                    style={{
+                      position: 'relative',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      float: 'right',
+                      marginRight: 18,
+                      cursor: 'pointer',
+                    }}
+                  >
                     <svg
                       width="21"
                       height="21"
                       viewBox="0 0 20 20"
                       fill="var(--textGrayColor)"
                       xmlns="http://www.w3.org/2000/svg"
-                      style={{
-                        position: 'relative',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        float: 'right',
-                        marginRight: 18,
-                        cursor: 'pointer',
-                      }}
                       onClick={() => window.open(`${appURL}${project.route}`)}
                     >
                       <path
